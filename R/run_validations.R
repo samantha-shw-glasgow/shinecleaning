@@ -1,4 +1,5 @@
 run_validations <- function(data, validators) {
-  data$errors <- validators[[1]](data)
+  results <- lapply(validators, function(fun) {fun(data)})
+  data$errors <- mapply(c, results, USE.NAMES = FALSE, SIMPLIFY = FALSE)
   return(data)
 }
