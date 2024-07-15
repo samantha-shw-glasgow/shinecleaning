@@ -1,4 +1,5 @@
 test_that("validation column is added", {
+  validators <- list(check_duplicate_dob)
   input <- data.frame(
     id = 1:5,
     dob = c(
@@ -10,6 +11,6 @@ test_that("validation column is added", {
     )
   )
   expected <- input
-  expected$errors <- c(NA, NA, "Duplicate", "Duplicate", NA)
-  expect_identical(run_validations(input), expected)
+  expected$errors <- c(NA, NA, "Duplicate DOB", "Duplicate DOB", NA)
+  expect_identical(run_validations(input, validators), expected)
 })

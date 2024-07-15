@@ -1,6 +1,4 @@
-run_validations <- function(data) {
-  occurrences_lookup <- table(data$dob)
-  occurrences <- c(occurrences_lookup[as.character(data$dob)])
-  data$errors <- ifelse(occurrences > 1, "Duplicate", NA)
+run_validations <- function(data, validators) {
+  data$errors <- validators[[1]](data)
   return(data)
 }
