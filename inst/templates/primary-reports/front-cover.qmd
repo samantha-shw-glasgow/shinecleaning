@@ -1,0 +1,21 @@
+\thispagestyle{empty}
+
+<!-- ![](img/SHINE_logo.jpg){fig-align=left} -->
+# SHINE PUPIL MENTAL HEALTH SURVEY RESULTS
+/
+# `{r} school_name`
+/
+# `{r} term`
+
+![](../img/iStock-1062826670.jpg){fig-align="center"}
+
+
+![](../img/uosa.png){fig-align="center" height=50}
+
+![](../img/mrc.png){fig-align="center" height=50}
+
+![](../img/hbsc.png){fig-align="center" height=80}
+
+
+[**Web:** gla.ac.uk/shine **\| Tel:** (+44) 141 330 4042]{.col .s12
+.center style="font-size:10pt"}

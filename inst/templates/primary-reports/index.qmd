@@ -1,0 +1,42 @@
+---
+format: 
+  pdf:
+    fig-align: left
+    geometry:
+      - a4paper
+      - top=40mm
+      - left=15mm
+      - right=15mm
+      - bottom=50mm
+    mainfont: Roboto
+    mainfontoptions:
+      - Color=333333
+    sansfont: Roboto-Bold
+    sansfontoptions:
+      - Color=2E3192
+      - Scale=1.1
+    fontsize: 12pt
+    include-in-header:
+      - "../styling/footer.tex"
+params:
+  is_la_report: false
+  school_name: 'Test school academy'
+  term: 'Autumn 2024'
+execute:
+  enabled: true
+---
+
+```{r}
+#| echo: false
+
+school_name <- params$school_name
+is_la_report <- params$is_la_report
+term <- params$term
+```
+
+
+```{r child = 'front-cover.qmd'}
+```
+
+```{r child = 'introduction.qmd'}
+```
