@@ -1,5 +1,7 @@
-render_report <- function() {
+render_report <- function(filename = "primary_report.docx") {
 
-  quarto::quarto_render("inst/templates/primary-reports/index.qmd", output_format = "docx")
+  rmarkdown::render("inst/templates/primary-reports/index.qmd",
+                    output_dir = getwd(),
+                    output_file = filename)
 
 }
