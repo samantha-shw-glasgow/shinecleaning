@@ -12,7 +12,8 @@ test_that("validation column is added", {
   )
   expected <- input
   expected$errors <- c(NA, NA, "Duplicate DOB", "Duplicate DOB", NA)
-  expect_identical(run_validations(input, validators), expected)
+  result <- run_validations(input, validators)
+  expect_identical(result, expected)
 })
 
 test_that("multiple validators work", {
@@ -35,5 +36,6 @@ test_that("multiple validators work", {
     "Duplicate DOB; Duplicate DOB",
     NA
   )
-  expect_identical(run_validations(input, validators), expected)
+  result <- run_validations(input, validators)
+  expect_identical(result, expected)
 })
