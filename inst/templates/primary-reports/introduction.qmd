@@ -18,21 +18,21 @@ from some individual local authorities.
 # INTRODUCTION {#introduction .col .s12 .report}
 
 Welcome to your Scottish Schools Health and Wellbeing Improvement
-Research Network (SHINE) `{r} ifelse(is_la_report, "Local Authority", "school")` report on pupil mental health. Within this
-report you will find your `{r} ifelse(is_la_report, "Local Authority\'s", "school\'s")` results to the SHINE Pupil Mental
+Research Network (SHINE) `r ifelse(is_la_report, "Local Authority", "school")` report on pupil mental health. Within this
+report you will find your `r ifelse(is_la_report, "Local Authority\'s", "school\'s")` results to the SHINE Pupil Mental
 Health Survey which looks at different aspects of mental health and
 wellbeing. The report does not identify individual pupils but presents
 aggregate data by gender and year groups to help identify trends or
 patterns. It can also be used to:
 
 -   Identify the main mental health and wellbeing issues affecting your
-    `{r} ifelse(is_la_report, "young people as part of the wider community", "pupils and whole school community")`
+    `r ifelse(is_la_report, "young people as part of the wider community", "pupils and whole school community")`
 -   Focus on local needs and local context
 -   Identify hidden or emerging issues, or groups at particular risk to
     facilitate prioritising & targeting of resources
--   Shape your `{r} ifelse(is_la_report, "Local Authority", "school")` improvement plan`{r} ifelse(is_la_report, " and staff programme", "")`
+-   Shape your `r ifelse(is_la_report, "Local Authority", "school")` improvement plan`r ifelse(is_la_report, " and staff programme", "")`
 -   Promote pupil voice and shared decision-making
-    `{r} ifelse(is_la_report, "as part of the whole-school approach strategy across the schools in the Local Authority", "")`
+    `r ifelse(is_la_report, "as part of the whole-school approach strategy across the schools in the Local Authority", "")`
 -   Support evidence-based action planning
 -   Design relevant health programmes and interventions
 -   Engage parents with pupil health concerns
@@ -43,15 +43,15 @@ patterns. It can also be used to:
 As well as the data, we have included some background information on
 adolescent mental health, measures used in the survey and how to
 interpret this report. We have also put together some challenge and
-reflective questions to `{r} ifelse(is_la_report, "look at","consider")` 
-when reviewing your `{r} ifelse(is_la_report, "Local Authority\'s", "school\'s")` 
+reflective questions to `r ifelse(is_la_report, "look at","consider")` 
+when reviewing your `r ifelse(is_la_report, "Local Authority\'s", "school\'s")` 
 data; this is not intended to be
 prescriptive in approach but to serve as a guide to assist you and
 colleagues. There is also a list of resources for further information
 and help.
 
-The report is confidential`{r} ifelse(is_la_report, " and", ", only")` provided to your `{r} ifelse(is_la_report, "Local Authority", "school")` SHINE
-representative`{r} ifelse(is_la_report, "", " and if requested, the health and wellbeing lead within your local authority")`. However, we
+The report is confidential`r ifelse(is_la_report, " and", ", only")` provided to your `r ifelse(is_la_report, "Local Authority", "school")` SHINE
+representative`r ifelse(is_la_report, "", " and if requested, the health and wellbeing lead within your local authority")`. However, we
 would strongly encourage you to share the report with your pupils, staff
 and parents.
 
@@ -292,7 +292,7 @@ report depressive symptoms and lower life satisfaction.
 
 ::: {.col .s12}
 -   All figures show results for all pupils in your
-    `{r} ifelse(is_la_report, "Local Authority", "school")`
+    `r ifelse(is_la_report, "Local Authority", "school")`
     combined.
     This is due to the small number of pupils participating in the
     survey.

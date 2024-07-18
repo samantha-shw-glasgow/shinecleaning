@@ -1,23 +1,29 @@
 ---
-format: 
-  pdf:
-    fig-align: left
-    geometry:
-      - a4paper
-      - top=40mm
-      - left=15mm
-      - right=15mm
-      - bottom=50mm
-    mainfont: Roboto
-    mainfontoptions:
-      - Color=333333
-    sansfont: Roboto-Bold
-    sansfontoptions:
-      - Color=2E3192
-      - Scale=1.1
-    fontsize: 12pt
-    include-in-header:
-      - "../styling/footer.tex"
+output: 
+  officedown::rdocx_document:
+    reference_docx: ../styling/doc_template.docx
+    tables:
+      style: Table Grid
+      layout: autofit
+      width: 1.0
+      conditional:
+       first_row: true
+       first_column: false
+       last_row: false
+       last_column: false
+       no_hband: false
+       no_vband: true
+    lists:
+      ol.style: 'Number alignment: Left'
+      ul.style: List Paragraph
+    page_margins:
+      bottom: 1
+      top: 1
+      right: 0.8
+      left: 0.8
+      header: 0
+      footer: 0
+      gutter: 0
 params:
   is_la_report: false
   school_name: 'Test school academy'
@@ -26,7 +32,7 @@ execute:
   enabled: true
 ---
 
-```{r}
+```{r, echo = FALSE}
 #| echo: false
 
 school_name <- params$school_name
@@ -35,8 +41,12 @@ term <- params$term
 ```
 
 
-```{r child = 'front-cover.qmd'}
+```{r front-page, echo=FALSE, results='asis'}
+cat(knitr::knit_child('front-cover.qmd', envir = environment(), quiet = TRUE))
 ```
 
-```{r child = 'introduction.qmd'}
+\newpage
+
+```{r introduction, echo=FALSE, results='asis'}
+cat(knitr::knit_child('introduction.qmd', envir = environment(), quiet = TRUE))
 ```
