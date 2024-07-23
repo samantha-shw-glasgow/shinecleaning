@@ -8,7 +8,10 @@ rawUploadUI <- function(id){
 
 	tagList(
 		h2("Upload data from Qualtrics"),
-		fileInput(ns("upload"), "Select survey data", buttonLabel = "Upload..."),
+		fileInput(ns("upload"),
+		          "Select survey data",
+		          buttonLabel = "Upload...",
+		          accept = ".csv"),
 		uiOutput(ns("warn"))
 	)
 }
