@@ -94,3 +94,24 @@ upcheck_schools <- function(data){
 
   return(data.frame(fail, message, level))
 }
+
+upcheck_gender <- function(data){
+  fail = FALSE
+  message = NA
+  level = NA
+
+  if(! "QID4" %in% colnames(data)){
+    fail = TRUE
+    message = "`QID4` (gender) column not found in this file. Please include gender in the uploaded file."
+    level = 3
+  } else {
+    genders = data$QID4[!data$QID4 %in% c("{\"ImportId\":\"QUID4\"}", "gender")]
+    if(any(stringr::str_detect(genders, "[0-9]"))){
+      fail = TRUE
+      message = "This file has numeric values for gender where characters are expected. Please ensure you have downloaded the data with full text responses."
+      level = 3
+    }
+  }
+
+  return(data.frame(fail, message, level))
+}
