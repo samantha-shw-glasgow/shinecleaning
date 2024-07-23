@@ -8,7 +8,8 @@
 upload_checks <- function(data){
   checks <- rbind(
     upcheck_status(data),
-    upcheck_schools(data)
+    upcheck_schools(data),
+    upcheck_gender(data)
     )
 
   return(checks[checks$fail, c("message", "level")])
@@ -106,7 +107,7 @@ upcheck_gender <- function(data){
     level = 3
   } else {
     genders = data$QID4 #data$QID4[!data$QID4 %in% c("{\"ImportId\":\"QUID4\"}", "gender")]
-    if(any(stringr::str_detect(genders, "[0-9]"))){
+    if(any(stringr::str_detect(genders, "[0-9]"), na.rm = TRUE)){
       fail = TRUE
       message = "This file has numeric values for gender where characters are expected. Please ensure you have downloaded the data with full text responses."
       level = 3

@@ -50,10 +50,12 @@ rawUpload_server <- function(id){
 				data <- reactive({
 				  df <- raw_data()
 				  drop <- NULL
-				  if(any(df[1,] == colnames(df))){
+				  if(any(df[1,] == colnames(df),
+				         na.rm = TRUE)){
 				    drop <- c(drop, 1)
 				  }
-				  if(any(stringr::str_detect(df[2,], "ImportId"))){
+				  if(any(stringr::str_detect(df[2,], "ImportId"),
+				         na.rm = TRUE)){
 				    drop <- c(drop, 2)
 				  }
 				  if(length(drop)>0){
