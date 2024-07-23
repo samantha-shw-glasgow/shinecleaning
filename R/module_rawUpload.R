@@ -39,9 +39,28 @@ rawUpload_server <- function(id){
 				send_message <- make_send_message(session)
 
 				# upload data
-				data <- reactive({
+				raw_data <- reactive({
 				  req(input$upload)
-				  read.csv(input$upload$datapath)
+				  readr::read_csv(input$upload$datapath,
+				                  col_types = readr::cols(.default = "c"),
+				                  show_col_types = F)
+				})
+
+				# remove unwanted top rows, re-assign col types
+				data <- reactive({
+				  df <- raw_data()
+				  drop <- NULL
+				  if(any(df[1,] == colnames(df))){
+				    drop <- c(drop, 1)
+				  }
+				  if(any(stringr::str_detect(df[2,], "ImportId"))){
+				    drop <- c(drop, 2)
+				  }
+				  if(length(drop)>0){
+				    df <- df[-drop, ]
+				  }
+
+				  df |> readr::type_convert() # is this a good idea?
 				})
 
 				# run checks
@@ -55,6 +74,7 @@ rawUpload_server <- function(id){
 				  do.call(tagList, warnings)
 
 				})
+
 
 				return(data)
 		}

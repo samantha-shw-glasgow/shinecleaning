@@ -84,7 +84,7 @@ upcheck_schools <- function(data){
     message = "`SchID` (school ID) column not found in this file. Please include school ID in the uploaded file."
     level = 3
   } else {
-    schIDs = data$SchID[!data$SchID %in% c("{\"ImportId\":\"SchID\"}", "SchID")]
+    schIDs = data$SchID #data$SchID[!data$SchID %in% c("{\"ImportId\":\"SchID\"}", "SchID")]
     if(length(unique(schIDs)) > 1){
       fail = TRUE
       message = "This file includes responses from multiple schools."
@@ -105,7 +105,7 @@ upcheck_gender <- function(data){
     message = "`QID4` (gender) column not found in this file. Please include gender in the uploaded file."
     level = 3
   } else {
-    genders = data$QID4[!data$QID4 %in% c("{\"ImportId\":\"QUID4\"}", "gender")]
+    genders = data$QID4 #data$QID4[!data$QID4 %in% c("{\"ImportId\":\"QUID4\"}", "gender")]
     if(any(stringr::str_detect(genders, "[0-9]"))){
       fail = TRUE
       message = "This file has numeric values for gender where characters are expected. Please ensure you have downloaded the data with full text responses."
