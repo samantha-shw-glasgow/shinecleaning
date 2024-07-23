@@ -9,7 +9,12 @@ rawUploadUI <- function(id){
 	tagList(
 		h2("Upload data from Qualtrics"),
 		fileInput(ns("upload"),
-		          "Select survey data",
+		          label = span("Select survey data",
+		                       bslib::tooltip(
+		                         icon("info-circle"),
+		                         "Download data for the required school(s) from Qualtrics in 'csv' format, then upload it here.",
+		                         placement = "right")
+		          ),
 		          buttonLabel = "Upload...",
 		          accept = ".csv"),
 		uiOutput(ns("warn"))
