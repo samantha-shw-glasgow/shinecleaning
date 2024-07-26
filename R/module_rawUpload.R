@@ -7,7 +7,17 @@ rawUploadUI <- function(id){
 	ns <- NS(id)
 
 	tagList(
-		h2("Upload data from Qualtrics")
+		h2("Upload data from Qualtrics"),
+		fileInput(ns("upload"),
+		          label = span("Select survey data",
+		                       bslib::tooltip(
+		                         icon("info-circle"),
+		                         "Download data for the required school(s) from Qualtrics in 'csv' format, then upload it here.",
+		                         placement = "right")
+		          ),
+		          buttonLabel = "Upload...",
+		          accept = ".csv"),
+		uiOutput(ns("warn"))
 	)
 }
 
@@ -28,9 +38,47 @@ rawUpload_server <- function(id){
 				ns <- session$ns
 				send_message <- make_send_message(session)
 
-				# your code here
+				# upload data
+				raw_data <- reactive({
+				  req(input$upload)
+				  readr::read_csv(input$upload$datapath,
+				                  col_types = readr::cols(.default = "c"),
+				                  show_col_types = F)
+				})
 
-				#return(raw_data) ## - must return reactive dataframe
+				# remove unwanted top rows, re-assign col types
+				data <- reactive({
+				  df <- raw_data()
+				  drop <- NULL
+				  if(any(df[1,] == colnames(df),
+				         na.rm = TRUE)){
+				    drop <- c(drop, 1)
+				  }
+				  if(any(stringr::str_detect(df[2,], "ImportId"),
+				         na.rm = TRUE)){
+				    drop <- c(drop, 2)
+				  }
+				  if(length(drop)>0){
+				    df <- df[-drop, ]
+				  }
+
+				  df |> readr::type_convert() # is this a good idea?
+				})
+
+				# run checks
+				output$warn <- renderUI({
+
+				  req(data(), cancelOutput = TRUE)
+
+				  checks <- upload_checks(data())
+				  warnings <- purrr::pmap(checks, make_upload_warning)
+
+				  do.call(tagList, warnings)
+
+				})
+
+
+				return(data)
 		}
 	)
 }
