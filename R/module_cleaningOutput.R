@@ -7,7 +7,8 @@ cleaningOutputUI <- function(id){
 	ns <- NS(id)
 
 	tagList(
-		h2("Download processed data")
+		h2("Download processed data"),
+    downloadButton(ns("downloadData"), "Download")
 	)
 }
 
@@ -29,7 +30,19 @@ cleaningOutput_server <- function(id, data){
 				ns <- session$ns
 				send_message <- make_send_message(session)
 
-				# your code here
+				output$downloadData <- downloadHandler(
+				  filename = function() {
+				    paste("data-", Sys.Date(), ".xlsx", sep="")
+				  },
+				  content = function(file) {
+				    wb <- openxlsx::createWorkbook()
+				    openxlsx::addWorksheet(wb, "Sheet 1")
+				    openxlsx::writeData(wb, 1, data(), withFilter = TRUE)
+				    openxlsx::setColWidths(wb, 1, cols = ncol(data()), widths = "auto")
+
+				    openxlsx::saveWorkbook(wb, file = file)
+				  }
+				)
 		}
 	)
 }
