@@ -8,5 +8,10 @@ run_validations <- function(data, validators) {
   })
   names(results) <- NULL
   data |>
-    dplyr::mutate(errors = results)
+    dplyr::mutate(
+      "Error messages" = results,
+      "Include?" = TRUE,
+      "Reviewer notes" = "",
+      .before = 1
+    )
 }
