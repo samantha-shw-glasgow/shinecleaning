@@ -3,7 +3,10 @@ create_spreadsheet <- function(data, file) {
   openxlsx::addWorksheet(wb, "Sheet 1")
   openxlsx::writeData(wb, 1, data, withFilter = TRUE)
 
-  openxlsx::setColWidths(wb, 1, cols = 1:ncol(data), widths = "auto")
+  date_cols <- which(grepl("Date", names(data)))
+  openxlsx::setColWidths(wb, 1, cols = date_cols, widths = 19)
+  openxlsx::setColWidths(wb, 1, cols = 1:3, widths = c(30, 12, 30))
+
   openxlsx::freezePane(wb, 1, firstActiveRow = 2, firstActiveCol = 4)
 
   # Highlight error messages
