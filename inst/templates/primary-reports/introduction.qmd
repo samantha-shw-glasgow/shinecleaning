@@ -1,0 +1,318 @@
+---
+bibliography: ../styling/references.bib
+csl: ../styling/nature.csl
+---
+
+# [Acknowledgements]{.conh2} {#acknowledgements .col .s12 .report style="margin-bottom:0.5rem !important;"}
+
+We wish to thank the Health Behaviour in School-aged Children (HBSC)
+Survey team and all Scottish schools and pupils who took part in the
+2022 HBSC Survey. The HBSC Scotland study is funded by Public Health
+Scotland. Thank you to the Children\'s Society for allowing us to use
+the Good Childhood Index. We also thank colleagues based at the Public
+Health Research Facility at the MRC/CSO Social and Public Health
+Sciences Unit (University of Glasgow) for their work on developing the
+online survey and reporting portal. The SHINE project was originally
+funded by the MRC Mental Health Data Pathfinder (2018-2021) and is now
+funded by Medical Research Council core funding to Social and Public
+Health Sciences Unit at the University of Glasgow with contributions
+from some individual local authorities.
+
+\newpage
+
+# INTRODUCTION {#introduction .col .s12 .report}
+
+Welcome to your Scottish Schools Health and Wellbeing Improvement
+Research Network (SHINE) `r ifelse(is_la_report, "Local Authority", "school")` report on pupil mental health. Within this
+report you will find your `r ifelse(is_la_report, "Local Authority\'s", "school\'s")` results to the SHINE Pupil Mental
+Health Survey which looks at different aspects of mental health and
+wellbeing. The report does not identify individual pupils but presents
+aggregate data by gender and year groups to help identify trends or
+patterns. It can also be used to:
+
+-   Identify the main mental health and wellbeing issues affecting your
+    `r ifelse(is_la_report, "young people as part of the wider community", "pupils and whole school community")`
+-   Focus on local needs and local context
+-   Identify hidden or emerging issues, or groups at particular risk to
+    facilitate prioritising & targeting of resources
+-   Shape your `r ifelse(is_la_report, "Local Authority", "school")` improvement plan`r ifelse(is_la_report, " and staff programme", "")`
+-   Promote pupil voice and shared decision-making
+    `r ifelse(is_la_report, "as part of the whole-school approach strategy across the schools in the Local Authority", "")`
+-   Support evidence-based action planning
+-   Design relevant health programmes and interventions
+-   Engage parents with pupil health concerns
+-   Support CfE self-evaluation
+-   Enrich the curriculum with up-to-date health-related research
+    findings, for example in maths, science or PSE lessons.
+
+As well as the data, we have included some background information on
+adolescent mental health, measures used in the survey and how to
+interpret this report. We have also put together some challenge and
+reflective questions to `r ifelse(is_la_report, "look at","consider")` 
+when reviewing your `r ifelse(is_la_report, "Local Authority\'s", "school\'s")` 
+data; this is not intended to be
+prescriptive in approach but to serve as a guide to assist you and
+colleagues. There is also a list of resources for further information
+and help.
+
+The report is confidential`r ifelse(is_la_report, " and", ", only")` provided to your `r ifelse(is_la_report, "Local Authority", "school")` SHINE
+representative`r ifelse(is_la_report, "", " and if requested, the health and wellbeing lead within your local authority")`. However, we
+would strongly encourage you to share the report with your pupils, staff
+and parents.
+
+If you have any queries relating to the report or would like to tell us
+how you\'re using this data in your school, please contact Dawn
+Haughton, the SHINE Network Manager, <Dawn.Haughton@glasgow.ac.uk>.
+
+# MENTAL HEALTH AND WELLBEING {#mental-health-and-wellbeing .col .s12 .report .scrollspy}
+
+Mental wellbeing, one of the Scottish Government's public health
+priorities is defined as:
+
+*"\...both feeling good and functioning effectively, maintaining
+positive relationships and living a life that has a sense of purpose. It
+is shaped by our life circumstances, our relationships and our ability
+to control or adapt to the adverse circumstances we face."* &nbsp; @scotlands_public_health_priorities
+
+Mental health is therefore more than the absence of mental illness but
+also feeling good and living well. We have in this survey asked pupils
+about different aspects of their mental health: (i) subjective wellbeing
+(ii) mental health problems and (iii) positive mental health.
+
+The following sections explain these aspects of mental health, why they
+are important in adolescence and how they are measured in the SHINE
+survey.
+
+## Subjective Wellbeing {#mhw-sw .col .s12}
+
+*"Subjective wellbeing can be thought of as a positive state of mind in
+which a person feels good about life as a whole and its constituent
+parts, such as their relationships with others, the environments that
+they inhabit and how they see themselves."* &nbsp; @childrens_society_2019
+
+Subjective wellbeing is a person\'s evaluation of their own life and
+circumstances and is often measured through life satisfaction. Low life
+satisfaction in adolescents has been related to behaviours such as
+substance use, depression, fighting and delinquency. @lippman2014 In contrast, high
+life satisfaction has been linked to enhanced coping, self-efficacy,
+self-esteem, positive self-concept and purpose in life as well as
+involvement in meaningful pro-social activities. It is also linked to
+lower psychopathological externalising and internalising behaviour. @huebner2004
+Young people with high subjective wellbeing have more favourable
+academic, social and physical health outcomes. There is also evidence it
+serves as a buffer against stressful life events and is a significant
+factor in determining an individual's resilience to adverse life
+circumstances.
+
+## Mental health problems {#mhw-mhp .col .s12}
+
+Mental health problems include a range of feelings and conditions, which
+may reflect an underlying mental illness. In adolescents, they broadly
+fall in to four main groups:
+
+1.  Emotional conditions: anxiety, depression, mania and bipolar
+    affective disorder
+2.  Behavioural or conduct conditions: repetitive and persistent
+    patterns of disruptive and violent behaviour
+3.  Hyperactivity conditions: inattention, impulsivity and hyperactivity
+4.  Less common conditions: autism spectrum, eating disorders, tic
+    disorders
+
+::: page
+Data from England indicates that in 2022, 18% of young people aged 7-16
+years old have a mental health condition. The most prevalent conditions
+are emotional and behavioural with girls more likely to experience
+emotional problems and boys more likely to experience behavioural
+difficulties. There is evidence to suggest that emotional disorders are
+increasing, particularly amongst girls.
+
+Emotional disorders may impact on an adolescent\'s functioning for
+example at school and in social situations. Those with mental health
+problems are more likely to have poorer general health, lower
+self-esteem and overall wellbeing. Many mental health problems persist,
+into adulthood with negative consequences for health, social and
+economic outcomes.
+
+Adolescence is a critical time for young people to develop the
+socio-emotional capabilities to equip them for good health and wellbeing
+in adulthood. At the same time, it is a period of vulnerability; nearly
+half of all lifetime mental health conditions occur by 14 years old.
+
+Whilst there are links between mental health problems and subjective
+wellbeing there is evidence to suggest they are distinct, offering a
+\'dual factor\' view of mental health. Several studies have shown that
+high subjective wellbeing and mental health problems can co-exist, and
+they are two separate constructs contributing differently to adolescent
+functioning and adaption. Those with no mental health problems and high
+life satisfaction tend to have the best outcomes (education, school
+engagement, social relationships) but those with no mental ill health
+problems but who have low subjective wellbeing also encounter
+difficulties.
+
+## Positive Mental Health {#mhw-pmh .col .s12}
+
+There are many definitions of Positive Mental Health but, in essence, it
+is about viewing good mental health not only as the absence of mental
+illness but also as a state where someone is able to fulfil their
+potential and reach optimal functioning. This incorporates different
+aspects such as emotional wellbeing, psychological wellbeing, social
+wellbeing, spiritual wellbeing and physical health. It is when an
+individual has a positive attitude towards self: personal growth,
+optimism, ability to cope and autonomy and towards others, for example,
+being able to establish positive relationships and helping others.
+
+Positive mental health focuses on building on strengths and developing
+resilience rather than focusing on deficits. It asserts that is possible
+to develop skills and traits and thereby improve overall wellbeing. In
+addition, there is evidence of a cumulative effect, that is, if an
+individual has multiple positive traits, this leads to increased levels
+of wellbeing.
+:::
+
+::: page
+# Measuring Mental Health in the SHINE survey {#mhw-mmh .col .s12 .report}
+
+## Subjective Wellbeing {#subjective-wellbeing .col .s12}
+
+[***Good Childhood Index:***]{.shine2} This scale asks young people
+about their happiness with eleven aspects of life including family,
+friendships, school, appearance, future, life overall.
+
+It is important to pay attention to areas where there are lower levels
+of satisfaction, which may indicate that additional support is required.
+
+## Mental health problems {#mental-health-problems .col .s12}
+
+[***WHO Wellbeing 5 Index:***]{.shine2} These are five positively worded
+questions that, when combined, provide a measure of emotional
+functioning. These scores can then be classified to indicate those young
+people with low mood. This **does not** indicate a clinical diagnosis.
+
+[***Me and My Feelings:***]{.shine2} These 16 questions are measures of
+emotional and behavioural mental health. The questions are combined into
+two separate scales and scored according to pre-determined cut-offs,
+with pupils classified as having 'normal' or 'elevated' difficulties in
+that area. The Me and My Feelings classifications **do not** indicate a
+clinical diagnosis but highlight that pupils in the elevated group may
+experience difficulties.
+
+## Positive Mental Health {#positive-mental-health .col .s12}
+
+[***Social Emotional Health Survey (SEHS):***]{.shine2} This is a
+20-item measure of "covitality", which is the co-occurrence of multiple
+positive psychological traits of gratitude, optimism, zest and
+persistence. When these traits co-occur (covitality) they are associated
+with increased resilience, pro-social behaviour and school engagement
+and satisfaction. The traits are seen to be related to different aspects
+of wellbeing in adolescents:
+
+[Gratitude]{.shine2} is associated with increased life satisfaction and
+social interaction including perception of support and providing support
+to others as well as academic achievement.
+
+[Optimism]{.shine2} is associated with greater interest in school,
+persistence and coping as well as more positive social relationships.
+
+[Zest]{.shine2} has a positive association with relationships with
+others, improved emotional wellbeing and autonomy.
+
+[Persistence]{.shine2} has been shown to increase learning, mediating
+the relationship between motivation and performance.
+:::
+
+::: page
+[Pro-social behaviour:]{.shine2} This refers to behaviour that benefits
+others and promotes social acceptance and relationships. It does not
+form part of the "covitality" score but there is an association between
+high levels of pro-social behaviour and high levels of covitality.
+
+With the results from SEHS, schools are able to see how pupils score
+across the different domains. This may help schools to identify which
+traits to work on with pupils and to develop further. This does not
+necessarily mean focusing on the lowest scoring traits, but selecting
+ones that reflect local needs, interest and values. It is advised to
+concentrate on developing one particular trait at a time, rather than
+looking at all four at once. It may also be possible to carry out a
+follow-up survey using the SEHS to see if the scores across the domains
+and the overall covitality score have improved, following interventions.
+
+## Factors influencing adolescent mental health {#mhw-amh .col .s12}
+
+Many factors influence mental health and research is ongoing to
+understand better this complex field. An individual's mental health and
+wellbeing are determined by environmental, social and, individual
+factors and how they interact. Contextual factors may influence or be a
+consequence of mental health and also serve as a risk or protective
+factor. They operate at different levels: individual, family, learning
+environment, community and structural.
+
+Diagram 1 shows how an individual's mental health may be influenced by
+interactions between genetics, personality, life experiences, support,
+health behaviours (sleep, diet,) as well as more structural matters such
+as housing and socio-economic status.
+
+\
+
+## Diagram 1: Factors influencing adolescent mental health {#diagram-1-factors-influencing-adolescent-mental-health .col .s12}
+
+::: {.col .s12 .center}
+![](../img/diag1.png){width=100%}
+:::
+:::
+
+::: page
+## School and adolescent mental health {#mhw-samh .col .s12}
+
+Young people spend a significant amount of time in school and it is an
+important sphere of influence. The school environment can positively
+impact on adolescent health and potentially mitigate the detrimental
+effects of other social factors.
+
+School connectedness and the extent to which pupils feel accepted,
+respected, included, cared for and supported by others in the school
+environment both as an individual and in terms of their, learning, plays
+an important part in adolescent wellbeing. There is some evidence to
+suggest that school connectedness serves as a protective factor against
+risk behaviours and is an important determinant of adolescent mental
+health. In particular, school connectedness is associated with healthier
+behaviours such as being a less frequent smoker and cannabis user, less
+likely to binge drink and more likely to meet physical activity
+guidelines, as well as having fewer depressive symptoms. Better
+relationships with school staff and peers are also associated with
+positive subjective wellbeing. A sense of belonging to school has also
+been associated with increased academic motivation, participation and
+school engagement.
+
+In contrast, high levels of school pressure are associated with higher
+levels of risky behaviour and poorer mental health. Young people who
+feel under pressure to perform well academically are more likely to
+report depressive symptoms and lower life satisfaction.
+
+:::
+
+::: {#understand .col .s12 .lr_zero .section .scrollspy}
+::: page
+
+# Understanding the data in this report {#understanding-the-data-in-this-report .col .s12 .report style="margin-bottom:1rem !important;"}
+
+::: {.col .s12}
+-   All figures show results for all pupils in your
+    `r ifelse(is_la_report, "Local Authority", "school")`
+    combined.
+    This is due to the small number of pupils participating in the
+    survey.
+    Where we have enough responses, we will also show results by
+    individual year and gender and/ or banded year groups and gender.
+-   There are symbols (🟠 🔹) to show the national result for
+    Scotland. This data is from the Health Behaviour in School-aged
+    Children study (HBSC) which was carried out in 2022. Your report
+    shows the HBSC national average for pupils in Primary 7.
+-   If you see \* in a figure or table, this indicates the data has been
+    suppressed due to small numbers.
+:::
+
+
+![](../img/figure_understanding_all.svg)
+
+:::
+:::
