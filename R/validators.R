@@ -9,13 +9,11 @@
 NULL
 
 #' @rdname validators
-check_duplicate_dob <- function(data) {
-  occurrences_lookup <- table(data$dob)
-  occurrences <- c(occurrences_lookup[as.character(data$dob)])
-  messages <- ifelse(occurrences > 1, "Duplicate DOB", "")
-  names(messages) <- NULL
+duration_too_short <- function(data) {
+  should_include <- ifelse(data$`Duration (in seconds)` >= 60, TRUE, FALSE)
   tibble::tibble(
-    message = messages
+    include = should_include,
+    message = ifelse(should_include, "", "Duration too short")
   )
 }
 
