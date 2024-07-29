@@ -10,10 +10,30 @@ NULL
 
 #' @rdname validators
 duration_too_short <- function(data) {
-  should_include <- ifelse(data$`Duration (in seconds)` >= 60, TRUE, FALSE)
+  passes <- data$`Duration (in seconds)` >= 60
+  tibble::tibble(
+    include = TRUE,
+    message = ifelse(passes, "", "Duration too short")
+  )
+}
+
+#' @rdname validators
+no_test_responses <- function(data) {
+  should_include <- dplyr::case_match(
+    data$Status,
+    "IP Address"      ~ TRUE,
+    "Survey Preview"  ~ FALSE,
+    .default          = FALSE
+  )
+  message <- dplyr::case_match(
+    data$Status,
+    "IP Address"      ~ "",
+    "Survey Preview"  ~ "Preview response",
+    .default          = "Unexpected response type"
+  )
   tibble::tibble(
     include = should_include,
-    message = ifelse(should_include, "", "Duration too short")
+    message = message
   )
 }
 
