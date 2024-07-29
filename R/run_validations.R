@@ -6,7 +6,6 @@ run_validations <- function(data, validators) {
       validator_fn(data)
     )
   }
-  names(messages) <- NULL
   data |>
     dplyr::mutate(
       "Error messages" = messages,
