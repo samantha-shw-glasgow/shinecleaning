@@ -13,9 +13,9 @@ output:
        last_column: false
        no_hband: false
        no_vband: true
-    lists:
-      ol.style: 'Number alignment: Left'
-      ul.style: List Paragraph
+    # lists:
+    #   ol.style: 'Number alignment: Left'
+    #   ul.style: List Paragraph
     page_margins:
       bottom: 1
       top: 1
@@ -28,6 +28,9 @@ params:
   is_la_report: false
   school_name: 'Test school academy'
   term: 'Autumn 2024'
+bibliography: ../styling/references.bib
+csl: ../styling/nature.csl
+nocite: '@*'
 execute:
   enabled: true
 ---
@@ -57,7 +60,7 @@ cat(knitr::knit_child('introduction.qmd', envir = environment(), quiet = TRUE))
 
 ## School survey response {.numbered}
 
-Pupils in your school completed the survey `r date_range(input_data)`.
+Pupils in your school completed the survey `r date_range(input_data)`. @scotlands_public_health_priorities
 
 
 
@@ -65,3 +68,12 @@ Pupils in your school completed the survey `r date_range(input_data)`.
 
 ```
 
+\newpage
+
+```{r outtro, echo=FALSE, results='asis'}
+cat(knitr::knit_child('outtro.qmd', envir = environment(), quiet = TRUE))
+```
+
+\newpage
+
+# References

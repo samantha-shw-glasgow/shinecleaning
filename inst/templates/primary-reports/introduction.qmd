@@ -1,3 +1,8 @@
+---
+bibliography: ../styling/references.bib
+csl: ../styling/nature.csl
+---
+
 # [Acknowledgements]{.conh2} {#acknowledgements .col .s12 .report style="margin-bottom:0.5rem !important;"}
 
 We wish to thank the Health Behaviour in School-aged Children (HBSC)
@@ -67,7 +72,7 @@ priorities is defined as:
 *"\...both feeling good and functioning effectively, maintaining
 positive relationships and living a life that has a sense of purpose. It
 is shaped by our life circumstances, our relationships and our ability
-to control or adapt to the adverse circumstances we face."*
+to control or adapt to the adverse circumstances we face."*@scotlands_public_health_priorities
 
 Mental health is therefore more than the absence of mental illness but
 also feeling good and living well. We have in this survey asked pupils
