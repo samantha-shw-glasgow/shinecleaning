@@ -1,9 +1,10 @@
 run_validations <- function(data, validators) {
   messages <- rep("", nrow(data))
   for (validator_fn in validators) {
+    result <- validator_fn(data)
     messages <- append_if_nonempty(
       messages,
-      validator_fn(data)
+      result$message
     )
   }
   data |>

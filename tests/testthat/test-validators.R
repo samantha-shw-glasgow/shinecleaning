@@ -7,7 +7,13 @@ describe("check_duplicate_dob", {
       3, 102,
       4, 103,
     )
-    expected <- c("", "Duplicate DOB", "Duplicate DOB", "")
+    expected <- tibble::tribble(
+      ~message,
+      "",
+      "Duplicate DOB",
+      "Duplicate DOB",
+      "",
+    )
     expect_equal(
       check_duplicate_dob(input),
       expected

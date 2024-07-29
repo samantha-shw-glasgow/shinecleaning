@@ -20,7 +20,11 @@ everything_is_fine(data)
 \item{data}{Raw input dataset}
 }
 \value{
-A character vector of validation messages, in the same order as the rows in the input data
+A tibble with the same length as the input data, showing the validation
+results for the corresponding rows in the input data. Columns:
+\itemize{
+\item \code{message}: error message or an empty string
+}
 }
 \description{
 Validators

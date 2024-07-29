@@ -1,16 +1,22 @@
 #' Validators
 #' @param data Raw input dataset
 #' @name validators
-#' @returns A character vector of validation messages, in the same order as the rows in the input data
+#'
+#' @returns
+#' A tibble with the same length as the input data, showing the validation
+#' results for the corresponding rows in the input data. Columns:
+#' * `message`: error message or an empty string
 NULL
 
 #' @rdname validators
 check_duplicate_dob <- function(data) {
   occurrences_lookup <- table(data$dob)
   occurrences <- c(occurrences_lookup[as.character(data$dob)])
-  output <- ifelse(occurrences > 1, "Duplicate DOB", "")
-  names(output) <- NULL
-  output
+  messages <- ifelse(occurrences > 1, "Duplicate DOB", "")
+  names(messages) <- NULL
+  tibble::tibble(
+    message = messages
+  )
 }
 
 #' @rdname validators
