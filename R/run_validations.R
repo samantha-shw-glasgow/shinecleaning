@@ -10,7 +10,7 @@ run_validations <- function(data, validators) {
   data |>
     dplyr::mutate(
       "Error messages" = results,
-      "Include?" = TRUE,
+      "Keep row?" = 1,
       "Reviewer notes" = "",
       .before = 1
     )

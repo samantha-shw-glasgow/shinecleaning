@@ -9,12 +9,12 @@ test_that("columns are added with a single validator", {
     5, lubridate::ymd("2010-01-04"),
   )
   expected <- tibble::tribble(
-    ~"Error messages", ~"Include?", ~"Reviewer notes", ~id, ~dob,
-    "",                TRUE,        "", 1, lubridate::ymd("2010-01-01"),
-    "",                TRUE,        "", 2, lubridate::ymd("2010-01-02"),
-    "Duplicate DOB",   TRUE,        "", 3, lubridate::ymd("2010-01-03"),
-    "Duplicate DOB",   TRUE,        "", 4, lubridate::ymd("2010-01-03"),
-    "",                TRUE,        "", 5, lubridate::ymd("2010-01-04"),
+    ~"Error messages", ~"Keep row?", ~"Reviewer notes", ~id, ~dob,
+    "",                1,            "", 1, lubridate::ymd("2010-01-01"),
+    "",                1,            "", 2, lubridate::ymd("2010-01-02"),
+    "Duplicate DOB",   1,            "", 3, lubridate::ymd("2010-01-03"),
+    "Duplicate DOB",   1,            "", 4, lubridate::ymd("2010-01-03"),
+    "",                1,            "", 5, lubridate::ymd("2010-01-04"),
   )
   result <- run_validations(input, validators)
   expect_identical(result, expected)
@@ -31,12 +31,12 @@ test_that("columns are added with multiple validators", {
     5, lubridate::ymd("2010-01-04"),
   )
   expected <- tibble::tribble(
-    ~"Error messages",              ~"Include?", ~"Reviewer notes", ~id, ~dob,
-    "",                             TRUE,        "", 1, lubridate::ymd("2010-01-01"),
-    "",                             TRUE,        "", 2, lubridate::ymd("2010-01-02"),
-    "Duplicate DOB; Duplicate DOB", TRUE,        "", 3, lubridate::ymd("2010-01-03"),
-    "Duplicate DOB; Duplicate DOB", TRUE,        "", 4, lubridate::ymd("2010-01-03"),
-    "",                             TRUE,        "", 5, lubridate::ymd("2010-01-04"),
+    ~"Error messages",              ~"Keep row?", ~"Reviewer notes", ~id, ~dob,
+    "",                             1,            "", 1, lubridate::ymd("2010-01-01"),
+    "",                             1,            "", 2, lubridate::ymd("2010-01-02"),
+    "Duplicate DOB; Duplicate DOB", 1,            "", 3, lubridate::ymd("2010-01-03"),
+    "Duplicate DOB; Duplicate DOB", 1,            "", 4, lubridate::ymd("2010-01-03"),
+    "",                             1,            "", 5, lubridate::ymd("2010-01-04"),
   )
   result <- run_validations(input, validators)
   expect_identical(result, expected)
