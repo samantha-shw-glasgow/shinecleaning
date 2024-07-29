@@ -29,7 +29,7 @@ params:
   school_name: 'Test school academy'
   term: 'Autumn 2024'
 bibliography: ../styling/references.bib
-csl: ../styling/nature.csl
+csl: ../styling/the-lancet.csl
 nocite: '@*'
 execute:
   enabled: true
@@ -60,7 +60,7 @@ cat(knitr::knit_child('introduction.qmd', envir = environment(), quiet = TRUE))
 
 ## School survey response {.numbered}
 
-Pupils in your school completed the survey `r date_range(input_data)`. @scotlands_public_health_priorities
+Pupils in your school completed the survey `r date_range(input_data)`.
 
 
 
