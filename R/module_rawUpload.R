@@ -16,6 +16,7 @@ rawUploadUI <- function(id){
 		                         placement = "right")
 		          ),
 		          buttonLabel = "Upload...",
+		          width = "100%",
 		          accept = ".csv"),
 		uiOutput(ns("warn"))
 	)
