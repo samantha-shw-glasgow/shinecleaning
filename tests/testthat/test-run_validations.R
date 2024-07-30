@@ -1,42 +1,34 @@
 test_that("columns are added with a single validator", {
-  validators <- list(check_duplicate_dob)
+  validators <- list(no_test_responses)
   input <- tibble::tribble(
-    ~id, ~dob,
-    1, lubridate::ymd("2010-01-01"),
-    2, lubridate::ymd("2010-01-02"),
-    3, lubridate::ymd("2010-01-03"),
-    4, lubridate::ymd("2010-01-03"),
-    5, lubridate::ymd("2010-01-04"),
+    ~id, ~Status,
+    1, "IP Address",
+    2, "Survey Preview",
   )
   expected <- tibble::tribble(
-    ~"Error messages", ~"Keep row?", ~"Reviewer notes", ~id, ~dob,
-    "",                1,            "", 1, lubridate::ymd("2010-01-01"),
-    "",                1,            "", 2, lubridate::ymd("2010-01-02"),
-    "Duplicate DOB",   1,            "", 3, lubridate::ymd("2010-01-03"),
-    "Duplicate DOB",   1,            "", 4, lubridate::ymd("2010-01-03"),
-    "",                1,            "", 5, lubridate::ymd("2010-01-04"),
+    ~"Error messages", ~"Keep row?", ~"Reviewer notes", ~id, ~Status,
+    "",                 1, "", 1, "IP Address",
+    "Preview response", 0, "", 2, "Survey Preview",
   )
   result <- run_validations(input, validators)
   expect_identical(result, expected)
 })
 
 test_that("columns are added with multiple validators", {
-  validators <- list(check_duplicate_dob, check_duplicate_dob)
+  validators <- list(no_test_responses, duration_too_short)
   input <- tibble::tribble(
-    ~id, ~dob,
-    1, lubridate::ymd("2010-01-01"),
-    2, lubridate::ymd("2010-01-02"),
-    3, lubridate::ymd("2010-01-03"),
-    4, lubridate::ymd("2010-01-03"),
-    5, lubridate::ymd("2010-01-04"),
+    ~id, ~Status, ~"Duration (in seconds)",
+    1, "IP Address",     60,
+    2, "IP Address",     59,
+    3, "Survey Preview", 62,
+    4, "Survey Preview", 58,
   )
   expected <- tibble::tribble(
-    ~"Error messages",              ~"Keep row?", ~"Reviewer notes", ~id, ~dob,
-    "",                             1,            "", 1, lubridate::ymd("2010-01-01"),
-    "",                             1,            "", 2, lubridate::ymd("2010-01-02"),
-    "Duplicate DOB; Duplicate DOB", 1,            "", 3, lubridate::ymd("2010-01-03"),
-    "Duplicate DOB; Duplicate DOB", 1,            "", 4, lubridate::ymd("2010-01-03"),
-    "",                             1,            "", 5, lubridate::ymd("2010-01-04"),
+    ~"Error messages", ~"Keep row?", ~"Reviewer notes", ~id, ~Status, ~"Duration (in seconds)",
+    "",                                     1, "", 1, "IP Address",     60,
+    "Duration too short",                   1, "", 2, "IP Address",     59,
+    "Preview response",                     0, "", 3, "Survey Preview", 62,
+    "Preview response; Duration too short", 0, "", 4, "Survey Preview", 58,
   )
   result <- run_validations(input, validators)
   expect_identical(result, expected)

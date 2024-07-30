@@ -52,6 +52,7 @@ make_upload_warning <- function(message, level){
 #' Data upload checks
 #'
 #' @param data
+#'
 #' @return single row data.frame of columns fail (logical), message (character), level (integer)
 #'
 #' @keywords internal

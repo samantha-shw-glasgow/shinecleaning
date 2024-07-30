@@ -6,14 +6,16 @@
 dataCleaningUI <- function(id) {
     ns <- NS(id)
 
+    validator_options <- c(
+      "Exclude test responses" = "no_test_responses",
+      "Flag duration < 60 seconds" = "duration_too_short"
+    )
     tagList(
         h2("Cleaning options"),
         checkboxGroupInput(
             ns("validator_selection"), "Validators to run:",
-            c(
-                "Everything sucks" = "everything_sucks",
-                "Everything is fine" = "everything_is_fine"
-            )
+            validator_options,
+            selected = validator_options
         ),
         textOutput(ns("txt"))
     )
