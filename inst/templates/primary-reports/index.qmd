@@ -3,7 +3,7 @@ output:
   officedown::rdocx_document:
     reference_docx: ../styling/doc_template.docx
     tables:
-      style: Table Grid
+      style: 'Table'
       layout: autofit
       width: 1.0
       conditional:
@@ -37,7 +37,7 @@ execute:
 
 ```{r, echo = FALSE}
 #| echo: false
-
+knitr::opts_chunk$set(echo = FALSE)
 school_name <- params$school_name
 is_la_report <- params$is_la_report
 term <- params$term
@@ -75,5 +75,6 @@ cat(knitr::knit_child('outtro.qmd', envir = environment(), quiet = TRUE))
 ```
 
 \newpage
+
 
 # References
