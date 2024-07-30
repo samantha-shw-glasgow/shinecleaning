@@ -6,7 +6,12 @@ run_validations <- function(data, validators) {
   results <- apply(results, 1, function(vec) {
     paste(na.omit(vec), collapse = "; ")
   })
-  data$errors <- results
-  data[data$errors == "", ]$errors <- NA
-  return(data)
+  names(results) <- NULL
+  data |>
+    dplyr::mutate(
+      "Error messages" = results,
+      "Keep row?" = 1,
+      "Reviewer notes" = "",
+      .before = 1
+    )
 }
