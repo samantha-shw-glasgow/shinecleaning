@@ -46,7 +46,7 @@ support improvements in wellbeing.
     part may also influence the results.
 
 -   When comparing results to the SHINE national data Scottish HBSC
-    national averages , consider:
+    national averages, consider:
 
     -   When the data has been collected; there is evidence to suggest
         that the pandemic has negatively impacted on many young people's
@@ -59,7 +59,7 @@ support improvements in wellbeing.
     -   The wider context may influence results, such as gender balance,
         resources and levels of deprivation which will impact results.
 :::
-
+\newpage
 ::: page
 ## Reflecting on the data: {#reflecting-on-the-data .col .s12}
 
@@ -111,6 +111,8 @@ Framework".
 :::
 :::
 
+\newpage
+
 # WHO CAN HELP
 
 | Organisation                                                                                                                                                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                      |
@@ -143,7 +145,7 @@ Framework".
 ::: page
 # PRIMARY SCHOOL QUESTIONS {#primary-school-questions .col .s12 .report}
 
-## General health {#general-health .col .s12}
+## General health
 
 Would you say your health is......?\
 *Excellent/Good/Fair/Poor/Prefer not to say*
