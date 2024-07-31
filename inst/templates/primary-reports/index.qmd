@@ -81,12 +81,12 @@ mental wellbeing sometimes causing physical symptoms.
 
 Pupils were asked to rate their own health as either poor/fair/good/excellent.
 
-Figure shows the percentage of pupils who reported
+Figure \@ref(fig:bar-health) shows the percentage of pupils who reported
 their health was \'excellent\' or \'good\'.
 
 <!-- compared with the HBSC Scotland national average. Table shows all the responses from pupils. -->
 
-```{r bar_health, fig.cap="% of pupils who report excellent or good health"}
+```{r bar-health, fig.cap="% of pupils who report excellent or good health"}
 
 input_data |> 
   bar_by_cat(

@@ -8,7 +8,7 @@ SHINE PUPIL MENTAL HEALTH SURVEY RESULTS
 `r term`
 :::
 
-![](../img/iStock-1062826670.jpg){fig-align="center"}
+<!-- ![](../img/iStock-1062826670.jpg){fig-align="center"} -->
 
 <!-- ![](../img/uosa.png){fig-align="center" height=50}![](../img/mrc.png){fig-align="center" height=50}![](../img/hbsc.png){fig-align="center" height=80} -->
 
