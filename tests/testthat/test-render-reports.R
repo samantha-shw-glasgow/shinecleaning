@@ -13,5 +13,4 @@ test_that("primary report - sample data", {
     file.exists(file.path(out_dir, "primary_report_b.docx"))
   )
 
-  expect_equal(2 * 2, 4)
 })
