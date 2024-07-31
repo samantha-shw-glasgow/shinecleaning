@@ -6,7 +6,7 @@ render_report <- function(survey_data = NULL,
                           filename = "primary_report.docx") {
   render_env <- new.env()
 
-  survey_data <- survey_data[grepl("^\\d", survey_data$StartDate), ]
+  survey_data <- survey_data[grepl("^\\d", survey_data$`Start Date`), ]
 
   if (is.null(number_invited))
     number_invited <- nrow(survey_data)
