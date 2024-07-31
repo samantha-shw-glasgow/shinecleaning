@@ -4,18 +4,21 @@ render_report <- function(survey_data = NULL,
                           number_invited = NULL,
                           output_location = getwd(),
                           filename = "primary_report.docx") {
-
   render_env <- new.env()
 
-  survey_data <- survey_data[grepl("^\\d", survey_data$StartDate),]
+  survey_data <- survey_data[grepl("^\\d", survey_data$`Start Date`), ]
 
-  if (is.null(number_invited)) number_invited <- nrow(survey_data)
+  if (is.null(number_invited))
+    number_invited <- nrow(survey_data)
 
   assign("input_data", survey_data, envir = render_env)
 
-  rmarkdown::render("inst/templates/primary-reports/index.qmd",
-                    output_dir = output_location,
-                    envir = render_env,
-                    output_file = filename)
+  rmarkdown::render(
+    system.file("templates", "primary-reports/index.qmd", package = "SHINEcleaning"),
+    output_dir = output_location,
+    envir = render_env,
+    output_file = filename,
+    params = list(school_name = school_name)
+  )
 
 }

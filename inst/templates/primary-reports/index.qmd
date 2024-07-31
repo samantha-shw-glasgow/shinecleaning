@@ -3,7 +3,7 @@ output:
   officedown::rdocx_document:
     reference_docx: ../styling/doc_template.docx
     tables:
-      style: Table Grid
+      style: 'Table'
       layout: autofit
       width: 1.0
       conditional:
@@ -37,10 +37,17 @@ execute:
 
 ```{r, echo = FALSE}
 #| echo: false
-
+knitr::opts_chunk$set(echo = FALSE)
 school_name <- params$school_name
 is_la_report <- params$is_la_report
 term <- params$term
+
+library(tidyverse)
+
+
+theme_update(
+  panel.grid = element_blank()
+)
 ```
 
 
@@ -63,10 +70,32 @@ cat(knitr::knit_child('introduction.qmd', envir = environment(), quiet = TRUE))
 Pupils in your school completed the survey `r date_range(input_data)`.
 
 
-
 ```{r}
 
 ```
+
+## General health
+
+General health is closely related to mental health, with stress and poor
+mental wellbeing sometimes causing physical symptoms.
+
+Pupils were asked to rate their own health as either poor/fair/good/excellent.
+
+Figure \@ref(fig:bar-health) shows the percentage of pupils who reported
+their health was \'excellent\' or \'good\'.
+
+<!-- compared with the HBSC Scotland national average. Table shows all the responses from pupils. -->
+
+```{r bar-health, fig.cap="% of pupils who report excellent or good health"}
+
+input_data |> 
+  bar_by_cat(
+    health,
+    success = c("Good", "Excellent")
+  )
+
+```
+
 
 \newpage
 
@@ -75,5 +104,6 @@ cat(knitr::knit_child('outtro.qmd', envir = environment(), quiet = TRUE))
 ```
 
 \newpage
+
 
 # References
