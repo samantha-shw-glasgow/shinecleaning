@@ -1,7 +1,7 @@
 test_that("primary report - sample data", {
 
-  pri_test_a <- readr::read_csv(system.file("testdata", "primary-school-full.csv", package = "SHINEcleaning"))
-  pri_test_b <- readr::read_csv(system.file("testdata", "primary-school-small.csv", package = "SHINEcleaning"))
+  pri_test_a <- readr::read_csv(system.file("testdata", "primary-school-full.csv", package = "SHINEcleaning"), skip = 1)[-1,]
+  pri_test_b <- readr::read_csv(system.file("testdata", "primary-school-small.csv", package = "SHINEcleaning"), skip = 1)[-1,]
 
   out_dir <- tempdir()
 
