@@ -17,7 +17,8 @@ render_report <- function(survey_data = NULL,
     system.file("templates", "primary-reports/index.qmd", package = "SHINEcleaning"),
     output_dir = output_location,
     envir = render_env,
-    output_file = filename
+    output_file = filename,
+    params = list(school_name = school_name)
   )
 
 }
