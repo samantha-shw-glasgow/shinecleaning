@@ -9,21 +9,22 @@ SHINE_theme <- bslib::bs_theme(
   secondary = SHINE_colors$secondary,
   info = SHINE_colors$tertiary,
   base_font = bslib::font_google("Roboto"),
-  #spacer = "0.5rem",
   "bslib-spacer" = "1rem"
 ) |>
   bslib::bs_add_variables(
     "h2-font-size" = "$font-size-base * 1.5",
     "h3-font-size" = "$font-size-base * 1.25",
     "headings_font_weight" = "$font-weight-bold",
-    "headings_color" = "$primary",
+    "nav-link-font-size" = "$font-size-base * 1.25 !important",
+    "nav-link-font-weight" = "$font-weight-bold !important",
+    "tooltip-bg" = "$info",
+    "body-emphasis-color" = "$primary",
     .where = "declarations"
   ) |>
   bslib::bs_add_rules(
     list(
       ".card-body {row-gap: 0rem}",
-      ".tooltip-inner {background-color: $info}",
-      ".tooltip-arrow::before {border-right-color: $info; color: $info}"
+      ".nav-link.active {font-weight: $font-weight-bold !important}"
     )
   )
 
