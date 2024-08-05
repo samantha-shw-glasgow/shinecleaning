@@ -41,8 +41,14 @@ tab_responses <- function(input_data, n_invited) {
   | Number of pupils invited to participate | %d     |
    | Number of pupils who did not take part  | %d     |
    | Overall response rate                   | %.0f%% |",
-          n_invited, n_missing, perc_rate) |>
-    cat()
+          n_invited, n_missing, perc_rate)
+
+  tibble::tribble(
+    ~a, ~b,
+    "Number of pupils invited to participate", n_invited |> as.character(),
+    "Number of pupils who did not take part", n_missing |> as.character(),
+    "Overall response rate", sprintf("%.0f%%", perc_rate)
+  )
 
 }
 
