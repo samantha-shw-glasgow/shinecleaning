@@ -58,11 +58,11 @@ cat(knitr::knit_child('front-cover.qmd', envir = environment(), quiet = TRUE))
 
 \newpage
 
-# Contents
+::: {custom-style="Heading no TOC"}
+Contents
+:::
 
 `r officer::block_toc(level = 2, style = NULL, separator = ";")`
-
-\newpage
 
 ```{r introduction, echo=FALSE, results='asis'}
 cat(knitr::knit_child('introduction.qmd', envir = environment(), quiet = TRUE))
@@ -72,7 +72,7 @@ cat(knitr::knit_child('introduction.qmd', envir = environment(), quiet = TRUE))
 
 # School survey results
 
-## School survey response {.numbered}
+## School survey response
 
 Pupils in your school completed the survey `r date_range(input_data)`.
 
