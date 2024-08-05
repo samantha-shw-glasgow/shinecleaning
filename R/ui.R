@@ -10,34 +10,39 @@
 #' @keywords internal
 ui <- function(req){
 	navbarPage(
-		theme = bs_theme(version = 5),
+		theme = SHINE_theme,
 		header = list(assets()),
-		title = "SHINE Mental Health Survey Reporting Tool",
+		title = span(img(src = "img/SHINE_logo.png", height = 50),img(src = "img/hbsc_trans.png", height = 50)),
+		#  "SHINE Mental Health Survey Reporting Tool",
 		id = "main-menu",
 		tabPanel(
-			"Data Cleaning",
-			shiny::h1("Data Cleaning"),
-			# raw upload ui
-			bslib::card(
-			  rawUploadUI('rawUpload')
-			  ),
-			bslib::card(
-			  dataCleaningUI('dataCleaning')
+		  title = "Data Cleaning",
+			layout_central_column(
+			  				#shiny::h1("Data Cleaning"),
+				# raw upload ui
+				bslib::card(
+				  rawUploadUI('rawUpload')
+				  ),
+				bslib::card(
+				  dataCleaningUI('dataCleaning')
+				),
+				bslib::card(
+				  cleaningOutputUI('cleaningOutput')
+				)
 			),
-			bslib::card(
-			  cleaningOutputUI('cleaningOutput')
-			)
 		),
-		tabPanel(
-			"Report Generator",
-			shiny::h1("Report Generator"),
-			# raw upload ui
-			bslib::card(
-			  cleanUploadUI('cleanUpload')
+		bslib::nav_panel(
+		  title = "Report Generator",
+			layout_central_column(
+			  #shiny::h1("Report Generator"),
+				# raw upload ui
+				bslib::card(
+				  cleanUploadUI('cleanUpload')
+				),
+				bslib::card(
+				  createReportUI('createReport')
+				)
 			),
-			bslib::card(
-			  createReportUI('createReport')
-			)
 		)
 	)
 }
