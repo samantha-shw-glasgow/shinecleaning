@@ -254,7 +254,9 @@ as housing and socio-economic status.
 
 \
 
-## Diagram 1: Factors influencing adolescent mental health {#diagram-1-factors-influencing-adolescent-mental-health .col .s12}
+::: {custom-style="Heading no TOC"}
+Diagram 1: Factors influencing adolescent mental health 
+:::
 
 ::: {.col .s12 .center}
 ![](../img/diag1.png){width=100%}
