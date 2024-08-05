@@ -1,3 +1,14 @@
+#' Render a single report for school or local authority
+#'
+#' This function renders a report from a given data file.
+#'
+#' @param survey_data A clean dataframe of survey results
+#' @param school_name If a school report, the school's name
+#' @param local_authority_name If a local authority report, the LA's name (note not compatible with school report/name argument)
+#' @param number_invited Number invited to complete the survey
+#' @param output_location Location of file output (defaults to working directory)
+#' @param filename Name of file to output
+#'
 render_report <- function(survey_data = NULL,
                           school_name = NULL,
                           local_authority_name = NULL,

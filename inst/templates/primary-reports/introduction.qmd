@@ -2,8 +2,9 @@
 bibliography: ../styling/references.bib
 csl: ../styling/nature.csl
 ---
-
-# [Acknowledgements]{.conh2} {#acknowledgements .col .s12 .report style="margin-bottom:0.5rem !important;"}
+::: {custom-style="Heading no TOC"}
+Acknowledgements
+:::
 
 We wish to thank the Health Behaviour in School-aged Children (HBSC)
 Survey team and all Scottish schools and pupils who took part in the
@@ -253,7 +254,9 @@ as housing and socio-economic status.
 
 \
 
-## Diagram 1: Factors influencing adolescent mental health {#diagram-1-factors-influencing-adolescent-mental-health .col .s12}
+::: {custom-style="Heading no TOC"}
+Diagram 1: Factors influencing adolescent mental health 
+:::
 
 ::: {.col .s12 .center}
 ![](../img/diag1.png){width=100%}
