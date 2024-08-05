@@ -58,6 +58,12 @@ cat(knitr::knit_child('front-cover.qmd', envir = environment(), quiet = TRUE))
 
 \newpage
 
+# Contents
+
+`r officer::block_toc(level = 2, style = NULL, separator = ";")`
+
+\newpage
+
 ```{r introduction, echo=FALSE, results='asis'}
 cat(knitr::knit_child('introduction.qmd', envir = environment(), quiet = TRUE))
 ```
