@@ -1,4 +1,4 @@
-#' Generate text to descript input date range
+#' Generate text to describe input date range
 #'
 #' @param input_data The dataframe of survey responses with the column `Start Date`
 #'
@@ -21,9 +21,28 @@ date_range <- function(input_data) {
 }
 
 
-tab_responses <- function(input_data) {
+#' Generate table reporting survey response rate
+#'
+#' @param input_data The dataframe of valid responses
+#' @param n_invited Number invited to complete survey
+#'
+#' @return A table (markdown) detailing response rate
+#'
+tab_responses <- function(input_data, n_invited) {
 
-  responses <- nrow(input_data)
+  n_responses <- nrow(input_data)
+  n_missing <- n_invited - n_responses
+  perc_rate <- 100 * n_responses/n_invited
+
+  sprintf(
+  "
+  | | |
+  |-|-|
+  | Number of pupils invited to participate | %d     |
+   | Number of pupils who did not take part  | %d     |
+   | Overall response rate                   | %.0f%% |",
+          n_invited, n_missing, perc_rate) |>
+    cat()
 
 }
 

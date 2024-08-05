@@ -28,6 +28,7 @@ params:
   is_la_report: false
   school_name: 'Test school academy'
   term: 'Autumn 2024'
+  number_invited: 1000
 bibliography: ../styling/references.bib
 csl: ../styling/the-lancet.csl
 nocite: '@*'
@@ -35,9 +36,9 @@ execute:
   enabled: true
 ---
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, warning = FALSE, message=FALSE}
 #| echo: false
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 school_name <- params$school_name
 is_la_report <- params$is_la_report
 term <- params$term
@@ -70,8 +71,8 @@ cat(knitr::knit_child('introduction.qmd', envir = environment(), quiet = TRUE))
 Pupils in your school completed the survey `r date_range(input_data)`.
 
 
-```{r}
-
+```{r, results='asis', tab.width=1, tab.cap="Responses"}
+tab_responses(input_data, params$number_invited)
 ```
 
 ## General health
