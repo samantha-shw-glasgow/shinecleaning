@@ -6,7 +6,9 @@ editor:
 
 ::: {#cq .col .s12 .lr_zero .section .scrollspy}
 ::: page
-# CHALLENGE QUESTIONS {#challenge-questions .col .s12 .report}
+::: {custom-style="Heading 1 no number"}
+CHALLENGE QUESTIONS 
+:::
 
 The aim of these challenge questions is to support interpretation of the
 data report so that it can be shared confidently among the key
@@ -16,7 +18,9 @@ collaborations in response to the data report will support improvements
 in `r ifelse(is_la_report, "young people\'s", "pupil")`
 wellbeing.
 
-## Approaching the data: {#approaching-the-data .col .s12}
+::: {custom-style="Heading 2 no number"}
+Approaching the data: 
+:::
 
 -   How confident `r ifelse(is_la_report, "is the Local Authority HWB team", "are staff, parents and pupils")` at interpreting
     health and wellbeing data?
@@ -34,7 +38,9 @@ wellbeing.
     groups in the `r ifelse(is_la_report, "Local Authority", "school")` or will the whole report be shared with everyone
     fully?
 
-## Consider the context: {#consider-the-context .col .s12}
+::: {custom-style="Heading 2 no number"}
+Consider the context: 
+:::
 
 -   How representative are the data of the `r ifelse(is_la_report, "young people", "school roll or the year group(s)")` surveyed?
     If 80% of `r ifelse(is_la_report, "all young people in the Local Authority", "pupils")` participated that is a very
@@ -70,7 +76,9 @@ wellbeing.
 :::
 
 ::: page
-## Reflecting on the data: {#reflecting-on-the-data .col .s12}
+::: {custom-style="Heading 2 no number"}
+Reflecting on the data: 
+:::
 
 -   To what extent do the data provide evidence of key issues for
     `r ifelse(is_la_report, "the Local Authority", "my
@@ -90,7 +98,9 @@ wellbeing.
     of measures`r ifelse(is_la_report, " in the primary or
     secondary sector or relevant to a specific gender group", "")`?
 
-## Working together: {#working-together .col .s12}
+::: {custom-style="Heading 2 no number"}
+Working together: 
+:::
 
 -   Have we shared the SHINE data with the wider school
     community`r ifelse(is_la_report, "? Can we support schools to apply a whole-school approach to mental health in a uniform way across the authority? Would additional training sessions be useful for this", "")` to include staff, pupils and parents to underpin
@@ -128,7 +138,9 @@ Framework".
 
 \newpage
 
-# WHO CAN HELP
+::: {custom-style="Heading 1 no number"}
+WHO CAN HELP
+:::
 
 | Organisation                                                                                                                                                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                      |
 |--------------------------|----------------------------------------------|
@@ -158,14 +170,20 @@ Framework".
 
 ::: {#psq .col .s12 .lr_zero .section .scrollspy}
 ::: page
-# PRIMARY SCHOOL QUESTIONS {#primary-school-questions .col .s12 .report}
+::: {custom-style="Heading 1 no number"}
+PRIMARY SCHOOL QUESTIONS 
+:::
 
-## General health
+::: {custom-style="Heading 2 no number"}
+General health
+:::
 
 Would you say your health is......?\
 *Excellent/Good/Fair/Poor/Prefer not to say*
 
-## Good Childhood Index: Life satisfaction {#good-childhood-index-life-satisfaction .col .s12}
+::: {custom-style="Heading 2 no number"}
+Good Childhood Index: Life satisfaction 
+:::
 
 How happy are you with your life as a whole?\
 How happy are you with your relationships with your family?\
@@ -183,7 +201,9 @@ How happy are you with the things that you do in your free time?\
 *0-10 (0= not at all happy, 5 =neither happy nor unhappy, 10=very
 happy/prefer not to say)*
 
-## WHO Wellbeing 5 Index {#who-wellbeing-5-index .col .s12}
+::: {custom-style="Heading 2 no number"}
+WHO Wellbeing 5 Index 
+:::
 
 I have felt cheerful and in good spirits /I have felt calm and relaxed/I
 have felt active and vigorous/I woke up feeling fresh and rested /My
@@ -191,7 +211,9 @@ daily life has been filled with things that interest me\
 *At no time/Some of the time/less than half of the time/More than half
 of the time/Most of the time/All of the time/Prefer not to say*
 
-## Me and My Feelings {#me-and-my-feelings .col .s12}
+::: {custom-style="Heading 2 no number"}
+Me and My Feelings 
+:::
 
 [Emotional scale]{.shine2}: I feel lonely/I cry a lot/I am unhappy
 /Nobody likes me /I worry a lot /I have problems sleeping/ I wake up in
@@ -207,7 +229,9 @@ on purpose\
 :::
 \newpage
 ::: page
-## School {#school .col .s12}
+::: {custom-style="Heading 2 no number"}
+School 
+:::
 
 How do you feel about school at present?\
 *I like it a lot/ I like it a bit/I don't like it very much/I don't like
@@ -219,7 +243,9 @@ How pressured (stressed) do you feel by the schoolwork you have to do?
 How often do you feel confident in yourself? *Never/Hardly ever/
 Sometimes/ Often/ Always/Prefer not to say*
 
-## Social Emotional Health Survey (SEHS) {#social-emotional-health-survey-sehs .col .s12}
+::: {custom-style="Heading 2 no number"}
+Social Emotional Health Survey (SEHS) 
+:::
 
 [Gratitude]{.shine2}\
 I am lucky to go to my school/I am thankful that I get to learn new

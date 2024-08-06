@@ -21,7 +21,9 @@ from some individual local authorities.
 
 \newpage
 
-# INTRODUCTION {#introduction .col .s12 .report}
+::: {custom-style="Heading 1 no number"}
+INTRODUCTION
+:::
 
 Welcome to your Scottish Schools Health and Wellbeing Improvement
 Research Network (SHINE) `r ifelse(is_la_report, "Local Authority", "school")` report on pupil mental health. Within this
@@ -65,7 +67,9 @@ If you have any queries relating to the report or would like to tell us
 how you\'re using this data in your school, please contact Dawn
 Haughton, the SHINE Network Manager, <Dawn.Haughton@glasgow.ac.uk>.
 
-# MENTAL HEALTH AND WELLBEING {#mental-health-and-wellbeing .col .s12 .report .scrollspy}
+::: {custom-style="Heading 1 no number"}
+MENTAL HEALTH AND WELLBEING
+:::
 
 Mental wellbeing, one of the Scottish Government's public health
 priorities is defined as:
@@ -84,7 +88,9 @@ The following sections explain these aspects of mental health, why they
 are important in adolescence and how they are measured in the SHINE
 survey.
 
-## Subjective Wellbeing {#mhw-sw .col .s12}
+::: {custom-style="Heading 2 no number"}
+Subjective Wellbeing
+:::
 
 *"Subjective wellbeing can be thought of as a positive state of mind in
 which a person feels good about life as a whole and its constituent
@@ -105,7 +111,9 @@ serves as a buffer against stressful life events and is a significant
 factor in determining an individual's resilience to adverse life
 circumstances.
 
-## Mental health problems {#mhw-mhp .col .s12}
+::: {custom-style="Heading 2 no number"}
+Mental health problems
+:::
 
 Mental health problems include a range of feelings and conditions, which
 may reflect an underlying mental illness. In adolescents, they broadly
@@ -119,7 +127,6 @@ fall in to four main groups:
 4.  Less common conditions: autism spectrum, eating disorders, tic
     disorders
 
-::: page
 Data from England indicates that in 2022, 18% of young people aged 7-16
 years old have a mental health condition. The most prevalent conditions
 are emotional and behavioural with girls more likely to experience
@@ -150,7 +157,9 @@ engagement, social relationships) but those with no mental ill health
 problems but who have low subjective wellbeing also encounter
 difficulties.
 
-## Positive Mental Health {#mhw-pmh .col .s12}
+::: {custom-style="Heading 2 no number"}
+Positive Mental Health
+:::
 
 There are many definitions of Positive Mental Health but, in essence, it
 is about viewing good mental health not only as the absence of mental
@@ -168,12 +177,14 @@ to develop skills and traits and thereby improve overall wellbeing. In
 addition, there is evidence of a cumulative effect, that is, if an
 individual has multiple positive traits, this leads to increased levels
 of wellbeing.
+
+::: {custom-style="Heading 1 no number"}
+Measuring Mental Health in the SHINE survey
 :::
 
-::: page
-# Measuring Mental Health in the SHINE survey {#mhw-mmh .col .s12 .report}
-
-## Subjective Wellbeing {#subjective-wellbeing .col .s12}
+::: {custom-style="Heading 2 no number"}
+Subjective Wellbeing
+:::
 
 [***Good Childhood Index:***]{.shine2} This scale asks young people
 about their happiness with eleven aspects of life including family,
@@ -182,7 +193,9 @@ friendships, school, appearance, future, life overall.
 It is important to pay attention to areas where there are lower levels
 of satisfaction, which may indicate that additional support is required.
 
-## Mental health problems {#mental-health-problems .col .s12}
+::: {custom-style="Heading 2 no number"}
+Mental health problems
+:::
 
 [***WHO Wellbeing 5 Index:***]{.shine2} These are five positively worded
 questions that, when combined, provide a measure of emotional
@@ -197,7 +210,9 @@ that area. The Me and My Feelings classifications **do not** indicate a
 clinical diagnosis but highlight that pupils in the elevated group may
 experience difficulties.
 
-## Positive Mental Health {#positive-mental-health .col .s12}
+::: {custom-style="Heading 2 no number"}
+Positive Mental Health
+:::
 
 [***Social Emotional Health Survey (SEHS):***]{.shine2} This is a
 20-item measure of "covitality", which is the co-occurrence of multiple
@@ -219,9 +234,7 @@ others, improved emotional wellbeing and autonomy.
 
 [Persistence]{.shine2} has been shown to increase learning, mediating
 the relationship between motivation and performance.
-:::
 
-::: page
 [Pro-social behaviour:]{.shine2} This refers to behaviour that benefits
 others and promotes social acceptance and relationships. It does not
 form part of the "covitality" score but there is an association between
@@ -237,7 +250,9 @@ looking at all four at once. It may also be possible to carry out a
 follow-up survey using the SEHS to see if the scores across the domains
 and the overall covitality score have improved, following interventions.
 
-## Factors influencing adolescent mental health {#mhw-amh .col .s12}
+::: {custom-style="Heading 2 no number"}
+Factors influencing adolescent mental health
+:::
 
 Many factors influence mental health and research is ongoing to
 understand better this complex field. An individual's mental health and
@@ -252,19 +267,16 @@ interactions between genetics, personality, life experiences, support,
 health behaviours (sleep, diet,) as well as more structural matters such
 as housing and socio-economic status.
 
-\
 
 ::: {custom-style="Heading no TOC"}
 Diagram 1: Factors influencing adolescent mental health 
 :::
 
-::: {.col .s12 .center}
 ![](../img/diag1.png){width=100%}
-:::
-:::
 
-::: page
-## School and adolescent mental health {#mhw-samh .col .s12}
+::: {custom-style="Heading 2 no number"}
+School and adolescent mental health
+:::
 
 Young people spend a significant amount of time in school and it is an
 important sphere of influence. The school environment can positively
@@ -291,14 +303,11 @@ levels of risky behaviour and poorer mental health. Young people who
 feel under pressure to perform well academically are more likely to
 report depressive symptoms and lower life satisfaction.
 
+
+::: {custom-style="Heading 1 no number"}
+Understanding the data in this report
 :::
 
-::: {#understand .col .s12 .lr_zero .section .scrollspy}
-::: page
-
-# Understanding the data in this report {#understanding-the-data-in-this-report .col .s12 .report style="margin-bottom:1rem !important;"}
-
-::: {.col .s12}
 -   All figures show results for all pupils in your
     `r ifelse(is_la_report, "Local Authority", "school")`
     combined.
@@ -312,10 +321,6 @@ report depressive symptoms and lower life satisfaction.
     shows the HBSC national average for pupils in Primary 7.
 -   If you see \* in a figure or table, this indicates the data has been
     suppressed due to small numbers.
-:::
 
 
 ![](../img/figure_understanding_all.svg)
-
-:::
-:::

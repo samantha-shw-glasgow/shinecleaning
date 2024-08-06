@@ -2,13 +2,16 @@
 % Please edit documentation in R/validators.R
 \name{validators}
 \alias{validators}
-\alias{check_duplicate_dob}
+\alias{duration_too_short}
+\alias{no_test_responses}
 \alias{nothing_is_wrong}
 \alias{everything_sucks}
 \alias{everything_is_fine}
 \title{Validators}
 \usage{
-check_duplicate_dob(data)
+duration_too_short(data)
+
+no_test_responses(data)
 
 nothing_is_wrong(data)
 
