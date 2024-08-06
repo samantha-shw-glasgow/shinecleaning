@@ -20,7 +20,8 @@ render_report <- function(survey_data = NULL,
                           filename = "primary_report.docx") {
   render_env <- new.env()
 
-  survey_data <- survey_data[grepl("^\\d", survey_data$`Start Date`), ]
+  survey_data <- survey_data[grepl("^\\d", survey_data$`Start Date`), ] |>
+    data_prep()
 
   if (is.null(number_invited))
     number_invited <- nrow(survey_data)
@@ -34,5 +35,23 @@ render_report <- function(survey_data = NULL,
     output_file = filename,
     params = list(school_name = school_name)
   )
+
+}
+
+
+data_prep <- function(survey_data) {
+
+  survey_data |>
+    rename(consent = starts_with("Welcome")) |>
+    filter(consent == "Yes, I am happy to take part")
+
+  #' This should create:
+  #'  - WHO5 wellbeing score
+  #'  - lifesat overall?
+  #'  - 'Me and my feelings' scores - emotional and behavioural
+  #'  - 'Gratitude', 'Zest', 'Optimism', 'Persistence', 'Pro-social'
+  #'  - Overall coviality
+  #'
+  #' It should also filter refusal to complete survey
 
 }
