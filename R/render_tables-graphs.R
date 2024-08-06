@@ -28,6 +28,8 @@ date_range <- function(input_data) {
 #'
 #' @return A table (markdown) detailing response rate
 #'
+#' @import flextable
+#'
 tab_responses <- function(input_data, n_invited) {
 
   n_responses <- nrow(input_data)
@@ -39,43 +41,46 @@ tab_responses <- function(input_data, n_invited) {
     "Number of pupils invited to participate", n_invited |> as.character(),
     "Number of pupils who did not take part", n_missing |> as.character(),
     "Overall response rate", sprintf("%.0f%%", perc_rate)
-  )
+  ) |>
+    flextable() |>
+    delete_part("header") |>
+    theme_vanilla() |>
+    # border_inner_h(officer::fp_border("gray", width = 1)) |>
+    set_table_properties(layout = "autofit", width = 1) |>
+    set_caption("Response rate", align_with_table = FALSE)
 
 }
 
 
-#' Title
+#' Render bar percentage
 #'
-#' @param .data
-#' @param var
-#' @param success
-#' @param .censor
-#' @param .gender_split
+#' @param data The dataframe of valid responses
+#' @param var Variable to use
+#' @param success Value(s) in `var` denoting 'success' (i.e. count as percentage)
+#' @param .censor `TRUE`/`FALSE` - apply censoring rules (must be `TRUE` in output reports)
+#' @param .gender_split `TRUE`/`FALSE` - split by gender when sufficient numbers of responses
 #'
-#' @return
-#' @export
+#' @return A ggplot2 graph - percentage of successes in a single category.
 #'
 #' @import dplyr
 #' @import ggplot2
+#' @importFrom rlang .data
 #'
-bar_by_cat <- function(.data,
+bar_by_cat <- function(data,
                        var,
                        success = "Yes",
                        .censor = TRUE,
                        .gender_split = TRUE) {
 
-  # requireNamespace(tidyverse, quietly = TRUE)
-
-  # browser()
 
   var <- enquo(var)
 
-  df_gender <- .data |>
-    group_by(gender) |>
+  df_gender <- data |>
+    group_by(.data$gender) |>
     mutate(success = {{var}} %in% success) |>
     summarise(numerator = sum(success, na.rm = TRUE),
               denom = n()) |>
-    filter(!is.na(gender))
+    filter(!is.na(.data$gender))
 
   if (((all(df_gender$numerator > 3) & all(df_gender$denom >= 7)) | !.censor) & .gender_split) {
     # * chart should not be created if there are ≤3 students in the numerator of
@@ -84,13 +89,13 @@ bar_by_cat <- function(.data,
     #   of any variable
 
     p1 <- df_gender |>
-      mutate(prop = numerator / denom) |>
-      ggplot(aes(gender, prop, fill = gender)) +
+      mutate(prop = .data$numerator / .data$denom) |>
+      ggplot(aes(.data$gender, .data$prop, fill = .data$gender)) +
       geom_bar(stat = "identity") +
       scale_fill_hbsc("") +
       xlab("") +
       scale_y_continuous("%", labels = scales::percent)+
-      geom_text(aes(label = scales::percent(prop, suffix="%", accuracy = 1)),
+      geom_text(aes(label = scales::percent(.data$prop, suffix="%", accuracy = 1)),
                 vjust = 0,
                 nudge_y = 0.05,
                 size = 4) +
@@ -103,16 +108,16 @@ bar_by_cat <- function(.data,
     # * if there are ≤14 students, the chart should only present a single column
     #   representing all students.
 
-    p1 <- .data |>
+    p1 <- data |>
       mutate(success = !!var %in% success) |>
       summarise(prop = sum(success, na.rm = TRUE)/ n()) |>
       mutate(gender = "All pupils") |>
-      ggplot(aes(gender, prop, fill = gender)) +
+      ggplot(aes(.data$gender, .data$prop, fill = .data$gender)) +
       geom_bar(stat = "identity") +
       scale_fill_hbsc("") +
       xlab("") +
       scale_y_continuous("%", labels = scales::percent)+
-      geom_text(aes(label = scales::percent(prop, suffix="%", accuracy = 1)),
+      geom_text(aes(label = scales::percent(.data$prop, suffix="%", accuracy = 1)),
                 vjust = 0,
                 nudge_y = 0.05,
                 size = 4) +
@@ -129,21 +134,21 @@ bar_by_cat <- function(.data,
   #
   # }
 
-  df_school <- .data |>
-    group_by(class) |>
+  df_school <- data |>
+    group_by(.data$class) |>
     mutate(success = !!var %in% success) |>
-    summarise(numerator = sum(success),
+    summarise(numerator = sum(.data$success),
               denom = n(),
               .groups = "keep") |>
-    filter(!is.na(class))
+    filter(!is.na(.data$class))
 
   if (((length(df_school$class) == 2 & all(df_gender$numerator > 3) & all(df_gender$denom >= 7) &
         all(df_school$denom >= 7)) | (length(df_school$class) == 2 & .censor == FALSE))) {
     # * for secondary schools, only separate by year if there are ≥7 S2 AND ≥7 S4).
 
     p2 <- df_school |>
-      summarise(prop = sum(numerator) / sum(denom)) |>
-      ggplot(aes(class, prop, fill = class)) +
+      summarise(prop = sum(.data$numerator) / sum(.data$denom)) |>
+      ggplot(aes(.data$class, .data$prop, fill = .data$class)) +
       geom_bar(stat = "identity") +
       scale_fill_hbsc("") +
       xlab("") +
@@ -154,7 +159,7 @@ bar_by_cat <- function(.data,
       theme(axis.ticks.y = element_line(colour = "white"),
             axis.text.y = element_text(colour = "white"),
             plot.margin = unit(c(0.8, 0.5, 0.5, 1),  "cm")) +
-      geom_text(aes(label = scales::percent(prop, suffix="%", accuracy = 1)),
+      geom_text(aes(label = scales::percent(.data$prop, suffix="%", accuracy = 1)),
                 vjust = 0,
                 nudge_y = 0.05,
                 size = 4) +
@@ -166,6 +171,10 @@ bar_by_cat <- function(.data,
   p1 + p2
 }
 
+#' Standard categorical fill scale
+#'
+#' @param ... Other arguments passed to `scale_fill_manual`
+#'
 scale_fill_hbsc <- function(...) {
 
   primary_colour <-  "#4770b7"

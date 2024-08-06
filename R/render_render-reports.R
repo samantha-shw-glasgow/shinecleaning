@@ -9,6 +9,9 @@
 #' @param output_location Location of file output (defaults to working directory)
 #' @param filename Name of file to output
 #'
+#' @import officedown
+#' @import tidyverse
+#'
 render_report <- function(survey_data = NULL,
                           school_name = NULL,
                           local_authority_name = NULL,

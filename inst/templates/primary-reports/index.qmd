@@ -79,13 +79,7 @@ Pupils in your school completed the survey `r date_range(input_data)`.
 Table \@ref(tab:tab-response) shows the response rate.
 
 ```{r tab-response, tab.id="tab-response", tab.cap="Response rate", tab.cap.pre="Table"}
-tab_responses(input_data, params$number_invited) |> 
-  flextable::flextable() |> 
-  flextable::delete_part("header") |> 
-  flextable::theme_vanilla() |> 
-  # flextable::border_inner_h(officer::fp_border("gray", width = 1)) |> 
-  flextable::set_table_properties(layout = "autofit", width = 1) |> 
-  flextable::set_caption("Response rate", align_with_table = FALSE)
+tab_responses(input_data, params$number_invited)
 ```
 
 ## General health
