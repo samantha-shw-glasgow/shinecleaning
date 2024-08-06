@@ -34,15 +34,6 @@ tab_responses <- function(input_data, n_invited) {
   n_missing <- n_invited - n_responses
   perc_rate <- 100 * n_responses/n_invited
 
-  sprintf(
-  "
-  | | |
-  |-|-|
-  | Number of pupils invited to participate | %d     |
-   | Number of pupils who did not take part  | %d     |
-   | Overall response rate                   | %.0f%% |",
-          n_invited, n_missing, perc_rate)
-
   tibble::tribble(
     ~a, ~b,
     "Number of pupils invited to participate", n_invited |> as.character(),
@@ -53,13 +44,27 @@ tab_responses <- function(input_data, n_invited) {
 }
 
 
+#' Title
+#'
+#' @param .data
+#' @param var
+#' @param success
+#' @param .censor
+#' @param .gender_split
+#'
+#' @return
+#' @export
+#'
+#' @import dplyr
+#' @import ggplot2
+#'
 bar_by_cat <- function(.data,
                        var,
                        success = "Yes",
                        .censor = TRUE,
                        .gender_split = TRUE) {
 
-  require(tidyverse)
+  # requireNamespace(tidyverse, quietly = TRUE)
 
   # browser()
 
@@ -174,7 +179,7 @@ scale_fill_hbsc <- function(...) {
   global_expected_colour <- "#4770b7"
   global_elevated_colour <- "#ee9457"
 
-  scale_fill_manual(
+  ggplot2::scale_fill_manual(
     values = c(
       "Girls" = global_girls_colour,
       "Boys" = global_boys_colour,
