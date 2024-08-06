@@ -2,6 +2,7 @@
 output: 
   officedown::rdocx_document:
     reference_docx: ../styling/doc_template.docx
+    number_sections: true
     tables:
       style: 'Table'
       layout: autofit
@@ -92,7 +93,7 @@ Pupils were asked to rate their own health as either poor/fair/good/excellent.
 Figure \@ref(fig:bar-health) shows the percentage of pupils who reported
 their health was \'excellent\' or \'good\'.
 
-<!-- compared with the HBSC Scotland national average. Table shows all the responses from pupils. -->
+<!-- compared with the HBSC Scotland national average. Table [tab] shows all the responses from pupils. -->
 
 ```{r bar-health, fig.cap="% of pupils who report excellent or good health"}
 
@@ -102,6 +103,162 @@ input_data |>
     success = c("Good", "Excellent")
   )
 
+```
+
+\newpage
+
+## Good Childhood Index: Happiness with various aspects of life
+
+Pupils were asked to rate how happy they are with various aspects of
+their life. Response options ranged from 0 to 10, where 0 means \'very
+unhappy\', 5 means \'neither happy nor unhappy\' and 10 means \'very
+happy\'.
+
+Figure \@ref(fig:bar-lifesat) shows the average score out of 10, for each of
+the eleven aspects of life that pupils were asked about.
+
+Figure \@ref(fig:bar-low-lifesat) shows the percentage of pupils who scored low happiness in each
+aspect of life. Low happiness is defined as a score of less than 5. For
+more information on this index, see page 6.
+
+```{r bar-lifesat, fig.cap="Average scores for different aspects of life"}
+input_data |>
+  bar_mean_multiple_vars(starts_with("lifesat"))
+```
+
+```{r bar-low-lifesat, fig.cap="% of pupils who report low happiness in different aspects of life"}
+input_data |>
+  bar_multiple_vars(starts_with("lifesat"))
+```
+
+\newpage
+
+## WHO-5 Wellbeing Scale
+
+The WHO--5 Wellbeing Index is a five item scale which provides a measure
+of emotional functioning. Items are summed to create a score ranging
+from 0 to 100. A score of 50 or less on the WHO-5 indicates
+low mood (Figure \@ref(fig:bar-wellbeing)).
+
+<!-- The figure also includes the results from the HBSC -->
+<!-- Scotland national average. For more information on this scale, see page -->
+<!-- 6. -->
+
+```{r bar-wellbeing, fig.cap="% of pupils with low mood"}
+# input_data |> 
+#   bar_by_cat(wellbeing)
+```
+
+\newpage
+
+## Me and My Feelings
+
+Pupils were asked to complete the Me and My Feelings questionnaire which
+measures emotional and behavioural difficulties. The answers to the
+sixteen questions are summed to produce scores and pupils classified
+into groups according to pre-determined cut-offs: \'as expected\' or
+\'elevated\'. Those in the elevated groups may experience difficulties
+in this area. For more information on this scale, see page 6.
+
+```{r bar-mm-emotional, fig.cap="Pupils' emotional scores"}
+# input_data |> 
+#   bar_share_elevated(mm_emotional)
+```
+
+```{r bar-mm-behavioural, fig.cap="Pupils' behavioural scores"}
+# input_data |> 
+#   bar_share_elevated(mm_behavioural)
+```
+
+\newpage
+
+## School
+
+### Liking school
+
+Pupils were asked how much they like school at present. Figure \@ref(fig:bar-sch1) shows the
+percentage of pupils who like school \'a lot\' or \'a bit\'
+
+<!-- compared with the HBSC Scotland national average. -->
+
+<!-- Table shows all responses to this question for pupils. -->
+
+
+```{r bar-sch1, fig.cap="% of pupils who like school (a lot or a bit)"}
+input_data |> 
+  bar_by_cat(
+    Sch1,
+    c("I like it a lot", "I like it a bit")
+  )
+```
+
+\newpage
+
+### Pressured by schoolwork
+
+Pupils were asked about how pressured they feel about the schoolwork
+they have to do. Figure \@ref(fig:bar-sch2) shows the proportion of pupils who feel \'a
+lot\' or \'some\' pressure.
+
+<!-- compared with the HBSC Scotland national average. Table shows all responses to this question. -->
+
+```{r bar-sch2, fig.cap="% of pupils who feel a lot of or some pressure from schoolwork"}
+input_data |> 
+  bar_by_cat(
+    Sch2,
+    c("A lot", "A little")
+  )
+```
+
+\newpage
+
+### Self-confidence {#self-confidence .col .s12 .lr_zero .black-text}
+
+Pupils were asked \'how often do you feel confident in yourself\'.
+Figure \@ref(fig:bar-sch3) shows the proportion of pupils in your who responded they
+\'always\' or \'often\' feel confident 
+<!-- compared with the HBSC Scotland national average. Table shows all the responses to this question -->
+.
+
+```{r bar-sch3, fig.cap="% of pupils who feel always or often confident"}
+input_data |> 
+  bar_by_cat(
+    Sch3,
+    c("Always", "Often")
+  )
+```
+
+\newpage
+
+## Social Emotional Health Survey (SEHS)
+
+The Social Emotional Health Survey (SEHS) measures different aspects of
+a child\'s social and emotional wellbeing: Gratitude, Zest, Persistence
+and Optimism. All these aspects are positive character traits and are
+linked to having more positive mental health and greater school
+engagement.
+
+The answers in the questionnaire are summed to
+create scores out of 16 for gratitude, zest, persistence and optimism.
+These four domains are then summed to create an overall covitality
+score, out of 64, which is shown in Figure \@ref(fig:bar-coviality).
+
+The SEHS also measures pro-social behaviour which is linked to more positive mental
+health. For more information on this scale, see page 6.
+
+
+
+
+```{r bar-sehs, fig.cap="Average score in each SEHS domain"}
+input_data |> 
+  bar_mean_multiple_vertical(starts_with("sehs"))
+```
+
+```{r bar-coviality, fig.cap="Average covitality score"}
+input_data |> 
+  bar_mean_multiple_vertical(
+    starts_with("cov")
+  )
 ```
 
 

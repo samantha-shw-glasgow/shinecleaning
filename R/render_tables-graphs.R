@@ -171,6 +171,22 @@ bar_by_cat <- function(data,
   p1 + p2
 }
 
+bar_multiple_vars <- function(data, ...) {
+  ggplot2::ggplot(data)
+}
+
+bar_mean_multiple_vars <- function(data, ...) {
+  ggplot2::ggplot(data)
+}
+
+bar_mean_multiple_vertical <- function(data, ...) {
+  ggplot2::ggplot(data)
+}
+
+bar_share_elevated <- function(data, ...) {
+  ggplot2::ggplot(data)
+}
+
 #' Standard categorical fill scale
 #'
 #' @param ... Other arguments passed to `scale_fill_manual`
