@@ -20,7 +20,7 @@ render_report <- function(survey_data = NULL,
                           filename = "primary_report.docx") {
   render_env <- new.env()
 
-  survey_data <- survey_data[grepl("^\\d", survey_data$`Start Date`), ] |>
+  survey_data <- survey_data[grepl("^\\d", survey_data$`StartDate`), ] |>
     data_prep()
 
   if (is.null(number_invited))
@@ -42,8 +42,8 @@ render_report <- function(survey_data = NULL,
 data_prep <- function(survey_data) {
 
   survey_data |>
-    rename(consent = starts_with("Welcome")) |>
-    filter(consent == "Yes, I am happy to take part")
+    filter(consent == "Yes, I am happy to take part") |>
+    mutate(gender = gender2)
 
   #' This should create:
   #'  - WHO5 wellbeing score
