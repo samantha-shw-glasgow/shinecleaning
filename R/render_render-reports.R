@@ -39,19 +39,73 @@ render_report <- function(survey_data = NULL,
 }
 
 
+#' Data preparation phase
+#'
+#' These functions prepare the data by reshaping it and generating necessary variables.
+#' Helper functions for variables are included.
+#'
+#' @param survey_data The data to process
+#'
+#' @returns
+#' `data_prep`: A dataframe with the required variables for rendering a report
+#'
+#' `who_score`:  WHO 5-item wellbeing score (`who_score` variable) and categorical breakdown (`who_cat`: low/good)
+#'
+#' `mm_score`: 'Me and My feelings' score
 data_prep <- function(survey_data) {
 
   survey_data |>
     filter(consent == "Yes, I am happy to take part") |>
     mutate(gender = gender2)
 
-  #' This should create:
-  #'  - WHO5 wellbeing score
-  #'  - lifesat overall?
-  #'  - 'Me and my feelings' scores - emotional and behavioural
-  #'  - 'Gratitude', 'Zest', 'Optimism', 'Persistence', 'Pro-social'
-  #'  - Overall coviality
-  #'
-  #' It should also filter refusal to complete survey
+  # This should create:
+  #  - WHO5 wellbeing score
+  #  - 'Me and my feelings' scores - emotional and behavioural
+  #  - 'Gratitude', 'Zest', 'Optimism', 'Persistence', 'Pro-social'
+  #  - Overall coviality
+  #
+  # It should also filter refusal to complete survey
 
 }
+
+#' @rdname data_prep
+who_score <- function(survey_data) {
+
+  # Sum the score of the five `Who` variables and multiply by 4
+
+  who_responses <- c(
+    "At no time" = 0,
+    "Some of the time" = 1,
+    "Less than half of the time" = 2,
+    "More than half of the time" = 3,
+    "Most of the time" = 4,
+    "All of the time" = 5
+  )
+
+  survey_data |>
+    mutate(across(starts_with("Who"), ~who_responses[.x])) |>
+    rowwise() |>
+    mutate(who_score = sum(c_across(starts_with("Who"))) * 4,
+           who_cat = case_when(
+             who_score <= 50 ~ "low",
+             who_score > 50 ~ "good"
+           )) |>
+    ungroup()
+
+}
+
+#' @rdname data_prep
+mm_score <- function(survey_data) {
+
+}
+
+#' @rdname data_prep
+sehs_primary <- function(survey_data) {
+
+}
+
+#' @rdname data_prep
+sehs_secondary <- function(survey_data) {
+
+}
+
