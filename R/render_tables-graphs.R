@@ -1,13 +1,13 @@
 #' Generate text to describe input date range
 #'
-#' @param input_data The dataframe of survey responses with the column `Start Date`
+#' @param input_data The dataframe of survey responses with the column `StartDate`
 #'
 #' @return A string describing month of survey (or range)
 #'
 date_range <- function(input_data) {
 
-  start <- min(lubridate::ymd_hms(input_data$`Start Date`))
-  end <- max(lubridate::ymd_hms(input_data$`Start Date`))
+  start <- min(lubridate::ymd_hms(input_data$`StartDate`))
+  end <- max(lubridate::ymd_hms(input_data$`StartDate`))
 
   start_date <- paste(lubridate::month(start, abbr = FALSE, label = TRUE), lubridate::year(start))
   end_date <- paste(lubridate::month(end, abbr = FALSE, label = TRUE), lubridate::year(end))
