@@ -9,8 +9,6 @@
 #' @param output_location Location of file output (defaults to working directory)
 #' @param filename Name of file to output
 #'
-#' @import officedown
-#' @import tidyverse
 #'
 render_report <- function(survey_data = NULL,
                           school_name = NULL,
@@ -19,6 +17,9 @@ render_report <- function(survey_data = NULL,
                           output_location = getwd(),
                           filename = "primary_report.docx") {
   render_env <- new.env()
+
+  requireNamespace("tidyverse", quietly = TRUE)
+  requireNamespace("officedown", quietly = TRUE)
 
   survey_data <- survey_data[grepl("^\\d", survey_data$`StartDate`), ] |>
     data_prep()
@@ -46,6 +47,8 @@ render_report <- function(survey_data = NULL,
 #'
 #' @param survey_data The data to process
 #'
+#' @importFrom rlang .data
+#'
 #' @returns
 #' `data_prep`: A dataframe with the required variables for rendering a report
 #'
@@ -55,8 +58,9 @@ render_report <- function(survey_data = NULL,
 data_prep <- function(survey_data) {
 
   survey_data |>
-    filter(consent == "Yes, I am happy to take part") |>
-    mutate(gender = gender2)
+    filter(.data$consent == "Yes, I am happy to take part") |>
+    mutate(gender = .data$gender2) |>
+    who_score()
 
   # This should create:
   #  - WHO5 wellbeing score
