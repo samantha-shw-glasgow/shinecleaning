@@ -88,7 +88,7 @@ cleanUpload_server <- function(id){
 
 				  req(nrow(checks$checks) > 0 , cancelOutput = TRUE)
 
-				  warnings <- purrr::pmap(checks$checks[checks$fail, c("message", "level")],
+				  warnings <- purrr::pmap(checks$checks[checks$checks$fail, c("message", "level")],
 				                          make_upload_warning)
 
 				  do.call(tagList, warnings)
