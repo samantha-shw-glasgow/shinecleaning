@@ -76,6 +76,39 @@ data_prep <- function(survey_data) {
   #
   # It should also filter refusal to complete survey
 
+  survey_out <- survey_data |>
+    filter(.data$consent == "Yes, I am happy to take part") |>
+    mutate(gender = .data$gender2) |>
+    who_score()
+
+  if (report_type == "primary") {
+
+    if (!("mm1" %in% colnames(survey_out))) {
+      stop("Dataset is missing expected variables for primary report. ",
+           "Did you correctly specify report type and are columns correctly named?")
+    }
+
+    survey_out |>
+      mm_score() |>
+      sehs_primary()
+
+  } else if (report_type == "secondary") {
+
+    if (!("ASW1" %in% colnames(survey_out))) {
+      stop("Dataset is missing expected variables for primary report. ",
+           "Did you correctly specify report type and are columns correctly named?")
+    }
+
+    survey_out |>
+      sehs_secondary() |>
+      asw_score() |>
+      sdq_score()
+
+  } else {
+    stop(glue::glue("\"{report_type}\" is not a valid report type. ",
+                    "Specify \"primary\" or \"secondary\" to match data."))
+  }
+
 }
 
 #' @rdname data_prep
