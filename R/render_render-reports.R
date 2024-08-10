@@ -186,7 +186,47 @@ mm_score <- function(survey_data) {
 
 #' @rdname data_prep
 sehs_primary <- function(survey_data) {
-  survey_data
+
+  # Calculates:
+  # - "g","z","o","p","pro" scores as 4-wide column means
+  # - summed to "coviality" score
+  # Each must have 3 or more valid responses (pro-ratad)
+
+  sehs_responses <- c(
+    "Almost never",
+    "Sometimes",
+    "Often",
+    "Very often"
+    )
+
+  num_vars <- survey_data |>
+    transmute(across(starts_with("sehs"), ~match(.x, sehs_responses)))
+
+   scores <- imap(c("g","z","o","p","pro"), \(variable, index) {
+
+     start <- (index - 1) * 4 + 1
+
+     num_vars |>
+       select(matches(paste0("^sehs", start:(start + 3), "$"))) |>
+       mutate(score = rowSums(pick(matches(
+         paste0("^sehs", start:(start + 3), "$")
+       )), na.rm = TRUE),
+       n_valid = rowSums(!is.na(pick(matches(
+         paste0("^sehs", start:(start + 3), "$")
+       ))))) |>
+       mutate("{variable}_score" := case_when(
+         n_valid == 4 ~ score,
+         n_valid == 3 ~ 4 * score / 3,
+         n_valid < 3 ~ NA_real_
+       ),
+       .keep  = "none")
+
+    }) |>
+     reduce(bind_cols) |>
+     mutate(cov_score = rowSums(pick(ends_with("score"))))
+
+    bind_cols(survey_data, scores)
+
 }
 
 #' @rdname data_prep
