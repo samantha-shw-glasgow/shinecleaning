@@ -107,6 +107,42 @@ who_score <- function(survey_data) {
 #' @rdname data_prep
 mm_score <- function(survey_data) {
 
+  mm_responses <- c(
+    "Never",
+    "Sometimes",
+    "Always"
+  )
+
+  # Add pro-rata correction if <1/3 missing
+
+  # mme - ten columns, up to 3 missing
+  # mmb - six columns, up to 2 missing
+
+  survey_data |>
+    transmute(across(starts_with("mm"), ~match(.x, mm_responses) - 1),
+           mm15 = 2L - mm15,
+           mme_missing = rowSums(pick(mm1:mm10) |> is.na()),
+           mmb_missing = rowSums(pick(mm11:mm16) |> is.na())
+           ) |>
+    mutate(
+      mme_score = rowSums(pick(mm1:mm10), na.rm = TRUE),
+      mmb_score = rowSums(pick(mm11:mm16), na.rm = TRUE),
+      mme_score = case_when(
+        mme_missing == 0 ~ mme_score,
+        mme_missing <=3 ~ 10 * mme_score / (10 - mme_missing),
+        mme_missing > 3 ~ NA_real_
+      ),
+      mmb_score = case_when(
+        mmb_missing == 0 ~ mmb_score,
+        mmb_missing <=2 ~ 6 * mmb_score / (6 - mmb_missing),
+        mmb_missing > 2 ~ NA_real_
+      ),
+      mme_cat = if_else(mme_score <= 9, "Expected", "Elevated"),
+      mmb_cat = if_else(mmb_score <= 5, "Expected", "Elevated"),
+      .keep = "none"
+      )  |>
+    bind_cols(survey_data, x = _)
+
 }
 
 #' @rdname data_prep
