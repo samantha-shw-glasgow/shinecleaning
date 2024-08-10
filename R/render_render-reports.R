@@ -63,10 +63,16 @@ data_prep <- function(survey_data) {
     who_score()
 
   # This should create:
-  #  - WHO5 wellbeing score
-  #  - 'Me and my feelings' scores - emotional and behavioural
-  #  - 'Gratitude', 'Zest', 'Optimism', 'Persistence', 'Pro-social'
-  #  - Overall coviality
+  #  - WHO5 wellbeing score - `who_score` and `who_cat`
+  #  - 'Me and my feelings' scores - emotional and behavioural `mm_score`
+
+  #  Primary:
+  #  - 'Gratitude', 'Zest', 'Optimism', 'Persistence', 'Pro-social' - `sehs_primary`
+  #  - Overall coviality `cov_score`
+  # Secondary:
+  #  - secondary sehs (averaging by categories)
+  #  - strenths and difficulties score - `sdq_score`
+  #  - Adolescent sleep wake score - `asw_score`
   #
   # It should also filter refusal to complete survey
 
@@ -110,6 +116,16 @@ sehs_primary <- function(survey_data) {
 
 #' @rdname data_prep
 sehs_secondary <- function(survey_data) {
+
+}
+
+#' @rdname data_prep
+asw_score <- function(survey_data) {
+
+}
+
+#' @rdname data_prep
+sqd_score <- function(survey_data) {
 
 }
 
