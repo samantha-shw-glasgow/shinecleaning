@@ -66,3 +66,28 @@ test_that("Me and My feelings score", {
   expect_equal(mm_score(input_data_b), expected_b)
 
 })
+
+test_that("WHO score", {
+
+
+
+
+  input_data_a <- tibble(
+    Who1 = c("Most of the time",           "At no time",  NA_character_),
+    Who2 = c("More than half of the time", "Most of the time", "All of the time"),
+    Who3 = c("Less than half of the time", "Some of the time", "Some of the time"),
+    Who4 = c("Most of the time",           "Most of the time", "More than half of the time"),
+    Who5 = c("Some of the time",           "At no time",       "Most of the time")
+  )
+
+  expected_a <- bind_cols(input_data_a, tribble(
+      ~who_score, ~who_cat,
+      (4+3+2+4+1) * 4, "good",
+      (0+4+1+4+0) * 4, "low",
+      NA_real_, NA_character_
+    )
+  )
+
+  expect_equal(who_score(input_data_a), expected_a)
+
+  })

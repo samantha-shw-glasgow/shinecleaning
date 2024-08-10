@@ -84,23 +84,22 @@ who_score <- function(survey_data) {
   # Sum the score of the five `Who` variables and multiply by 4
 
   who_responses <- c(
-    "At no time" = 0,
-    "Some of the time" = 1,
-    "Less than half of the time" = 2,
-    "More than half of the time" = 3,
-    "Most of the time" = 4,
-    "All of the time" = 5
+    "At no time",
+    "Some of the time",
+    "Less than half of the time",
+    "More than half of the time",
+    "Most of the time",
+    "All of the time"
   )
 
   survey_data |>
-    mutate(across(starts_with("Who"), ~who_responses[.x])) |>
-    rowwise() |>
-    mutate(who_score = sum(c_across(starts_with("Who"))) * 4,
+    mutate(across(starts_with("Who"), ~match(.x, who_responses) - 1)) |>
+    mutate(who_score = rowSums(pick(starts_with("Who"))) * 4,
            who_cat = case_when(
              who_score <= 50 ~ "low",
              who_score > 50 ~ "good"
-           )) |>
-    ungroup()
+           ), .keep = "none") |>
+    bind_cols(survey_data, x = _)
 
 }
 
