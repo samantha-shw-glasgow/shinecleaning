@@ -6,6 +6,8 @@
 \alias{mm_score}
 \alias{sehs_primary}
 \alias{sehs_secondary}
+\alias{asw_score}
+\alias{sqd_score}
 \title{Data preparation phase}
 \usage{
 data_prep(survey_data)
@@ -17,6 +19,10 @@ mm_score(survey_data)
 sehs_primary(survey_data)
 
 sehs_secondary(survey_data)
+
+asw_score(survey_data)
+
+sqd_score(survey_data)
 }
 \arguments{
 \item{survey_data}{The data to process}
@@ -27,6 +33,14 @@ sehs_secondary(survey_data)
 \code{who_score}:  WHO 5-item wellbeing score (\code{who_score} variable) and categorical breakdown (\code{who_cat}: low/good)
 
 \code{mm_score}: 'Me and My feelings' score
+
+\code{sehs_primary}: SEHS score for primary schools
+
+\code{sehs_secondary}: SEHS score for secondary schools
+
+\code{asw_score}: Adolescent sleep-wake score for secondary schools
+
+\code{sqd_score}: SDQ score for secondary schools
 }
 \description{
 These functions prepare the data by reshaping it and generating necessary variables.

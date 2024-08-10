@@ -46,27 +46,34 @@ render_report <- function(survey_data = NULL,
 #' Helper functions for variables are included.
 #'
 #' @param survey_data The data to process
+#' @param report_type The type of survey data ("primary" or "secondary")
 #'
 #' @importFrom rlang .data
 #'
 #' @returns
 #' `data_prep`: A dataframe with the required variables for rendering a report
 #'
+#' The score-calculating functions return the dataset with relevant columns appended:
+#'
 #' `who_score`:  WHO 5-item wellbeing score (`who_score` variable) and categorical breakdown (`who_cat`: low/good)
 #'
-#' `mm_score`: 'Me and My feelings' score
-data_prep <- function(survey_data) {
-
-  survey_data |>
-    filter(.data$consent == "Yes, I am happy to take part") |>
-    mutate(gender = .data$gender2) |>
-    who_score()
+#' `mm_score`: 'Me and My feelings' score for primary schools
+#'
+#' `sehs_primary`: SEHS score for primary schools
+#'
+#' `sehs_secondary`: SEHS score for secondary schools
+#'
+#' `asw_score`: Adolescent sleep-wake score for secondary schools
+#'
+#' `sdq_score`: SDQ score for secondary schools
+#'
+data_prep <- function(survey_data, report_type = "primary") {
 
   # This should create:
   #  - WHO5 wellbeing score - `who_score` and `who_cat`
-  #  - 'Me and my feelings' scores - emotional and behavioural `mm_score`
 
   #  Primary:
+  #  - 'Me and my feelings' scores - emotional and behavioural `mm_score`
   #  - 'Gratitude', 'Zest', 'Optimism', 'Persistence', 'Pro-social' - `sehs_primary`
   #  - Overall coviality `cov_score`
   # Secondary:
@@ -179,21 +186,24 @@ mm_score <- function(survey_data) {
 
 #' @rdname data_prep
 sehs_primary <- function(survey_data) {
-
+  survey_data
 }
 
 #' @rdname data_prep
 sehs_secondary <- function(survey_data) {
+  survey_data
 
 }
 
 #' @rdname data_prep
 asw_score <- function(survey_data) {
+  survey_data
 
 }
 
 #' @rdname data_prep
-sqd_score <- function(survey_data) {
+sdq_score <- function(survey_data) {
+  survey_data
 
 }
 
