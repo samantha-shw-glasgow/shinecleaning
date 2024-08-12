@@ -63,7 +63,7 @@ test_that("Me and My feelings score", {
   )
 
 
-  expect_equal(mm_score(input_data_b), expected_b)
+  expect_identical(mm_score(input_data_b), expected_b)
 
 })
 
@@ -88,6 +88,51 @@ test_that("WHO score", {
     )
   )
 
-  expect_equal(who_score(input_data_a), expected_a)
+  expect_identical(who_score(input_data_a), expected_a)
 
   })
+
+test_that("Secondary SEHS scoring variables calculating", {
+
+  input_data_c <- map(1:30, \(sehs_n) {
+    tibble("SEHSS{sehs_n}" := 1:3)
+  }) |>
+    reduce(bind_cols)
+
+  sehs_responses <- c(
+    "Not at all true of me",
+    "A little true of me",
+    "Pretty much true of me",
+    "Very much true of me"
+  )
+
+  input_data_c <- input_data_c |>
+    mutate(across(everything(), ~sehs_responses[.x]))
+
+  out_dat <- sehs_secondary(input_data_c)
+
+  expected <-
+    tibble(
+      efficacy_score = 1:3 * 3,
+      aware_score = 1:3 * 3,
+      persist_score = 1:3 * 3,
+      sch_support_score = 1:3 * 3,
+      fam_support_score = 1:3 * 3,
+      peer_support_score = 1:3 * 3,
+      emt_regulation_score = 1:3 * 3,
+      empathy_score = 1:3 * 3,
+      control_score = 1:3 * 3,
+      optimism_score = 1:3 * 3,
+      belief_self_score = 1:3 * 3,
+      belief_others_score = 1:3 * 3,
+      emotional_competence_score = 1:3 * 3
+    ) |>
+    bind_cols(input_data_c, x = _)
+
+  expect_identical(out_dat, expected)
+
+
+}
+
+
+)

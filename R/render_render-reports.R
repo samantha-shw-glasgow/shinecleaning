@@ -278,9 +278,9 @@ sehs_secondary <- function(survey_data) {
   }) |>
     reduce(bind_cols) |>
     mutate(
-      belief_self_score = mean(c(efficacy_score, aware_score, persist_score)),
-      belief_others_score = mean(c(sch_support_score, fam_support_score, peer_support_score)),
-      emotional_competence_score = mean(c(emt_regulation_score, empathy_score, control_score))
+      belief_self_score = (efficacy_score + aware_score + persist_score)/3,
+      belief_others_score = (sch_support_score + fam_support_score + peer_support_score)/3,
+      emotional_competence_score = (emt_regulation_score + empathy_score + control_score)/3
     )
 
   bind_cols(survey_data, scores)
