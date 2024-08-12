@@ -231,7 +231,60 @@ sehs_primary <- function(survey_data) {
 
 #' @rdname data_prep
 sehs_secondary <- function(survey_data) {
-  survey_data
+
+  sehs_responses <- c(
+    "Not at all true of me",
+    "A little true of me",
+    "Pretty much true of me",
+    "Very much true of me"
+    )
+
+  num_responses <- survey_data |>
+    transmute(across(starts_with("sehs"), ~match(.x, sehs_responses)))
+
+
+  scores <- imap(
+    c(
+      "efficacy",
+      "aware",
+      "persist",
+      "sch_support",
+      "fam_support",
+      "peer_support",
+      "emt_regulation",
+      "empathy",
+      "control",
+      "optimism"
+    ),
+    \(variable, index) {
+
+
+    start <- (index - 1) * 3 + 1
+
+    rows_select <- paste0("^SEHSS", start:(start + 2), "$")
+
+    num_responses |>
+      select(matches(rows_select)) |>
+      mutate(score = rowSums(pick(matches(rows_select)), na.rm = TRUE),
+             n_valid = rowSums(!is.na(pick(
+               matches(rows_select)
+             )))) |>
+      mutate("{variable}_score" := case_when(
+        n_valid == 3 ~ score,
+        n_valid < 3 ~ NA_real_
+      ),
+      .keep  = "none")
+
+  }) |>
+    reduce(bind_cols) |>
+    mutate(
+      belief_self_score = mean(c(efficacy_score, aware_score, persist_score)),
+      belief_others_score = mean(c(sch_support_score, fam_support_score, peer_support_score)),
+      emotional_competence_score = mean(c(emt_regulation_score, empathy_score, control_score))
+    )
+
+  bind_cols(survey_data, scores)
+
 
 }
 
