@@ -7,10 +7,10 @@
 \alias{sehs_primary}
 \alias{sehs_secondary}
 \alias{asw_score}
-\alias{sqd_score}
+\alias{sdq_score}
 \title{Data preparation phase}
 \usage{
-data_prep(survey_data)
+data_prep(survey_data, report_type = "primary")
 
 who_score(survey_data)
 
@@ -22,17 +22,21 @@ sehs_secondary(survey_data)
 
 asw_score(survey_data)
 
-sqd_score(survey_data)
+sdq_score(survey_data)
 }
 \arguments{
 \item{survey_data}{The data to process}
+
+\item{report_type}{The type of survey data ("primary" or "secondary")}
 }
 \value{
 \code{data_prep}: A dataframe with the required variables for rendering a report
 
+The score-calculating functions return the dataset with relevant columns appended:
+
 \code{who_score}:  WHO 5-item wellbeing score (\code{who_score} variable) and categorical breakdown (\code{who_cat}: low/good)
 
-\code{mm_score}: 'Me and My feelings' score
+\code{mm_score}: 'Me and My feelings' score for primary schools
 
 \code{sehs_primary}: SEHS score for primary schools
 
@@ -40,7 +44,7 @@ sqd_score(survey_data)
 
 \code{asw_score}: Adolescent sleep-wake score for secondary schools
 
-\code{sqd_score}: SDQ score for secondary schools
+\code{sdq_score}: SDQ score for secondary schools
 }
 \description{
 These functions prepare the data by reshaping it and generating necessary variables.

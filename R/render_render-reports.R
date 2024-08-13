@@ -48,7 +48,7 @@ render_report <- function(survey_data = NULL,
 #' @param survey_data The data to process
 #' @param report_type The type of survey data ("primary" or "secondary")
 #'
-#' @importFrom rlang .data
+#' @import rlang
 #'
 #' @returns
 #' `data_prep`: A dataframe with the required variables for rendering a report
@@ -159,13 +159,13 @@ mm_score <- function(survey_data) {
 
   survey_data |>
     transmute(across(starts_with("mm"), ~match(.x, mm_responses) - 1),
-           mm15 = 2L - mm15,
-           mme_missing = rowSums(pick(mm1:mm10) |> is.na()),
-           mmb_missing = rowSums(pick(mm11:mm16) |> is.na())
+           mm15 = 2L - .data$mm15,
+           mme_missing = rowSums(pick(matches(paste0("^mm", 1:10, "$"))) |> is.na()),
+           mmb_missing = rowSums(pick(matches(paste0("^mm", 11:16, "$"))) |> is.na())
            ) |>
     mutate(
-      mme_score = rowSums(pick(mm1:mm10), na.rm = TRUE),
-      mmb_score = rowSums(pick(mm11:mm16), na.rm = TRUE),
+      mme_score = rowSums(pick(matches(paste0("^mm", 1:10, "$"))), na.rm = TRUE),
+      mmb_score = rowSums(pick(matches(paste0("^mm", 11:16, "$"))), na.rm = TRUE),
       mme_score = case_when(
         mme_missing == 0 ~ mme_score,
         mme_missing <=3 ~ 10 * mme_score / (10 - mme_missing),
@@ -176,8 +176,8 @@ mm_score <- function(survey_data) {
         mmb_missing <=2 ~ 6 * mmb_score / (6 - mmb_missing),
         mmb_missing > 2 ~ NA_real_
       ),
-      mme_cat = if_else(mme_score <= 9, "Expected", "Elevated"),
-      mmb_cat = if_else(mmb_score <= 5, "Expected", "Elevated"),
+      mme_cat = if_else(.data$mme_score <= 9, "Expected", "Elevated"),
+      mmb_cat = if_else(.data$mmb_score <= 5, "Expected", "Elevated"),
       .keep = "none"
       )  |>
     bind_cols(survey_data, x = _)
@@ -202,7 +202,7 @@ sehs_primary <- function(survey_data) {
   num_vars <- survey_data |>
     transmute(across(starts_with("sehs"), ~match(.x, sehs_responses)))
 
-   scores <- imap(c("g","z","o","p","pro"), \(variable, index) {
+   scores <- purrr::imap(c("g","z","o","p","pro"), \(variable, index) {
 
      start <- (index - 1) * 4 + 1
 
@@ -222,7 +222,7 @@ sehs_primary <- function(survey_data) {
        .keep  = "none")
 
     }) |>
-     reduce(bind_cols) |>
+     purrr::reduce(bind_cols) |>
      mutate(cov_score = rowSums(pick(ends_with("score"))))
 
     bind_cols(survey_data, scores)
@@ -243,7 +243,7 @@ sehs_secondary <- function(survey_data) {
     transmute(across(starts_with("sehs"), ~match(.x, sehs_responses)))
 
 
-  scores <- imap(
+  scores <- purrr::imap(
     c(
       "efficacy",
       "aware",
@@ -276,11 +276,11 @@ sehs_secondary <- function(survey_data) {
       .keep  = "none")
 
   }) |>
-    reduce(bind_cols) |>
+    purrr::reduce(bind_cols) |>
     mutate(
-      belief_self_score = (efficacy_score + aware_score + persist_score)/3,
-      belief_others_score = (sch_support_score + fam_support_score + peer_support_score)/3,
-      emotional_competence_score = (emt_regulation_score + empathy_score + control_score)/3
+      belief_self_score = (.data$efficacy_score + .data$aware_score + .data$persist_score)/3,
+      belief_others_score = (.data$sch_support_score + .data$fam_support_score + .data$peer_support_score)/3,
+      emotional_competence_score = (.data$emt_regulation_score + .data$empathy_score + .data$control_score)/3
     )
 
   bind_cols(survey_data, scores)
@@ -356,13 +356,13 @@ sdq_score <- function(survey_data) {
   )
 
   varlist |>
-    imap(\(score_vars, name) {
+    purrr::imap(\(score_vars, name) {
       num_responses |>
         mutate(
           score = rowSums(!!score_vars, na.rm = TRUE),
           n_valid = rowSums(!is.na(!!score_vars))) |>
         mutate(
-          corr_score = if_else(n_valid >=3, score / n_valid * 5, NA_real_),
+          corr_score = if_else(.data$n_valid >=3, .data$score / .data$n_valid * 5, NA_real_),
           score_cat = case_when(
             corr_score %in% sdq_cutoff[[name]][[1]] ~ "As expected",
             corr_score %in% sdq_cutoff[[name]][[2]] ~ "Borderline",
@@ -374,8 +374,8 @@ sdq_score <- function(survey_data) {
           "{name}_cat" := score_cat
         )
     }) |>
-    reduce(bind_cols) |>
-    mutate(sdq_total_score = ep_score + cp_score + ha_score + pp_score,
+    purrr::reduce(bind_cols) |>
+    mutate(sdq_total_score = .data$ep_score + .data$cp_score + .data$ha_score + .data$pp_score,
            sdq_total_cat = case_when(
              sdq_total_score %in% sdq_cutoff[["tot"]][[1]] ~ "As expected",
              sdq_total_score %in% sdq_cutoff[["tot"]][[2]] ~ "Borderline",
