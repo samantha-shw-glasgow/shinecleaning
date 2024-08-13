@@ -148,8 +148,8 @@ test_that("ASW score calculations", {
     tibble("ASW{asw_n}" := c(1, 6))
   }) |>
     reduce(bind_cols) |>
-    mutate(across(matches(paste0("^ASW[1345678]")), ~7 - .x),
-           across(everything(), ~asw_responses[.x]))
+    mutate(across(c(ASW1, ASW3, ASW4, ASW5, ASW6, ASW7, ASW8), ~ 7 - .x), across(everything(), ~
+                                                                                   asw_responses[.x]))
 
   expected <-
     bind_cols(input_data_d, tibble(asw_score = c(10, 60))) # high/low scores

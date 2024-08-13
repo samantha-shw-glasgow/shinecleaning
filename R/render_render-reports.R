@@ -304,7 +304,7 @@ asw_score <- function(survey_data) {
     transmute(
       across(starts_with("ASW"), ~match(.x, asw_responses)),
       # reverse scores for select vars
-      across(matches(paste0("^ASW[1345678]")), ~7 - .x)
+      across(matches(paste0("^ASW[1345678]$")), ~7 - .x)
       ) |>
     mutate(asw_score = rowSums(pick(starts_with("ASW"))), .keep = "none") |>
     bind_cols(survey_data, x = _)
