@@ -315,7 +315,73 @@ asw_score <- function(survey_data) {
 
 #' @rdname data_prep
 sdq_score <- function(survey_data) {
-  survey_data
+
+  #sdq_cutoff={"ep": [(0,5), (6, 6), (7, 10)],
+  # "cp": [(0,3), (4, 4), (5, 10)],
+  # "ha": [(0,5), (6, 6), (7, 10)],
+  # "pp": [(0,3), (4, 5), (6, 10)],
+  # "ps": [(6,10),(5, 5), (0, 4)],
+  # "tot":[(0,15),(16,19),(20,40)]}
+
+  sdq_cutoff <- list(
+    ep = list(0:5, 6:6, 7:10),
+    cp = list(0:3, 4:4, 5:10),
+    ha = list(0:5, 6:6, 7:10),
+    pp = list(0:3, 4:5, 6:10),
+    ps = list(6:10, 5:5, 0:4),
+    tot = list(0:15, 16:19, 20:40)
+  )
+
+
+  sdq_responses <- c(
+    "Not true",
+    "Somewhat true",
+    "Certainly true"
+  )
+
+
+  num_responses <- survey_data |>
+    transmute(
+      across(starts_with("SDQ"), ~match(.x, sdq_responses) - 1),
+      # reverse scores for select vars
+      across(matches(paste0("^SDQ", c(7, 21, 25, 11, 14), "$")), ~2 - .x)
+    )
+
+  varlist <- list(
+    ep = quo(pick(matches(paste0("^SDQ", c(3,8,13,16,24), "$")))),
+    cp = quo(pick(matches(paste0("^SDQ", c(5,7,12,18,22), "$")))),
+    ha = quo(pick(matches(paste0("^SDQ", c(2,10,15,21,25), "$")))),
+    pp = quo(pick(matches(paste0("^SDQ", c(6,11,14,19,23), "$")))),
+    ps = quo(pick(matches(paste0("^SDQ", c(1,4,9,17,20), "$"))))
+  )
+
+  varlist |>
+    imap(\(score_vars, name) {
+      num_responses |>
+        mutate(
+          score = rowSums(!!score_vars, na.rm = TRUE),
+          n_valid = rowSums(!is.na(!!score_vars))) |>
+        mutate(
+          corr_score = if_else(n_valid >=3, score / n_valid * 5, NA_real_),
+          score_cat = case_when(
+            corr_score %in% sdq_cutoff[[name]][[1]] ~ "As expected",
+            corr_score %in% sdq_cutoff[[name]][[2]] ~ "Borderline",
+            corr_score %in% sdq_cutoff[[name]][[3]] ~ "Difficulties"
+          )
+        ) |>
+        select(
+          "{name}_score" := corr_score,
+          "{name}_cat" := score_cat
+        )
+    }) |>
+    reduce(bind_cols) |>
+    mutate(sdq_total_score = ep_score + cp_score + ha_score + pp_score,
+           sdq_total_cat = case_when(
+             sdq_total_score %in% sdq_cutoff[["tot"]][[1]] ~ "As expected",
+             sdq_total_score %in% sdq_cutoff[["tot"]][[2]] ~ "Borderline",
+             sdq_total_score %in% sdq_cutoff[["tot"]][[3]] ~ "Difficulties"
+           )) |>
+    bind_cols(survey_data, x = _)
 
 }
 

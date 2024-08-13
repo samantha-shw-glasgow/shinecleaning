@@ -157,3 +157,32 @@ test_that("ASW score calculations", {
   expect_identical(asw_score(input_data_d), expected)
 
 })
+
+test_that("SDQ score output", {
+
+  sdq_responses <- c(
+    "Not true",
+    "Somewhat true",
+    "Certainly true"
+  )
+
+  input_data_e <- map(1:25, \(sdq_n) {
+    tibble("SDQ{sdq_n}" := sample(sdq_responses, 3, replace = TRUE))
+  }) |>
+    reduce(bind_cols)
+
+  expected_shape <- map(c("ep", "cp", "ha", "pp", "ps", "sdq_total"), \(varname) {
+    tibble(
+      "{varname}_score" := rep(NA_real_, 3),
+      "{varname}_cat" := rep(NA_character_, 3),
+      )
+  }) |>
+    reduce(bind_cols) |>
+    bind_cols(input_data_e, x = _)
+
+  test_output <- sdq_score(input_data_e)
+
+  expect_identical(names(test_output), names(expected_shape))
+  expect_identical(dim(test_output), dim(expected_shape))
+
+})
