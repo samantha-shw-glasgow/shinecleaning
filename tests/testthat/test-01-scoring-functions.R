@@ -65,7 +65,7 @@ test_that("Me and My feelings score", {
 
   expect_identical(mm_score(input_data_b), expected_b)
 
-})
+  })
 
 test_that("WHO score", {
 
@@ -131,8 +131,29 @@ test_that("Secondary SEHS scoring variables calculating", {
 
   expect_identical(out_dat, expected)
 
+  })
 
-}
+test_that("ASW score calculations", {
 
+  asw_responses <- c(
+    "Never",
+    "Once in a while",
+    "Sometimes",
+    "Quite often",
+    "Frequently, if not always",
+    "Always"
+  )
 
-)
+  input_data_d <- map(1:10, \(asw_n) {
+    tibble("ASW{asw_n}" := c(1, 6))
+  }) |>
+    reduce(bind_cols) |>
+    mutate(across(matches(paste0("^ASW[1345678]")), ~7 - .x),
+           across(everything(), ~asw_responses[.x]))
+
+  expected <-
+    bind_cols(input_data_d, tibble(asw_score = c(10, 60))) # high/low scores
+
+  expect_identical(asw_score(input_data_d), expected)
+
+})
