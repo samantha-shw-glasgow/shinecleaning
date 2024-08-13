@@ -145,8 +145,8 @@ low mood (Figure \@ref(fig:bar-wellbeing)).
 <!-- 6. -->
 
 ```{r bar-wellbeing, fig.cap="% of pupils with low mood"}
-# input_data |> 
-#   bar_by_cat(wellbeing)
+input_data |>
+  bar_by_cat(who_cat, success = "low")
 ```
 
 \newpage

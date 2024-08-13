@@ -11,3 +11,13 @@ test_that("primary report - sample data", {
   )
 
 })
+
+test_that("secondary report - sample data", {
+
+
+  expect_no_error({
+    sec_test_a <- readr::read_csv(system.file("testdata", "sec_test_large.csv", package = "SHINEcleaning"))[-1:-2, ]
+  })
+
+
+})
