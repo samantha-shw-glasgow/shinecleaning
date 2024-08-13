@@ -369,9 +369,9 @@ sdq_score <- function(survey_data) {
             corr_score %in% sdq_cutoff[[name]][[3]] ~ "Difficulties"
           )
         ) |>
-        select(
-          "{name}_score" := corr_score,
-          "{name}_cat" := score_cat
+        transmute(
+          "{name}_score" := .data$corr_score,
+          "{name}_cat" := .data$score_cat
         )
     }) |>
     purrr::reduce(bind_cols) |>
