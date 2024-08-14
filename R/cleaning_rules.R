@@ -94,11 +94,25 @@ duplicate_cases <- function(data) {
 }
 
 #' @rdname validators
-assign_missing_year <- function(data) {
+assign_missing_class <- function(data) {
+  classes <- c(
+    rep(NA, 3),
+    c("P1", "P2", "P3", "P4", "P5", "P6", "P7"),
+    c("S1", "S2", "S3", "S4", "S5", "S6")
+  )
   messages <- data |>
     dplyr::mutate(
+      dob_ym = lubridate::ym(paste(dobyr, dobmnth)),
+      current_year = lubridate::dmy_hm(RecordedDate),
+      school_dob = lubridate::year(dob_ym - months(8)),
+      school_year = lubridate::year(current_year - months(7)),
+      expected_class = classes[school_year - school_dob],
       missing = is.na(class) | class == "Prefer not to say",
-      message = ifelse(missing, "Missing class", "")
+      message = dplyr::case_when(
+        missing & !is.na(expected_class)  ~ paste("Missing class, expected", expected_class),
+        missing & is.na(expected_class)   ~ "Missing class",
+        !missing                          ~ ""
+      ),
     ) |>
     dplyr::pull(message)
   tibble::tibble(

@@ -65,8 +65,8 @@ describe("duplicate_cases", {
   })
 })
 
-describe("assign_missing_year", {
+describe("assign_missing_class", {
   it("works as described in the example dataset", {
-    test_validator_with_data(assign_missing_year, "assign_missing_year.csv")
+    test_validator_with_data(assign_missing_class, "assign_missing_class.csv")
   })
 })
