@@ -12,6 +12,7 @@ createReportUI <- function(id){
 	              strong('Report type'),
 	              choices = c('Primary', 'Secondary', 'Cluster / Local Authority', 'School-level data', 'Additional tables'),
 	              selected = 'Primary'),
+	  uiOutput(ns('report_warnings')),
 	  uiOutput(ns('report_ui')),
 	  br(),
 	  downloadButton(ns('generate'), 'Generate report'),
@@ -50,13 +51,37 @@ createReport_server <- function(id, data){
 				  }
 				})
 
+
 				output$report_ui <- renderUI({
 				  ui_options()
 				})
 
-				output$test <- renderPrint({
-				  head(data()[,1:5])
+				# check for required variables
+
+				# var names
+				lifesat <- paste0('lifesat', 1:11)
+				health <- "health"
+				sch <- paste0('sch', 1:3)
+				who <- paste0('Who', 1:5)
+				sehs <- paste0('sehs', 1:20)
+				#cov <- paste0('cov', 1:5)
+
+				primary_vars <- c("gender2", lifesat, health, sch, who, sehs)
+
+				check_vars <- reactive({
+				  if(input$report_type == 'Primary'){
+				    upcheck_has_columns(data(), primary_vars)
+				  }
 				})
+
+				output$report_warnings <- renderUI({
+				  if (isTRUE(check_vars()$fail)) {
+				    tagList(
+				      make_upload_warning(check_vars()$message, check_vars()$level)
+				    )
+				  }
+				})
+
 
 				output$generate <- downloadHandler(
 				  filename = paste0(input$school_name, '_report.docx'),

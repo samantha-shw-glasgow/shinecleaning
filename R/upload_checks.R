@@ -17,7 +17,7 @@ upload_checks_raw <- function(data){
 
 upload_checks_clean <- function(data, vars){
   checks <- rbind(
-    upcheck_has_columns(data, vars),
+    #upcheck_has_columns(data, vars),
     upcheck_schools(data)
   )
 
@@ -132,9 +132,11 @@ upcheck_has_columns <- function(data, columns){
   message = NA
   level = NA
 
-  if(! all(columns %in% colnames(data))){
+  has_col = columns %in% colnames(data)
+
+  if (! all(isTRUE(has_col))) {
     fail = TRUE
-    message = paste0("This file is missing the following required column(s): ", paste0(columns, collapse = ", "))
+    message = paste0("This file is missing the following required column(s): ", paste0(columns[!has_col], collapse = ", "))
     level = 3
   }
 
