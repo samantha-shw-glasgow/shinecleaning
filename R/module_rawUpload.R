@@ -71,7 +71,7 @@ rawUpload_server <- function(id){
 
 				  req(data(), cancelOutput = TRUE)
 
-				  checks <- upload_checks(data())
+				  checks <- upload_checks_raw(data())
 				  warnings <- purrr::pmap(checks, make_upload_warning)
 
 				  do.call(tagList, warnings)

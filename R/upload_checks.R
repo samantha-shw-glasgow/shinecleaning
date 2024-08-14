@@ -1,16 +1,25 @@
-#' Run all upload checks for raw data
+#' Run all upload checks for raw data or for clean data
 #'
 #' @param data
 #'
 #' @return dataframe of failed checks
 #'
 #' @keywords internal
-upload_checks <- function(data){
+upload_checks_raw <- function(data){
   checks <- rbind(
     upcheck_status(data),
     upcheck_schools(data),
     upcheck_gender(data)
     )
+
+  return(checks[checks$fail, c("message", "level")])
+}
+
+upload_checks_clean <- function(data, vars){
+  checks <- rbind(
+    upcheck_has_columns(data, vars),
+    upcheck_schools(data)
+  )
 
   return(checks[checks$fail, c("message", "level")])
 }
@@ -117,3 +126,18 @@ upcheck_gender <- function(data){
 
   return(data.frame(fail, message, level))
 }
+
+upcheck_has_columns <- function(data, columns){
+  fail = FALSE
+  message = NA
+  level = NA
+
+  if(! all(columns %in% colnames(data))){
+    fail = TRUE
+    message = paste0("This file is missing the following required column(s): ", paste0(columns, collapse = ", "))
+    level = 3
+  }
+
+  return(data.frame(fail, message, level))
+}
+
