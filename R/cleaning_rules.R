@@ -69,7 +69,14 @@ no_test_responses <- function(data) {
 #' @rdname validators
 duplicate_cases <- function(data) {
   messages <- data |>
-    dplyr::group_by(`gender1`, `gender2`, `School ID`) |>
+    dplyr::group_by(
+      gender1,
+      gender2,
+      dobmnth,
+      dobday,
+      dobyr,
+      `School ID`
+    ) |>
     dplyr::arrange(ResponseId) |>
     dplyr::mutate(
       duplicate_n = dplyr::n(),
