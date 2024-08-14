@@ -92,3 +92,17 @@ duplicate_cases <- function(data) {
     message = messages
   )
 }
+
+#' @rdname validators
+assign_missing_year <- function(data) {
+  messages <- data |>
+    dplyr::mutate(
+      missing = is.na(class) | class == "Prefer not to say",
+      message = ifelse(missing, "Missing class", "")
+    ) |>
+    dplyr::pull(message)
+  tibble::tibble(
+    include = TRUE,
+    message = messages
+  )
+}

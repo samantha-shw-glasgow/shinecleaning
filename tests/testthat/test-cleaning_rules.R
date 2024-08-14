@@ -37,9 +37,11 @@ test_that("columns are added with multiple validators", {
 test_validator_with_data <- function(validator_fun, filename) {
   data <- readr::read_csv(
     file.path("examples", filename),
-    na = character(),
     show_col_types = FALSE
-  )
+  ) |>
+    dplyr::mutate(
+      expected_message = ifelse(is.na(expected_message), "", expected_message)
+    )
   result <- validator_fun(data)
   expect_equal(result$include, data$expected_include)
   expect_equal(result$message, data$expected_message)
@@ -60,5 +62,11 @@ describe("no_test_responses", {
 describe("duplicate_cases", {
   it("works as described in the example dataset", {
     test_validator_with_data(duplicate_cases, "duplicate_cases.csv")
+  })
+})
+
+describe("assign_missing_year", {
+  it("works as described in the example dataset", {
+    test_validator_with_data(assign_missing_year, "assign_missing_year.csv")
   })
 })
