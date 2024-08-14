@@ -41,59 +41,75 @@ cleanUpload_server <- function(id){
 				ns <- session$ns
 				send_message <- make_send_message(session)
 
-				# create warnings
 				# create an empty df to hold warning messages
-				checks <- reactiveValues(checks = data.frame(fail = logical(0),
-				                                             message = character(0),
+				checks <- reactiveValues(checks = data.frame(message = character(0),
 				                                             level = integer(0)))
 
+				# get uploaded data
 
-				# upload data
 				clean_data_list <- reactive({
 				  req(input$upload)
-				  purrr::map(input$upload$datapath, ~openxlsx::read.xlsx(.x, sheet = 1))
+				  purrr::map(input$upload$datapath, ~openxlsx::read.xlsx(.x, sheet = 1, sep.names = " "))
 				})
 
-				clean_data <- reactive({
-				  if(length(clean_data_list()) == 1){
+				# stack dataframes if multiple uploaded
+
+				uploaded_data <- reactive({
+				  if (length(clean_data_list()) == 1) {
 				    return(clean_data_list()[[1]])
 				  }
-				  if (length(clean_data_list()) > 1){
-				    if(!all(purrr::map_lgl(clean_data_list(),
+				  if (length(clean_data_list()) > 1) {
+				    if (!all(purrr::map_lgl(clean_data_list(),
 				                           ~identical(colnames(.x),
 				                                      colnames(clean_data_list()[[1]]))
-				                           ))){
-				      warning <- data.frame(fail = c(TRUE),
-				                            message = c("Column names do not match"),
-				                            level = c(3))
+				                           ))) {
+				      error_message <- data.frame(message = c("Column names do not match"),
+				                                  level = c(3))
 
-				      checks$checks <- warning
-
-				      warning("hmmm")
+				      isolate({checks$checks <- error_message})
 				      return(NULL)
 				    } else {
-				      return(purrr::reduce(clean_data_list(), dplyr::bind_rows()))
+				      return(purrr::reduce(clean_data_list(), .f = dplyr::bind_rows))
 				    }
 				  }
 				})
 
-				# test output df
+				# filter out excluded observations
 
-				output$test <- renderPrint({
-				  head(clean_data())
+				filtered_data <- reactive({
+				  req(uploaded_data())
+				  if (!"Keep row?" %in% colnames(uploaded_data())) {
+				    error_message <- data.frame(message = c("Data does not contain 'Keep row?' column"),
+				                                  level = c(3))
+
+				    isolate({checks$checks <- error_message})
+				    return(NULL)
+				  } else {
+				    uploaded_data() |>
+				      dplyr::filter(`Keep row?` == 1) |>
+				      dplyr::select(-c("Keep row?", "Error messages", "Reviewer notes"))
+				  }
+
 				})
+
 
 				# create warning ui
 				output$warn <- renderUI({
 
-				  req(nrow(checks$checks) > 0 , cancelOutput = TRUE)
+				  req(clean_data_list, cancelOutput = TRUE)
 
-				  warnings <- purrr::pmap(checks$checks[checks$checks$fail, c("message", "level")],
+				  if (!is.null(filtered_data())) {
+				    checks$checks <- upload_checks_clean(filtered_data(), vars = NULL)
+				  }
+
+				  warnings <- purrr::pmap(checks$checks,
 				                          make_upload_warning)
 
 				  do.call(tagList, warnings)
 
 				})
+
+				return(filtered_data)
 
 		}
 	)
