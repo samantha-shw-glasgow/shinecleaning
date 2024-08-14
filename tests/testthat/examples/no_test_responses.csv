@@ -1,0 +1,4 @@
+Status,expected_include,expected_message
+IP Address,TRUE,
+Survey Preview,FALSE,Preview response
+something nonsensical,FALSE,Unexpected response type
