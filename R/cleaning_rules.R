@@ -94,7 +94,7 @@ duplicate_cases <- function(data) {
 }
 
 #' @rdname validators
-assign_missing_class <- function(data) {
+suggest_missing_class <- function(data) {
   classes <- c(
     rep(NA, 3),
     c("P1", "P2", "P3", "P4", "P5", "P6", "P7"),
