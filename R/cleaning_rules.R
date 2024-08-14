@@ -1,4 +1,4 @@
-run_validations <- function(data, validators) {
+apply_cleaning_rules <- function(data, validators) {
   messages <- rep("", nrow(data))
   should_include <- rep(TRUE, nrow(data))
   for (validator_fn in validators) {
@@ -67,16 +67,21 @@ no_test_responses <- function(data) {
 }
 
 #' @rdname validators
-nothing_is_wrong <- function(data) {
-  rep("", nrow(data))
-}
-
-#' @rdname validators
-everything_sucks <- function(data) {
-  rep("This sucks", nrow(data))
-}
-
-#' @rdname validators
-everything_is_fine <- function(data) {
-  rep("This is fine", nrow(data))
+duplicate_cases <- function(data) {
+  messages <- data |>
+    dplyr::group_by(`gender1`, `gender2`, `School ID`) |>
+    dplyr::arrange(ResponseId) |>
+    dplyr::mutate(
+      duplicate_n = dplyr::n(),
+      message = ifelse(
+        duplicate_n > 1,
+        paste("Possible duplicates:", paste0(ResponseId, collapse = ", ")),
+        ""
+      )
+    ) |>
+    dplyr::pull(message)
+  tibble::tibble(
+    include = TRUE,
+    message = messages
+  )
 }

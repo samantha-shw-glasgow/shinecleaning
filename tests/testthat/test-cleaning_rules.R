@@ -10,7 +10,7 @@ test_that("columns are added with a single validator", {
     "",                 1, "", 1, "IP Address",
     "Preview response", 0, "", 2, "Survey Preview",
   )
-  result <- run_validations(input, validators)
+  result <- apply_cleaning_rules(input, validators)
   expect_identical(result, expected)
 })
 
@@ -30,7 +30,7 @@ test_that("columns are added with multiple validators", {
     "Preview response",                     0, "", 3, "Survey Preview", 62,
     "Preview response; Duration too short", 0, "", 4, "Survey Preview", 58,
   )
-  result <- run_validations(input, validators)
+  result <- apply_cleaning_rules(input, validators)
   expect_identical(result, expected)
 })
 
@@ -45,10 +45,20 @@ test_validator_with_data <- function(validator_fun, filename) {
   expect_equal(result$message, data$expected_message)
 }
 
-test_that("duration_too_short", {
-  test_validator_with_data(duration_too_short, "duration_too_short.csv")
+describe("duration_too_short", {
+  it("works as described in the example dataset", {
+    test_validator_with_data(duration_too_short, "duration_too_short.csv")
+  })
 })
 
-test_that("no_test_responses", {
-  test_validator_with_data(no_test_responses, "no_test_responses.csv")
+describe("no_test_responses", {
+  it("works as described in the example dataset", {
+    test_validator_with_data(no_test_responses, "no_test_responses.csv")
+  })
+})
+
+describe("duplicate_cases", {
+  it("works as described in the example dataset", {
+    test_validator_with_data(duplicate_cases, "duplicate_cases.csv")
+  })
 })

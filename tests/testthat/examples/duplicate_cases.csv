@@ -1,0 +1,8 @@
+ResponseId,gender1,gender2,School ID,expected_include,expected_message
+a1,Male,Boy,1,TRUE,"Possible duplicates: a1, a2"
+a2,Male,Boy,1,TRUE,"Possible duplicates: a1, a2"
+a3,Male,Boy,2,TRUE,
+a4,Female,Girl,1,TRUE,
+a5,Female,Girl,2,TRUE,
+a6,Female,Boy,1,TRUE,
+a7,Male,Girl,1,TRUE,
