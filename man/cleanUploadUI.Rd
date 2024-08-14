@@ -4,7 +4,7 @@
 \alias{cleanUploadUI}
 \title{cleanUpload UI}
 \usage{
-cleanUploadUI(id)
+cleanUploadUI(id, multiple = TRUE)
 }
 \arguments{
 \item{id}{Unique id for module instance.}
