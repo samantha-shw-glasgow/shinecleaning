@@ -1,0 +1,24 @@
+RecordedDate,class,dobmnth,dobday,dobyr,expected_include,expected_message
+01/09/2024 12:00,P1,August,31,2020,TRUE,
+01/09/2024 12:00,P2,August,31,2020,TRUE,
+01/09/2024 12:00,P3,August,31,2020,TRUE,Unexpected class (P1 predicted)
+01/09/2024 12:00,P2,March,1,2018,TRUE,Unexpected class (P4 predicted)
+01/09/2024 12:00,P3,March,1,2018,TRUE,
+01/09/2024 12:00,P4,March,1,2018,TRUE,
+01/09/2024 12:00,P5,March,1,2018,TRUE,
+01/09/2024 12:00,P6,March,1,2018,TRUE,Unexpected class (P4 predicted)
+01/09/2024 12:00,P5,February,28,2015,TRUE,Unexpected class (P7 predicted)
+01/09/2024 12:00,P6,February,28,2015,TRUE,
+01/09/2024 12:00,P7,February,28,2015,TRUE,
+01/09/2024 12:00,S1,February,28,2015,TRUE,
+01/09/2024 12:00,S2,February,28,2015,TRUE,Unexpected class (P7 predicted)
+01/09/2024 12:00,P6,August,31,2014,TRUE,Unexpected class (S1 predicted)
+01/09/2024 12:00,P7,August,31,2014,TRUE,
+01/09/2024 12:00,S1,August,31,2014,TRUE,
+01/09/2024 12:00,S2,August,31,2014,TRUE,
+01/09/2024 12:00,S3,August,31,2014,TRUE,Unexpected class (S1 predicted)
+01/09/2024 12:00,S2,February,28,2011,TRUE,Unexpected class (S4 predicted)
+01/09/2024 12:00,S3,February,28,2011,TRUE,
+01/09/2024 12:00,S4,February,28,2011,TRUE,
+01/09/2024 12:00,S5,February,28,2011,TRUE,
+01/09/2024 12:00,S6,February,28,2011,TRUE,Unexpected class (S4 predicted)
