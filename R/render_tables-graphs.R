@@ -209,7 +209,7 @@ bar_multiple_vars <-
       pivot_longer(-c(grouping, denom), names_to = "var", values_to = "n") |>
       rowwise() |>
       mutate(
-        censored = if_else(n < 3 & .censor, 1, 0),
+        censored = if_else(n < 3 & .censor, 1, 0) |> factor(levels = c("1", "0")),
         labels = str_wrap(varslist[[var]][1], 12),
         prop = n / denom,
         prop = if_else(censored == 1, 0.05, prop),
@@ -222,10 +222,10 @@ bar_multiple_vars <-
       mutate(labels = fct_reorder(labels, prop))
 
     clean_dat |>
-      ggplot(aes(prop, labels, linetype = factor(censored), fill = grouping, colour = grouping, group = grouping)) +
+      ggplot(aes(prop, labels, linetype = censored, fill = grouping, colour = grouping, group = grouping)) +
       geom_bar_t(aes(alpha = factor(censored)), stat = "identity", position = position_dodge(width = 0.6)) +
       scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
-      scale_linetype_manual(values = c("1" = "dashed", "0" = "solid"), guide = guide_none()) +
+      scale_linetype_manual(values = c("1" = "dashed", "0" = NULL), guide = guide_none()) +
       scale_fill_hbsc(aesthetics = c("fill", "colour"), name = "",  limits = force) +
       scale_y_discrete("") +
       theme(legend.justification.right = "top",
