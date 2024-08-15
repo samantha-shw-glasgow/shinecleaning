@@ -153,6 +153,21 @@ suggest_missing_class <- function(data) {
 }
 
 #' @rdname validators
+duplicate_postcodes <- function(data) {
+  postcode_count <- data |>
+    dplyr::add_count(postcode_5_TEXT) |>
+    dplyr::pull(n)
+  tibble::tibble(
+    include = TRUE,
+    message = ifelse(
+      postcode_count >= 5,
+      paste("Postcode occurs", postcode_count, "times"),
+      ""
+    )
+  )
+}
+
+#' @rdname validators
 no_consent <- function(data) {
   has_consented <- grepl("Yes", data$consent)
   tibble::tibble(

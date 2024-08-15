@@ -81,6 +81,12 @@ describe("suggest_missing_class", {
   })
 })
 
+describe("duplicate_postcodes", {
+  it("works as described in the example dataset", {
+    test_validator_with_data(duplicate_postcodes, "duplicate_postcodes.csv")
+  })
+})
+
 describe("no_consent", {
   it("works as described in the example dataset", {
     test_validator_with_data(no_consent, "no_consent.csv")
