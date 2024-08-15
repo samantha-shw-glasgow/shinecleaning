@@ -59,6 +59,15 @@ describe("no_test_responses", {
   })
 })
 
+describe("partial_cases", {
+  it("works as described in the example dataset (primary)", {
+    test_validator_with_data(partial_cases, "partial_cases_primary.csv")
+  })
+  it("works as described in the example dataset (primary)", {
+    test_validator_with_data(partial_cases, "partial_cases_secondary.csv")
+  })
+})
+
 describe("duplicate_cases", {
   it("works as described in the example dataset", {
     test_validator_with_data(duplicate_cases, "duplicate_cases.csv")

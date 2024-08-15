@@ -67,6 +67,37 @@ no_test_responses <- function(data) {
 }
 
 #' @rdname validators
+partial_cases <- function(data) {
+  relevant_cols <- select(
+    data,
+    dplyr::starts_with("oops"),
+    dplyr::starts_with("activity"),
+    dplyr::starts_with("asw"),
+    dplyr::starts_with("class"),
+    dplyr::starts_with("fas"),
+    dplyr::starts_with("health"),
+    dplyr::starts_with("lifesat"),
+    dplyr::starts_with("loneliness"),
+    dplyr::starts_with("mm"),
+    dplyr::starts_with("sch"),
+    dplyr::starts_with("sdq"),
+    dplyr::starts_with("sehs"),
+    dplyr::starts_with("selfh"),
+    dplyr::starts_with("who")
+  )
+  relevant_cols <- replace(relevant_cols, relevant_cols == "Prefer not to say", NA)
+  n_missing_cols <- rowSums(is.na(relevant_cols))
+  tibble::tibble(
+    include = TRUE,
+    message = ifelse(
+      n_missing_cols > 0.5 * ncol(relevant_cols),
+      paste0("Missing ", n_missing_cols, "/", ncol(relevant_cols), " answers"),
+      ""
+    )
+  )
+}
+
+#' @rdname validators
 duplicate_cases <- function(data) {
   messages <- data |>
     dplyr::group_by(
