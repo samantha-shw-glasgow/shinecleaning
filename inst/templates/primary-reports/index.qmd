@@ -43,7 +43,7 @@ execute:
 knitr::opts_chunk$set(echo = FALSE,
                       warning = FALSE,
                       message = FALSE,
-                      fig.height = 4.8,
+                      fig.height = 4.6,
                       fig.width = 6.3)
 school_name <- params$school_name
 is_la_report <- params$is_la_report
@@ -126,7 +126,7 @@ Figure \@ref(fig:bar-low-lifesat) shows the percentage of pupils who scored low 
 aspect of life. Low happiness is defined as a score of less than 5. For
 more information on this index, see page 6.
 
-```{r bar-lifesat, fig.cap="Average scores for different aspects of life"}
+```{r bar-lifesat, fig.cap="Average scores for different aspects of life", fig.show='hold'}
 input_data |> 
   bar_mean_multiple_vars(
     varslist = list(
@@ -146,7 +146,7 @@ input_data |>
 
 ```
 
-```{r bar-low-lifesat, fig.cap="% of pupils who report low happiness in different aspects of life"}
+```{r bar-low-lifesat, fig.cap="% of pupils who report low happiness in different aspects of life", fig.show='hold'}
 if (params$gender_split) {
   
 

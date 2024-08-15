@@ -99,7 +99,7 @@ bar_by_cat <- function(data,
                 vjust = 0,
                 nudge_y = 0.05,
                 size = 4) +
-      theme(plot.margin = unit(c(0.8, 0.5, 0.5, 1),  "cm")) +
+      theme(plot.margin = unit(c(0.5, 0.5, 0.5, 1),  "cm")) +
       coord_cartesian(ylim = c(0, 1), clip = "off")
 
   } else { # Test semi-censored version
