@@ -151,3 +151,12 @@ suggest_missing_class <- function(data) {
     message = messages
   )
 }
+
+#' @rdname validators
+no_consent <- function(data) {
+  has_consented <- grepl("Yes", data$consent)
+  tibble::tibble(
+    include = has_consented,
+    message = ifelse(has_consented, "", "Consent not given")
+  )
+}
