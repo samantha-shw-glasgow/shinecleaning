@@ -146,9 +146,7 @@ input_data |>
 
 ```
 
-```{r bar-low-lifesat, fig.cap="% of pupils who report low happiness in different aspects of life", fig.show='hold'}
-if (params$gender_split) {
-  
+```{r bar-low-lifesat-split, eval=params$gender_split}
 
 input_data |>
     bar_multiple_vars(
@@ -170,7 +168,10 @@ input_data |>
     .gender_split = params$gender_split
   )
 
-}
+```
+
+
+```{r bar-low-lifesat, fig.cap="% of pupils who report low happiness in different aspects of life"}
 input_data |>
     bar_multiple_vars(
     varslist = list(
