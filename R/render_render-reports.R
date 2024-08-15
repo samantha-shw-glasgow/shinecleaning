@@ -85,7 +85,8 @@ data_prep <- function(survey_data, report_type = "primary") {
 
   survey_out <- survey_data |>
     filter(.data$consent == "Yes, I am happy to take part") |>
-    mutate(gender = .data$gender2) |>
+    mutate(gender = .data$gender2 |>
+             stringr::str_replace("(?<=(Boy|Girl))$", "s")) |>  # pluralise for reporting
     who_score()
 
   if (report_type == "primary") {

@@ -171,13 +171,79 @@ bar_by_cat <- function(data,
   p1 + p2
 }
 
-bar_multiple_vars <- function(data, ...) {
-  ggplot2::ggplot(data)
-}
-
 bar_mean_multiple_vars <- function(data, ...) {
   ggplot2::ggplot(data)
 }
+
+bar_multiple_vars <-
+  function(data,
+           varslist,
+           success = ~.x %in% c("More than once a week", "About every day"),
+           group = c("gender", "class", "none"),
+           .censor = TRUE,
+           .gender_split = TRUE,  # This currently overrides `group`
+           classes = "All") {
+
+    group <- match.arg(group)
+
+    group <- if_else(.gender_split, group, "none")
+
+    if (!("All" %in% classes)) {
+      class_data <- data |>
+        filter(class %in% classes)
+    } else {
+      class_data <- data
+    }
+
+    clean_dat <- class_data |>
+      mutate(grouping = case_when(
+        group == "none" ~ "All pupils",
+        group == "gender" ~ as.character(gender),
+        group == "class" ~ as.character(class)
+      )) |>
+      group_by(grouping) |>
+      select(grouping, !!!names(varslist)) |>
+      mutate(across(everything(), success)) |>
+      summarise(across(everything(), sum),
+                denom = n()) |>
+      pivot_longer(-c(grouping, denom), names_to = "var", values_to = "n") |>
+      rowwise() |>
+      mutate(
+        censored = if_else(n < 3 & .censor, 1, 0),
+        labels = str_wrap(varslist[[var]][1], 12),
+        prop = n / denom,
+        prop = if_else(censored == 1, 0.05, prop),
+        bar_lab_main = if_else(censored == 1, "*", scales::percent(prop, suffix="%", accuracy = 1)),
+        bar_lab_cens = if_else(censored == 1, "Numbers too low to show", ""),
+        grouping = factor(grouping, levels = c("Girls", "Boys", "S2", "S4", "All pupils"))
+      ) |>
+      filter(!is.na(grouping)) |>
+      ungroup() |>
+      mutate(labels = fct_reorder(labels, prop))
+
+    clean_dat |>
+      ggplot(aes(prop, labels, linetype = factor(censored), fill = grouping, colour = grouping, group = grouping)) +
+      geom_bar_t(aes(alpha = factor(censored)), stat = "identity", position = position_dodge(width = 0.6)) +
+      scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
+      scale_linetype_manual(values = c("1" = "dashed", "0" = "solid"), guide = guide_none()) +
+      scale_fill_hbsc(aesthetics = c("fill", "colour"), name = "",  limits = force) +
+      scale_y_discrete("") +
+      theme(legend.justification.right = "top",
+            plot.margin = unit(c(0.8, 1, 0.5, 0),  "cm"),
+            plot.caption = element_text(hjust = 1, size = 10, face = "italic")) +
+      scale_x_continuous("%", labels = scales::percent, limits = c(0, 1), expand = expansion(add = 0)) +
+      geom_text(aes(label = bar_lab_main),
+                hjust = -0.5,
+                colour = "black",
+                position = position_dodge(width = 0.6),
+                size = 4) +
+      coord_cartesian(clip = "off") +
+      labs(
+        caption = if_else(any(clean_dat$censored == 1), "* Numbers too low to show", ""),
+        title = paste(stringr::str_flatten_comma(classes, " and "), "pupils")
+        )
+
+  }
 
 bar_mean_multiple_vertical <- function(data, ...) {
   ggplot2::ggplot(data)
@@ -218,4 +284,15 @@ scale_fill_hbsc <- function(...) {
     ),
     ...
   )
+
+
+}
+
+#' Thinner geom_bar
+#'
+#' @param width Width of bar (default 0.5)
+#' @param ... Other arguments to pass to `geom_bar`
+
+geom_bar_t <- function (..., width = 0.5) {
+  geom_bar(..., width = width)
 }
