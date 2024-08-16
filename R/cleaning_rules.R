@@ -176,10 +176,11 @@ age_year_mismatch <- function(data) {
     calculate_expected_class() |>
     dplyr::mutate(
       class_num = class_name_to_num(class),
-      message = ifelse(
-        class_num < expected_class_num - 1 | class_num > expected_class_num + 1,
-        paste0("Unexpected class (", expected_class_name, " predicted)"),
-        ""
+      message = dplyr::case_when(
+        class_num < expected_class_num - 1 |
+          class_num > expected_class_num + 1 ~
+          paste0("Unexpected class (", expected_class_name, " predicted)"),
+        TRUE ~ ""
       )
     ) |>
     dplyr::pull(message)
