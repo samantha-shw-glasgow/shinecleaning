@@ -124,26 +124,63 @@ duplicate_cases <- function(data) {
   )
 }
 
-#' @rdname validators
-suggest_missing_class <- function(data) {
-  classes <- c(
+class_num_to_name <- function(num) {
+  c(
     rep(NA, 3),
     c("P1", "P2", "P3", "P4", "P5", "P6", "P7"),
     c("S1", "S2", "S3", "S4", "S5", "S6")
-  )
-  messages <- data |>
+  )[num]
+}
+class_name_to_num <- function(name) {
+  num <- c(
+    "P1" = 4, "P2" = 5, "P3" = 6, "P4" = 7, "P5" = 8, "P6" = 9, "P7" = 10,
+    "S1" = 11, "S2" = 12, "S3" = 13, "S4" = 14, "S5" = 15, "S6" = 16
+  )[name]
+  names(num) <- NULL
+  num
+}
+calculate_expected_class <- function(data) {
+  data |>
     dplyr::mutate(
       dob_ym = lubridate::ym(paste(dobyr, dobmnth)),
       current_year = lubridate::dmy_hm(RecordedDate),
       school_dob = lubridate::year(dob_ym - months(8)),
       school_year = lubridate::year(current_year - months(7)),
-      expected_class = classes[school_year - school_dob],
+      expected_class_num = school_year - school_dob,
+      expected_class_name = class_num_to_name(expected_class_num)
+    )
+}
+
+#' @rdname validators
+suggest_missing_class <- function(data) {
+  messages <- data |>
+    calculate_expected_class() |>
+    dplyr::mutate(
       missing = is.na(class) | class == "Prefer not to say",
       message = dplyr::case_when(
-        missing & !is.na(expected_class)  ~ paste("Missing class, expected", expected_class),
-        missing & is.na(expected_class)   ~ "Missing class",
-        !missing                          ~ ""
+        missing & !is.na(expected_class_name) ~ paste("Missing class, expected", expected_class_name),
+        missing & is.na(expected_class_name)  ~ "Missing class",
+        !missing                              ~ ""
       ),
+    ) |>
+    dplyr::pull(message)
+  tibble::tibble(
+    include = TRUE,
+    message = messages
+  )
+}
+
+#' @rdname validators
+age_year_mismatch <- function(data) {
+  messages <- data |>
+    calculate_expected_class() |>
+    dplyr::mutate(
+      class_num = class_name_to_num(class),
+      message = ifelse(
+        class_num < expected_class_num - 1 | class_num > expected_class_num + 1,
+        paste0("Unexpected class (", expected_class_name, " predicted)"),
+        ""
+      )
     ) |>
     dplyr::pull(message)
   tibble::tibble(

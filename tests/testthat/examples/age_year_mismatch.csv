@@ -1,7 +1,8 @@
 RecordedDate,class,dobmnth,dobday,dobyr,expected_include,expected_message
 01/09/2024 12:00,P1,August,31,2020,TRUE,
 01/09/2024 12:00,P2,August,31,2020,TRUE,
-01/09/2024 12:00,P3,August,31,2020,TRUE,Unexpected class (P1 predicted)
+01/09/2024 12:00,P3,August,31,2020,TRUE,
+01/09/2024 12:00,P4,August,31,2020,TRUE,Unexpected class (P2 predicted)
 01/09/2024 12:00,P2,March,1,2018,TRUE,Unexpected class (P4 predicted)
 01/09/2024 12:00,P3,March,1,2018,TRUE,
 01/09/2024 12:00,P4,March,1,2018,TRUE,

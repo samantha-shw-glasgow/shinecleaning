@@ -92,3 +92,9 @@ describe("no_consent", {
     test_validator_with_data(no_consent, "no_consent.csv")
   })
 })
+
+describe("age_year_mismatch", {
+  it("works as described in the example dataset", {
+    test_validator_with_data(age_year_mismatch, "age_year_mismatch.csv")
+  })
+})
