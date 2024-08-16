@@ -98,3 +98,13 @@ describe("age_year_mismatch", {
     test_validator_with_data(age_year_mismatch, "age_year_mismatch.csv")
   })
 })
+
+describe("straightlining", {
+  it("works as described in the example dataset (primary)", {
+    test_validator_with_data(straightlining, "straightlining_primary.csv")
+  })
+
+  it("works as described in the example dataset (primary)", {
+    test_validator_with_data(straightlining, "straightlining_secondary.csv")
+  })
+})

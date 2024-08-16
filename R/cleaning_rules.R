@@ -190,6 +190,34 @@ age_year_mismatch <- function(data) {
 }
 
 #' @rdname validators
+straightlining <- function(data) {
+  prefixes <- c(
+    "asw",
+    "lifesat",
+    "mm",
+    "sdq",
+    "sehs",
+    "who"
+  )
+  for (prefix in prefixes) {
+    results <- data |>
+      dplyr::select(starts_with(prefix)) |>
+      # Check if all columns are equal - see https://stackoverflow.com/a/76973366
+      dplyr::mutate(all_equal = apply(dplyr::pick(dplyr::everything()), 1, dplyr::n_distinct, na.rm = T) == 1) |>
+      dplyr::pull(all_equal)
+    data[[paste0("_straightline_", prefix)]] <- results
+  }
+  messages <- data |>
+    dplyr::select(dplyr::starts_with("_straightline_")) |>
+    apply(1, any) |>
+    ifelse("Straightlining detected", "")
+  tibble::tibble(
+    include = TRUE,
+    message = messages
+  )
+}
+
+#' @rdname validators
 duplicate_postcodes <- function(data) {
   postcode_count <- data |>
     dplyr::add_count(postcode_5_TEXT) |>
