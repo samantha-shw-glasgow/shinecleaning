@@ -323,4 +323,13 @@ Understanding the data in this report
     suppressed due to small numbers.
 
 
-![](../img/figure_understanding_all.svg)
+<!-- ![](../img/figure_understanding_all.svg) -->
+```{r}
+
+if (params$gender_split) {
+  knitr::include_graphics("../img/figure_understand.svg")
+} else {
+  knitr::include_graphics("../img/figure_understand_all.svg")
+}
+```
+
