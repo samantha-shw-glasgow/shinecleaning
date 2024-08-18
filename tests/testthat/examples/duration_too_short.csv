@@ -1,0 +1,9 @@
+Duration (in seconds),expected_include,expected_message
+58,TRUE,Duration too short
+59,TRUE,Duration too short
+60,TRUE,
+61,TRUE,
+62,TRUE,
+0,TRUE,Duration too short
+-1,TRUE,Duration too short
+1000,TRUE,

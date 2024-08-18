@@ -8,7 +8,13 @@ dataCleaningUI <- function(id) {
 
     validator_options <- c(
       "Exclude test responses" = "no_test_responses",
-      "Flag duration < 60 seconds" = "duration_too_short"
+      "Exclude non-consenting" = "no_consent",
+      "Detect partial cases" = "partial_cases",
+      "Detect duplicate cases" = "duplicate_cases",
+      "Detect duplicate postcodes" = "duplicate_postcodes",
+      "Detect age/year mismatch" = "age_year_mismatch",
+      "Detect straightlining" = "straightlining",
+      "Suggest class when missing" = "suggest_missing_class"
     )
     tagList(
         h2("Cleaning options"),
@@ -38,7 +44,7 @@ dataCleaning_server <- function(id, data) {
 
             clean_data <- reactive({
               validators <- lapply(input$validator_selection, get)
-              run_validations(data(), validators = validators)
+              apply_cleaning_rules(data(), validators = validators)
             })
 
             return(clean_data) ## - must return reactive dataframe
