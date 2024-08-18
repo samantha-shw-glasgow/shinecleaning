@@ -15,13 +15,31 @@ bar_from_summary <- function(summary_data) {
     coord_cartesian(ylim = c(0, 1), clip = "off")
 }
 
+table_from_summary <- function(summary_data) {
+  summary_data |>
+    mutate(prop = numerator/denom) |>
+    pivot_wider(id_cols = answer, names_from = c(class, gender), values_from = prop) |>
+    flextable() |>
+    separate_header()
+}
+
 if (FALSE) {
   # Example usage:
+  N = 100
   tibble(
-    gender = sample(c("Girl", "Boy"), 20, TRUE),
-    class = sample(c("S1", "S6"), 20, TRUE),
-    answer = sample(c("Yes", "No"), 20, TRUE),
+    gender = sample(c("Girl", "Boy"), N, TRUE),
+    class = sample(c("S1", "S6"), N, TRUE),
+    answer = sample(c("Excellent", "Good", "Fair", "Poor"), N, TRUE),
   ) |>
-    create_summary(answer, "Yes") |>
+    create_collapsed_summary(answer, success = c("Excellent", "Good")) |>
     bar_from_summary()
+
+  # Example usage:
+  tibble(
+    gender = sample(c("Girl", "Boy"), N, TRUE),
+    class = sample(c("S1", "S6"), N, TRUE),
+    answer = sample(c("Yes", "No"), N, TRUE),
+  ) |>
+    create_full_summary(answer) |>
+    table_from_summary()
 }
