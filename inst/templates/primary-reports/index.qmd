@@ -30,9 +30,6 @@ params:
   school_name: 'Test school academy'
   term: 'Autumn 2024'
   number_invited: 1000
-bibliography: ../styling/references.bib
-csl: ../styling/the-lancet.csl
-nocite: '@*'
 execute:
   enabled: true
 ---

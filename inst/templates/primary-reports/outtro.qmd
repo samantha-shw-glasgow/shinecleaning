@@ -276,3 +276,161 @@ other students
 to say*
 :::
 :::
+
+::: {custom-style="Heading 1 no number"}
+REFERENCES
+:::
+
+::: {custom-style="References List"}
+
+1.  <https://www.gov.scot/publications/scotlands-public-health-priorities/>
+  2.  Children's Society (2019) *Good Childhood Report 2019*. London.
+    Children's Society. Accessed at:
+  <https://www.childrenssociety.org.uk/sites/default/files/the_good_childhood_report_2019.pdf>
+  3.  Lippman L.H., Ryberg R., Terzian M., Moore K.A., Humble J.,
+McIntosh H. (2014) Positive and Protective Factors in Adolescent
+Well-Being. In: Ben-Arieh A., Casas F., Frønes I., Korbin J. (eds)
+*Handbook of Child Well-Being. Springer*, Dordrecht.
+4.  Huebner, E. S. (2004). Research on assessment of life satisfaction
+in children and adolescents. *Social Indicators Research*. 66, 81--
+  105.
+5.  Antaramian, S. P, Huebner, E. S., Hills, K. J. and Valois, R. F.
+(2010). Dual-Factor Model of Mental Health: Toward a More
+Comprehensive Understanding of Youth Functioning. *American Journal
+of Orthopsychiatry*. 80 (4),462--472.
+6.  Greenspoon, P. J., & Saklofske, D. H. (2001). 'Toward an integration
+    of subjective wellbeing and psychopathology'. *Social Indicators
+Research*, 54(1). 81--108.
+7.  Suldo, S. M., & Shaffer, E. J. (2008). Looking beyond
+psychopathology: The dual factor model of mental health in youth.
+*School Psychology Review*. 37, 52-- 68.
+8.  Suldo, S., Huebner, S.,E. (2004). Does Life Satisfaction Moderate
+the Effects of Stressful Life Events on Psychopathological Behavior
+During Adolescence? *School Psychology Quarterly*. 19, 93--105.
+9.  Newlove-Delgado T, Marcheselli F, Williams T, Mandalia D, Davis J,
+McManus S, Savic M, Treloar W, Ford T. (2022) *Mental Health of
+Children and Young People in England*. 2022. NHS Digital, Leeds.
+10. Ibid
+11. <https://www.who.int/mental_health/maternal-child/adolescent/en/>
+  12. Bor W, Dean A.J., Najman J., Hayatbakhsh R. (2014) Are child and
+adolescent mental health problems increasing in the 21st century? A
+systematic review. *Aust N Z J Psychiatry*. 48(7), 606--616.
+13. Patalay, P., Gage, S, H. (2019). Changes in millennial adolescent
+mental health and health-related behaviours over 10 years: a
+population cohort comparison study. *International Journal of
+Epidemiology*. 48 (5), 1650--1664.
+14. <https://www.who.int/news-room/fact-sheets/detail/adolescent-mental-health>
+  15. NHS Digital. (2018). *Mental Health of Young People and Children in
+England*, 2017.
+16. Deighton, J., Tymms, P., Vostanis, P., Belsky, J., Fonagy, P.,
+Brown, A., Martin, A., Patalay, P. & Wolpert, W. (2013). The
+Development of a School-Based Measure of Child Mental Health.
+*Journal of Psychoeducational Assessment*. 31 (3), 247--257.
+17. Waters, L. (2017). Visible wellbeing in schools: The powerful role
+of instructional leadership. *Australian Educational Leader*. 39(1),
+6--10.
+18. Kessler, R. C., Amminger, G. P., Aguilar-Gaxiola, S., Alonso, J.,
+Lee, S., & Ustün, T. B. (2007). Age of onset of mental disorders: a
+review of recent literature. *Current opinion in psychiatry*. 20(4),
+359--364.
+19. Bor W, Dean A.J., Najman J., Hayatbakhsh R. (2014) Are child and
+adolescent mental health problems increasing in the 21st century? A
+systematic review. *Aust N Z J Psychiatry*. 48(7), 606--616.
+20. Greenspoon, P. J., & Saklofske, D. H. (2001). Toward an integration
+of subjective wellbeing and psychopathology. *Social Indicators
+Research*. 54(1), 81--108.
+21. Suldo, S. M., & Shaffer, E. J. (2008). Looking beyond
+psychopathology: The dual factor model of mental health in youth.
+*School Psychology Review*. 37, 52-- 68.
+22. Antaramian, S. P, Huebner, E. S., Hills, K. J. and Valois, R. F.
+(2010). Dual-Factor Model of Mental Health: Toward a More
+Comprehensive Understanding of Youth Functioning. *American Journal
+of Orthopsychiatry*. 80 (4),462--472.
+  
+1.  Barry, Margaret M. (2009). Addressing the Determinants of Positive
+Mental Health: Concepts, Evidence and Practice. *International
+Journal of Mental Health Promotion*. 11(3), 4-17.
+2.  Rose, T., Joe, S., Williams, A. et al. (2017) Measuring Mental
+Wellbeing Among Adolescents: A Systematic Review of Instruments. *J
+Child Fam Stud* 26, 2349--2362.
+3.  Seligman,, M,. & Csikszentmihalyi, M.,. (2000). Positive Psychology:
+  An Introduction. *The American psychologist*. 55. 5-14.
+4.  Kim, E.K., Dowdy, E., Furlong, M.M. et al. (2019) Complete Mental
+Health Screening: Psychological Strengths and Life Satisfaction in
+Korean Students. *Child Indicators Research*. 12, 901--915.
+5.  Wilkins, B., Boman, P. & Mergler, A. (2015). Positive psychological
+strengths and school engagement in primary school children. *Cogent
+Education*. 2:1.
+6.  Furlong, M.,You., S., Renshaw, T.,Smith, D., & O\'Malley, M. (2014).
+    Preliminary development and validation of the Social and Emotional
+    Health Survey for secondary students. *Social Indicators
+    Research*. 117. 1011--1032.
+7.  Huebner, E. S. (2004). Research on assessment of life satisfaction
+    in children and adolescents. *Social Indicators Research*. 66, 81--
+    105.
+8.  Children's Society (2018) *Good Childhood Report 2018*. London.
+Children's Society.
+9.  Furlong, M.,You., S., Renshaw, T.,Smith, D., & O\'Malley, M. (2014).
+    Preliminary development and validation of the Social and Emotional
+    Health Survey for secondary students. *Social Indicators
+    Research*. 117. 1011--1032.
+10. Wilkins, B., Boman, P. & Mergler, A. (2015). Positive psychological
+    strengths and school engagement in primary school children. *Cogent
+    Education*. 2:1.
+11. Furlong, M. J., Dowdy, E., & Nylund-Gibson, K. (2018). *Social
+    Emotional Health Survey-Secondary Manual*. Santa Barbara, CA: UC
+    Santa Barbara International Center for School-Based Youth
+    Development. Available from, <http://www.project-covitality.info/>
+12. Scottish Government (2017). *Mental Health Strategy 2017--2027*.
+    Edinburgh: Scottish Government. Accessed at:
+    <https://www.gov.scot/publications/mental-health-strategy-2017-2027/>
+13. Parkinson, J., (2012). *Establishing a core set of national,
+    sustainable mental health indicators for children and young*. NHS
+    Health Scotland.
+14. Ibid
+15. Barry, Margaret M. (2009). Addressing the Determinants of Positive
+    Mental Health: Concepts, Evidence and Practice. *International
+    Journal of Mental Health Promotion*. 11(3), 4-17.
+16. O'Reilly, M., Svirydzenka, N., Adams, S. et al. (2018). Review of
+mental health promotion interventions in schools. *Social Psychiatry
+and Psychiatric Epidemiology*. 53: 647--642.
+17. Joyce, H., D. & Early T., J. (2014). The impact of school
+connectedness and teacher support on depressive symptoms in
+adolescents: A multilevel analysis. *Children and Youth Services
+Review*. 39: 101--107.
+18. Weatherson KA, O'Neill M, Lau EY, et al. (2018). The Protective
+    Effects of School Connectedness on Substance Use and Physical
+    Activity. *Journal of Adolescent Health*. 63(6):724--731.
+19. Millings, A., Buck, R., Montgomery, A., Spears, M., Stallard, P.
+    (2012). School connectedness, peer attachment, and self-esteem as
+    predictors of adolescent depression. *Journal of Adolescence*. 35
+    (4): 1061--1067.
+20. Weatherson KA, O'Neill M, Lau EY, et al. (2018). The Protective
+Effects of School Connectedness on Substance Use and Physical
+Activity. Journal of Adolescent Health. 63(6):724--731.
+21. Joyce, H., D. & Early T., J. (2014). The impact of school
+connectedness and teacher support on depressive symptoms in
+adolescents: A multilevel analysis. *Children and Youth Services
+Review*. 39: 101--107.
+22. Moore, G.F., Cox, R., Evans, R.E. et al. (2018). School, Peer and
+Family Relationships and Adolescent Substance Use, Subjective
+Wellbeing and Mental Health Symptoms in Wales: a Cross Sectional
+Study. *Child Indicators Research*. 11: 1951--1965.
+23. Goodenow, C., & Grady, K., E. (1993). The Relationship of School
+Belonging and Friends' Values to Academic Motivation Among Urban
+    Adolescent Students. *The Journal of Experimental Education*. 62
+    (1): 60--71.
+
+1.  García-Moya, I., Brooks, F., Morgan, A., & Moreno, C. (2015).
+    Subjective well-being in adolescence and teacher connectedness: A
+    health asset analysis. *Health Education Journal*. 74(6), 641--654.
+2.  McCarty, C. A., Rhew, I. C., Murowchick, E., McCauley, E., & Vander
+    Stoep, A. (2011). Emotional health predictors of substance use
+    initiation during middle school. *Psychology of Addictive
+    Behaviors*. 26(2), 351.
+3.  Moksnes, U.K., Løhre, A., Lillefjell, M. et al. (2016). The
+    Association Between School Stress, Life Satisfaction and Depressive
+    Symptoms in Adolescents: Life Satisfaction as a Potential Mediator.
+    *Social Indicator Research*. 125 (1): 339-357.
+
+:::

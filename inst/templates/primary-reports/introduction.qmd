@@ -1,6 +1,4 @@
 ---
-bibliography: ../styling/references.bib
-csl: ../styling/nature.csl
 ---
 ::: {custom-style="Heading no TOC"}
 Acknowledgements
@@ -77,7 +75,7 @@ priorities is defined as:
 *"\...both feeling good and functioning effectively, maintaining
 positive relationships and living a life that has a sense of purpose. It
 is shaped by our life circumstances, our relationships and our ability
-to control or adapt to the adverse circumstances we face."* &nbsp; @scotlands_public_health_priorities
+to control or adapt to the adverse circumstances we face."*^1^
 
 Mental health is therefore more than the absence of mental illness but
 also feeling good and living well. We have in this survey asked pupils
@@ -95,16 +93,16 @@ Subjective Wellbeing
 *"Subjective wellbeing can be thought of as a positive state of mind in
 which a person feels good about life as a whole and its constituent
 parts, such as their relationships with others, the environments that
-they inhabit and how they see themselves."* &nbsp; @childrens_society_2019
+they inhabit and how they see themselves."*^2^
 
 Subjective wellbeing is a person\'s evaluation of their own life and
 circumstances and is often measured through life satisfaction. Low life
 satisfaction in adolescents has been related to behaviours such as
-substance use, depression, fighting and delinquency. @lippman2014 In contrast, high
+substance use, depression, fighting and delinquency.^3^ In contrast, high
 life satisfaction has been linked to enhanced coping, self-efficacy,
 self-esteem, positive self-concept and purpose in life as well as
 involvement in meaningful pro-social activities. It is also linked to
-lower psychopathological externalising and internalising behaviour. @huebner2004
+lower psychopathological externalising and internalising behaviour.^4^
 Young people with high subjective wellbeing have more favourable
 academic, social and physical health outcomes. There is also evidence it
 serves as a buffer against stressful life events and is a significant
