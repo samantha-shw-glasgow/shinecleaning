@@ -128,7 +128,7 @@ Figure \@ref(fig:bar-low-lifesat) shows the percentage of pupils who scored low 
 aspect of life. Low happiness is defined as a score of less than 5. For
 more information on this index, see page 6.
 
-```{r bar-lifesat, fig.cap="Average scores for different aspects of life", fig.show='hold'}
+```{r bar-lifesat-split, eval=params$gender_split}
 input_data |> 
   bar_mean_multiple_vars(
     varslist = list(
@@ -143,7 +143,33 @@ input_data |>
       lifesat9 = "Future",
       lifesat10 = "School",
       lifesat11 = "Time use"
-    )
+    ),
+    classes = c("P6", "P7"),
+    .gender_split = TRUE,
+    limits = c(0, 10)
+  )
+
+```
+
+```{r bar-lifesat, fig.cap="Average scores for different aspects of life", eval=TRUE}
+input_data |> 
+  bar_mean_multiple_vars(
+    varslist = list(
+      lifesat1 = "Overall",
+      lifesat2 = "Family",
+      lifesat3 = "Home",
+      lifesat4 = "Choice",
+      lifesat5 = "Friends",
+      lifesat6 = "Things you have",
+      lifesat7 = "Health",
+      lifesat8 = "Appearance",
+      lifesat9 = "Future",
+      lifesat10 = "School",
+      lifesat11 = "Time use"
+    ),
+    classes = "All",
+    .gender_split = FALSE,
+    limits = c(0, 10)
   )
 
 ```

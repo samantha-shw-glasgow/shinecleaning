@@ -171,9 +171,93 @@ bar_by_cat <- function(data,
   p1 + p2
 }
 
-bar_mean_multiple_vars <- function(data, ...) {
-  ggplot2::ggplot(data)
-}
+bar_mean_multiple_vars <-
+  function(data,
+           varslist,
+           group = c("gender", "class", "none"),
+           .censor = TRUE,
+           .gender_split = TRUE,
+           limits = c(`Poor quality` = 1,
+                      `High quality` = 6),
+           xmax = limits[2],
+           xlab = "Mean",
+           classes = "All") {
+
+    group <- match.arg(group)
+    group <- if_else(.gender_split, group, "none")
+
+    if (!("All" %in% classes)) {
+      class_data <- data |>
+        filter(class %in% classes)
+    } else {
+      class_data <- data
+    }
+
+    clean_dat <- class_data |>
+      mutate(grouping = case_when(
+        group == "none" ~ "All pupils",
+        group == "gender" ~ as.character(gender),
+        group == "class" ~ as.character(class)
+      )) |>
+      select(grouping, !!!names(varslist)) |>
+      filter(if_all(everything(), .fns = ~!is.na(.x))) |>
+      group_by(grouping) |>
+      mutate(across(everything(),
+                    function(score){
+                      chr_score <-  as.character(score)
+                      if_else(
+                        chr_score %in% names(limits),
+                        unname(limits[chr_score]),
+                        as.numeric(chr_score)
+                      )
+                    })) |>
+      summarise(across(everything(),
+                       function(score) {
+                         mean(score, na.rm = TRUE)
+                       }),
+                denom = n()) |>
+      pivot_longer(-c(grouping, denom), names_to = "var", values_to = "mean") |>
+      rowwise() |>
+      mutate(
+        censored = if_else(denom < 3 & .censor, 1, 0),
+        mean = if_else(censored == 1, xmax/20, mean),
+        labels = str_wrap(varslist[[var]][1], 12),
+        bar_lab_main = if_else(censored == 1, "*", sprintf("%.1f", mean)),
+        bar_lab_cens = if_else(censored == 1, "Numbers too low to show", ""),
+        grouping = factor(grouping, levels = c("Girls", "Boys", "S2", "S4", "All pupils"))
+      ) |>
+      filter(!is.na(grouping)) |>
+      ungroup() |>
+      mutate(labels = fct_reorder(labels, mean))
+
+    ggplot(clean_dat, aes(mean, labels, linetype = factor(censored), fill = grouping, colour = grouping, group = grouping)) +
+      geom_bar_t(aes(alpha = factor(censored)), stat = "identity", position = position_dodge(width = 0.6)) +
+      scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
+      scale_linetype_manual(values = c("1" = "dashed", "0" = "solid"), guide = guide_none()) +
+      scale_y_discrete("") +
+      scale_fill_hbsc(aesthetics = c("fill", "colour"), name = "",  limits = force) +
+      theme(legend.justification.right = "top",
+            plot.margin = unit(c(0.8, 1, 0.5, 0),  "cm"),
+            plot.caption = element_text(hjust = 1, size = 10, face = "italic")) +
+      scale_x_continuous(xlab, expand = expansion(add = 0)) +
+      geom_text(aes(label = bar_lab_main),
+                hjust = -0.5,
+                colour = "black",
+                position = position_dodge(width = 0.6),
+                size = 4) +
+      # geom_text(aes(label = bar_lab_cens, y = ymax/2),
+      #           # nudge_y = 0.05,
+      #           vjust = 0.5,
+      #           angle = 90,
+      #           colour = "black",
+      #           position = position_dodge(width = 0.6),
+      #           size = 4) +
+      coord_cartesian(xlim = c(0, xmax), clip = "off") +
+      labs(
+        caption = if_else(any(clean_dat$censored == 1), "* Numbers too low to show", ""),
+        title = paste(stringr::str_flatten_comma(classes, " and "), "pupils")
+      )
+  }
 
 bar_multiple_vars <-
   function(data,
@@ -245,9 +329,6 @@ bar_multiple_vars <-
 
   }
 
-bar_mean_multiple_vertical <- function(data, ...) {
-  ggplot2::ggplot(data)
-}
 
 bar_share_elevated <- function(data, ...) {
   ggplot2::ggplot(data)
@@ -295,4 +376,8 @@ scale_fill_hbsc <- function(...) {
 
 geom_bar_t <- function (..., width = 0.5) {
   geom_bar(..., width = width)
+}
+
+bar_mean_multiple_vertical <- function(data, ...) {
+  ggplot2::ggplot(data)
 }
