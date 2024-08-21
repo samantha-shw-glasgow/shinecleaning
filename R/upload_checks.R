@@ -90,12 +90,12 @@ upcheck_schools <- function(data){
   message = NA
   level = NA
 
-  if(! "SchID" %in% colnames(data)){
+  if(! "School ID code" %in% colnames(data)){
     fail = TRUE
-    message = "`SchID` (school ID) column not found in this file. Please include school ID in the uploaded file."
+    message = "`School ID code` column not found in this file. Please include school ID in the uploaded file."
     level = 3
   } else {
-    schIDs = data$SchID #data$SchID[!data$SchID %in% c("{\"ImportId\":\"SchID\"}", "SchID")]
+    schIDs = data$`School ID code`
     if(length(unique(schIDs)) > 1){
       fail = TRUE
       message = "This file includes responses from multiple schools."

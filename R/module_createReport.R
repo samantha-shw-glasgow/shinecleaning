@@ -96,13 +96,12 @@ createReport_server <- function(id, data){
 
 				## var names
 				lifesat <- paste0('lifesat', 1:11)
-				health <- "health"
 				sch <- paste0('sch', 1:3)
 				who <- paste0('Who', 1:5)
 				sehs <- paste0('sehs', 1:20)
 				# cov <- paste0('cov', 1:5)
 
-				primary_vars <- c("gender2", lifesat, health, sch, who, sehs)
+				primary_vars <- c("gender", "health", lifesat, health, sch, who, sehs)
 
 				check_vars <- reactive({
 				  if (input$report_type == 'Primary') {
