@@ -82,10 +82,29 @@ createReport_server <- function(id, data){
 				        make_upload_warning('Not enough pupils to split by class / gender', '1')
 				      }
 				    )
-				  } else {
+				  } else
+				  if (input$report_type == 'Cluster / Local Authority') {
+				    tagList(
+				      selectizeInput(ns('school_id'), 'School IDs',
+				                     multiple = T,
+				                     choices = school_ids()),
+				      textInput(ns('school_name'), 'Local Authority / cluster name'),
+				      if (isTRUE(additional_options())) {
+				        tagList(
+				          checkboxInput(ns('gender_split'), 'Split by gender'),
+				          checkboxInput(ns('class_split'), 'Split by class')
+				        )
+				      },
+				      if (isFALSE(additional_options())) {
+				        make_upload_warning('Not enough pupils to split by class / gender', '1')
+				      }
+				    )
+				  } else
+				  if (input$report_type %in% c('School-level data', 'Additional tables')) {
 				    h4("coming soon...", class = 'text-center')
 				  }
-				})
+				},
+				)
 
 
 				output$report_ui <- renderUI({
@@ -101,7 +120,7 @@ createReport_server <- function(id, data){
 				sehs <- paste0('sehs', 1:20)
 				# cov <- paste0('cov', 1:5)
 
-				primary_vars <- c("gender", "health", lifesat, health, sch, who, sehs)
+				primary_vars <- c("gender", "health", lifesat, sch, who, sehs)
 
 				check_vars <- reactive({
 				  if (input$report_type == 'Primary') {
