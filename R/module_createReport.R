@@ -16,8 +16,6 @@ createReportUI <- function(id){
 	  uiOutput(ns('report_ui')),
 	  br(),
 	  downloadButton(ns('generate'), 'Generate report'),
-
-	  verbatimTextOutput(ns("test"))
 	)
 }
 
@@ -87,7 +85,7 @@ createReport_server <- function(id, data){
 				    tagList(
 				      selectizeInput(ns('school_id'), 'School IDs',
 				                     multiple = T,
-				                     choices = school_ids()),
+				                     choices = c("All" = NA, school_ids())),
 				      textInput(ns('school_name'), 'Local Authority / cluster name'),
 				      if (isTRUE(additional_options())) {
 				        tagList(
@@ -136,7 +134,29 @@ createReport_server <- function(id, data){
 				  }
 				})
 
+				## filter by selected school IDs
+				data_filt <- reactive({
+				  if (isTruthy(data())) {
+				    if (input$report_type %in% c('Primary', 'Secondary')) {
+				      if (isTruthy(input$school_id)) {
+				        data() %>% filter(`School ID code` == input$school_id)
+				      } else {
+				        data()
+				      }
+				    } else
+				    if (input$report_type == 'Cluster / Local Authority') {
+				      if (!anyNA(input$school_id)) {
+				        data() %>% filter(`School ID code` %in% input$school_id)
+				      } else {
+				        data()
+				      }
+				    } else
+				    if (input$report_type %in% c('School-level data', 'Additional tables')) {
+				      data()
+				    }
+				  }
 
+				})
 
 
 				## create report
@@ -146,7 +166,7 @@ createReport_server <- function(id, data){
 				  content = function(file){
 				    if(input$report_type == 'Primary'){
 
-				      render_report(data(),
+				      render_report(data_filt(),
 				                    school_name = input$school_name,
 				                    filename = file,
 				                    output_location = NULL)
