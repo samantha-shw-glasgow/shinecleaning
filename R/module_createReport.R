@@ -39,12 +39,48 @@ createReport_server <- function(id, data){
 				ns <- session$ns
 				send_message <- make_send_message(session)
 
-				# update UI for report type
+
+				## Prep
+				## check if number of pupils is high enough for gender and class split options
+
+				additional_options <- reactive({
+				  if (!(input$report_type %in% c('School-level data', 'Additional tables'))) {
+				    if (nrow(data()) < 10) {
+				      FALSE
+				    } else {
+				      TRUE
+				    }
+				  }
+				})
+
+				## get all school IDs
+				school_ids <- reactive({
+				  if (isTruthy(data)) {
+				    unique(data()$`School ID code`)
+				  } else {
+				    NA
+				  }
+				})
+
+
+				## update UI for report type
 				ui_options <- reactive({
-				  if(input$report_type == 'Primary'){
+				  if (input$report_type %in% c('Primary', 'Secondary')) {
 				    tagList(
+				      if (length(school_ids()) > 1) {
+				        selectInput(ns('school_id'), 'School ID', choices = school_ids())
+				      },
 				      textInput(ns('school_name'), 'School name'),
-				      numericInput(ns('n_invited'), 'Number of invited students', value = NA)
+				      numericInput(ns('n_invited'), 'Number of invited students', value = NA),
+				      if (isTRUE(additional_options())) {
+				        tagList(
+				          checkboxInput(ns('gender_split'), 'Split by gender'),
+				          checkboxInput(ns('class_split'), 'Split by class')
+				        )
+				      },
+				      if (isFALSE(additional_options())) {
+				        make_upload_warning('Not enough pupils to split by class / gender', '1')
+				      }
 				    )
 				  } else {
 				    h4("coming soon...", class = 'text-center')
@@ -56,20 +92,20 @@ createReport_server <- function(id, data){
 				  ui_options()
 				})
 
-				# check for required variables
+				## check for required variables
 
-				# var names
+				## var names
 				lifesat <- paste0('lifesat', 1:11)
 				health <- "health"
 				sch <- paste0('sch', 1:3)
 				who <- paste0('Who', 1:5)
 				sehs <- paste0('sehs', 1:20)
-				#cov <- paste0('cov', 1:5)
+				# cov <- paste0('cov', 1:5)
 
 				primary_vars <- c("gender2", lifesat, health, sch, who, sehs)
 
 				check_vars <- reactive({
-				  if(input$report_type == 'Primary'){
+				  if (input$report_type == 'Primary') {
 				    upcheck_has_columns(data(), primary_vars)
 				  }
 				})
@@ -82,6 +118,10 @@ createReport_server <- function(id, data){
 				  }
 				})
 
+
+
+
+				## create report
 
 				output$generate <- downloadHandler(
 				  filename = paste0(input$school_name, '_report.docx'),
