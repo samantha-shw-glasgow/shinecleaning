@@ -11,5 +11,5 @@ test_that("a valid Excel spreadsheet is created", {
     "",                             1,        "", 5, lubridate::ymd("2010-01-04"),
   )
   output <- create_spreadsheet(data, "cleaning_spreadsheet.xlsx")
-  openxlsx::read.xlsx("cleaning_spreadsheet.xlsx", 1)
+  expect_no_error(openxlsx::read.xlsx("cleaning_spreadsheet.xlsx", 1))
 })
