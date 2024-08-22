@@ -340,15 +340,46 @@ health. For more information on this scale, see page 6.
 
 
 
+```{r bar-sehs-split, eval = params$gender_split}
+input_data |> 
+  bar_mean_multiple_vertical(
+    varslist = list(
+      g_score = "Gratitude",
+      z_score = "Zest",
+      o_score = "Optimism",
+      p_score = "Persistance",
+      pro_score = "Pro-social"
+    ),
+    classes = c("P6", "P7"),
+    .gender_split = TRUE,
+    ymax = 16
+  )
+```
+
 ```{r bar-sehs, fig.cap="Average score in each SEHS domain"}
 input_data |> 
-  bar_mean_multiple_vertical(starts_with("sehs"))
+  bar_mean_multiple_vertical(
+    varslist = list(
+      g_score = "Gratitude",
+      z_score = "Zest",
+      o_score = "Optimism",
+      p_score = "Persistance",
+      pro_score = "Pro-social"
+    ),
+    ymax = 16,
+    .gender_split = FALSE
+  )
 ```
 
 ```{r bar-coviality, fig.cap="Average covitality score"}
+
+# Currently not working as planned. May need new function for a single mean
+
 input_data |> 
   bar_mean_multiple_vertical(
-    starts_with("cov")
+    list(cov_score = "Coviality"),
+    .gender_split = FALSE,
+    ymax = 60
   )
 ```
 

@@ -2,6 +2,7 @@
 % Please edit documentation in R/render_tables-graphs.R
 \name{bar_mean_multiple_vars}
 \alias{bar_mean_multiple_vars}
+\alias{bar_mean_multiple_vertical}
 \title{Bar graph of means for multiple variables (horizontal)}
 \usage{
 bar_mean_multiple_vars(
@@ -15,11 +16,23 @@ bar_mean_multiple_vars(
   xlab = "Mean",
   classes = "All"
 )
+
+bar_mean_multiple_vertical(
+  data,
+  varslist,
+  group = c("gender", "class", "none"),
+  .censor = TRUE,
+  .gender_split = TRUE,
+  limits = c(`Poor quality` = 1, `High quality` = 6),
+  ymax = limits[2],
+  ylab = "Mean",
+  classes = "All"
+)
 }
 \arguments{
 \item{data}{The dataframe of valid responses}
 
-\item{varslist}{(named) list of variables to use. Names will provide graph labels}
+\item{varslist}{(named) list of variables to use. Names to match vars}
 
 \item{group}{(Probably superceded) group bars by gender/class/none}
 
@@ -29,15 +42,16 @@ bar_mean_multiple_vars(
 
 \item{limits}{Vector of upper/lower score limits.}
 
-\item{xmax}{Upper limit of graph (deaults to \code{limits[2]})}
-
-\item{xlab}{Label for X axis (summary statistic, i.e. "mean")}
-
 \item{classes}{Names of classes to filter/combine.}
+
+\item{xmax/ymax}{Upper limit of graph (deaults to \code{limits[2]})}
+
+\item{xlab/ylab}{Label for X axis (summary statistic, i.e. "mean")}
 }
 \value{
 A ggplot2 bar graph of means across several scoring variables
 }
 \description{
-Bar graph of means for multiple variables (horizontal)
+\code{bar_mean_multiple_vars} returns a horizontal bar graph.
+\code{bar_mean_multiple_vertical} returns a vertical graph.
 }
