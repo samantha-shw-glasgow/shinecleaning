@@ -10,6 +10,6 @@ test_that("a valid Excel spreadsheet is created", {
     "Duplicate DOB; Duplicate DOB", 1,        "", 4, lubridate::ymd("2010-01-03"),
     "",                             1,        "", 5, lubridate::ymd("2010-01-04"),
   )
-  output <- create_spreadsheet(data, "cleaning_spreadsheet.xlsx")
-  expect_no_error(openxlsx::read.xlsx("cleaning_spreadsheet.xlsx", 1))
+  output <- create_spreadsheet(data, file.path(tempdir(), "cleaning_spreadsheet.xlsx"))
+  expect_no_error(openxlsx::read.xlsx(file.path(tempdir(), "cleaning_spreadsheet.xlsx"), 1))
 })
