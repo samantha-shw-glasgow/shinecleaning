@@ -277,6 +277,8 @@ to say*
 :::
 :::
 
+\newpage
+
 ::: {custom-style="Heading 1 no number"}
 REFERENCES
 :::
