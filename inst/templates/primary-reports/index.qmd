@@ -30,6 +30,7 @@ params:
   school_name: 'Test school academy'
   term: 'Autumn 2024'
   number_invited: 1000
+  gender_split: true
 execute:
   enabled: true
 ---
