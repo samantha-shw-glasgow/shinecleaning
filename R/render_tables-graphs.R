@@ -310,6 +310,18 @@ bar_mean_multiple_vars <-
       )
   }
 
+#' Bar graph of % categories for multiple variables
+#'
+#' @param data The dataframe of valid responses
+#' @param varslist (named) list of variables to use. Names will provide graph labels
+#' @param success A purr-like formula to determine observation in 'inclusion' group
+#' @param group (Probably superseded) group bars by gender/class/none
+#' @param .censor `TRUE`/`FALSE` - apply censoring rules (must be `TRUE` in output reports)
+#' @param .gender_split `TRUE`/`FALSE` - split by gender when sufficient numbers of responses
+#' @param classes Names of classes to filter/combine.
+#'
+#' @return A ggplot2 graph of % of 'success' in each group
+#'
 bar_multiple_vars <-
   function(data,
            varslist,
