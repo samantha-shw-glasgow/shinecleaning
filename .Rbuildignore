@@ -4,4 +4,4 @@
 \.gitkeep
 \.github
 ^\w*\.docx$
-R/temp_.*\.R
+temp_.*\.R
