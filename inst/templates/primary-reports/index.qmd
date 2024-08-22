@@ -192,6 +192,7 @@ input_data |>
       lifesat11 = "Time use"
     ),
     success = ~ .x < 5,
+    group = "gender",
     classes = c("P6", "P7"),
     .gender_split = params$gender_split
   )
