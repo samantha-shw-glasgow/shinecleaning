@@ -11,3 +11,11 @@ test_that("primary report - sample data", {
   )
 
 })
+
+
+test_that("Expects school or LA name", {
+
+  expect_error(render_report(school_name = "a", local_authority_name = "b"))
+  expect_error(render_report())
+
+})
