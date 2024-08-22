@@ -323,3 +323,11 @@ Understanding the data in this report
 
 
 ![](../img/figure_understanding_all.svg)
+
+if (params$gender_split) {
+  knitr::include_graphics("../img/figure_understand.svg")
+} else {
+  knitr::include_graphics("../img/figure_understanding_all.svg")
+}
+```
+
