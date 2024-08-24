@@ -72,6 +72,9 @@ bar_by_cat <- function(data,
                        success = "Yes",
                        .censor = TRUE,
                        .gender_split = TRUE) {
+
+  require(patchwork)
+
   var <- enquo(var)
 
   df_gender <- data |>
@@ -272,9 +275,10 @@ bar_mean_multiple_vars <-
     ) +
       geom_bar_t(aes(alpha = factor(.data$censored)),
                  stat = "identity",
-                 position = position_dodge(width = 0.6)) +
+                 width = 0.7,
+                 position = position_dodge(width = 0.7)) +
       scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
-      scale_linetype_manual(values = c("1" = "dashed", "0" = "solid"),
+      scale_linetype_manual(values = c("1" = "dashed", "0" = "blank"),
                             guide = guide_none()) +
       scale_y_discrete("") +
       scale_fill_hbsc(
@@ -296,7 +300,7 @@ bar_mean_multiple_vars <-
         aes(label = .data$bar_lab_main),
         hjust = -0.5,
         colour = "black",
-        position = position_dodge(width = 0.6),
+        position = position_dodge(width = 0.7),
         size = 4
       ) +
       # geom_text(aes(label = bar_lab_cens, y = ymax/2),
@@ -304,7 +308,7 @@ bar_mean_multiple_vars <-
       #           vjust = 0.5,
       #           angle = 90,
       #           colour = "black",
-      #           position = position_dodge(width = 0.6),
+      #           position = position_dodge(width = 0.7),
       #           size = 4) +
       coord_cartesian(xlim = c(0, xmax), clip = "off") +
       labs(
@@ -312,6 +316,58 @@ bar_mean_multiple_vars <-
         title = paste(stringr::str_flatten_comma(classes, " and "), "pupils")
       )
   }
+
+bar_mean_single_var <-
+  function(data,
+           var,
+           .censor = TRUE,
+           .gender_split = TRUE,
+           limits = c(`Poor quality` = 1, `High quality` = 6),
+           ymax = limits[2],
+           ylab = "Mean") {
+
+
+    subgroups <- tibble()
+
+    if(.gender_split) {
+    subgroups <- data |>
+      filter(gender %in% c("Boys", "Girls")) |>
+      summarise(mean_score = mean({{var}}, na.rm = TRUE), .by = c(class, gender)) |>
+      arrange(class)
+    }
+
+
+    all <- data |>
+      mutate(class = "All", gender = "All") |>
+      summarise(mean_score = mean({{var}}, na.rm = TRUE), .by = c(class, gender))
+
+    bind_rows(subgroups, all) |>
+      mutate(bar_lab_main = sprintf("%.1f", mean_score),
+             class = fct_inorder(class)) |>
+    ggplot() +
+      aes(x = class, y = mean_score, fill = gender) +
+      # geom_col(position = "dodge") +
+      geom_bar_t(stat = "identity",
+                 position = position_dodge(width = 0.7),
+                 linetype = "blank") +
+      scale_x_discrete("") +
+      scale_fill_hbsc(name = "") +
+      theme(
+        legend.justification.right = "top",
+        plot.margin = unit(c(0.8, 1, 0.5, 0), "cm")
+      ) +
+      scale_y_continuous(ylab, expand = expansion(add = 0)) +
+      geom_text(
+        aes(label = .data$bar_lab_main),
+        vjust = -0.5,
+        colour = "black",
+        position = position_dodge(width = 0.7),
+        size = 4
+      ) +
+      coord_cartesian(ylim = c(0, ymax), clip = "off")
+
+  }
+
 
 #' Bar graph of % categories for multiple variables
 #'
@@ -392,9 +448,9 @@ bar_multiple_vars <-
       ) +
       geom_bar_t(aes(alpha = factor(.data$censored)),
                  stat = "identity",
-                 position = position_dodge(width = 0.6)) +
+                 position = position_dodge(width = 0.7)) +
       scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
-      scale_linetype_manual(values = c("1" = "dashed", "0" = NULL),
+      scale_linetype_manual(values = c("1" = "dashed", "0" = "blank"),
                             guide = guide_none()) +
       scale_fill_hbsc(
         aesthetics = c("fill", "colour"),
@@ -421,7 +477,7 @@ bar_multiple_vars <-
         aes(label = .data$bar_lab_main),
         hjust = -0.5,
         colour = "black",
-        position = position_dodge(width = 0.6),
+        position = position_dodge(width = 0.7),
         size = 4
       ) +
       coord_cartesian(clip = "off") +
@@ -477,7 +533,7 @@ scale_fill_hbsc <- function(...) {
 #' @param width Width of bar (default 0.5)
 #' @param ... Other arguments to pass to `geom_bar`
 
-geom_bar_t <- function(..., width = 0.5) {
+geom_bar_t <- function(..., width = 0.7) {
   geom_bar(..., width = width)
 }
 
@@ -555,9 +611,9 @@ bar_mean_multiple_vertical <-
     ) +
       geom_bar_t(aes(alpha = factor(.data$censored)),
                  stat = "identity",
-                 position = position_dodge(width = 0.6)) +
+                 position = position_dodge(width = 0.7)) +
       scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
-      scale_linetype_manual(values = c("1" = "dashed", "0" = "solid"),
+      scale_linetype_manual(values = c("1" = "dashed", "0" = "blank"),
                             guide = guide_none()) +
       scale_x_discrete("", guide = guide_axis(n.dodge =
                                                 if_else(length(varslist) > 6,
@@ -583,7 +639,7 @@ bar_mean_multiple_vertical <-
         aes(label = .data$bar_lab_main),
         vjust = -0.5,
         colour = "black",
-        position = position_dodge(width = 0.6),
+        position = position_dodge(width = 0.7),
         size = 4
       ) +
       coord_cartesian(ylim = c(0, ymax), clip = "off") +
