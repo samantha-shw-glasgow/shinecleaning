@@ -5,14 +5,8 @@ create_collapsed_summary <- function(
  .censor = FALSE,
  .gender_split = FALSE
 ) {
-  var <- enquo(var)
 
   subgroups <- data |>
-    mutate(gender = case_match(
-      gender,
-      "Boy" ~ "Boys",
-      "Girl" ~ "Girls"
-    )) |>
     group_by(class, gender) |>
     mutate(success = {{var}} %in% success) |>
     summarise(
@@ -39,11 +33,6 @@ create_full_summary <- function(
   var <- enquo(var)
 
   subgroups <- data |>
-    mutate(gender = case_match(
-      gender,
-      "Boy" ~ "Boys",
-      "Girl" ~ "Girls"
-    )) |>
     group_by(class, gender, !!var) |>
     summarise(numerator = n(), .groups = "drop") |>
     add_count(class, gender, name = "denom", wt = numerator)
