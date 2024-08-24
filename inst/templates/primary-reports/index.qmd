@@ -105,16 +105,11 @@ their health was \'excellent\' or \'good\'.
 
 ```{r bar-health, fig.cap="% of pupils who report excellent or good health"}
 
-input_data |> 
-  create_full_summary(health, 
-                           success = c("Good", "Excellent"))
+health_summary <- input_data |>
+  create_collapsed_summary(health, success = c("Good", "Excellent"))
 
-input_data |> 
-  bar_by_cat(
-    health,
-    success = c("Good", "Excellent"),
-    .gender_split = params$gender_split
-  )
+health_summary |> 
+  bar_from_summary()
 
 ```
 

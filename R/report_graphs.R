@@ -1,5 +1,6 @@
 bar_from_summary <- function(summary_data) {
   summary_data |>
+    filter(gender %in% c("Boys", "Girls", "All")) |>
     mutate(prop = numerator/denom) |>
     ggplot() +
     aes(x = class, y = prop, fill = gender) +

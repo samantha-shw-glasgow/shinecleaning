@@ -21,7 +21,9 @@ create_collapsed_summary <- function(
       numerator = sum(numerator),
       denom = sum(denom)
     )
-  bind_rows(subgroups, all)
+
+  bind_rows(subgroups, all) |>
+    mutate(class = forcats::fct_inorder(class))
 }
 
 create_full_summary <- function(
@@ -44,5 +46,7 @@ create_full_summary <- function(
       .by = !!var
     ) |>
     mutate(denom = sum(numerator))
-  bind_rows(subgroups, all)
+
+  bind_rows(subgroups, all) |>
+    mutate(class = forcats::fct_inorder(class))
 }
