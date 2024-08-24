@@ -144,7 +144,6 @@ input_data |>
       lifesat11 = "Time use"
     ),
     classes = classes,
-    .gender_split = params$gender_split,
     limits = c(0, 10)
   )
 
@@ -167,8 +166,8 @@ input_data |>
       lifesat11 = "Time use"
     ),
     classes = "All",
-    .gender_split = params$gender_split,
-    limits = c(0, 10)
+    limits = c(0, 10),
+    .gender_split = FALSE
   )
 
 ```
@@ -192,8 +191,7 @@ input_data |>
     ),
     success = ~ .x < 5,
     group = "gender",
-    classes = classes,
-    .gender_split = params$gender_split
+    classes = classes
   )
 
 ```
@@ -217,7 +215,7 @@ input_data |>
     ),
     success = ~ .x < 5,
     classes = "All",
-    .gender_split = params$gender_split
+    .gender_split = FALSE
   )
 ```
 
@@ -236,8 +234,9 @@ low mood (Figure \@ref(fig:bar-wellbeing)).
 
 ```{r bar-wellbeing, fig.cap="% of pupils with low mood"}
 input_data |>
-  bar_by_cat(who_cat, success = "low",
-    .gender_split = params$gender_split)
+  bar_by_cat(who_cat,
+             success = "low",
+             .gender_split = params$gender_split)
 ```
 
 \newpage
@@ -354,7 +353,6 @@ input_data |>
       pro_score = "Pro-social"
     ),
     classes = classes,
-    .gender_split = params$gender_split,
     ymax = 16
   )
 ```
@@ -370,7 +368,7 @@ input_data |>
       pro_score = "Pro-social"
     ),
     ymax = 16,
-    .gender_split = params$gender_split
+    .gender_split = FALSE
   )
 ```
 
