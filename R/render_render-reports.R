@@ -104,7 +104,7 @@ data_prep <- function(survey_data, report_type = "primary") {
 
   survey_out <- survey_data |>
     filter(.data$consent == "Yes, I am happy to take part") |>
-    mutate(gender = .data$gender2 |>
+    mutate(gender = .data$gender |>
              stringr::str_replace("(?<=(Boy|Girl))$", "s")) |>  # pluralise for reporting
     who_score()
 
@@ -121,7 +121,7 @@ data_prep <- function(survey_data, report_type = "primary") {
 
   } else if (report_type == "secondary") {
 
-    if (!("ASW1" %in% colnames(survey_out))) {
+    if (!("asw1" %in% colnames(survey_out))) {
       stop("Dataset is missing expected variables for primary report. ",
            "Did you correctly specify report type and are columns correctly named?")
     }
@@ -153,8 +153,8 @@ who_score <- function(survey_data) {
   )
 
   survey_data |>
-    mutate(across(starts_with("Who"), ~match(.x, who_responses) - 1)) |>
-    mutate(who_score = rowSums(pick(starts_with("Who"))) * 4,
+    mutate(across(starts_with("who"), ~match(.x, who_responses) - 1)) |>
+    mutate(who_score = rowSums(pick(starts_with("who"))) * 4,
            who_cat = case_when(
              who_score <= 50 ~ "low",
              who_score > 50 ~ "good"
