@@ -223,6 +223,7 @@ bar_mean_multiple_vars <-
       class_data <- data
     }
 
+
     clean_dat <- class_data |>
       mutate(
         grouping = case_when(
@@ -343,26 +344,34 @@ bar_mean_single_var <-
            ymax = limits[2],
            ylab = "Mean",
            classes = "All") {
-
-
     subgroups <- tibble()
 
-    if(.gender_split) {
-    subgroups <- data |>
-      filter(gender %in% c("Boys", "Girls"), class %in% classes) |>
-      summarise(mean_score = mean({{var}}, na.rm = TRUE), .by = c(class, gender)) |>
-      arrange(class)
+    if (.gender_split) {
+      subgroups <-
+        map(classes, \(concat_class) {
+          data |>
+            # Can this filter for two sets of groupings - class concat or expand?
+            filter(gender %in% c("Boys", "Girls"), class %in% concat_class) |>
+            summarise(
+              mean_score = mean({{var}}, na.rm = TRUE),
+              class = str_flatten(concat_class, collapse = ", ", last = " and "),
+              .by = c(gender)
+            )
+        }) |>
+        reduce(bind_rows) |>
+        arrange(class)
     }
 
 
     all <- data |>
       mutate(class = "All", gender = "All") |>
-      summarise(mean_score = mean({{var}}, na.rm = TRUE), .by = c(class, gender))
+      summarise(mean_score = mean({{var}}, na.rm = TRUE),
+                .by = c(class, gender))
 
     bind_rows(subgroups, all) |>
       mutate(bar_lab_main = sprintf("%.1f", mean_score),
              class = fct_inorder(class)) |>
-    ggplot() +
+      ggplot() +
       aes(x = class, y = mean_score, fill = gender) +
       # geom_col(position = "dodge") +
       geom_bar_t(stat = "identity",
@@ -370,10 +379,8 @@ bar_mean_single_var <-
                  linetype = "blank") +
       scale_x_discrete("") +
       scale_fill_hbsc(name = "") +
-      theme(
-        legend.justification.right = "top",
-        plot.margin = unit(c(0.8, 1, 0.5, 0), "cm")
-      ) +
+      theme(legend.justification.right = "top",
+            plot.margin = unit(c(0.8, 1, 0.5, 0), "cm")) +
       scale_y_continuous(ylab, expand = expansion(add = 0)) +
       geom_text(
         aes(label = .data$bar_lab_main),
@@ -385,7 +392,6 @@ bar_mean_single_var <-
       coord_cartesian(ylim = c(0, ymax), clip = "off")
 
   }
-
 
 #' Bar graph of % categories for multiple variables
 #'

@@ -122,7 +122,7 @@ data_prep <- function(survey_data, report_type = "primary") {
   } else if (report_type == "secondary") {
 
     if (!("asw1" %in% colnames(survey_out))) {
-      stop("Dataset is missing expected variables for primary report. ",
+      stop("Dataset is missing expected variables for secondary report. ",
            "Did you correctly specify report type and are columns correctly named?")
     }
 

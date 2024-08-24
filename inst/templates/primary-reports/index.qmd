@@ -47,6 +47,9 @@ knitr::opts_chunk$set(echo = FALSE,
 school_name <- params$school_name
 is_la_report <- params$is_la_report
 term <- params$term
+
+# In secondary reports only: this becomes a list of vectors, grouping classes in
+# low number situations
 classes <- c("P6", "P7")
 
 library(tidyverse)
