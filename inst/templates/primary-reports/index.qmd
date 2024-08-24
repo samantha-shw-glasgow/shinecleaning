@@ -31,9 +31,6 @@ params:
   term: 'Autumn 2024'
   number_invited: 1000
   gender_split: true
-bibliography: ../styling/references.bib
-csl: ../styling/the-lancet.csl
-nocite: '@*'
 execute:
   enabled: true
 ---
@@ -60,7 +57,7 @@ theme_update(
 ```
 
 
-```{r front-page, echo=FALSE, results='asis'}
+```{r front-page, echo=FALSE, eval = TRUE, results='asis'}
 cat(knitr::knit_child('front-cover.qmd', envir = environment(), quiet = TRUE))
 ```
 
@@ -72,7 +69,7 @@ Contents
 
 `r officer::block_toc(level = 2, style = NULL, separator = ";")`
 
-```{r introduction, echo=FALSE, results='asis'}
+```{r introduction, echo=FALSE, eval = TRUE, results='asis'}
 cat(knitr::knit_child('introduction.qmd', envir = environment(), quiet = TRUE))
 ```
 
@@ -386,11 +383,7 @@ input_data |>
 
 \newpage
 
-```{r outtro, echo=FALSE, results='asis'}
+```{r outtro, echo=FALSE, eval = TRUE, results='asis'}
 cat(knitr::knit_child('outtro.qmd', envir = environment(), quiet = TRUE))
 ```
 
-\newpage
-
-
-# References

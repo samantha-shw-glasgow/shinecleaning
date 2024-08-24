@@ -10,19 +10,30 @@
 #' @param filename Name of file to output
 #'
 #'
-render_report <- function(survey_data = NULL,
-                          school_name = NULL,
-                          local_authority_name = NULL,
+render_report <- function(survey_data,
+                          school_name = NA,
+                          local_authority_name = NA,
+                          term = NULL,
                           number_invited = NULL,
                           output_location = getwd(),
+                          gender_split = TRUE,
                           filename = "primary_report.docx") {
-  render_env <- new.env()
 
-  requireNamespace("tidyverse", quietly = TRUE)
-  requireNamespace("officedown", quietly = TRUE)
+  if(!is.na(school_name) && !is.na(local_authority_name)) {
+    stop("Is this a school or Local Authority report?\n",
+         "Please provide only `school_name` or `local_authority_name`")
+  } else if(is.na(school_name) && is.na(local_authority_name)) {
+    stop("Please provide a `school_name` or a `local_authority_name`")
+  }
+
+  render_env <- new.env()
 
   survey_data <- survey_data[grepl("^\\d", survey_data$`StartDate`), ] |>
     data_prep()
+
+  report_name <- if_else(!is.na(school_name), school_name, local_authority_name)
+
+  is_la <- is.na(local_authority_name)
 
   if (is.null(number_invited))
     number_invited <- nrow(survey_data)
@@ -34,7 +45,13 @@ render_report <- function(survey_data = NULL,
     output_dir = output_location,
     envir = render_env,
     output_file = filename,
-    params = list(school_name = school_name)
+    params = list(
+      is_la_report = FALSE,
+      school_name = report_name,
+      term = term,
+      number_invited = number_invited,
+      gender_split = gender_split
+      )
   )
 
 }
