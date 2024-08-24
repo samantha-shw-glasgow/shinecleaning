@@ -42,11 +42,11 @@ bar_mean_multiple_vertical(
 
 \item{limits}{Vector of upper/lower score limits.}
 
+\item{xmax, ymax}{Upper limit of graph (deaults to \code{limits[2]})}
+
+\item{xlab, ylab}{Label for X axis (summary statistic, i.e. "mean")}
+
 \item{classes}{Names of classes to filter/combine.}
-
-\item{xmax/ymax}{Upper limit of graph (deaults to \code{limits[2]})}
-
-\item{xlab/ylab}{Label for X axis (summary statistic, i.e. "mean")}
 }
 \value{
 A ggplot2 bar graph of means across several scoring variables

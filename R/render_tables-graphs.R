@@ -190,8 +190,8 @@ bar_by_cat <- function(data,
 #' @param .censor `TRUE`/`FALSE` - apply censoring rules (must be `TRUE` in output reports)
 #' @param .gender_split `TRUE`/`FALSE` - split by gender when sufficient numbers of responses
 #' @param limits Vector of upper/lower score limits.
-#' @param xmax/ymax Upper limit of graph (deaults to `limits[2]`)
-#' @param xlab/ylab Label for X axis (summary statistic, i.e. "mean")
+#' @param xmax,ymax Upper limit of graph (deaults to `limits[2]`)
+#' @param xlab,ylab Label for X axis (summary statistic, i.e. "mean")
 #' @param classes Names of classes to filter/combine.
 #'
 #' @return A ggplot2 bar graph of means across several scoring variables

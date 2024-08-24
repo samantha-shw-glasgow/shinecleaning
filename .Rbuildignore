@@ -3,5 +3,5 @@
 ^\.leprechaun$
 \.gitkeep
 \.github
-^\w*\.docx$
+^[^/]*\.docx$
 temp_.*\.R

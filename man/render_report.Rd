@@ -5,11 +5,13 @@
 \title{Render a single report for school or local authority}
 \usage{
 render_report(
-  survey_data = NULL,
-  school_name = NULL,
-  local_authority_name = NULL,
+  survey_data,
+  school_name = NA,
+  local_authority_name = NA,
+  term = NULL,
   number_invited = NULL,
   output_location = getwd(),
+  gender_split = TRUE,
   filename = "primary_report.docx"
 )
 }
@@ -20,9 +22,13 @@ render_report(
 
 \item{local_authority_name}{If a local authority report, the LA's name (note not compatible with school report/name argument)}
 
+\item{term}{Name of term to print on report}
+
 \item{number_invited}{Number invited to complete the survey}
 
 \item{output_location}{Location of file output (defaults to working directory)}
+
+\item{gender_split}{To split report outputs by gender}
 
 \item{filename}{Name of file to output}
 }

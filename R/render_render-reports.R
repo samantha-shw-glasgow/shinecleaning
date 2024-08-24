@@ -5,8 +5,10 @@
 #' @param survey_data A clean dataframe of survey results
 #' @param school_name If a school report, the school's name
 #' @param local_authority_name If a local authority report, the LA's name (note not compatible with school report/name argument)
+#' @param term Name of term to print on report
 #' @param number_invited Number invited to complete the survey
 #' @param output_location Location of file output (defaults to working directory)
+#' @param gender_split To split report outputs by gender
 #' @param filename Name of file to output
 #'
 #'
