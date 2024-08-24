@@ -317,6 +317,22 @@ bar_mean_multiple_vars <-
       )
   }
 
+#' Bar graph of means for a single variable
+#'
+#' @param data Valid input data
+#' @param var Variable to calculate mean of
+#' @param .censor `TRUE`/`FALSE` - apply censoring rules (must be `TRUE` in output reports)
+#' @param .gender_split `TRUE`/`FALSE` - split by gender when sufficient numbers of responses
+#' @param limits Vector of upper/lower score limits.
+#' @param ymax Upper limit of graph (deaults to `limits[2]`)
+#' @param ylab Label for X axis (summary statistic, i.e. "mean")
+#'
+#' @return A ggplot2 bar graph of mean of a scoring variables
+#'
+#' @import dplyr
+#' @import ggplot2
+#' @importFrom rlang .data
+#'
 bar_mean_single_var <-
   function(data,
            var,

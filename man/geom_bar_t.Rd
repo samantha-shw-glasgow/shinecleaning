@@ -4,7 +4,7 @@
 \alias{geom_bar_t}
 \title{Thinner geom_bar}
 \usage{
-geom_bar_t(..., width = 0.5)
+geom_bar_t(..., width = 0.7)
 }
 \arguments{
 \item{...}{Other arguments to pass to \code{geom_bar}}
