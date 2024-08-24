@@ -620,7 +620,7 @@ bar_mean_multiple_vertical <-
       ) |>
       filter(!is.na(grouping)) |>
       ungroup() |>
-      mutate(labels = forcats::fct_reorder(.data$labels, mean))
+      mutate(labels = factor(.data$labels, levels = varslist))
 
     ggplot(
       clean_dat,
