@@ -17,7 +17,7 @@ upload_checks_raw <- function(data){
 
 upload_checks_clean <- function(data, vars){
   checks <- rbind(
-    upcheck_has_columns(data, vars),
+    #upcheck_has_columns(data, vars),
     upcheck_schools(data)
   )
 
@@ -90,12 +90,12 @@ upcheck_schools <- function(data){
   message = NA
   level = NA
 
-  if(! "SchID" %in% colnames(data)){
+  if(! "School ID code" %in% colnames(data)){
     fail = TRUE
-    message = "`SchID` (school ID) column not found in this file. Please include school ID in the uploaded file."
+    message = "`School ID code` column not found in this file. Please include school ID in the uploaded file."
     level = 3
   } else {
-    schIDs = data$SchID #data$SchID[!data$SchID %in% c("{\"ImportId\":\"SchID\"}", "SchID")]
+    schIDs = data$`School ID code`
     if(length(unique(schIDs)) > 1){
       fail = TRUE
       message = "This file includes responses from multiple schools."
@@ -132,9 +132,11 @@ upcheck_has_columns <- function(data, columns){
   message = NA
   level = NA
 
-  if(! all(columns %in% colnames(data))){
+  has_col = columns %in% colnames(data)
+
+  if (! all(isTRUE(has_col))) {
     fail = TRUE
-    message = paste0("This file is missing the following required column(s): ", paste0(columns, collapse = ", "))
+    message = paste0("This file is missing the following required column(s): ", paste0(columns[!has_col], collapse = ", "))
     level = 3
   }
 
