@@ -11,7 +11,8 @@ bar_mean_single_var(
   .gender_split = TRUE,
   limits = c(`Poor quality` = 1, `High quality` = 6),
   ymax = limits[2],
-  ylab = "Mean"
+  ylab = "Mean",
+  classes = "All"
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ bar_mean_single_var(
 \item{ymax}{Upper limit of graph (deaults to \code{limits[2]})}
 
 \item{ylab}{Label for X axis (summary statistic, i.e. "mean")}
+
+\item{classes}{Vector names of classes to filter/combine.}
 }
 \value{
 A ggplot2 bar graph of mean of a scoring variables

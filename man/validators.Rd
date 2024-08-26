@@ -4,14 +4,32 @@
 \alias{validators}
 \alias{duration_too_short}
 \alias{no_test_responses}
+\alias{partial_cases}
 \alias{duplicate_cases}
+\alias{suggest_missing_class}
+\alias{age_year_mismatch}
+\alias{straightlining}
+\alias{duplicate_postcodes}
+\alias{no_consent}
 \title{Validators}
 \usage{
 duration_too_short(data)
 
 no_test_responses(data)
 
+partial_cases(data)
+
 duplicate_cases(data)
+
+suggest_missing_class(data)
+
+age_year_mismatch(data)
+
+straightlining(data)
+
+duplicate_postcodes(data)
+
+no_consent(data)
 }
 \arguments{
 \item{data}{Raw input dataset}

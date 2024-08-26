@@ -520,10 +520,8 @@ bar_multiple_vars <-
 #' @param .split Split columns by gender x class
 #' @param classes Vector names of classes
 #'
-#' @return
-#' @export
+#' @return A ggplot2 graph
 #'
-#' @examples
 bar_share_elevated <- function(data, .split, .censor = TRUE, classes = "All") {
 
   clean_dat <- data |>

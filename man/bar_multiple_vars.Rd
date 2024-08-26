@@ -27,7 +27,7 @@ bar_multiple_vars(
 
 \item{.gender_split}{\code{TRUE}/\code{FALSE} - split by gender when sufficient numbers of responses}
 
-\item{classes}{Names of classes to filter/combine.}
+\item{classes}{Vector names of classes to filter/combine.}
 }
 \value{
 A ggplot2 graph of \% of 'success' in each group

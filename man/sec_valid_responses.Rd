@@ -5,7 +5,7 @@
 \alias{sec_valid_responses}
 \title{Simulated responses for secondary survey testing}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 200 rows and 124 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 200 rows and 129 columns.
 }
 \usage{
 sec_valid_responses
