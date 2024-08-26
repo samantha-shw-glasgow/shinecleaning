@@ -1,10 +1,11 @@
 test_that("collapsed summary", {
   set.seed(1)
   input_data <- tibble(
-    gender = sample(c("Girl", "Boy"), 20, TRUE),
+    gender = sample(c("Girls", "Boys"), 20, TRUE),
     class = sample(c("S1", "S6"), 20, TRUE),
     answer = sample(c("Excellent", "Good", "Fair", "Poor"), 20, TRUE),
-  )
+  ) |>
+    arrange(desc(class))
   expected <- tibble::tribble(
     ~class, ~gender,  ~numerator, ~denom,
     "S1",   "Boys",   3,          5,
@@ -12,7 +13,8 @@ test_that("collapsed summary", {
     "S6",   "Boys",   1,          3,
     "S6",   "Girls",  3,          5,
     "All",  "All",    9,          20,
-  )
+  ) |>
+    mutate(class = forcats::fct_inorder(class))
   result <- create_collapsed_summary(input_data, answer, c("Excellent", "Good"))
   expect_equal(result, expected)
 })
@@ -20,7 +22,7 @@ test_that("collapsed summary", {
 test_that("full summary", {
   set.seed(1)
   input_data <- tibble(
-    gender = sample(c("Girl", "Boy"), 20, TRUE),
+    gender = sample(c("Girls", "Boys"), 20, TRUE),
     class = sample(c("S1", "S6"), 20, TRUE),
     answer = sample(c("Excellent", "Good", "Fair", "Poor"), 20, TRUE),
   )
@@ -46,7 +48,8 @@ test_that("full summary", {
     "All",  "All",    "Fair",       4,          20,
     "All",  "All",    "Good",       6,          20,
     "All",  "All",    "Poor",       7,          20,
-  )
+  ) |>
+    mutate(class = forcats::fct_inorder(class))
   result <- create_full_summary(input_data, answer, c("Excellent", "Good"))
   expect_equal(result, expected)
 })

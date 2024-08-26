@@ -13,7 +13,8 @@ create_collapsed_summary <- function(
       numerator = sum(success, na.rm = TRUE),
       denom = n(),
       .groups = "drop"
-    )
+    ) |>
+    arrange(class)
   all <- subgroups |>
     summarise(
       class = "All",
@@ -37,7 +38,8 @@ create_full_summary <- function(
   subgroups <- data |>
     group_by(class, gender, !!var) |>
     summarise(numerator = n(), .groups = "drop") |>
-    add_count(class, gender, name = "denom", wt = numerator)
+    add_count(class, gender, name = "denom", wt = numerator) |>
+    arrange(class)
   all <- subgroups |>
     summarise(
       class = "All",
