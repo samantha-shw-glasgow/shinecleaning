@@ -5,3 +5,4 @@
 \.github
 ^[^/]*\.docx$
 temp_.*\.R
+^LICENSE\.md$

@@ -1,0 +1,22 @@
+postcode_5_TEXT,expected_include,expected_message
+A,TRUE,
+B,TRUE,
+B,TRUE,
+C,TRUE,
+C,TRUE,
+C,TRUE,
+D,TRUE,
+D,TRUE,
+D,TRUE,
+D,TRUE,
+E,TRUE,Postcode occurs 5 times
+E,TRUE,Postcode occurs 5 times
+E,TRUE,Postcode occurs 5 times
+E,TRUE,Postcode occurs 5 times
+E,TRUE,Postcode occurs 5 times
+F,TRUE,Postcode occurs 6 times
+F,TRUE,Postcode occurs 6 times
+F,TRUE,Postcode occurs 6 times
+F,TRUE,Postcode occurs 6 times
+F,TRUE,Postcode occurs 6 times
+F,TRUE,Postcode occurs 6 times

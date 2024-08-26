@@ -1,0 +1,4 @@
+consent,expected_include,expected_message
+"Yes, I am happy to take part",TRUE,
+"No, I do not want to take part",FALSE,Consent not given
+Any other response,FALSE,Consent not given
