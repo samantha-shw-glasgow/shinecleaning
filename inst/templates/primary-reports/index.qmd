@@ -43,7 +43,8 @@ knitr::opts_chunk$set(echo = FALSE,
                       fig.height = 4.4,
                       dpi=330,
                       dev='svg',
-                      fig.width = 6.3)
+                      fig.width = 6.3,
+                      fig.topcaption=TRUE)
 school_name <- params$school_name
 is_la_report <- params$is_la_report
 term <- params$term
