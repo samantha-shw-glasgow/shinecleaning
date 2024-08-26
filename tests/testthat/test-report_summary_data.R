@@ -24,7 +24,7 @@ test_that("full summary", {
   input_data <- tibble(
     gender = sample(c("Girls", "Boys"), 20, TRUE),
     class = sample(c("S1", "S6"), 20, TRUE),
-    answer = sample(c("Excellent", "Good", "Fair", "Poor"), 20, TRUE),
+    health = sample(c("Excellent", "Good", "Fair", "Poor"), 20, TRUE),
   )
   expected <- tibble::tribble(
     ~class, ~gender,  ~answer,      ~numerator, ~denom,
@@ -50,6 +50,6 @@ test_that("full summary", {
     "All",  "All",    "Poor",       7,          20,
   ) |>
     mutate(class = forcats::fct_inorder(class))
-  result <- create_full_summary(input_data, answer, c("Excellent", "Good"))
+  result <- create_full_summary(input_data, health, c("Excellent", "Good"))
   expect_equal(result, expected)
 })

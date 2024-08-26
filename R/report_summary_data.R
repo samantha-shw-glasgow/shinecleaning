@@ -36,7 +36,8 @@ create_full_summary <- function(
   var <- enquo(var)
 
   subgroups <- data |>
-    group_by(class, gender, !!var) |>
+    rename(answer = !!var) |>
+    group_by(class, gender, answer) |>
     summarise(numerator = n(), .groups = "drop") |>
     add_count(class, gender, name = "denom", wt = numerator) |>
     arrange(class)
@@ -45,7 +46,7 @@ create_full_summary <- function(
       class = "All",
       gender = "All",
       numerator = sum(numerator),
-      .by = !!var
+      .by = answer
     ) |>
     mutate(denom = sum(numerator))
 
