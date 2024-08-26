@@ -105,14 +105,21 @@ their health was \'excellent\' or \'good\'.
 
 ```{r bar-health, fig.cap="% of pupils who report excellent or good health"}
 
-input_data |> 
-  bar_by_cat(
-    health,
-    success = c("Good", "Excellent"),
-    .gender_split = params$gender_split
-  )
+input_data |>
+  create_collapsed_summary(health, success = c("Good", "Excellent")) |> 
+  bar_from_summary()
 
 ```
+
+```{r, eval=params$gender_split}
+
+input_data |>
+  create_full_summary(health) |>
+  table_from_summary()
+
+
+```
+
 
 \newpage
 
@@ -178,6 +185,7 @@ input_data |>
 ```{r bar-low-lifesat-split, eval=params$gender_split}
 
 input_data |>
+  head(20) |> 
     bar_multiple_vars(
     varslist = list(
       lifesat1 = "Overall",
