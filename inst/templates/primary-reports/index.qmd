@@ -111,12 +111,11 @@ input_data |>
 
 ```
 
-```{r, eval=params$gender_split}
+```{r, tab.cap="Pupil self-rated health", eval=params$gender_split}
 
 input_data |>
   create_full_summary(health) |>
   table_from_summary()
-
 
 ```
 
@@ -244,10 +243,11 @@ low mood (Figure \@ref(fig:bar-wellbeing)).
 <!-- 6. -->
 
 ```{r bar-wellbeing, fig.cap="% of pupils with low mood"}
+
 input_data |>
-  bar_by_cat(who_cat,
-             success = "low",
-             .gender_split = params$gender_split)
+  create_collapsed_summary(who_cat, success = c("low")) |> 
+  bar_from_summary()
+
 ```
 
 \newpage
@@ -286,13 +286,21 @@ percentage of pupils who like school \'a lot\' or \'a bit\'
 
 
 ```{r bar-sch1, fig.cap="% of pupils who like school (a lot or a bit)"}
-input_data |> 
-  bar_by_cat(
-    sch1,
-    c("I like it a lot", "I like it a bit"),
-    .gender_split = params$gender_split
-  )
+
+input_data |>
+  create_collapsed_summary(sch1, success = c("I like it a lot", "I like it a bit"),) |> 
+  bar_from_summary()
+
 ```
+
+```{r tab-sch1, tab.cap="How much pupils liked school", eval=params$gender_split}
+
+input_data |>
+  create_full_summary(sch1) |>
+  table_from_summary()
+
+```
+
 
 \newpage
 
@@ -305,13 +313,21 @@ lot\' or \'some\' pressure.
 <!-- compared with the HBSC Scotland national average. Table shows all responses to this question. -->
 
 ```{r bar-sch2, fig.cap="% of pupils who feel a lot of or some pressure from schoolwork"}
-input_data |> 
-  bar_by_cat(
-    sch2,
-    c("A lot", "A little"),
-    .gender_split = params$gender_split
-  )
+
+input_data |>
+  create_collapsed_summary(sch2, success = c("A lot", "A little")) |> 
+  bar_from_summary()
+
 ```
+
+```{r tab-sch2, tab.cap="How pressured pupils feel by schoolwork", eval=params$gender_split}
+
+input_data |>
+  create_full_summary(sch2) |>
+  table_from_summary()
+
+```
+
 
 \newpage
 
@@ -323,13 +339,21 @@ Figure \@ref(fig:bar-sch3) shows the proportion of pupils in your who responded 
 <!-- compared with the HBSC Scotland national average. Table shows all the responses to this question -->
 .
 
+
 ```{r bar-sch3, fig.cap="% of pupils who feel always or often confident"}
-input_data |> 
-  bar_by_cat(
-    sch3,
-    c("Always", "Often"),
-    .gender_split = params$gender_split
-  )
+
+input_data |>
+  create_collapsed_summary(sch3, success = c("Always", "Often")) |> 
+  bar_from_summary()
+
+```
+
+```{r tab-sch3, tab.cap="How often pupils feel confident", eval=params$gender_split}
+
+input_data |>
+  create_full_summary(sch3) |>
+  table_from_summary()
+
 ```
 
 \newpage
@@ -384,8 +408,6 @@ input_data |>
 ```
 
 ```{r bar-coviality, fig.cap="Average covitality score"}
-
-# Currently not working as planned. May need new function for a single mean
 
 input_data |> 
   bar_mean_single_var(
