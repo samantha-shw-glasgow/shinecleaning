@@ -93,7 +93,7 @@ Reflecting on the data:
     "the young people\'s", "pupils\'")` scores are lower?
 -   Are there particular patterns in `r ifelse(is_la_report,
     "the", "your school\'s")` data? For example,
-    `r ifelse(is_la_report, "are there", "is one year group
+    `r ifelse(is_la_report, "are there", "does one year group
     and/or gender group have")` more negative outcomes across a number
     of measures`r ifelse(is_la_report, " in the primary or
     secondary sector or relevant to a specific gender group", "")`?
@@ -115,7 +115,11 @@ Working together:
 
 -   Have we considered the year group split in the data to identify
     whether senior pupil ambassadors (S6 or P7) could support junior
-    pupils or whether earlier intervention is required.
+    pupils or whether earlier intervention is required?
+    
+Below is a reminder of some resources to support the interpretation and use of 
+the data reports which are available to schools in the SHINE members' digital 
+folder in the RESOURCES section.
 
 |    |    |
 |:------------------------------|:----------------------------------------|
@@ -159,7 +163,7 @@ WHO CAN HELP
 | Moodcafé http://www.moodcafe.co.uk/                                                                                                                                | Resources for a range of mental health issues and learning disabilities developed for young people, adults and families by NHS Fife.                                                                                                                                                                                                                                                                                             |
 | Young Minds https://youngminds.org.uk/                                                                                                                             | Resources and information for young people, their parents and people working with young people to support young people's mental health.                                                                                                                                                                                                                                                                                          |
 | Salvesen Mind Room https://www.mindroom.org/help-and-support/                                                                                                      | Salvesen Mindroom Centre is a Scottish charity dedicated to supporting, informing and empowering all those living with learning difficulties. It produces resources for parents and professionals and young people.                                                                                                                                                                                                              |
-| Sleep Scotland https://www.sleepscotland.org/ Sleep Support Line: 0800 138 6565                                                                                    | Sleep Scotland aims to improve the quality of life by providing the most appropriate intervention for families of children with sleep problems. They offer a range of resources including, a Sleep Support Line and a Sound Sleep programme-training day and teaching resource manual for professionals working in schools.                                                                                                      |
+| Sleep Action https://www.sleepscotland.org/ Sleep Support Line: [sleepsupport@sleepaction.org](mailto:sleepsupport@sleepaction.org)                                                                                    | Sleep Action aims to improve the quality of life by providing the most appropriate intervention for families of children with sleep problems. They offer a range of resources including, a Sleep Support Line and a Sound Sleep programme-training day and teaching resource manual for professionals working in schools.                                                                                                      |
 | BLOOM https://mentalhealth-uk.org/partnerships/projects/bloom                                                                                                      | BLOOM is the largest UK-wide programme for 14-18- year- olds which focuses on supporting young people's mental health resilience. The website features useful videos, information and resources, as well as offering training on its website.                                                                                                                                                                                    |
 | Changing Faces https://www.changingfaces.org.uk/advice-guidance/mental-health-wellbeing/                                                                           | Changing Faces is the leading UK charity for everyone with a scar, mark or condition that makes them look different. The website provides advice and guidance on mental health and wellbeing to support people living with a visible difference. There is also a link to services and support as well as teaching resources 'A world of Difference'. https://www.changingfaces.org.uk/services-support/support-information-line/ |
 | Growth Mindset https://www.winningscotland.org/mindset.html                                                                                                        | This CPD programme is Education Scotland endorsed and GTCS accredited. It's suited to practitioners, school leaders and whole-staff teams. Applied Growth Mindset helps you build and embed a growth mindset culture throughout your learning community to improve resilience and persistence.                                                                                                                                   |
