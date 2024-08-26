@@ -111,7 +111,7 @@ input_data |>
 
 ```
 
-```{r, tab.cap="Pupil self-rated health", eval=params$gender_split}
+```{r tab-health, tab.id="tab-health", tab.cap.pre="Table", tab.cap="Pupil self-rated health", eval=params$gender_split}
 
 input_data |>
   create_full_summary(health) |>
@@ -293,7 +293,7 @@ input_data |>
 
 ```
 
-```{r tab-sch1, tab.cap="How much pupils liked school", eval=params$gender_split}
+```{r tab-sch1, tab.id="tab-sch1", tab.cap.pre="Table", tab.cap="How much pupils liked school", eval=params$gender_split}
 
 input_data |>
   create_full_summary(sch1) |>
@@ -320,7 +320,7 @@ input_data |>
 
 ```
 
-```{r tab-sch2, tab.cap="How pressured pupils feel by schoolwork", eval=params$gender_split}
+```{r tab-sch2, tab.id="tab-sch2", tab.cap.pre="Table", tab.cap="How pressured pupils feel by schoolwork", eval=params$gender_split}
 
 input_data |>
   create_full_summary(sch2) |>
@@ -348,7 +348,7 @@ input_data |>
 
 ```
 
-```{r tab-sch3, tab.cap="How often pupils feel confident", eval=params$gender_split}
+```{r tab-sch3, tab.id="tab-sch3", tab.cap.pre="Table", tab.cap="How often pupils feel confident", eval=params$gender_split}
 
 input_data |>
   create_full_summary(sch3) |>
