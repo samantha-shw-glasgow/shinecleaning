@@ -262,13 +262,13 @@ into groups according to pre-determined cut-offs: \'as expected\' or
 in this area. For more information on this scale, see page 6.
 
 ```{r bar-mm-emotional, fig.cap="Pupils' emotional scores"}
-# input_data |> 
-#   bar_share_elevated(mm_emotional)
+input_data |>
+  bar_share_elevated(.split = TRUE, classes = classes)
 ```
 
 ```{r bar-mm-behavioural, fig.cap="Pupils' behavioural scores"}
-# input_data |> 
-#   bar_share_elevated(mm_behavioural)
+input_data |>
+  bar_share_elevated(.split = TRUE, classes = classes)
 ```
 
 \newpage
