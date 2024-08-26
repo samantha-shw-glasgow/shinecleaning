@@ -104,7 +104,7 @@ bar_by_cat <- function(data,
         )),
         vjust = 0,
         nudge_y = 0.05,
-        size = 4
+        size = if_else(.gender_split, 3, 4)
       ) +
       theme(plot.margin = unit(c(0.5, 0.5, 0.5, 1), "cm")) +
       coord_cartesian(ylim = c(0, 1), clip = "off")
@@ -131,7 +131,7 @@ bar_by_cat <- function(data,
         )),
         vjust = 0,
         nudge_y = 0.05,
-        size = 4
+        size = if_else(.gender_split, 3, 4)
       ) +
       theme(plot.margin = unit(c(0.8, 0.5, 0.5, 1), "cm")) +
       coord_cartesian(ylim = c(0, 1), clip = "off")
@@ -172,7 +172,7 @@ bar_by_cat <- function(data,
         )),
         vjust = 0,
         nudge_y = 0.05,
-        size = 4
+        size = if_else(.gender_split, 3, 4)
       ) +
       coord_cartesian(ylim = c(0, 1), clip = "off")
   } else {
@@ -302,7 +302,7 @@ bar_mean_multiple_vars <-
         hjust = -0.5,
         colour = "black",
         position = position_dodge(width = 0.7),
-        size = 4
+        size = if_else(.gender_split, 3, 4)
       ) +
       # geom_text(aes(label = bar_lab_cens, y = ymax/2),
       #           # nudge_y = 0.05,
@@ -310,7 +310,7 @@ bar_mean_multiple_vars <-
       #           angle = 90,
       #           colour = "black",
       #           position = position_dodge(width = 0.7),
-      #           size = 4) +
+      #           size = if_else(.gender_split, 3, 4)) +
       coord_cartesian(xlim = c(0, xmax), clip = "off") +
       labs(
         caption = if_else(any(clean_dat$censored == 1), "* Numbers too low to show", ""),
@@ -502,7 +502,7 @@ bar_multiple_vars <-
         hjust = -0.5,
         colour = "black",
         position = position_dodge(width = 0.7),
-        size = 4
+        size = if_else(.gender_split, 2.5, 4)
       ) +
       coord_cartesian(clip = "off") +
       labs(
@@ -581,7 +581,7 @@ bar_share_elevated <- function(data, .split, .censor = TRUE, classes = "All") {
     geom_text(aes(label = bar_lab_main),
               colour = "black",
               position = position_stack(vjust = 0.5),
-              size = 4) +
+              size = if_else(.gender_split, 3, 4)) +
     coord_cartesian(clip = "off") +
     theme(legend.justification.right = "top",
           plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
