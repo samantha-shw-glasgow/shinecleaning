@@ -581,7 +581,7 @@ bar_share_elevated <- function(data, .split, .censor = TRUE, classes = "All") {
     geom_text(aes(label = bar_lab_main),
               colour = "black",
               position = position_stack(vjust = 0.5),
-              size = if_else(.gender_split, 3, 4)) +
+              size = 4) +
     coord_cartesian(clip = "off") +
     theme(legend.justification.right = "top",
           plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
