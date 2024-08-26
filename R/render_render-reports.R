@@ -5,24 +5,37 @@
 #' @param survey_data A clean dataframe of survey results
 #' @param school_name If a school report, the school's name
 #' @param local_authority_name If a local authority report, the LA's name (note not compatible with school report/name argument)
+#' @param term Name of term to print on report
 #' @param number_invited Number invited to complete the survey
 #' @param output_location Location of file output (defaults to working directory)
+#' @param gender_split To split report outputs by gender
 #' @param filename Name of file to output
 #'
 #'
-render_report <- function(survey_data = NULL,
-                          school_name = NULL,
-                          local_authority_name = NULL,
+render_report <- function(survey_data,
+                          school_name = NA,
+                          local_authority_name = NA,
+                          term = NULL,
                           number_invited = NULL,
                           output_location = getwd(),
+                          gender_split = TRUE,
                           filename = "primary_report.docx") {
-  render_env <- new.env()
 
-  requireNamespace("tidyverse", quietly = TRUE)
-  requireNamespace("officedown", quietly = TRUE)
+  if(!is.na(school_name) && !is.na(local_authority_name)) {
+    stop("Is this a school or Local Authority report?\n",
+         "Please provide only `school_name` or `local_authority_name`")
+  } else if(is.na(school_name) && is.na(local_authority_name)) {
+    stop("Please provide a `school_name` or a `local_authority_name`")
+  }
+
+  render_env <- new.env()
 
   survey_data <- survey_data[grepl("^\\d", survey_data$`StartDate`), ] |>
     data_prep()
+
+  report_name <- if_else(!is.na(school_name), school_name, local_authority_name)
+
+  is_la <- is.na(local_authority_name)
 
   if (is.null(number_invited))
     number_invited <- nrow(survey_data)
@@ -34,7 +47,13 @@ render_report <- function(survey_data = NULL,
     output_dir = output_location,
     envir = render_env,
     output_file = filename,
-    params = list(school_name = school_name)
+    params = list(
+      is_la_report = FALSE,
+      school_name = report_name,
+      term = term,
+      number_invited = number_invited,
+      gender_split = gender_split
+      )
   )
 
 }
@@ -85,7 +104,8 @@ data_prep <- function(survey_data, report_type = "primary") {
 
   survey_out <- survey_data |>
     filter(.data$consent == "Yes, I am happy to take part") |>
-    mutate(gender = .data$gender2) |>
+    mutate(gender = .data$gender |>
+             stringr::str_replace("(?<=(Boy|Girl))$", "s")) |>  # pluralise for reporting
     who_score()
 
   if (report_type == "primary") {
@@ -101,8 +121,8 @@ data_prep <- function(survey_data, report_type = "primary") {
 
   } else if (report_type == "secondary") {
 
-    if (!("ASW1" %in% colnames(survey_out))) {
-      stop("Dataset is missing expected variables for primary report. ",
+    if (!("asw1" %in% colnames(survey_out))) {
+      stop("Dataset is missing expected variables for secondary report. ",
            "Did you correctly specify report type and are columns correctly named?")
     }
 
@@ -133,8 +153,8 @@ who_score <- function(survey_data) {
   )
 
   survey_data |>
-    mutate(across(starts_with("Who"), ~match(.x, who_responses) - 1)) |>
-    mutate(who_score = rowSums(pick(starts_with("Who"))) * 4,
+    mutate(across(starts_with("who"), ~match(.x, who_responses) - 1)) |>
+    mutate(who_score = rowSums(pick(starts_with("who"))) * 4,
            who_cat = case_when(
              who_score <= 50 ~ "low",
              who_score > 50 ~ "good"

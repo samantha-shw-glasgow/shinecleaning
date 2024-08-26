@@ -30,19 +30,27 @@ params:
   school_name: 'Test school academy'
   term: 'Autumn 2024'
   number_invited: 1000
-bibliography: ../styling/references.bib
-csl: ../styling/the-lancet.csl
-nocite: '@*'
+  gender_split: true
 execute:
   enabled: true
 ---
 
 ```{r, echo = FALSE, warning = FALSE, message=FALSE}
 #| echo: false
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = FALSE,
+                      warning = FALSE,
+                      message = FALSE,
+                      fig.height = 4.6,
+                      dpi=330,
+                      dev='svg',
+                      fig.width = 6.3)
 school_name <- params$school_name
 is_la_report <- params$is_la_report
 term <- params$term
+
+# In secondary reports only: this becomes a list of vectors, grouping classes in
+# low number situations
+classes <- c("P6", "P7")
 
 library(tidyverse)
 
@@ -53,7 +61,7 @@ theme_update(
 ```
 
 
-```{r front-page, echo=FALSE, results='asis'}
+```{r front-page, echo=FALSE, eval = TRUE, results='asis'}
 cat(knitr::knit_child('front-cover.qmd', envir = environment(), quiet = TRUE))
 ```
 
@@ -65,7 +73,7 @@ Contents
 
 `r officer::block_toc(level = 2, style = NULL, separator = ";")`
 
-```{r introduction, echo=FALSE, results='asis'}
+```{r introduction, echo=FALSE, eval = TRUE, results='asis'}
 cat(knitr::knit_child('introduction.qmd', envir = environment(), quiet = TRUE))
 ```
 
@@ -97,13 +105,21 @@ their health was \'excellent\' or \'good\'.
 
 ```{r bar-health, fig.cap="% of pupils who report excellent or good health"}
 
-input_data |> 
-  bar_by_cat(
-    health,
-    success = c("Good", "Excellent")
-  )
+input_data |>
+  create_collapsed_summary(health, success = c("Good", "Excellent")) |> 
+  bar_from_summary()
 
 ```
+
+```{r, eval=params$gender_split}
+
+input_data |>
+  create_full_summary(health) |>
+  table_from_summary()
+
+
+```
+
 
 \newpage
 
@@ -121,14 +137,97 @@ Figure \@ref(fig:bar-low-lifesat) shows the percentage of pupils who scored low 
 aspect of life. Low happiness is defined as a score of less than 5. For
 more information on this index, see page 6.
 
-```{r bar-lifesat, fig.cap="Average scores for different aspects of life"}
-input_data |>
-  bar_mean_multiple_vars(starts_with("lifesat"))
+```{r bar-lifesat-split, eval=params$gender_split}
+input_data |> 
+  bar_mean_multiple_vars(
+    varslist = list(
+      lifesat1 = "Overall",
+      lifesat2 = "Family",
+      lifesat3 = "Home",
+      lifesat4 = "Choice",
+      lifesat5 = "Friends",
+      lifesat6 = "Things you have",
+      lifesat7 = "Health",
+      lifesat8 = "Appearance",
+      lifesat9 = "Future",
+      lifesat10 = "School",
+      lifesat11 = "Time use"
+    ),
+    classes = classes,
+    limits = c(0, 10)
+  )
+
 ```
+
+```{r bar-lifesat, fig.cap="Average scores for different aspects of life", eval=TRUE}
+input_data |> 
+  bar_mean_multiple_vars(
+    varslist = list(
+      lifesat1 = "Overall",
+      lifesat2 = "Family",
+      lifesat3 = "Home",
+      lifesat4 = "Choice",
+      lifesat5 = "Friends",
+      lifesat6 = "Things you have",
+      lifesat7 = "Health",
+      lifesat8 = "Appearance",
+      lifesat9 = "Future",
+      lifesat10 = "School",
+      lifesat11 = "Time use"
+    ),
+    classes = "All",
+    limits = c(0, 10),
+    .gender_split = FALSE
+  )
+
+```
+
+```{r bar-low-lifesat-split, eval=params$gender_split}
+
+input_data |>
+  head(20) |> 
+    bar_multiple_vars(
+    varslist = list(
+      lifesat1 = "Overall",
+      lifesat2 = "Family",
+      lifesat3 = "Home",
+      lifesat4 = "Choice",
+      lifesat5 = "Friends",
+      lifesat6 = "Things you have",
+      lifesat7 = "Health",
+      lifesat8 = "Appearance",
+      lifesat9 = "Future",
+      lifesat10 = "School",
+      lifesat11 = "Time use"
+    ),
+    success = ~ .x < 5,
+    group = "gender",
+    classes = classes
+  )
+
+```
+
 
 ```{r bar-low-lifesat, fig.cap="% of pupils who report low happiness in different aspects of life"}
 input_data |>
-  bar_multiple_vars(starts_with("lifesat"))
+    bar_multiple_vars(
+    varslist = list(
+      lifesat1 = "Overall",
+      lifesat2 = "Family",
+      lifesat3 = "Home",
+      lifesat4 = "Choice",
+      lifesat5 = "Friends",
+      lifesat6 = "Things you have",
+      lifesat7 = "Health",
+      lifesat8 = "Appearance",
+      lifesat9 = "Future",
+      lifesat10 = "School",
+      lifesat11 = "Time use"
+    ),
+    success = ~ .x < 5,
+    classes = "All",
+    .gender_split = FALSE
+  )
 ```
 
 \newpage
@@ -146,7 +245,9 @@ low mood (Figure \@ref(fig:bar-wellbeing)).
 
 ```{r bar-wellbeing, fig.cap="% of pupils with low mood"}
 input_data |>
-  bar_by_cat(who_cat, success = "low")
+  bar_by_cat(who_cat,
+             success = "low",
+             .gender_split = params$gender_split)
 ```
 
 \newpage
@@ -188,7 +289,8 @@ percentage of pupils who like school \'a lot\' or \'a bit\'
 input_data |> 
   bar_by_cat(
     sch1,
-    c("I like it a lot", "I like it a bit")
+    c("I like it a lot", "I like it a bit"),
+    .gender_split = params$gender_split
   )
 ```
 
@@ -206,7 +308,8 @@ lot\' or \'some\' pressure.
 input_data |> 
   bar_by_cat(
     sch2,
-    c("A lot", "A little")
+    c("A lot", "A little"),
+    .gender_split = params$gender_split
   )
 ```
 
@@ -224,7 +327,8 @@ Figure \@ref(fig:bar-sch3) shows the proportion of pupils in your who responded 
 input_data |> 
   bar_by_cat(
     sch3,
-    c("Always", "Often")
+    c("Always", "Often"),
+    .gender_split = params$gender_split
   )
 ```
 
@@ -249,26 +353,53 @@ health. For more information on this scale, see page 6.
 
 
 
+```{r bar-sehs-split, eval = params$gender_split}
+input_data |> 
+  bar_mean_multiple_vertical(
+    varslist = list(
+      g_score = "Gratitude",
+      z_score = "Zest",
+      o_score = "Optimism",
+      p_score = "Persistance",
+      pro_score = "Pro-social"
+    ),
+    classes = classes,
+    ymax = 16
+  )
+```
+
 ```{r bar-sehs, fig.cap="Average score in each SEHS domain"}
 input_data |> 
-  bar_mean_multiple_vertical(starts_with("sehs"))
+  bar_mean_multiple_vertical(
+    varslist = list(
+      g_score = "Gratitude",
+      z_score = "Zest",
+      o_score = "Optimism",
+      p_score = "Persistance",
+      pro_score = "Pro-social"
+    ),
+    ymax = 16,
+    .gender_split = FALSE
+  )
 ```
 
 ```{r bar-coviality, fig.cap="Average covitality score"}
+
+# Currently not working as planned. May need new function for a single mean
+
 input_data |> 
-  bar_mean_multiple_vertical(
-    starts_with("cov")
+  bar_mean_single_var(
+    cov_score,
+    .gender_split = params$gender_split,
+    ymax = 60,
+    classes = classes
   )
 ```
 
 
 \newpage
 
-```{r outtro, echo=FALSE, results='asis'}
+```{r outtro, echo=FALSE, eval = TRUE, results='asis'}
 cat(knitr::knit_child('outtro.qmd', envir = environment(), quiet = TRUE))
 ```
 
-\newpage
-
-
-# References

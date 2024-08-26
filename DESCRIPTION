@@ -13,6 +13,7 @@ Imports:
     bslib,
     dplyr,
     flextable,
+    forcats,
     ggplot2,
     glue,
     htmltools,
@@ -23,10 +24,12 @@ Imports:
     readr,
     rlang,
     rmarkdown,
+    rsvg,
     scales,
     shiny,
     stringr,
-    tibble
+    tibble,
+    tidyr
 Suggests: 
     pkgload,
     testthat (>= 3.0.0)
