@@ -73,7 +73,7 @@ bar_by_cat <- function(data,
                        .censor = TRUE,
                        .gender_split = TRUE) {
 
-  require(patchwork)
+  requireNamespace("patchwork", quietly = TRUE)
 
   var <- enquo(var)
 
