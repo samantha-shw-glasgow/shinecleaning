@@ -543,8 +543,8 @@ bar_share_elevated <- function(data, .split, .censor = TRUE, classes = "All") {
       ) |>
       dplyr::mutate(
         labels = dplyr::if_else(
-          class %in% classes & gender %in% c("Boy", "Girl"),
-          stringr::str_c(class, " ", gender, "s"),
+          class %in% classes & gender %in% c("Boys", "Girls"),
+          stringr::str_c(class, " ", gender),
           NA
         )
       ) |>
