@@ -137,30 +137,34 @@ Figure \@ref(fig:bar-low-lifesat) shows the percentage of pupils who scored low 
 aspect of life. Low happiness is defined as a score of less than 5. For
 more information on this index, see page 6.
 
-```{r bar-lifesat-split, eval=params$gender_split}
-input_data |> 
-  bar_mean_multiple_vars(
-    varslist = list(
-      lifesat1 = "Overall",
-      lifesat2 = "Family",
-      lifesat3 = "Home",
-      lifesat4 = "Choice",
-      lifesat5 = "Friends",
-      lifesat6 = "Things you have",
-      lifesat7 = "Health",
-      lifesat8 = "Appearance",
-      lifesat9 = "Future",
-      lifesat10 = "School",
-      lifesat11 = "Time use"
-    ),
-    classes = classes,
-    limits = c(0, 10)
-  )
-
-```
-
 ```{r bar-lifesat, fig.cap="Average scores for different aspects of life", eval=TRUE}
-input_data |> 
+
+graphs <- list()
+
+if (params$gender_split) {
+  graphs <- map(classes, \(classes) {
+    input_data |>
+      bar_mean_multiple_vars(
+        varslist = list(
+          lifesat1 = "Overall",
+          lifesat2 = "Family",
+          lifesat3 = "Home",
+          lifesat4 = "Choice",
+          lifesat5 = "Friends",
+          lifesat6 = "Things you have",
+          lifesat7 = "Health",
+          lifesat8 = "Appearance",
+          lifesat9 = "Future",
+          lifesat10 = "School",
+          lifesat11 = "Time use"
+        ),
+        classes = classes,
+        limits = c(0, 10)
+      )
+  })
+}
+
+graphs <- input_data |> 
   bar_mean_multiple_vars(
     varslist = list(
       lifesat1 = "Overall",
@@ -178,7 +182,19 @@ input_data |>
     classes = "All",
     limits = c(0, 10),
     .gender_split = FALSE
-  )
+  ) |> 
+  list() |> 
+  append(graphs, values = _)
+
+print(graphs[[1]])
+
+graphs[[1]] <- NULL
+
+```
+
+```{r bar-lifesat-extra, eval=length(graphs)!=0}
+
+walk(graphs, print)
 
 ```
 
