@@ -8,13 +8,11 @@ We wish to thank the Health Behaviour in School-aged Children (HBSC)
 Survey team and all Scottish schools and pupils who took part in the
 2022 HBSC Survey. The HBSC Scotland study is funded by Public Health
 Scotland. Thank you to the Children\'s Society for allowing us to use
-the Good Childhood Index. We also thank colleagues based at the Public
-Health Research Facility at the MRC/CSO Social and Public Health
-Sciences Unit (University of Glasgow) for their work on developing the
-online survey and reporting portal. The SHINE project was originally
-funded by the MRC Mental Health Data Pathfinder (2018-2021) and is now
-funded by Medical Research Council core funding to Social and Public
-Health Sciences Unit at the University of Glasgow with contributions
+the Good Childhood Index. We also thank colleagues based at R Training & 
+Consultancy for their work on developing the online survey and reporting portal.
+The SHINE project was originally funded by the MRC Mental Health Data Pathfinder 
+(2018-2021) and is now funded by Medical Research Council core funding to Social
+and Public Health Sciences Unit at the University of Glasgow with contributions
 from some individual local authorities.
 
 \newpage
