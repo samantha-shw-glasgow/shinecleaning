@@ -312,7 +312,7 @@ Understanding the data in this report
     survey.
     Where we have enough responses, we will also show results by
     individual year and gender and/ or banded year groups and gender.
--   There are symbols (🟠 🔹) to show the national result for
+-   There are symbols <!--(🟠 🔹) -->to show the national result for
     Scotland. This data is from the Health Behaviour in School-aged
     Children study (HBSC) which was carried out in 2022. Your report
     shows the HBSC national average for pupils in Primary 7.
@@ -320,7 +320,7 @@ Understanding the data in this report
     suppressed due to small numbers.
 
 
-```{r}
+```{r, out.width="100%"}
 if (params$gender_split) {
   knitr::include_graphics("../img/figure_understand.svg", dpi = NA)
 } else {
