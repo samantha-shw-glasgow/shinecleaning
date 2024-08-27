@@ -301,8 +301,8 @@ bar_mean_multiple_vars <-
         aes(label = .data$bar_lab_main),
         hjust = -0.5,
         colour = "black",
-        position = position_dodge(width = 0.7),
-        size = if_else(.gender_split, 3, 4)
+        position = position_dodge(width = 0.8),
+        size = if_else(.gender_split, 2.5, 4)
       ) +
       # geom_text(aes(label = bar_lab_cens, y = ymax/2),
       #           # nudge_y = 0.05,
@@ -501,7 +501,7 @@ bar_multiple_vars <-
         aes(label = .data$bar_lab_main),
         hjust = -0.5,
         colour = "black",
-        position = position_dodge(width = 0.7),
+        position = position_dodge(width = 0.8),
         size = if_else(.gender_split, 2.5, 4)
       ) +
       coord_cartesian(clip = "off") +
