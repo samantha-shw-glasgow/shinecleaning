@@ -409,23 +409,28 @@ health. For more information on this scale, see page 6.
 
 
 
-```{r bar-sehs-split, eval = params$gender_split}
-input_data |> 
-  bar_mean_multiple_vertical(
-    varslist = list(
-      g_score = "Gratitude",
-      z_score = "Zest",
-      o_score = "Optimism",
-      p_score = "Persistance",
-      pro_score = "Pro-social"
-    ),
-    classes = classes,
-    ymax = 16
-  )
-```
+```{r  bar-sehs, fig.cap="Average score in each SEHS domain"}
 
-```{r bar-sehs, fig.cap="Average score in each SEHS domain"}
-input_data |> 
+graphs <- list()
+
+if (params$gender_split) {
+  graphs <- map(classes, \(classes) {
+    input_data |>
+      bar_mean_multiple_vertical(
+        varslist = list(
+          g_score = "Gratitude",
+          z_score = "Zest",
+          o_score = "Optimism",
+          p_score = "Persistance",
+          pro_score = "Pro-social"
+        ),
+        classes = classes,
+        ymax = 16
+      )
+  })
+}
+
+graphs <- input_data |> 
   bar_mean_multiple_vertical(
     varslist = list(
       g_score = "Gratitude",
@@ -436,7 +441,20 @@ input_data |>
     ),
     ymax = 16,
     .gender_split = FALSE
-  )
+  ) |> 
+  list() |> 
+  append(graphs, values = _)
+
+print(graphs[[1]])
+
+graphs[[1]] <- NULL
+
+```
+
+```{r bar-sehs-extra, eval=length(graphs)!=0}
+
+walk(graphs, print)
+
 ```
 
 ```{r bar-coviality, fig.cap="Average covitality score"}
