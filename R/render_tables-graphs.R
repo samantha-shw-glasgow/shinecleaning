@@ -513,18 +513,23 @@ bar_multiple_vars <-
   }
 
 
-#' Bar graph of % of sts with elevatved or expected mm scores
+#' Produce table and bar graph of % of sts with elevatved or expected mm scores
 #'
+#' share_elevated
 #' @param data The dataframe of valid responses
 #' @param .censor `TRUE`/`FALSE` - apply censoring rules (must be `TRUE` in output reports)
 #' @param .split Split columns by gender x class
 #' @param classes Vector names of classes
 #'
+#' bar_share_elevated
+#' @param graph_data The output of `share_elevated`.
+#'
 #' @return
 #' @export
 #'
 #' @examples
-bar_share_elevated <- function(data, .split, .censor = TRUE, classes = "All") {
+
+share_elevated <- function(data, .split, .censor = TRUE, classes = "All") {
 
   clean_dat <- data |>
     dplyr::summarise(
@@ -573,8 +578,12 @@ bar_share_elevated <- function(data, .split, .censor = TRUE, classes = "All") {
              var == "expected" ~ "As expected"
            ),
            labels = forcats::fct_relevel(labels, "All", after = Inf)
-           )
+    )
 
+  return(graph_dat)
+}
+
+bar_share_elevated <- function(graph_data) {
   ggplot(data = graph_dat,
          aes(x = labels, y = prop, fill = var)) +
     geom_bar(stat = "identity", position = "stack") +
