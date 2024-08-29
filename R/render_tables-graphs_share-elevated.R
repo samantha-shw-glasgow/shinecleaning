@@ -79,9 +79,10 @@ bar_share_elevated <- function(graph_data) {
     )
 
   ggplot(data = graph_dat,
+         aes(x = x_lab, y = prop, fill = var)) +
     geom_bar(stat = "identity", position = "stack") +
     scale_fill_hbsc(name = "") +
-    scale_y_continuous("", labels = scales::percent) +
+    scale_y_continuous("", labels = scales::percent, limits = c(0,1)) +
     geom_text(aes(label = bar_lab_main),
               colour = "black",
               position = position_stack(vjust = 0.5),
@@ -95,6 +96,17 @@ bar_share_elevated <- function(graph_data) {
             face = "italic"
           ),
           axis.title.x = element_blank()) +
-    labs(caption = if_else(any(graph_dat$censored == 1), "* Numbers too low to show", ""),
-         title = paste(stringr::str_flatten_comma(classes, " and "), "pupils"))
+    labs(caption = if_else(any(graph_dat$censored == 1),
+                           "* Numbers too low to show",
+                           ""),
+         title = if_else(all(c(graph_dat$class %in% "All")),
+                         "All pupils",
+                         paste(
+                           stringr::str_flatten_comma(
+                             unique(graph_dat$class[graph_dat$class != "All"]),
+                             " and "),
+                           "pupils"
+                           )
+                         )
+         )
 }
