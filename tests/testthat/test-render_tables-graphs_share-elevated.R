@@ -7,7 +7,8 @@ test_that("share elevated split",{
     mme_cat = sample(c("Expected", "Elevated"), 30, TRUE),
   )
 
-  expected <- read_csv("tests/testthat/examples/share_elevated_split.csv")   |>
+  expected <- read_csv("tests/testthat/examples/share_elevated_split.csv",
+                       show_col_types = FALSE)   |>
     mutate(labels = factor(labels, levels = c("P6 Boys", "P6 Girls", "P7 Boys", "P7 Girls", "All")))
 
 
