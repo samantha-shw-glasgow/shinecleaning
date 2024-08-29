@@ -5,7 +5,7 @@
 \alias{pri_valid_responses}
 \title{Simulated responses for primary survey testing}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 41 rows and 95 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 120 rows and 95 columns.
 }
 \usage{
 pri_valid_responses

@@ -8,13 +8,11 @@ We wish to thank the Health Behaviour in School-aged Children (HBSC)
 Survey team and all Scottish schools and pupils who took part in the
 2022 HBSC Survey. The HBSC Scotland study is funded by Public Health
 Scotland. Thank you to the Children\'s Society for allowing us to use
-the Good Childhood Index. We also thank colleagues based at the Public
-Health Research Facility at the MRC/CSO Social and Public Health
-Sciences Unit (University of Glasgow) for their work on developing the
-online survey and reporting portal. The SHINE project was originally
-funded by the MRC Mental Health Data Pathfinder (2018-2021) and is now
-funded by Medical Research Council core funding to Social and Public
-Health Sciences Unit at the University of Glasgow with contributions
+the Good Childhood Index. We also thank colleagues based at R Training & 
+Consultancy for their work on developing the online survey and reporting portal.
+The SHINE project was originally funded by the MRC Mental Health Data Pathfinder 
+(2018-2021) and is now funded by Medical Research Council core funding to Social
+and Public Health Sciences Unit at the University of Glasgow with contributions
 from some individual local authorities.
 
 \newpage
@@ -28,14 +26,14 @@ Research Network (SHINE) `r ifelse(is_la_report, "Local Authority", "school")` r
 report you will find your `r ifelse(is_la_report, "Local Authority\'s", "school\'s")` results to the SHINE Pupil Mental
 Health Survey which looks at different aspects of mental health and
 wellbeing. The report does not identify individual pupils but presents
-aggregate data by gender and year groups to help identify trends or
+aggregated data by gender and year groups to help identify trends or
 patterns. It can also be used to:
 
 -   Identify the main mental health and wellbeing issues affecting your
     `r ifelse(is_la_report, "young people as part of the wider community", "pupils and whole school community")`
 -   Focus on local needs and local context
 -   Identify hidden or emerging issues, or groups at particular risk to
-    facilitate prioritising & targeting of resources
+    facilitate the prioritisation & targeting of resources
 -   Shape your `r ifelse(is_la_report, "Local Authority", "school")` improvement plan`r ifelse(is_la_report, " and staff programme", "")`
 -   Promote pupil voice and shared decision-making
     `r ifelse(is_la_report, "as part of the whole-school approach strategy across the schools in the Local Authority", "")`
@@ -104,8 +102,8 @@ self-esteem, positive self-concept and purpose in life as well as
 involvement in meaningful pro-social activities. It is also linked to
 lower psychopathological externalising and internalising behaviour.^4^
 Young people with high subjective wellbeing have more favourable
-academic, social and physical health outcomes.^5^ ^6^ ^7^ There is also evidence it
-serves as a buffer against stressful life events and is a significant
+academic, social and physical health outcomes.^5^ ^6^ ^7^ There is also evidence 
+that it serves as a buffer against stressful life events and is a significant
 factor in determining an individual's resilience to adverse life
 circumstances.^8^
 
@@ -127,7 +125,7 @@ fall in to four main groups:^9^
 
 Data from England indicates that in 2022, 18% of young people aged 7-16
 years old have a mental health condition.^10^ The most prevalent conditions
-are emotional and behavioural with girls more likely to experience
+are emotional and behavioural; with girls more likely to experience
 emotional problems and boys more likely to experience behavioural
 difficulties.^11^ There is evidence to suggest that emotional disorders are
 increasing, particularly amongst girls.^12^ ^13^
@@ -135,7 +133,7 @@ increasing, particularly amongst girls.^12^ ^13^
 Emotional disorders may impact on an adolescent\'s functioning for
 example at school and in social situations.^14^ Those with mental health
 problems are more likely to have poorer general health, lower
-self-esteem and overall wellbeing.^15^ Many mental health problems persist,
+self-esteem and overall wellbeing.^15^ Many mental health problems persist
 into adulthood with negative consequences for health, social and
 economic outcomes.^16^ ^17^
 
@@ -314,7 +312,7 @@ Understanding the data in this report
     survey.
     Where we have enough responses, we will also show results by
     individual year and gender and/ or banded year groups and gender.
--   There are symbols (🟠 🔹) to show the national result for
+-   There are symbols <!--(🟠 🔹) -->to show the national result for
     Scotland. This data is from the Health Behaviour in School-aged
     Children study (HBSC) which was carried out in 2022. Your report
     shows the HBSC national average for pupils in Primary 7.
@@ -322,11 +320,11 @@ Understanding the data in this report
     suppressed due to small numbers.
 
 
-```{r}
+```{r, out.width="100%"}
 if (params$gender_split) {
-  knitr::include_graphics("../img/figure_understand.svg")
+  knitr::include_graphics("../img/figure_understand.svg", dpi = NA)
 } else {
-  knitr::include_graphics("../img/figure_understanding_all.svg")
+  knitr::include_graphics("../img/figure_understanding_all.svg", dpi = NA)
 }
 ```
 

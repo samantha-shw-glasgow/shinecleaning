@@ -46,7 +46,7 @@ bar_mean_multiple_vertical(
 
 \item{xlab, ylab}{Label for X axis (summary statistic, i.e. "mean")}
 
-\item{classes}{Names of classes to filter/combine.}
+\item{classes}{Vector names of classes to filter/combine.}
 }
 \value{
 A ggplot2 bar graph of means across several scoring variables
