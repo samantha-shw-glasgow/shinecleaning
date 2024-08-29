@@ -1,4 +1,3 @@
-
 test_that("share elevated split",{
   set.seed(1)
   input_data <- tibble(
@@ -8,12 +7,13 @@ test_that("share elevated split",{
   )
 
   expected <- read_csv("tests/testthat/examples/share_elevated_split.csv",
-                       show_col_types = FALSE)   |>
-    mutate(labels = factor(labels, levels = c("P6 Boys", "P6 Girls", "P7 Boys", "P7 Girls", "All")))
-
+                       show_col_types = FALSE)
 
   result <- share_elevated(input_data,
-                           .split = TRUE, .censor = TRUE, classes = c("P6", "P7"))
+                           .split = TRUE,
+                           .censor = TRUE,
+                           classes = c("P6", "P7"),
+                           genders = c("Boy", "Girl"))
 
   expect_equal(result, expected)
 })
