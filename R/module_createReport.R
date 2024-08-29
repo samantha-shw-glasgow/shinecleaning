@@ -161,7 +161,9 @@ createReport_server <- function(id, data){
 				## create report
 
 				output$generate <- downloadHandler(
-				  filename = paste0(input$school_name, '_report.docx'),
+				  filename = function(){
+				    paste0(input$school_name, '_report.docx')
+				    },
 				  content = function(file){
 				    if(input$report_type == 'Primary'){
 
