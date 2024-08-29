@@ -6,7 +6,7 @@ test_that("share elevated split",{
     mme_cat = sample(c("Expected", "Elevated"), 30, TRUE),
   )
 
-  expected <- read_csv("tests/testthat/examples/share_elevated_split.csv",
+  expected <- read_csv(test_path("examples/share_elevated_split.csv"),
                        show_col_types = FALSE)
 
   result <- share_elevated(input_data,
