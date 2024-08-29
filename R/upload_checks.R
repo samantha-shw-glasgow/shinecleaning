@@ -5,11 +5,12 @@
 #' @return dataframe of failed checks
 #'
 #' @keywords internal
-upload_checks_raw <- function(data){
+upload_checks_raw <- function(data, vars){
   checks <- rbind(
     upcheck_status(data),
     upcheck_schools(data),
-    upcheck_gender(data)
+    upcheck_gender(data),
+    upcheck_has_columns(data, vars, required = FALSE)
     )
 
   return(checks[checks$fail, c("message", "level")])
@@ -111,12 +112,12 @@ upcheck_gender <- function(data){
   message = NA
   level = NA
 
-  if(! "QID4" %in% colnames(data)){
+  if(! "gender" %in% colnames(data)){
     fail = TRUE
-    message = "`QID4` (gender) column not found in this file. Please include gender in the uploaded file."
+    message = "`gender` column not found in this file. Please include gender in the uploaded file."
     level = 3
   } else {
-    genders = data$QID4 #data$QID4[!data$QID4 %in% c("{\"ImportId\":\"QUID4\"}", "gender")]
+    genders = data$gender
     if(any(stringr::str_detect(genders, "[0-9]"), na.rm = TRUE)){
       fail = TRUE
       message = "This file has numeric values for gender where characters are expected. Please ensure you have downloaded the data with full text responses."
@@ -127,19 +128,23 @@ upcheck_gender <- function(data){
   return(data.frame(fail, message, level))
 }
 
-upcheck_has_columns <- function(data, columns){
+upcheck_has_columns <- function(data, columns, required = TRUE){
   fail = FALSE
   message = NA
   level = NA
 
   has_col = columns %in% colnames(data)
 
-  if (! all(isTRUE(has_col))) {
+  if (!all(isTRUE(has_col))) {
     fail = TRUE
-    message = paste0("This file is missing the following required column(s): ", paste0(columns[!has_col], collapse = ", "))
-    level = 3
+    if (isTRUE(required)) {
+      message = paste0("This file is missing the following required column(s): ", paste0(columns[!has_col], collapse = ", "))
+      level = 3
+    } else {
+      message = paste0("This file is missing the following expected column(s): ", paste0(columns[!has_col], collapse = ", "))
+      level = 2
+    }
   }
 
   return(data.frame(fail, message, level))
 }
-

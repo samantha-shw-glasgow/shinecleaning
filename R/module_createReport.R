@@ -72,8 +72,7 @@ createReport_server <- function(id, data){
 				      numericInput(ns('n_invited'), 'Number of invited students', value = NA),
 				      if (isTRUE(additional_options())) {
 				        tagList(
-				          checkboxInput(ns('gender_split'), 'Split by gender'),
-				          checkboxInput(ns('class_split'), 'Split by class')
+				          checkboxInput(ns('split'), 'Split by gender and class', value = T)
 				        )
 				      },
 				      if (isFALSE(additional_options())) {
@@ -114,11 +113,11 @@ createReport_server <- function(id, data){
 				## var names
 				lifesat <- paste0('lifesat', 1:11)
 				sch <- paste0('sch', 1:3)
-				who <- paste0('Who', 1:5)
+				who <- paste0('who', 1:5)
 				sehs <- paste0('sehs', 1:20)
-				# cov <- paste0('cov', 1:5)
+				activity <- paste0('activity_', 4:14)
 
-				primary_vars <- c("gender", "health", lifesat, sch, who, sehs)
+				primary_vars <- c("gender", "health", lifesat, sch, who, sehs, activity)
 
 				check_vars <- reactive({
 				  if (input$report_type == 'Primary') {
