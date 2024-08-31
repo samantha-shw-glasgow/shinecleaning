@@ -52,6 +52,9 @@ term <- params$term
 # In secondary reports only: this becomes a list of vectors, grouping classes in
 # low number situations
 classes <- c("P6", "P7")
+genders <- c("Boys", "Girls", "All")
+
+if(!params$gender_split) genders <- "All"
 
 library(tidyverse)
 
@@ -295,12 +298,14 @@ in this area. For more information on this scale, see page 6.
 
 ```{r bar-mm-emotional, fig.cap="Pupils' emotional scores"}
 input_data |>
-  bar_share_elevated(.split = TRUE, classes = classes)
+  share_elevated(.split = TRUE, classes = classes, genders = genders) |> 
+  bar_share_elevated()
 ```
 
 ```{r bar-mm-behavioural, fig.cap="Pupils' behavioural scores"}
 input_data |>
-  bar_share_elevated(.split = TRUE, classes = classes)
+  share_elevated(.split = TRUE, classes = classes, genders = genders) |> 
+  bar_share_elevated()
 ```
 
 \newpage
