@@ -47,10 +47,12 @@ create_collapsed_summary <- function(
 create_full_summary <- function(
     data,
     var,
+    levels,
     .censor = FALSE,
     .gender_split = FALSE
 ) {
   var <- enquo(var)
+
 
   subgroups <- data |>
     rename(answer = !!var) |>
@@ -58,6 +60,7 @@ create_full_summary <- function(
     summarise(numerator = n(), .groups = "drop") |>
     add_count(class, gender, name = "denom", wt = numerator) |>
     arrange(class)
+
   all <- subgroups |>
     summarise(
       class = "All",
@@ -68,7 +71,10 @@ create_full_summary <- function(
     mutate(denom = sum(numerator))
 
   bind_rows(subgroups, all) |>
-    mutate(class = forcats::fct_inorder(class))
+    mutate(
+      answer = factor(answer, levels = levels),
+      class = forcats::fct_inorder(class)
+      )
 }
 
 
@@ -86,9 +92,9 @@ create_full_summary <- function(
 #' ) |>
 #'   create_collapsed_summary(answer, success = c("Excellent", "Good")) |>
 #'   bar_from_summary()
-bar_from_summary <- function(summary_data) {
+bar_from_summary <- function(summary_data, inc_gender = genders) {
   summary_data |>
-    filter(gender %in% c("Boys", "Girls", "All")) |>
+    filter(gender %in% inc_gender) |>
     mutate(prop = numerator/denom) |>
     ggplot() +
     aes(x = class, y = prop, fill = gender) +
@@ -120,14 +126,19 @@ bar_from_summary <- function(summary_data) {
 #'   create_full_summary(answer) |>
 #'   table_from_summary()
 #'
-table_from_summary <- function(summary_data) {
+table_from_summary <- function(summary_data, inc_gender = genders) {
+
   summary_data |>
-    mutate(prop = numerator/denom) |>
+    filter(gender %in% inc_gender) |>
+    mutate(prop = sprintf("%.0f", 100*numerator/denom)) |>
     pivot_wider(id_cols = answer, names_from = c(class, gender), values_from = prop) |>
+    rename(All = All_All, ` ` = answer) |>
+    rename_with(~str_replace(.x, "(\\d)", "\\1\n%")) |>
     flextable() |>
     separate_header()|>
     theme_vanilla() |>
     set_table_properties(layout = "autofit", width = 1) |>
-    set_caption(align_with_table = FALSE)
+    set_caption(align_with_table = FALSE) |>
+    align(j = -1, align = "center", part = "all")
 }
 

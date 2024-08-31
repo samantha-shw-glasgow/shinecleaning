@@ -49,7 +49,11 @@ test_that("full summary", {
     "All",  "All",    "Good",       6,          20,
     "All",  "All",    "Poor",       7,          20,
   ) |>
-    mutate(class = forcats::fct_inorder(class))
-  result <- create_full_summary(input_data, health, c("Excellent", "Good"))
+    mutate(class = forcats::fct_inorder(class),
+           answer = factor(answer, levels = c("Poor", "Fair", "Good", "Excellent")))
+  result <-
+    create_full_summary(input_data,
+                        health,
+                        levels = c("Poor", "Fair", "Good", "Excellent"))
   expect_equal(result, expected)
 })
