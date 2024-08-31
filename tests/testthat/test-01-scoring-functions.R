@@ -23,10 +23,10 @@ test_that("Me and My feelings score", {
   expected_a <-bind_cols(input_data_a,
      tribble(
       ~mme_score, ~mmb_score,   ~mme_cat,   ~mmb_cat,
-               6,          2, "Expected", "Expected",
-               5,         10, "Expected", "Elevated",
-               7,          6, "Expected", "Elevated",
-               7,          5, "Expected", "Expected"
+               6,          2, "As expected", "As expected",
+               5,         10, "As expected", "Elevated",
+               7,          6, "As expected", "Elevated",
+               7,          5, "As expected", "As expected"
     )
   )
 
@@ -55,10 +55,10 @@ test_that("Me and My feelings score", {
   expected_b <-bind_cols(input_data_b,
       tribble(
       ~mme_score, ~mmb_score,   ~mme_cat,   ~mmb_cat,
-               6 * 10/7,          2, "Expected", "Expected",
+               6 * 10/7,          2, "As expected", "As expected",
                NA_real_,         10, NA_character_, "Elevated",
-               7,          4 * 6 / 4, "Expected", "Elevated",
-               7,          NA_real_, "Expected", NA_character_
+               7,          4 * 6 / 4, "As expected", "Elevated",
+               7,          NA_real_, "As expected", NA_character_
     )
   )
 

@@ -51,7 +51,8 @@ share_elevated <-
         prop = if_else(censored == 1, 1, n / denom),
         var = factor(var, levels = levels) |> fct_rev()
       ) |>
-      select(gender, class, var, n, denom, prop, censored)
+      select(gender, class, var, n, denom, prop, censored) |>
+      arrange(gender, class, var)
 
     return(graph_dat)
   }
