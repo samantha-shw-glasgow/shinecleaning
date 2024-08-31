@@ -196,8 +196,8 @@ mm_score <- function(survey_data) {
         mmb_missing <=2 ~ 6 * mmb_score / (6 - mmb_missing),
         mmb_missing > 2 ~ NA_real_
       ),
-      mme_cat = if_else(.data$mme_score <= 9, "Expected", "Elevated"),
-      mmb_cat = if_else(.data$mmb_score <= 5, "Expected", "Elevated"),
+      mme_cat = if_else(.data$mme_score <= 9, "As expected", "Elevated"),
+      mmb_cat = if_else(.data$mmb_score <= 5, "As expected", "Elevated"),
       .keep = "none"
       )  |>
     bind_cols(survey_data, x = _)

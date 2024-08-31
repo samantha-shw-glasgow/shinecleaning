@@ -12,48 +12,49 @@
 #'
 #' @examples
 
-share_elevated <- function(data, .split, .censor = TRUE, classes = "All", genders = c("Boy", "Girl")) {
+share_elevated <-
+  function(data,
+           outcome,
+           levels = c("As expected", "Elevated"),
+           .split = TRUE,
+           .censor = TRUE,
+           classes = "All",
+           genders = c("Boy", "Girl")) {
 
-  clean_dat <- data |>
-    dplyr::summarise(
-      elevated = sum(mme_cat %in% c("Elevated"), na.rm = TRUE),
-      expected = sum(mme_cat %in% c("Expected"), na.rm = TRUE),
-      denom = sum(!is.na(mme_cat))
-    ) |>
-    dplyr::mutate(
-      gender = "All",
-      class = "All")
 
-  if (.split) {
-    split_dat <- data |>
-      dplyr::group_by(gender, class) |>
-      dplyr::summarise(
-        elevated = sum(mme_cat %in% c("Elevated"), na.rm = TRUE),
-        expected = sum(mme_cat %in% c("Expected"), na.rm = TRUE),
-        denom = sum(!is.na(mme_cat))
+    clean_dat <- map(levels, ~ data |>
+                       summarise("{.x}" := sum({{outcome}} %in% .x))) |>
+                reduce(bind_cols) |>
+                mutate(denom = sum(c_across(everything())),
+                       gender = "All",
+                       class = "All")
+
+    if (.split) {
+      split_dat <-
+        map(levels, ~ data |>
+              group_by(gender, class) |>
+              summarise("{.x}" := sum({{outcome}} %in% .x), .groups = "drop")) |>
+        reduce(left_join, by = join_by(gender, class)) |>
+        mutate(denom = sum(c_across(where(is.numeric))), .by = c("gender", "class")) |>
+        dplyr::filter(class %in% classes,
+                      gender %in% genders)
+
+      clean_dat <- dplyr::bind_rows(clean_dat, split_dat)
+    }
+
+    graph_dat <- clean_dat |>
+      mutate(censored = if_else(denom < 3 & .censor, 1, 0)) |>
+      pivot_longer(-c(denom, censored, gender, class),
+                   names_to = "var",
+                   values_to = "n") |>
+      mutate(
+        prop = if_else(censored == 1, 1, n / denom),
+        var = factor(var, levels = levels) |> fct_rev()
       ) |>
-      dplyr::filter(class %in% classes,
-                    gender %in% genders) |>
-      ungroup()
+      select(gender, class, var, n, denom, prop, censored)
 
-    clean_dat <- dplyr::bind_rows(clean_dat, split_dat)
+    return(graph_dat)
   }
-
-  graph_dat <- clean_dat |>
-    mutate(censored = if_else(denom < 3 & .censor, 1, 0)) |>
-    pivot_longer(-c(denom, censored, gender, class),
-                 names_to = "var",
-                 values_to = "n") |>
-    mutate(prop = if_else(censored == 1, 1, n / denom),
-           var = case_when(
-             var == "elevated" ~ "Elevated",
-             var == "expected" ~ "As expected"
-           )
-    ) |>
-    select(gender, class, var, n, denom, prop, censored)
-
-  return(graph_dat)
-}
 
 #' Produce bar graph of % of sts with elevatved or expected mm scores
 #'
@@ -69,7 +70,7 @@ bar_share_elevated <- function(graph_data) {
       x_lab = if_else(
         class == "All" & gender == "All",
         "All",
-        stringr::str_c(class, " ", gender, "s")
+        stringr::str_c(class, " ", gender)
       ) |> forcats::fct_relevel("All", after = Inf),
       bar_lab_main = if_else(
         censored == 1,
