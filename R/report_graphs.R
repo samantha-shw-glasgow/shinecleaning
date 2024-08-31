@@ -1,3 +1,17 @@
+#' Bar percentage from summary data
+#'
+#' @param summary_data A dataframe produced by `create_collapsed_summary`
+#'
+#' @return A ggplot2 graph
+#' @examples
+#' N = 100
+#'tibble(
+#'   gender = sample(c("Girl", "Boy"), N, TRUE),
+#'   class = sample(c("S1", "S6"), N, TRUE),
+#'   answer = sample(c("Excellent", "Good", "Fair", "Poor"), N, TRUE)
+#' ) |>
+#'   create_collapsed_summary(answer, success = c("Excellent", "Good")) |>
+#'   bar_from_summary()
 bar_from_summary <- function(summary_data) {
   summary_data |>
     filter(gender %in% c("Boys", "Girls", "All")) |>
@@ -16,6 +30,22 @@ bar_from_summary <- function(summary_data) {
     coord_cartesian(ylim = c(0, 1), clip = "off")
 }
 
+#' A table of percentages from summary data
+#'
+#' @param summary_data A dataframe produced by `create_collapsed_summary`
+#'
+#' @return A printed `flextable`
+#'
+#' @examples
+#'
+#' tibble(
+#'     gender = sample(c("Girl", "Boy"), N, TRUE),
+#'     class = sample(c("S1", "S6"), N, TRUE),
+#'     answer = sample(c("Yes", "No"), N, TRUE),
+#' ) |>
+#'   create_full_summary(answer) |>
+#'   table_from_summary()
+#'
 table_from_summary <- function(summary_data) {
   summary_data |>
     mutate(prop = numerator/denom) |>
@@ -24,23 +54,3 @@ table_from_summary <- function(summary_data) {
     separate_header()
 }
 
-if (FALSE) {
-  # Example usage:
-  N = 100
-  tibble(
-    gender = sample(c("Girl", "Boy"), N, TRUE),
-    class = sample(c("S1", "S6"), N, TRUE),
-    answer = sample(c("Excellent", "Good", "Fair", "Poor"), N, TRUE),
-  ) |>
-    create_collapsed_summary(answer, success = c("Excellent", "Good")) |>
-    bar_from_summary()
-
-  # Example usage:
-  tibble(
-    gender = sample(c("Girl", "Boy"), N, TRUE),
-    class = sample(c("S1", "S6"), N, TRUE),
-    answer = sample(c("Yes", "No"), N, TRUE),
-  ) |>
-    create_full_summary(answer) |>
-    table_from_summary()
-}
