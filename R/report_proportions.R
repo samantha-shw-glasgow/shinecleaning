@@ -6,6 +6,8 @@
 #' @param .censor Whether to censor (must be TRUE for production reports)
 #' @param .gender_split Gender split - passed from params
 #'
+#' @export
+#'
 #' @return A dataframe of proportions/counts of successes
 create_collapsed_summary <- function(
     data,
@@ -43,6 +45,8 @@ create_collapsed_summary <- function(
 #' @param levels Character vector of ordered levels
 #' @param .censor Whether to censor (must be TRUE for production reports)
 #' @param .gender_split Gender split - passed from params
+#'
+#' @export
 #'
 #' @return A dataframe of counted variables
 create_full_summary <- function(
@@ -84,16 +88,18 @@ create_full_summary <- function(
 #' @param summary_data A dataframe produced by `create_collapsed_summary`
 #' @param inc_gender List of genders to include in table
 #'
+#' @export
+#'
 #' @return A ggplot2 graph
 #' @examples
 #' N = 100
-#'tibble(
-#'   gender = sample(c("Girl", "Boy"), N, TRUE),
-#'   class = sample(c("S1", "S6"), N, TRUE),
-#'   answer = sample(c("Excellent", "Good", "Fair", "Poor"), N, TRUE)
-#' ) |>
+#' tibble(
+#'    gender = sample(c("Girl", "Boy"), N, TRUE),
+#'    class = sample(c("S1", "S6"), N, TRUE),
+#'    answer = sample(c("Excellent", "Good", "Fair", "Poor"), N, TRUE)
+#'  ) |>
 #'   create_collapsed_summary(answer, success = c("Excellent", "Good")) |>
-#'   bar_from_summary()
+#'   bar_from_summary(c("Boys", "Girls", "All"))
 bar_from_summary <- function(summary_data, inc_gender = genders) {
   summary_data |>
     filter(gender %in% inc_gender) |>
@@ -119,15 +125,18 @@ bar_from_summary <- function(summary_data, inc_gender = genders) {
 #'
 #' @return A printed `flextable`
 #'
+#' @export
+#'
 #' @examples
 #'
+#' N = 100
 #' tibble(
 #'     gender = sample(c("Girl", "Boy"), N, TRUE),
 #'     class = sample(c("S1", "S6"), N, TRUE),
 #'     answer = sample(c("Yes", "No"), N, TRUE),
 #' ) |>
 #'   create_full_summary(answer, levels = c("Yes", "No")) |>
-#'   table_from_summary()
+#'   table_from_summary(c("Boys", "Girls", "All"))
 #'
 table_from_summary <- function(summary_data, inc_gender = genders) {
 
@@ -144,4 +153,5 @@ table_from_summary <- function(summary_data, inc_gender = genders) {
     set_caption(align_with_table = FALSE) |>
     align(j = -1, align = "center", part = "all")
 }
+
 

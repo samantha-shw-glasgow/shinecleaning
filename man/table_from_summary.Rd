@@ -19,12 +19,13 @@ A table of percentages from summary data
 }
 \examples{
 
+N = 100
 tibble(
     gender = sample(c("Girl", "Boy"), N, TRUE),
     class = sample(c("S1", "S6"), N, TRUE),
     answer = sample(c("Yes", "No"), N, TRUE),
 ) |>
   create_full_summary(answer, levels = c("Yes", "No")) |>
-  table_from_summary()
+  table_from_summary(c("Boys", "Girls", "All"))
 
 }
