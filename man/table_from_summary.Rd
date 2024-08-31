@@ -24,7 +24,7 @@ tibble(
     class = sample(c("S1", "S6"), N, TRUE),
     answer = sample(c("Yes", "No"), N, TRUE),
 ) |>
-  create_full_summary(answer) |>
+  create_full_summary(answer, levels = c("Yes", "No")) |>
   table_from_summary()
 
 }

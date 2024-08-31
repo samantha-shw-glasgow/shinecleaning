@@ -101,7 +101,7 @@ tab_responses(input_data, params$number_invited)
 
 ```{r tab-by-class, tab.id="tab-by-class", tab.cap="Overview of survey respondents", eval=params$gender_split, results='asis'}
 
-tab_categories(input_data)
+tab_categories(input_data, inc_gender = genders)
 
 ```
 
@@ -123,7 +123,7 @@ their health was \'excellent\' or \'good\'. `r if(params$gender_split){"Table \\
 
 input_data |>
   create_collapsed_summary(health, success = c("Good", "Excellent")) |> 
-  bar_from_summary()
+  bar_from_summary(genders)
 
 ```
 
@@ -132,7 +132,7 @@ input_data |>
 input_data |>
   create_full_summary(health,
                       levels = c("Poor", "Fair", "Good", "Excellent")) |>
-  table_from_summary()
+  table_from_summary(genders)
 
 ```
 
@@ -294,7 +294,7 @@ low mood (Figure \@ref(fig:bar-wellbeing)).
 
 input_data |>
   create_collapsed_summary(who_cat, success = c("low")) |> 
-  bar_from_summary()
+  bar_from_summary(genders)
 
 ```
 
@@ -345,7 +345,7 @@ percentage of pupils who like school \'a lot\' or \'a bit\'.  `r if(params$gende
 
 input_data |>
   create_collapsed_summary(sch1, success = c("I like it a lot", "I like it a bit")) |> 
-  bar_from_summary()
+  bar_from_summary(genders)
 
 ```
 
@@ -357,7 +357,7 @@ input_data |>
                                  "I don’t like it very much", 
                                  "I like it a bit",
                                  "I like it a lot")) |>
-  table_from_summary()
+  table_from_summary(genders)
 
 ```
 
@@ -376,7 +376,7 @@ lot\' or \'some\' pressure. `r if(params$gender_split){"Table \\@ref(tab:tab-sch
 
 input_data |>
   create_collapsed_summary(sch2, success = c("A lot", "Some")) |> 
-  bar_from_summary()
+  bar_from_summary(genders)
 
 ```
 
@@ -385,7 +385,7 @@ input_data |>
 input_data |>
   create_full_summary(sch2,
                       levels = c("Not at all", "A little", "Some",  "A lot")) |>
-  table_from_summary()
+  table_from_summary(genders)
 
 ```
 
@@ -404,7 +404,7 @@ Figure \@ref(fig:bar-sch3) shows the proportion of pupils in your who responded 
 
 input_data |>
   create_collapsed_summary(sch3, success = c("Always", "Often")) |> 
-  bar_from_summary()
+  bar_from_summary(genders)
 
 ```
 
@@ -413,7 +413,7 @@ input_data |>
 input_data |>
   create_full_summary(sch3,
                       levels = c("Never", "Hardly ever", "Sometimes", "Often", "Always")) |>
-  table_from_summary()
+  table_from_summary(genders)
 
 ```
 

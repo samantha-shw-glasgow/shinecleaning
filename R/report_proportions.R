@@ -126,7 +126,7 @@ bar_from_summary <- function(summary_data, inc_gender = genders) {
 #'     class = sample(c("S1", "S6"), N, TRUE),
 #'     answer = sample(c("Yes", "No"), N, TRUE),
 #' ) |>
-#'   create_full_summary(answer) |>
+#'   create_full_summary(answer, levels = c("Yes", "No")) |>
 #'   table_from_summary()
 #'
 table_from_summary <- function(summary_data, inc_gender = genders) {
