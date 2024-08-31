@@ -61,10 +61,11 @@ library(tidyverse)
 
 
 theme_update(
-  panel.grid = element_blank()
+  panel.grid = element_blank(),
+  legend.justification.right = "top",
+  plot.margin = unit(c(0.8, 1, 0.5, 0), "cm")
 )
 ```
-
 
 ```{r front-page, echo=FALSE, eval = TRUE, results='asis'}
 cat(knitr::knit_child('front-cover.qmd', envir = environment(), quiet = TRUE))
@@ -95,6 +96,16 @@ Table \@ref(tab:tab-response) shows the response rate.
 ```{r tab-response, tab.id="tab-response", tab.cap="Response rate", tab.cap.pre="Table"}
 tab_responses(input_data, params$number_invited)
 ```
+
+`r if(params$gender_split){"Table \\@ref(tab:tab-by-class) shows the number of pupils by year group and sex who completed the survey."}`
+
+```{r tab-by-class, tab.id="tab-by-class", tab.cap="Overview of survey respondents", eval=params$gender_split, results='asis'}
+
+tab_categories(input_data)
+
+```
+
+\newpage
 
 ## General health
 
