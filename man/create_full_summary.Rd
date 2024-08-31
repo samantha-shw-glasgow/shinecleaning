@@ -4,12 +4,14 @@
 \alias{create_full_summary}
 \title{Full summary counts across all categories}
 \usage{
-create_full_summary(data, var, .censor = FALSE, .gender_split = FALSE)
+create_full_summary(data, var, levels, .censor = FALSE, .gender_split = FALSE)
 }
 \arguments{
 \item{data}{Valid input data}
 
 \item{var}{Variable to calculate by}
+
+\item{levels}{Character vector of ordered levels}
 
 \item{.censor}{Whether to censor (must be TRUE for production reports)}
 

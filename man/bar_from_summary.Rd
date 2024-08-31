@@ -4,10 +4,12 @@
 \alias{bar_from_summary}
 \title{Bar percentage from summary data}
 \usage{
-bar_from_summary(summary_data)
+bar_from_summary(summary_data, inc_gender = genders)
 }
 \arguments{
 \item{summary_data}{A dataframe produced by \code{create_collapsed_summary}}
+
+\item{inc_gender}{List of genders to include in table}
 }
 \value{
 A ggplot2 graph

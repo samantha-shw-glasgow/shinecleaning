@@ -19,7 +19,7 @@ bar_multiple_vars(
 
 \item{varslist}{(named) list of variables to use. Names will provide graph labels}
 
-\item{success}{A purr-like formula to determine observation in 'inclusion' group}
+\item{success}{A purrr-like formula to determine observation in 'inclusion' group}
 
 \item{group}{(Probably superseded) group bars by gender/class/none}
 

@@ -213,7 +213,7 @@ bar_mean_single_var <-
 #'
 #' @param data The dataframe of valid responses
 #' @param varslist (named) list of variables to use. Names will provide graph labels
-#' @param success A purr-like formula to determine observation in 'inclusion' group
+#' @param success A purrr-like formula to determine observation in 'inclusion' group
 #' @param group (Probably superseded) group bars by gender/class/none
 #' @param .censor `TRUE`/`FALSE` - apply censoring rules (must be `TRUE` in output reports)
 #' @param .gender_split `TRUE`/`FALSE` - split by gender when sufficient numbers of responses

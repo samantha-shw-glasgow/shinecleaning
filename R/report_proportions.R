@@ -40,6 +40,7 @@ create_collapsed_summary <- function(
 #'
 #' @param data Valid input data
 #' @param var Variable to calculate by
+#' @param levels Character vector of ordered levels
 #' @param .censor Whether to censor (must be TRUE for production reports)
 #' @param .gender_split Gender split - passed from params
 #'
@@ -81,6 +82,7 @@ create_full_summary <- function(
 #' Bar percentage from summary data
 #'
 #' @param summary_data A dataframe produced by `create_collapsed_summary`
+#' @param inc_gender List of genders to include in table
 #'
 #' @return A ggplot2 graph
 #' @examples
@@ -113,6 +115,7 @@ bar_from_summary <- function(summary_data, inc_gender = genders) {
 #' A table of percentages from summary data
 #'
 #' @param summary_data A dataframe produced by `create_collapsed_summary`
+#' @param inc_gender List of genders to include in table
 #'
 #' @return A printed `flextable`
 #'
