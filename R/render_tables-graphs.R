@@ -528,6 +528,7 @@ scale_fill_hbsc <- function(...) {
   global_s4_colour <- "#C5E0B4"
   global_expected_colour <- "#4770b7"
   global_elevated_colour <- "#ee9457"
+  global_difficulties_colour <- "#a5a5a5"
 
   ggplot2::scale_fill_manual(
     values = c(
@@ -539,6 +540,8 @@ scale_fill_hbsc <- function(...) {
       "All" = global_all_pupils_colour,
       "Elevated" = global_elevated_colour,
       "As expected" = global_expected_colour,
+      "Difficulties" = global_difficulties_colour,
+      "Borderline" = global_elevated_colour,
       "1" = primary_colour
     ),
     ...
