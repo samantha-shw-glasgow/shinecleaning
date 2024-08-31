@@ -2,6 +2,8 @@
 #'
 #'
 #' @param data The dataframe of valid responses
+#' @param outcome The variable to graph
+#' @param levels Levels of the variable (in ascending order)
 #' @param .censor `TRUE`/`FALSE` - apply censoring rules (must be `TRUE` in output reports)
 #' @param .split Split columns by gender x class
 #' @param classes Vector names of classes
@@ -10,7 +12,6 @@
 #' @return dataframe
 #' @export
 #'
-#' @examples
 
 share_elevated <-
   function(data,
@@ -61,10 +62,9 @@ share_elevated <-
 #'
 #' @param graph_data The output of `share_elevated`.
 #'
-#' @return
+#' @return A ggplot2 graph
 #' @export
 #'
-#' @examples
 bar_share_elevated <- function(graph_data) {
   graph_dat <- graph_data |>
     mutate(
