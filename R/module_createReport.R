@@ -76,7 +76,7 @@ createReport_server <- function(id, data){
 				        )
 				      },
 				      if (isFALSE(additional_options())) {
-				        make_upload_warning('Not enough pupils to split by class / gender', '1')
+				        make_upload_warning('Not enough respondents to split by class / gender', '1')
 				      }
 				    )
 				  } else
