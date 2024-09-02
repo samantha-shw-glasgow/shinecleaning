@@ -100,14 +100,15 @@ create_full_summary <- function(
 #'  ) |>
 #'   create_collapsed_summary(answer, success = c("Excellent", "Good")) |>
 #'   bar_from_summary(c("Boys", "Girls", "All"))
-bar_from_summary <- function(summary_data, inc_gender = genders) {
+bar_from_summary <- function(summary_data, inc_gender = genders, hbsc_data = NULL) {
   summary_data |>
     filter(gender %in% inc_gender) |>
     mutate(prop = numerator/denom) |>
     ggplot() +
     aes(x = class, y = prop, fill = gender) +
     geom_col(position = "dodge") +
-    scale_fill_hbsc("") +
+    {if(!is.null(hbsc_data)) geom_point(data = hbsc_data) } +
+    scale_fill_hbsc() +
     xlab("") +
     scale_y_continuous("%", labels = scales::percent)+
     geom_text(aes(label = scales::percent(.data$prop, suffix="%", accuracy = 1)),

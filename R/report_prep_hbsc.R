@@ -61,28 +61,26 @@ prep_hbsc <- function(dat = hbsc_scotland, create_cols = FALSE) {
     )
 }
 
-# create a geom_point that plots the proportion by gender for provided levels & question
-
-geom_hbsc_prop <- function(..., classes, level, var = NULL) {
+# get the proportion by gender for provided response
+get_hbsc_prop <- function(..., classes, response, var = NULL) {
 
   if (is.null(var)) {
-    var = unique(hbsc_scotland_modified$q[hbsc_scotland_modified$level == level])
+    var = unique(hbsc_scotland_modified$q[hbsc_scotland_modified$level == response])
     if (length(var) > 1) {
-      stop("Multiple variables found with level ", level, ". Please specify `var`.")
+      stop("Multiple variables found with response ", response, ". Please specify `var`.")
       }
   }
 
   data = hbsc_scotland_modified |>
-    filter(level == level,
+    filter(level %in% response,
+           q %in% var,
            class %in% classes) |>
-    mutate(gender2 = case_match(gender,
+    mutate(prop = prop /100,
+           gender = case_match(gender,
                                "Boy" ~ "Boys (Scotland)",
                                "Girl" ~ "Girls (Scotland)"),
            )
 
+  return(data)
 
-
-  ggplot2::geom_point(data = data ,
-                      mapping = aes(x = class, y = prop, colour = gender2, shape = gender2, group = gender),
-                      ...)
 }

@@ -119,6 +119,8 @@ scale_fill_hbsc <- function(...) {
   global_expected_colour <- "#4770b7"
   global_elevated_colour <- "#ee9457"
   global_difficulties_colour <- "#a5a5a5"
+  global_girls_scotland_avg_colour <- "#008000"
+  global_boys_scotland_avg_colour <- "#fb1e20"
 
   ggplot2::scale_fill_manual(
     values = c(
@@ -132,7 +134,9 @@ scale_fill_hbsc <- function(...) {
       "As expected" = global_expected_colour,
       "Difficulties" = global_difficulties_colour,
       "Borderline" = global_elevated_colour,
-      "1" = primary_colour
+      "1" = primary_colour,
+      "Boys (Scotland)" = global_boys_scotland_avg_colour,
+      "Girls (Scotland)" = global_girls_scotland_avg_colour
     ),
     ...
   )
