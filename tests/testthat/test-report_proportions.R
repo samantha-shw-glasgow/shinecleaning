@@ -27,10 +27,10 @@ input_data <- function() {
 describe("collapsed summary", {
   it("works without censoring and without gender split", {
     expected <- tibble::tribble(
-      ~class, ~numerator, ~denom,
-      "S1",   5,          12,
-      "S6",   4,          8,
-      "All",  9,          20,
+      ~class, ~gender,  ~numerator, ~denom,
+      "S1",   "All",    5,          12,
+      "S6",   "All",    4,          8,
+      "All",  "All",    9,          20,
     ) |>
       mutate(class = forcats::fct_inorder(class))
     result <- create_collapsed_summary(
@@ -62,6 +62,31 @@ describe("collapsed summary", {
 })
 
 describe("full summary", {
+  it("works without censoring and without gender split", {
+    expected <- tibble::tribble(
+      ~class, ~gender,  ~answer,      ~numerator, ~denom,
+      "S1",   "All",    "Excellent",  2,          12,
+      "S1",   "All",    "Fair",       2,          12,
+      "S1",   "All",    "Good",       3,          12,
+      "S1",   "All",    "Poor",       5,          12,
+      "S6",   "All",    "Excellent",  1,          8,
+      "S6",   "All",    "Fair",       2,          8,
+      "S6",   "All",    "Good",       3,          8,
+      "S6",   "All",    "Poor",       2,          8,
+      "All",  "All",    "Excellent",  3,          20,
+      "All",  "All",    "Fair",       4,          20,
+      "All",  "All",    "Good",       6,          20,
+      "All",  "All",    "Poor",       7,          20,
+    ) |>
+      mutate(class = forcats::fct_inorder(class),
+             answer = factor(answer, levels = c("Poor", "Fair", "Good", "Excellent")))
+    result <-
+      create_full_summary(input_data(),
+                          health,
+                          levels = c("Poor", "Fair", "Good", "Excellent"))
+    expect_equal(result, expected)
+  })
+
   it("works without censoring and with gender split", {
     expected <- tibble::tribble(
       ~class, ~gender,  ~answer,      ~numerator, ~denom,
@@ -93,31 +118,6 @@ describe("full summary", {
                           health,
                           levels = c("Poor", "Fair", "Good", "Excellent"),
                           .gender_split = TRUE)
-    expect_equal(result, expected)
-  })
-
-  it("works without censoring and without gender split", {
-    expected <- tibble::tribble(
-      ~class, ~answer,      ~numerator, ~denom,
-      "S1",   "Excellent",  2,          12,
-      "S1",   "Fair",       2,          12,
-      "S1",   "Good",       3,          12,
-      "S1",   "Poor",       5,          12,
-      "S6",   "Excellent",  1,          8,
-      "S6",   "Fair",       2,          8,
-      "S6",   "Good",       3,          8,
-      "S6",   "Poor",       2,          8,
-      "All",  "Excellent",  3,          20,
-      "All",  "Fair",       4,          20,
-      "All",  "Good",       6,          20,
-      "All",  "Poor",       7,          20,
-    ) |>
-      mutate(class = forcats::fct_inorder(class),
-             answer = factor(answer, levels = c("Poor", "Fair", "Good", "Excellent")))
-    result <-
-      create_full_summary(input_data(),
-                          health,
-                          levels = c("Poor", "Fair", "Good", "Excellent"))
     expect_equal(result, expected)
   })
 })

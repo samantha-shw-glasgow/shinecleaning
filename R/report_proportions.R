@@ -32,16 +32,19 @@ create_collapsed_summary <- function(
     arrange(class)
   all <- subgroups |>
     summarise(
+      class = "All",
+      gender = "All",
       numerator = sum(numerator),
       denom = sum(denom)
     )
-  all$class <- "All"
-  if (.gender_split) {
-    all$gender <- "All"
-  }
 
   bind_rows(subgroups, all) |>
-    mutate(class = forcats::fct_inorder(class))
+    transmute(
+      class = forcats::fct_inorder(class),
+      gender = replace_na(gender, "All"),
+      numerator,
+      denom
+    )
 }
 
 #' Full summary counts across all categories
@@ -77,20 +80,21 @@ create_full_summary <- function(
 
   all <- subgroups |>
     summarise(
+      class = "All",
+      gender = "All",
       numerator = sum(numerator),
       .by = answer
     ) |>
     mutate(denom = sum(numerator))
-  all$class <- "All"
-  if (.gender_split) {
-    all$gender <- "All"
-  }
 
   bind_rows(subgroups, all) |>
-    mutate(
+    transmute(
+      class = forcats::fct_inorder(class),
+      gender = replace_na(gender, "All"),
       answer = factor(answer, levels = levels),
-      class = forcats::fct_inorder(class)
-      )
+      numerator,
+      denom
+    )
 }
 
 
