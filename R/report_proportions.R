@@ -21,7 +21,6 @@ create_collapsed_summary <- function(
   } else {
     grouping_vars <- c("class")
   }
-
   subgroups <- data |>
     group_by(across(all_of(grouping_vars))) |>
     mutate(success = {{var}} %in% success) |>
@@ -64,23 +63,28 @@ create_full_summary <- function(
     .gender_split = FALSE
 ) {
   var <- enquo(var)
-
-
+  if (.gender_split) {
+    grouping_vars <- c("class", "gender")
+  } else {
+    grouping_vars <- c("class")
+  }
   subgroups <- data |>
     rename(answer = !!var) |>
-    group_by(class, gender, answer) |>
+    group_by(across(all_of(c(grouping_vars, "answer")))) |>
     summarise(numerator = n(), .groups = "drop") |>
-    add_count(class, gender, name = "denom", wt = numerator) |>
+    add_count(across(all_of(grouping_vars)), name = "denom", wt = numerator) |>
     arrange(class)
 
   all <- subgroups |>
     summarise(
-      class = "All",
-      gender = "All",
       numerator = sum(numerator),
       .by = answer
     ) |>
     mutate(denom = sum(numerator))
+  all$class <- "All"
+  if (.gender_split) {
+    all$gender <- "All"
+  }
 
   bind_rows(subgroups, all) |>
     mutate(
