@@ -25,7 +25,23 @@ input_data <- function() {
 }
 
 describe("collapsed summary", {
-  it("works without censoring, with gender split", {
+  it("works without censoring and without gender split", {
+    expected <- tibble::tribble(
+      ~class, ~numerator, ~denom,
+      "S1",   5,          12,
+      "S6",   4,          8,
+      "All",  9,          20,
+    ) |>
+      mutate(class = forcats::fct_inorder(class))
+    result <- create_collapsed_summary(
+      input_data(),
+      health,
+      c("Excellent", "Good")
+    )
+    expect_equal(result, expected)
+  })
+
+  it("works without censoring and with gender split", {
     expected <- tibble::tribble(
       ~class, ~gender,  ~numerator, ~denom,
       "S1",   "Boys",   3,          5,
@@ -35,13 +51,18 @@ describe("collapsed summary", {
       "All",  "All",    9,          20,
     ) |>
       mutate(class = forcats::fct_inorder(class))
-    result <- create_collapsed_summary(input_data(), health, c("Excellent", "Good"))
+    result <- create_collapsed_summary(
+      input_data(),
+      health,
+      c("Excellent", "Good"),
+      .gender_split = TRUE
+    )
     expect_equal(result, expected)
   })
 })
 
 describe("full summary", {
-  it("works without censoring, with gender split", {
+  it("works without censoring and with gender split", {
     expected <- tibble::tribble(
       ~class, ~gender,  ~answer,      ~numerator, ~denom,
       "S1",   "Boys",   "Excellent",  1,          5,

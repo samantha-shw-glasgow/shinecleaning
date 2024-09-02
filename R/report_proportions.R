@@ -16,9 +16,14 @@ create_collapsed_summary <- function(
     .censor = FALSE,
     .gender_split = FALSE
 ) {
+  if (.gender_split) {
+    grouping_vars <- c("class", "gender")
+  } else {
+    grouping_vars <- c("class")
+  }
 
   subgroups <- data |>
-    group_by(class, gender) |>
+    group_by(across(all_of(grouping_vars))) |>
     mutate(success = {{var}} %in% success) |>
     summarise(
       numerator = sum(success, na.rm = TRUE),
@@ -28,11 +33,13 @@ create_collapsed_summary <- function(
     arrange(class)
   all <- subgroups |>
     summarise(
-      class = "All",
-      gender = "All",
       numerator = sum(numerator),
       denom = sum(denom)
     )
+  all$class <- "All"
+  if (.gender_split) {
+    all$gender <- "All"
+  }
 
   bind_rows(subgroups, all) |>
     mutate(class = forcats::fct_inorder(class))
