@@ -134,7 +134,8 @@ upcheck_has_columns <- function(data, columns){
 
   has_col = columns %in% colnames(data)
 
-  if (! all(isTRUE(has_col))) {
+
+  if (! all(has_col)) {
     fail = TRUE
     message = paste0("This file is missing the following required column(s): ", paste0(columns[!has_col], collapse = ", "))
     level = 3
