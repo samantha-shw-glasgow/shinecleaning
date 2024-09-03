@@ -57,12 +57,12 @@ tab_responses <- function(input_data, n_invited) {
 #' @param data Valid school input data (with columns `gender` and `class`)
 #'
 #' @return A flextable giving gender by class counts
-tab_categories <- function(data, inc_gender = genders) {
+tab_categories <- function(data, inc_gender = genders, inc_classes = classes) {
 
 
   another_way <- sum(data$gender == "In another way")
   pnts <- sum(data$gender == "Prefer not to say")
-  no_class <- sum(is.na(data$class))
+  no_class <- sum(is.na(data$class) | data$class == "Prefer not to say")
 
   if (another_way) {
     cat(
@@ -92,8 +92,8 @@ tab_categories <- function(data, inc_gender = genders) {
   cat("\n")
 
   data |>
+    filter(gender %in% inc_gender, class %in% inc_classes) |>
     count(gender, `Year group` = class) |>
-    filter(gender %in% inc_gender) |>
     pivot_wider(names_from = gender, values_from = n) |>
     flextable() |>
     theme_vanilla() |>
