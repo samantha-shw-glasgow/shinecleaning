@@ -56,31 +56,60 @@ prep_hbsc <- function(dat = hbsc_scotland, create_cols = FALSE) {
       gender = case_match(
         gender,
         "boys" ~ "Boy",
-        "girls" ~ "Girl"
+        "girls" ~ "Girl",
+        .default = gender
+      ),
+      level = case_match(
+        level,
+        "excellent" ~ "Excellent",
+        "good" ~ "Good",
+        "fair" ~ "Fair",
+        "poor" ~ "Poor",
+        .default = level
       )
     )
 }
 
-# get the proportion by gender for provided response
-get_hbsc_prop <- function(..., classes, response, var = NULL) {
+#' Get the HBSC Scotland proportion by gender for provided response
+#'
+#' @param classes classes to include
+#' @param success responses to include, can provide multiple
+#' @param var [Optional] variable to include
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_hbsc_prop <- function(classes, success, var = NULL) {
 
   if (is.null(var)) {
-    var = unique(hbsc_scotland_modified$q[hbsc_scotland_modified$level == response])
+    var = unique(hbsc_scotland_modified$q[hbsc_scotland_modified$level %in% success])
     if (length(var) > 1) {
-      stop("Multiple variables found with response ", response, ". Please specify `var`.")
+      stop("Multiple variables found with response ", success, ". Please specify `var`.")
       }
   }
 
-  data = hbsc_scotland_modified |>
-    filter(level %in% response,
-           q %in% var,
-           class %in% classes) |>
+  if (length(success) > 1) {
+    data = hbsc_scotland_modified |>
+      filter(level %in% success,
+             q %in% var,
+             class %in% classes) |>
+      group_by(class, gender) |>
+      mutate(prop = sum(prop))
+  } else {
+    data = hbsc_scotland_modified |>
+      filter(level == success,
+             q %in% var,
+             class %in% classes)
+  }
+
+  out = data |>
     mutate(prop = prop /100,
            gender = case_match(gender,
                                "Boy" ~ "Boys (Scotland)",
                                "Girl" ~ "Girls (Scotland)"),
            )
 
-  return(data)
+  return(out)
 
 }

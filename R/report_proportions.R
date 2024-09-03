@@ -94,28 +94,37 @@ create_full_summary <- function(
 #' @examples
 #' N = 100
 #' tibble(
-#'    gender = sample(c("Girl", "Boy"), N, TRUE),
+#'    gender = sample(c("Girls", "Boys"), N, TRUE),
 #'    class = sample(c("S1", "S6"), N, TRUE),
 #'    answer = sample(c("Excellent", "Good", "Fair", "Poor"), N, TRUE)
 #'  ) |>
 #'   create_collapsed_summary(answer, success = c("Excellent", "Good")) |>
-#'   bar_from_summary(c("Boys", "Girls", "All"))
+#'   bar_from_summary(c("Boys", "Girls", "All"),
+#'                 hbsc_data = get_hbsc_prop(classes = c("S1", "S6"),
+#'                                           success = c("Excellent", "Good")))
+#'
 bar_from_summary <- function(summary_data, inc_gender = genders, hbsc_data = NULL) {
   summary_data |>
     filter(gender %in% inc_gender) |>
     mutate(prop = numerator/denom) |>
     ggplot() +
-    aes(x = class, y = prop, fill = gender) +
-    geom_col(position = "dodge") +
-    {if(!is.null(hbsc_data)) geom_point(data = hbsc_data) } +
+    aes(x = class, y = prop, fill = gender, colour = gender, shape = gender) +
+    geom_col(position = "dodge", size = 0) +
+    {if(!is.null(hbsc_data)) geom_point(data = hbsc_data,
+                                        position = position_dodge(0.9),
+                                        size = 2) } +
+    scale_shape_manual(values = c("Boys (Scotland)" =  21, "Girls (Scotland)" = 24, "Boys" = NA, "Girls" = NA)) +
     scale_fill_hbsc() +
+    scale_colour_hbsc() +
     xlab("") +
     scale_y_continuous("%", labels = scales::percent)+
     geom_text(aes(label = scales::percent(.data$prop, suffix="%", accuracy = 1)),
+              color = "black",
               position = position_dodge(0.9),
               vjust = -0.5,
               size = 4) +
-    theme(plot.margin = unit(c(0.8, 0.5, 0.5, 1),  "cm")) +
+    theme(plot.margin = unit(c(0.8, 0.5, 0.5, 1),  "cm"),
+          legend.title = element_blank()) +
     coord_cartesian(ylim = c(0, 1), clip = "off")
 }
 
