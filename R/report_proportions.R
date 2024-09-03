@@ -6,8 +6,6 @@
 #' @param .censor Whether to censor (must be TRUE for production reports)
 #' @param .gender_split Gender split - passed from params
 #'
-#' @export
-#'
 #' @return A dataframe of proportions/counts of successes
 create_collapsed_summary <- function(
     data,
@@ -16,9 +14,13 @@ create_collapsed_summary <- function(
     .censor = FALSE,
     .gender_split = FALSE
 ) {
-
+  if (.gender_split) {
+    grouping_vars <- c("class", "gender")
+  } else {
+    grouping_vars <- c("class")
+  }
   subgroups <- data |>
-    group_by(class, gender) |>
+    group_by(across(all_of(grouping_vars))) |>
     mutate(success = {{var}} %in% success) |>
     summarise(
       numerator = sum(success, na.rm = TRUE),
@@ -35,7 +37,12 @@ create_collapsed_summary <- function(
     )
 
   bind_rows(subgroups, all) |>
-    mutate(class = forcats::fct_inorder(class))
+    transmute(
+      class = forcats::fct_inorder(class),
+      gender = replace_na(gender, "All"),
+      numerator,
+      denom
+    )
 }
 
 #' Full summary counts across all categories
@@ -46,8 +53,6 @@ create_collapsed_summary <- function(
 #' @param .censor Whether to censor (must be TRUE for production reports)
 #' @param .gender_split Gender split - passed from params
 #'
-#' @export
-#'
 #' @return A dataframe of counted variables
 create_full_summary <- function(
     data,
@@ -57,13 +62,16 @@ create_full_summary <- function(
     .gender_split = FALSE
 ) {
   var <- enquo(var)
-
-
+  if (.gender_split) {
+    grouping_vars <- c("class", "gender")
+  } else {
+    grouping_vars <- c("class")
+  }
   subgroups <- data |>
     rename(answer = !!var) |>
-    group_by(class, gender, answer) |>
+    group_by(across(all_of(c(grouping_vars, "answer")))) |>
     summarise(numerator = n(), .groups = "drop") |>
-    add_count(class, gender, name = "denom", wt = numerator) |>
+    add_count(across(all_of(grouping_vars)), name = "denom", wt = numerator) |>
     arrange(class)
 
   all <- subgroups |>
@@ -76,10 +84,13 @@ create_full_summary <- function(
     mutate(denom = sum(numerator))
 
   bind_rows(subgroups, all) |>
-    mutate(
+    transmute(
+      class = forcats::fct_inorder(class),
+      gender = replace_na(gender, "All"),
       answer = factor(answer, levels = levels),
-      class = forcats::fct_inorder(class)
-      )
+      numerator,
+      denom
+    )
 }
 
 
@@ -87,25 +98,12 @@ create_full_summary <- function(
 #'
 #' @param summary_data A dataframe produced by `create_collapsed_summary`
 #' @param inc_gender List of genders to include in table
-#'
-#' @export
+#' @param inc_classes List of classes to include in table
 #'
 #' @return A ggplot2 graph
-#' @examples
-#' N = 100
-#' tibble(
-#'    gender = sample(c("Girls", "Boys"), N, TRUE),
-#'    class = sample(c("S1", "S6"), N, TRUE),
-#'    answer = sample(c("Excellent", "Good", "Fair", "Poor"), N, TRUE)
-#'  ) |>
-#'   create_collapsed_summary(answer, success = c("Excellent", "Good")) |>
-#'   bar_from_summary(c("Boys", "Girls", "All"),
-#'                 hbsc_data = get_hbsc_prop(classes = c("S1", "S6"),
-#'                                           success = c("Excellent", "Good")))
-#'
 bar_from_summary <- function(summary_data, inc_gender = genders, hbsc_data = NULL) {
   summary_data |>
-    filter(gender %in% inc_gender) |>
+    filter(gender %in% inc_gender, class %in% inc_classes) |>
     mutate(prop = numerator/denom) |>
     ggplot() +
     aes(x = class, y = prop, fill = gender, colour = gender, shape = gender) +
@@ -135,20 +133,7 @@ bar_from_summary <- function(summary_data, inc_gender = genders, hbsc_data = NUL
 #'
 #' @return A printed `flextable`
 #'
-#' @export
-#'
-#' @examples
-#'
-#' N = 100
-#' tibble(
-#'     gender = sample(c("Girl", "Boy"), N, TRUE),
-#'     class = sample(c("S1", "S6"), N, TRUE),
-#'     answer = sample(c("Yes", "No"), N, TRUE),
-#' ) |>
-#'   create_full_summary(answer, levels = c("Yes", "No")) |>
-#'   table_from_summary(c("Boys", "Girls", "All"))
-#'
-table_from_summary <- function(summary_data, inc_gender = genders) {
+table_from_summary <- function(summary_data, inc_gender) {
 
   summary_data |>
     filter(gender %in% inc_gender) |>

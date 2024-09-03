@@ -56,7 +56,8 @@ data_prep <- function(survey_data, report_type = "primary") {
 
     survey_out |>
       mm_score() |>
-      sehs_primary()
+      sehs_primary() |>
+      mutate(class = factor(class, levels = c("P6", "P7")))
 
   } else if (report_type == "secondary") {
 
@@ -68,7 +69,8 @@ data_prep <- function(survey_data, report_type = "primary") {
     survey_out |>
       sehs_secondary() |>
       asw_score() |>
-      sdq_score()
+      sdq_score() |>
+      mutate(class = factor(class, levels = c("S1", "S2", "S3", "S4", "S5", "S6")))
 
   } else {
     stop(glue::glue("\"{report_type}\" is not a valid report type. ",

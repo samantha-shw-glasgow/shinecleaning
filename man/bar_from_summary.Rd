@@ -4,26 +4,18 @@
 \alias{bar_from_summary}
 \title{Bar percentage from summary data}
 \usage{
-bar_from_summary(summary_data, inc_gender = genders)
+bar_from_summary(summary_data, inc_gender, inc_classes)
 }
 \arguments{
 \item{summary_data}{A dataframe produced by \code{create_collapsed_summary}}
 
 \item{inc_gender}{List of genders to include in table}
+
+\item{inc_classes}{List of classes to include in table}
 }
 \value{
 A ggplot2 graph
 }
 \description{
 Bar percentage from summary data
-}
-\examples{
-N = 100
-tibble(
-   gender = sample(c("Girl", "Boy"), N, TRUE),
-   class = sample(c("S1", "S6"), N, TRUE),
-   answer = sample(c("Excellent", "Good", "Fair", "Poor"), N, TRUE)
- ) |>
-  create_collapsed_summary(answer, success = c("Excellent", "Good")) |>
-  bar_from_summary(c("Boys", "Girls", "All"))
 }
