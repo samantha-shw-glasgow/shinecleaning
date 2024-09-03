@@ -114,7 +114,7 @@ createReport_server <- function(id, data){
 				## var names
 				lifesat <- paste0('lifesat', 1:11)
 				sch <- paste0('sch', 1:3)
-				who <- paste0('Who', 1:5)
+				who <- paste0('who', 1:5)
 				sehs <- paste0('sehs', 1:20)
 				# cov <- paste0('cov', 1:5)
 
