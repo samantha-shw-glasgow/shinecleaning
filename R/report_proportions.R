@@ -101,7 +101,7 @@ create_full_summary <- function(
 #' @param inc_classes List of classes to include in table
 #'
 #' @return A ggplot2 graph
-bar_from_summary <- function(summary_data, inc_gender = genders, hbsc_data = NULL) {
+bar_from_summary <- function(summary_data, inc_gender = genders, inc_classes, hbsc_data = NULL) {
   summary_data |>
     filter(gender %in% inc_gender, class %in% inc_classes) |>
     mutate(prop = numerator/denom) |>
