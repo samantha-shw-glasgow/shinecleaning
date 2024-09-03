@@ -63,7 +63,8 @@ rawUpload_server <- function(id){
 				    df <- df[-drop, ]
 				  }
 
-				  df |> readr::type_convert() # is this a good idea?
+				  df |> readr::type_convert() |> # is this a good idea?
+				    mutate(across(ends_with("Date"), as.character))
 				})
 
 				# run checks
