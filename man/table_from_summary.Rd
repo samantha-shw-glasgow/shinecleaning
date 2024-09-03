@@ -4,7 +4,7 @@
 \alias{table_from_summary}
 \title{A table of percentages from summary data}
 \usage{
-table_from_summary(summary_data, inc_gender = genders)
+table_from_summary(summary_data, inc_gender)
 }
 \arguments{
 \item{summary_data}{A dataframe produced by \code{create_collapsed_summary}}

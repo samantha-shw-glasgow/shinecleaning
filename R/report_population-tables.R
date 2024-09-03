@@ -55,9 +55,11 @@ tab_responses <- function(input_data, n_invited) {
 #' Table of class by gender counts
 #'
 #' @param data Valid school input data (with columns `gender` and `class`)
+#' @param inc_genders List of genders to include in table
+#' @param inc_classes List of classes to include in table
 #'
 #' @return A flextable giving gender by class counts
-tab_categories <- function(data, inc_gender = genders, inc_classes = classes) {
+tab_categories <- function(data, inc_gender, inc_classes) {
 
 
   another_way <- sum(data$gender == "In another way")

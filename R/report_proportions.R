@@ -98,9 +98,10 @@ create_full_summary <- function(
 #'
 #' @param summary_data A dataframe produced by `create_collapsed_summary`
 #' @param inc_gender List of genders to include in table
+#' @param inc_classes List of classes to include in table
 #'
 #' @return A ggplot2 graph
-bar_from_summary <- function(summary_data, inc_gender = genders, inc_classes = classes) {
+bar_from_summary <- function(summary_data, inc_gender, inc_classes) {
   summary_data |>
     filter(gender %in% inc_gender, class %in% inc_classes) |>
     mutate(prop = numerator/denom) |>
@@ -125,7 +126,7 @@ bar_from_summary <- function(summary_data, inc_gender = genders, inc_classes = c
 #'
 #' @return A printed `flextable`
 #'
-table_from_summary <- function(summary_data, inc_gender = genders) {
+table_from_summary <- function(summary_data, inc_gender) {
 
   summary_data |>
     filter(gender %in% inc_gender) |>
