@@ -69,6 +69,7 @@ createReport_server <- function(id, data){
 				        selectInput(ns('school_id'), 'School ID', choices = school_ids())
 				      },
 				      textInput(ns('school_name'), 'School name'),
+				      textInput(ns('school_term'), 'Term of survey'),
 				      numericInput(ns('n_invited'), 'Number of invited students', value = NA),
 				      if (isTRUE(additional_options())) {
 				        tagList(
@@ -169,6 +170,9 @@ createReport_server <- function(id, data){
 				      render_report(data_filt(),
 				                    school_name = input$school_name,
 				                    filename = file,
+				                    number_invited = input$n_invited,
+				                    gender_split = input$gender_split,
+				                    term = input$school_term,
 				                    output_location = NULL)
 				    }
 				  }
