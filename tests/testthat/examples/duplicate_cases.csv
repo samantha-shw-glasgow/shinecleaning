@@ -1,4 +1,4 @@
-ResponseId,dobmnth,dobday,dobyr,gender1,gender2,School ID,expected_include,expected_message,TEST_COMMENT
+ResponseId,dobmnth,dobday,dobyr,sex,gender,School ID code,expected_include,expected_message,TEST_COMMENT
 a1,June,1,2010,Female,Girl,1,TRUE,,a1-a7 all differ by one variable
 a2,July,1,2010,Female,Girl,1,TRUE,,
 a3,June,2,2010,Female,Girl,1,TRUE,,

@@ -99,14 +99,18 @@ partial_cases <- function(data) {
 
 #' @rdname validators
 duplicate_cases <- function(data) {
+
+
+  if (!("sex" %in% colnames(data))) data$sex <- NA_character_
+
   messages <- data |>
     dplyr::group_by(
-      gender1,
-      gender2,
+      sex,
+      gender,
       dobmnth,
       dobday,
       dobyr,
-      `School ID`
+      `School ID code`
     ) |>
     dplyr::arrange(ResponseId) |>
     dplyr::mutate(
