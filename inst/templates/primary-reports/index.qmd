@@ -101,7 +101,7 @@ tab_responses(input_data, params$number_invited)
 
 ```{r tab-by-class, tab.id="tab-by-class", tab.cap="Overview of survey respondents", eval=params$gender_split, results='asis'}
 
-tab_categories(input_data, inc_gender = genders)
+tab_categories(input_data, inc_gender = genders, inc_classes = classes)
 
 ```
 

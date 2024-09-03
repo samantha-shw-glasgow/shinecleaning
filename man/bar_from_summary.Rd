@@ -17,13 +17,3 @@ A ggplot2 graph
 \description{
 Bar percentage from summary data
 }
-\examples{
-N = 100
-tibble(
-   gender = sample(c("Girl", "Boy"), N, TRUE),
-   class = sample(c("S1", "S6"), N, TRUE),
-   answer = sample(c("Excellent", "Good", "Fair", "Poor"), N, TRUE)
- ) |>
-  create_collapsed_summary(answer, success = c("Excellent", "Good")) |>
-  bar_from_summary(c("Boys", "Girls", "All"))
-}
