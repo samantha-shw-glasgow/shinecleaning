@@ -123,7 +123,7 @@ their health was \'excellent\' or \'good\'. `r if(params$gender_split){"Table \\
 
 input_data |>
   create_collapsed_summary(health, success = c("Good", "Excellent")) |> 
-  bar_from_summary(genders)
+  bar_from_summary(genders, classes)
 
 ```
 
@@ -294,7 +294,7 @@ low mood (Figure \@ref(fig:bar-wellbeing)).
 
 input_data |>
   create_collapsed_summary(who_cat, success = c("low")) |> 
-  bar_from_summary(genders)
+  bar_from_summary(genders, classes)
 
 ```
 
@@ -345,7 +345,7 @@ percentage of pupils who like school \'a lot\' or \'a bit\'.  `r if(params$gende
 
 input_data |>
   create_collapsed_summary(sch1, success = c("I like it a lot", "I like it a bit")) |> 
-  bar_from_summary(genders)
+  bar_from_summary(genders, classes)
 
 ```
 
@@ -376,7 +376,7 @@ lot\' or \'some\' pressure. `r if(params$gender_split){"Table \\@ref(tab:tab-sch
 
 input_data |>
   create_collapsed_summary(sch2, success = c("A lot", "Some")) |> 
-  bar_from_summary(genders)
+  bar_from_summary(genders, classes)
 
 ```
 
@@ -404,7 +404,7 @@ Figure \@ref(fig:bar-sch3) shows the proportion of pupils in your who responded 
 
 input_data |>
   create_collapsed_summary(sch3, success = c("Always", "Often")) |> 
-  bar_from_summary(genders)
+  bar_from_summary(genders, classes)
 
 ```
 

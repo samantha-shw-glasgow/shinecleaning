@@ -99,8 +99,13 @@ partial_cases <- function(data) {
 
 #' @rdname validators
 duplicate_cases <- function(data) {
+
+
+  if (!("sex" %in% colnames(data))) data$sex <- NA_character_
+
   messages <- data |>
     dplyr::group_by(
+      sex,
       gender,
       dobmnth,
       dobday,
@@ -142,7 +147,7 @@ calculate_expected_class <- function(data) {
   data |>
     dplyr::mutate(
       dob_ym = lubridate::ym(paste(dobyr, dobmnth)),
-      current_year = lubridate::ymd_hms(RecordedDate),
+      current_year = lubridate::dmy_hm(RecordedDate),
       school_dob = lubridate::year(dob_ym - months(8)),
       school_year = lubridate::year(current_year - months(7)),
       expected_class_num = school_year - school_dob,

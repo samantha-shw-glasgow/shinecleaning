@@ -4,7 +4,7 @@
 \alias{bar_from_summary}
 \title{Bar percentage from summary data}
 \usage{
-bar_from_summary(summary_data, inc_gender = genders)
+bar_from_summary(summary_data, inc_gender = genders, inc_classes = classes)
 }
 \arguments{
 \item{summary_data}{A dataframe produced by \code{create_collapsed_summary}}

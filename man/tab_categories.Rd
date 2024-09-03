@@ -4,7 +4,7 @@
 \alias{tab_categories}
 \title{Table of class by gender counts}
 \usage{
-tab_categories(data, inc_gender = genders)
+tab_categories(data, inc_gender = genders, inc_classes = classes)
 }
 \arguments{
 \item{data}{Valid school input data (with columns \code{gender} and \code{class})}
