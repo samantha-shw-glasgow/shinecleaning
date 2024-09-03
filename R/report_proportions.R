@@ -115,9 +115,9 @@ create_full_summary <- function(
 #'  ) |>
 #'   create_collapsed_summary(answer, success = c("Excellent", "Good")) |>
 #'   bar_from_summary(c("Boys", "Girls", "All"))
-bar_from_summary <- function(summary_data, inc_gender = genders) {
+bar_from_summary <- function(summary_data, inc_gender = genders, inc_classes = classes) {
   summary_data |>
-    filter(gender %in% inc_gender) |>
+    filter(gender %in% inc_gender, class %in% inc_classes) |>
     mutate(prop = numerator/denom) |>
     ggplot() +
     aes(x = class, y = prop, fill = gender) +
