@@ -55,7 +55,7 @@ tab_responses <- function(input_data, n_invited) {
 #' Table of class by gender counts
 #'
 #' @param data Valid school input data (with columns `gender` and `class`)
-#' @param inc_genders List of genders to include in table
+#' @param inc_gender List of genders to include in table
 #' @param inc_classes List of classes to include in table
 #'
 #' @return A flextable giving gender by class counts
