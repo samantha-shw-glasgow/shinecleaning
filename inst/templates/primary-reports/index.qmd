@@ -122,8 +122,15 @@ their health was \'excellent\' or \'good\'. `r if(params$gender_split){"Table \\
 ```{r bar-health, fig.cap="% of pupils who report excellent or good health"}
 
 input_data |>
-  create_collapsed_summary(health, success = c("Good", "Excellent")) |> 
-  bar_from_summary(genders, classes)
+  create_collapsed_summary(
+    health,
+    success = c("Good", "Excellent"),
+    .gender_split = params$gender_split
+  ) |>
+  bar_from_summary(genders, classes,
+                   hbsc_data = get_hbsc_prop(classes,
+                                             c("Good", "Excellent"), 
+                                             "health"))
 
 ```
 

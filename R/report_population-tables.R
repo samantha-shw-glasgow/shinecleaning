@@ -121,6 +121,8 @@ scale_fill_hbsc <- function(...) {
   global_expected_colour <- "#4770b7"
   global_elevated_colour <- "#ee9457"
   global_difficulties_colour <- "#a5a5a5"
+  global_girls_scotland_avg_colour <- "#008000"
+  global_boys_scotland_avg_colour <- "#fb1e20"
 
   ggplot2::scale_fill_manual(
     values = c(
@@ -134,12 +136,53 @@ scale_fill_hbsc <- function(...) {
       "As expected" = global_expected_colour,
       "Difficulties" = global_difficulties_colour,
       "Borderline" = global_elevated_colour,
-      "1" = primary_colour
+      "1" = primary_colour,
+      "Boys (Scotland)" = global_boys_scotland_avg_colour,
+      "Girls (Scotland)" = global_girls_scotland_avg_colour
     ),
     ...
   )
 
+}
 
+#' Standard categorical fill scale
+#'
+#' @param ... Other arguments passed to `scale_fill_manual`
+#'
+scale_colour_hbsc <- function(...) {
+
+  primary_colour <-  "#4770b7"
+  # secondary_colour <- "#016bb2"
+  # main_colour <- "#333333"
+  global_all_pupils_colour <- "#37474f"
+  global_girls_colour <- "#88cbec"
+  global_boys_colour <- "#4d648d"
+  global_s2_colour <- "#548235"
+  global_s4_colour <- "#C5E0B4"
+  global_expected_colour <- "#4770b7"
+  global_elevated_colour <- "#ee9457"
+  global_difficulties_colour <- "#a5a5a5"
+  global_girls_scotland_avg_colour <- "#008000"
+  global_boys_scotland_avg_colour <- "#fb1e20"
+
+  ggplot2::scale_colour_manual(
+    values = c(
+      "Girls" = global_girls_colour,
+      "Boys" = global_boys_colour,
+      "S2" = global_s2_colour,
+      "S4" = global_s4_colour,
+      "All pupils" = primary_colour,
+      "All" = global_all_pupils_colour,
+      "Elevated" = global_elevated_colour,
+      "As expected" = global_expected_colour,
+      "Difficulties" = global_difficulties_colour,
+      "Borderline" = global_elevated_colour,
+      "1" = primary_colour,
+      "Boys (Scotland)" = global_boys_scotland_avg_colour,
+      "Girls (Scotland)" = global_girls_scotland_avg_colour
+    ),
+    ...
+  )
 }
 
 #' Thinner geom_bar
