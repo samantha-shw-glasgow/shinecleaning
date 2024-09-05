@@ -9,9 +9,9 @@ tab_categories(data, inc_gender, inc_classes)
 \arguments{
 \item{data}{Valid school input data (with columns \code{gender} and \code{class})}
 
-\item{inc_classes}{List of classes to include in table}
+\item{inc_gender}{List of genders to include in table}
 
-\item{inc_genders}{List of genders to include in table}
+\item{inc_classes}{List of classes to include in table}
 }
 \value{
 A flextable giving gender by class counts
