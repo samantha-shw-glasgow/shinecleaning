@@ -83,21 +83,21 @@ prep_hbsc <- function(dat = hbsc_scotland, create_cols = FALSE) {
 get_hbsc_prop <- function(classes, success, var = NULL) {
 
   if (is.null(var)) {
-    var = unique(hbsc_scotland_modified$q[hbsc_scotland_modified$level %in% success])
+    var = unique(SHINEcleaning::hbsc_scotland_modified$q[SHINEcleaning::hbsc_scotland_modified$level %in% success])
     if (length(var) > 1) {
       stop("Multiple variables found with response ", success, ". Please specify `var`.")
       }
   }
 
   if (length(success) > 1) {
-    data = hbsc_scotland_modified |>
+    data = SHINEcleaning::hbsc_scotland_modified |>
       filter(level %in% success,
              q %in% var,
              class %in% classes) |>
       group_by(class, gender) |>
       mutate(prop = sum(prop))
   } else {
-    data = hbsc_scotland_modified |>
+    data = SHINEcleaning::hbsc_scotland_modified |>
       filter(level == success,
              q %in% var,
              class %in% classes)
