@@ -42,6 +42,8 @@ create_collapsed_summary <- function(
       denom = sum(denom)
     )
 
+  if(!.gender_split) subgroups <- tibble()
+
   bind_rows(subgroups, all) |>
     transmute(
       class = forcats::fct_inorder(class),
@@ -82,7 +84,7 @@ create_full_summary <- function(
     group_by(across(all_of(c(grouping_vars, "answer")))) |>
     summarise(numerator = n(), .groups = "drop") |>
     add_count(across(all_of(grouping_vars)), name = "denom", wt = numerator) |>
-    filter(gender %in% inc_gender, class %in% inc_classes, answer %in% levels) |>
+    filter(answer %in% levels) |>
     arrange(class)
 
   all <- subgroups |>
@@ -94,7 +96,15 @@ create_full_summary <- function(
     ) |>
     mutate(denom = sum(numerator))
 
-  bind_rows(subgroups, all) |>
+  if (.gender_split) {
+    joined_dat <- subgroups |>
+      filter(gender %in% inc_gender, class %in% inc_classes) |>
+      bind_rows(all)
+  } else {
+    joined_dat <- all
+  }
+
+   joined_dat |>
     transmute(
       class = forcats::fct_inorder(class),
       gender = replace_na(gender, "All"),
