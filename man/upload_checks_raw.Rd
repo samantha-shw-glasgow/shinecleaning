@@ -4,7 +4,7 @@
 \alias{upload_checks_raw}
 \title{Run all upload checks for raw data or for clean data}
 \usage{
-upload_checks_raw(data)
+upload_checks_raw(data, vars)
 }
 \arguments{
 \item{data}{}

@@ -13,6 +13,9 @@ get_hbsc_prop(classes, success, var = NULL)
 
 \item{var}{\link{Optional} variable to include}
 }
+\value{
+A tibble of proportion by gender
+}
 \description{
 Get the HBSC Scotland proportion by gender for provided response
 }

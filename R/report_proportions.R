@@ -3,6 +3,8 @@
 #' @param data Valid input data
 #' @param var Variable to calculate by
 #' @param success Character vector of categories as 'successes'
+#' @param inc_gender List of genders to split by
+#' @param inc_classes List of classes to split by
 #' @param .censor Whether to censor (must be TRUE for production reports)
 #' @param .gender_split Gender split - passed from params
 #'
@@ -11,6 +13,8 @@ create_collapsed_summary <- function(
     data,
     var,
     success,
+    inc_gender,
+    inc_classes,
     .censor = FALSE,
     .gender_split = FALSE
 ) {
@@ -27,7 +31,9 @@ create_collapsed_summary <- function(
       denom = n(),
       .groups = "drop"
     ) |>
+    filter(gender %in% inc_gender, class %in% inc_classes) |>
     arrange(class)
+
   all <- subgroups |>
     summarise(
       class = "All",
@@ -50,6 +56,8 @@ create_collapsed_summary <- function(
 #' @param data Valid input data
 #' @param var Variable to calculate by
 #' @param levels Character vector of ordered levels
+#' @param inc_gender List of genders to split by
+#' @param inc_classes List of classes to split by
 #' @param .censor Whether to censor (must be TRUE for production reports)
 #' @param .gender_split Gender split - passed from params
 #'
@@ -58,6 +66,8 @@ create_full_summary <- function(
     data,
     var,
     levels,
+    inc_gender,
+    inc_classes,
     .censor = FALSE,
     .gender_split = FALSE
 ) {
@@ -72,6 +82,7 @@ create_full_summary <- function(
     group_by(across(all_of(c(grouping_vars, "answer")))) |>
     summarise(numerator = n(), .groups = "drop") |>
     add_count(across(all_of(grouping_vars)), name = "denom", wt = numerator) |>
+    filter(gender %in% inc_gender, class %in% inc_classes) |>
     arrange(class)
 
   all <- subgroups |>
@@ -90,20 +101,20 @@ create_full_summary <- function(
       answer = factor(answer, levels = levels),
       numerator,
       denom
-    )
+    ) |>
+    arrange(class, desc(answer))
 }
 
 
 #' Bar percentage from summary data
 #'
 #' @param summary_data A dataframe produced by `create_collapsed_summary`
-#' @param inc_gender List of genders to include in table
-#' @param inc_classes List of classes to include in table
 #'
 #' @return A ggplot2 graph
-bar_from_summary <- function(summary_data, inc_gender = genders, inc_classes, hbsc_data = NULL) {
+bar_from_summary <- function(summary_data,
+                             hbsc_data = NULL) {
+
   summary_data |>
-    filter(gender %in% inc_gender, class %in% inc_classes) |>
     mutate(prop = numerator/denom) |>
     ggplot() +
     aes(x = class, y = prop, fill = gender, colour = gender, shape = gender) +
@@ -129,14 +140,12 @@ bar_from_summary <- function(summary_data, inc_gender = genders, inc_classes, hb
 #' A table of percentages from summary data
 #'
 #' @param summary_data A dataframe produced by `create_collapsed_summary`
-#' @param inc_gender List of genders to include in table
 #'
 #' @return A printed `flextable`
 #'
-table_from_summary <- function(summary_data, inc_gender) {
+table_from_summary <- function(summary_data) {
 
   summary_data |>
-    filter(gender %in% inc_gender) |>
     mutate(prop = sprintf("%.0f", 100*numerator/denom)) |>
     pivot_wider(id_cols = answer, names_from = c(class, gender), values_from = prop) |>
     rename(All = All_All, ` ` = answer) |>

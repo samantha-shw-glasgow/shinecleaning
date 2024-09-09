@@ -4,12 +4,10 @@
 \alias{table_from_summary}
 \title{A table of percentages from summary data}
 \usage{
-table_from_summary(summary_data, inc_gender)
+table_from_summary(summary_data)
 }
 \arguments{
 \item{summary_data}{A dataframe produced by \code{create_collapsed_summary}}
-
-\item{inc_gender}{List of genders to include in table}
 }
 \value{
 A printed \code{flextable}
