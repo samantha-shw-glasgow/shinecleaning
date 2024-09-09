@@ -73,12 +73,11 @@ createReport_server <- function(id, data){
 				      numericInput(ns('n_invited'), 'Number of invited students', value = NA),
 				      if (isTRUE(additional_options())) {
 				        tagList(
-				          checkboxInput(ns('gender_split'), 'Split by gender'),
-				          checkboxInput(ns('class_split'), 'Split by class')
+				          checkboxInput(ns('split'), 'Split by gender and class', value = T)
 				        )
 				      },
 				      if (isFALSE(additional_options())) {
-				        make_upload_warning('Not enough pupils to split by class / gender', '1')
+				        make_upload_warning('Not enough respondents to split by class / gender', '1')
 				      }
 				    )
 				  } else
@@ -117,9 +116,15 @@ createReport_server <- function(id, data){
 				sch <- paste0('sch', 1:3)
 				who <- paste0('who', 1:5)
 				sehs <- paste0('sehs', 1:20)
-				# cov <- paste0('cov', 1:5)
+				activity <- paste0('activity_', 4:14)
 
-				primary_vars <- c("gender", "health", lifesat, sch, who, sehs)
+				primary_vars <- c("gender",
+				                  "health",
+				                  lifesat,
+				                  sch,
+				                  who,
+				                  sehs#, activity #
+				                  )
 
 				check_vars <- reactive({
 				  if (input$report_type == 'Primary') {
@@ -163,7 +168,9 @@ createReport_server <- function(id, data){
 				## create report
 
 				output$generate <- downloadHandler(
-				  filename = paste0(input$school_name, '_report.docx'),
+				  filename = function(){
+				    paste0(input$school_name, '_report.docx')
+				    },
 				  content = function(file){
 				    if(input$report_type == 'Primary'){
 

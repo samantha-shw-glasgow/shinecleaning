@@ -5,11 +5,12 @@
 #' @return dataframe of failed checks
 #'
 #' @keywords internal
-upload_checks_raw <- function(data){
+upload_checks_raw <- function(data, vars){
   checks <- rbind(
     upcheck_status(data),
     upcheck_schools(data),
-    upcheck_gender(data)
+    upcheck_gender(data),
+    upcheck_has_columns(data, vars, required = FALSE)
     )
 
   return(checks[checks$fail, c("message", "level")])
@@ -127,20 +128,23 @@ upcheck_gender <- function(data){
   return(data.frame(fail, message, level))
 }
 
-upcheck_has_columns <- function(data, columns){
+upcheck_has_columns <- function(data, columns, required = TRUE){
   fail = FALSE
   message = NA
   level = NA
 
   has_col = columns %in% colnames(data)
 
-
   if (! all(has_col)) {
     fail = TRUE
-    message = paste0("This file is missing the following required column(s): ", paste0(columns[!has_col], collapse = ", "))
-    level = 3
+    if (isTRUE(required)) {
+      message = paste0("This file is missing the following required column(s): ", paste0(columns[!has_col], collapse = ", "))
+      level = 3
+    } else {
+      message = paste0("This file is missing the following expected column(s): ", paste0(columns[!has_col], collapse = ", "))
+      level = 2
+    }
   }
 
   return(data.frame(fail, message, level))
 }
-
