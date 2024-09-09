@@ -118,7 +118,7 @@ create_full_summary <- function(
       numerator,
       denom
     ) |>
-    arrange(class, desc(answer))
+    arrange(class, gender, desc(answer))
 }
 
 
