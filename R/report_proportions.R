@@ -24,7 +24,6 @@ create_collapsed_summary <- function(
     grouping_vars <- c("class")
   }
   subgroups <- data |>
-    filter(gender %in% inc_gender, class %in% inc_classes) |>
     group_by(across(all_of(grouping_vars))) |>
     mutate(success = {{var}} %in% success) |>
     summarise(
@@ -42,9 +41,16 @@ create_collapsed_summary <- function(
       denom = sum(denom)
     )
 
-  if(!.gender_split) subgroups <- tibble()
+  if (.gender_split) {
+    joined_dat <- subgroups |>
+      filter(gender %in% inc_gender, class %in% inc_classes) |>
+      bind_rows(all)
+  } else {
+    joined_dat <- all |>
+      mutate(gender = "All pupils")
+  }
 
-  bind_rows(subgroups, all) |>
+  joined_dat |>
     transmute(
       class = forcats::fct_inorder(class),
       gender = replace_na(gender, "All"),

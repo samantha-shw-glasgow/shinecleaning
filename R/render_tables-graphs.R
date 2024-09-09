@@ -107,6 +107,7 @@ bar_mean_multiple_vars <-
       ) +
       theme(
         legend.justification.right = "top",
+        legend.title = element_blank(),
         plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
         plot.caption = element_text(
           hjust = 1,
@@ -198,6 +199,7 @@ bar_mean_single_var <-
       scale_x_discrete("") +
       scale_fill_hbsc(name = "") +
       theme(legend.justification.right = "top",
+            legend.title = element_blank(),
             plot.margin = unit(c(0.8, 1, 0.5, 0), "cm")) +
       scale_y_continuous(ylab, expand = expansion(add = 0)) +
       geom_text(
@@ -302,6 +304,7 @@ bar_multiple_vars <-
       scale_y_discrete("") +
       theme(
         legend.justification.right = "top",
+        legend.title = element_blank(),
         plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
         plot.caption = element_text(
           hjust = 1,
@@ -421,6 +424,7 @@ bar_mean_multiple_vertical <-
       ) +
       theme(
         legend.justification.right = "top",
+        legend.title = element_blank(),
         plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
         plot.caption = element_text(
           hjust = 1,
