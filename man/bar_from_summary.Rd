@@ -8,6 +8,8 @@ bar_from_summary(summary_data, hbsc_data = NULL)
 }
 \arguments{
 \item{summary_data}{A dataframe produced by \code{create_collapsed_summary}}
+
+\item{hbsc_data}{A dataframe with national data to add as points}
 }
 \value{
 A ggplot2 graph

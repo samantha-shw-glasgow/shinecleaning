@@ -125,6 +125,7 @@ create_full_summary <- function(
 #' Bar percentage from summary data
 #'
 #' @param summary_data A dataframe produced by `create_collapsed_summary`
+#' @param hbsc_data A dataframe with national data to add as points
 #'
 #' @return A ggplot2 graph
 bar_from_summary <- function(summary_data, hbsc_data = NULL) {

@@ -71,7 +71,7 @@ prep_hbsc <- function(dat = hbsc_scotland, create_cols = FALSE) {
 #'
 #' @param classes classes to include
 #' @param success responses to include, can provide multiple
-#' @param var [Optional] variable to include
+#' @param var (Optional) variable to include
 #'
 #' @return A tibble of proportion by gender
 get_hbsc_prop <- function(classes, success, var = NULL) {
