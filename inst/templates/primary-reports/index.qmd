@@ -30,7 +30,7 @@ params:
   school_name: 'Test school academy'
   term: 'Autumn 2024'
   number_invited: 1000
-  gender_split: true
+  gender_split: false
   class_split: true
 execute:
   enabled: true
@@ -325,7 +325,7 @@ in this area. For more information on this scale, see page 6.
 ```{r bar-mm-emotional, fig.cap="Pupils' emotional scores"}
 input_data |>
   share_elevated(mmb_cat,
-                 .split = TRUE,
+                 .split = params$gender_split,
                  classes = classes,
                  genders = genders) |>
   bar_share_elevated()
@@ -334,7 +334,7 @@ input_data |>
 ```{r bar-mm-behavioural, fig.cap="Pupils' behavioural scores"}
 input_data |>
   share_elevated(mme_cat,
-                 .split = TRUE,
+                 .split = params$gender_split,
                  classes = classes,
                  genders = genders) |>
   bar_share_elevated()
