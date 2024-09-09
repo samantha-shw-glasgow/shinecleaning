@@ -1,3 +1,5 @@
+### This whole file should be split up and deprecated ###
+
 #' Bar graph of means for multiple variables (horizontal)
 #'
 #' `bar_mean_multiple_vars` returns a horizontal bar graph.
@@ -105,6 +107,7 @@ bar_mean_multiple_vars <-
       ) +
       theme(
         legend.justification.right = "top",
+        legend.title = element_blank(),
         plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
         plot.caption = element_text(
           hjust = 1,
@@ -180,7 +183,7 @@ bar_mean_single_var <-
 
 
     all <- data |>
-      mutate(class = "All", gender = "All") |>
+      mutate(class = "All", gender = if_else(.gender_split, "All", "All pupils")) |>
       summarise(mean_score = mean({{var}}, na.rm = TRUE),
                 .by = c(class, gender))
 
@@ -196,6 +199,7 @@ bar_mean_single_var <-
       scale_x_discrete("") +
       scale_fill_hbsc(name = "") +
       theme(legend.justification.right = "top",
+            legend.title = element_blank(),
             plot.margin = unit(c(0.8, 1, 0.5, 0), "cm")) +
       scale_y_continuous(ylab, expand = expansion(add = 0)) +
       geom_text(
@@ -300,6 +304,7 @@ bar_multiple_vars <-
       scale_y_discrete("") +
       theme(
         legend.justification.right = "top",
+        legend.title = element_blank(),
         plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
         plot.caption = element_text(
           hjust = 1,
@@ -419,6 +424,7 @@ bar_mean_multiple_vertical <-
       ) +
       theme(
         legend.justification.right = "top",
+        legend.title = element_blank(),
         plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
         plot.caption = element_text(
           hjust = 1,

@@ -7,6 +7,8 @@
 prep_hbsc(dat = hbsc_scotland, create_cols = FALSE)
 }
 \arguments{
+\item{dat}{HBSC data to pass in}
+
 \item{create_cols}{copy existing p7, s2 and s4 columns to fill missing years}
 }
 \value{

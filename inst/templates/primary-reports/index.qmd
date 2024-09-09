@@ -30,7 +30,7 @@ params:
   school_name: 'Test school academy'
   term: 'Autumn 2024'
   number_invited: 1000
-  gender_split: true
+  gender_split: false
   class_split: true
 execute:
   enabled: true
@@ -54,8 +54,6 @@ term <- params$term
 # low number situations
 classes <- c("P6", "P7")
 genders <- c("Boys", "Girls", "All")
-
-if(!params$gender_split) genders <- "All"
 
 library(tidyverse)
 
@@ -125,21 +123,25 @@ input_data |>
   create_collapsed_summary(
     health,
     success = c("Good", "Excellent"),
+    genders,
+    classes,
     .gender_split = params$gender_split
   ) |>
-  bar_from_summary(genders, classes,
-                   hbsc_data = get_hbsc_prop(classes,
-                                             c("Good", "Excellent"), 
-                                             "health"))
+  bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("Good", "Excellent"), "health"))
 
 ```
 
 ```{r tab-health, tab.id="tab-health", tab.cap.pre="Table", tab.cap="Pupil self-rated health", eval=params$gender_split}
 
 input_data |>
-  create_full_summary(health,
-                      levels = c("Poor", "Fair", "Good", "Excellent")) |>
-  table_from_summary(genders)
+  create_full_summary(
+    health,
+    levels = c("Poor", "Fair", "Good", "Excellent"),
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  table_from_summary()
 
 ```
 
@@ -300,8 +302,12 @@ low mood (Figure \@ref(fig:bar-wellbeing)).
 ```{r bar-wellbeing, fig.cap="% of pupils with low mood"}
 
 input_data |>
-  create_collapsed_summary(who_cat, success = c("low")) |> 
-  bar_from_summary(genders, classes)
+  create_collapsed_summary(who_cat, success = c("low"),
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("low"), "who")) 
 
 ```
 
@@ -319,7 +325,7 @@ in this area. For more information on this scale, see page 6.
 ```{r bar-mm-emotional, fig.cap="Pupils' emotional scores"}
 input_data |>
   share_elevated(mmb_cat,
-                 .split = TRUE,
+                 .split = params$gender_split,
                  classes = classes,
                  genders = genders) |>
   bar_share_elevated()
@@ -328,7 +334,7 @@ input_data |>
 ```{r bar-mm-behavioural, fig.cap="Pupils' behavioural scores"}
 input_data |>
   share_elevated(mme_cat,
-                 .split = TRUE,
+                 .split = params$gender_split,
                  classes = classes,
                  genders = genders) |>
   bar_share_elevated()
@@ -351,20 +357,34 @@ percentage of pupils who like school \'a lot\' or \'a bit\'.  `r if(params$gende
 ```{r bar-sch1, fig.cap="% of pupils who like school (a lot or a bit)"}
 
 input_data |>
-  create_collapsed_summary(sch1, success = c("I like it a lot", "I like it a bit")) |> 
-  bar_from_summary(genders, classes)
+  create_collapsed_summary(
+    sch1,
+    success = c("I like it a lot", "I like it a bit"),
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("I like it a lot", "I like it a bit"), "sch1"))
 
 ```
 
 ```{r tab-sch1, tab.id="tab-sch1", tab.cap.pre="Table", tab.cap="How much pupils liked school", eval=params$gender_split}
 
 input_data |>
-  create_full_summary(sch1,
-                      levels = c("I don’t like it at all",
-                                 "I don’t like it very much", 
-                                 "I like it a bit",
-                                 "I like it a lot")) |>
-  table_from_summary(genders)
+  create_full_summary(
+    sch1,
+    levels = c(
+      "I don’t like it at all",
+      "I don’t like it very much",
+      "I like it a bit",
+      "I like it a lot"
+    ),
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  table_from_summary()
+
 
 ```
 
@@ -381,18 +401,30 @@ lot\' or \'some\' pressure. `r if(params$gender_split){"Table \\@ref(tab:tab-sch
 
 ```{r bar-sch2, fig.cap="% of pupils who feel a lot of or some pressure from schoolwork"}
 
+
 input_data |>
-  create_collapsed_summary(sch2, success = c("A lot", "Some")) |> 
-  bar_from_summary(genders, classes)
+  create_collapsed_summary(
+    sch2,
+    success = c("A lot", "Some"),
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("A lot", "Some"), "sch2"))
 
 ```
 
 ```{r tab-sch2, tab.id="tab-sch2", tab.cap.pre="Table", tab.cap="How pressured pupils feel by schoolwork", eval=params$gender_split}
 
 input_data |>
-  create_full_summary(sch2,
-                      levels = c("Not at all", "A little", "Some",  "A lot")) |>
-  table_from_summary(genders)
+  create_full_summary(
+    sch2,
+    levels = c("Not at all", "A little", "Some", "A lot"),
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  table_from_summary()
 
 ```
 
@@ -410,17 +442,28 @@ Figure \@ref(fig:bar-sch3) shows the proportion of pupils in your who responded 
 ```{r bar-sch3, fig.cap="% of pupils who feel always or often confident"}
 
 input_data |>
-  create_collapsed_summary(sch3, success = c("Always", "Often")) |> 
-  bar_from_summary(genders, classes)
+  create_collapsed_summary(
+    sch3,
+    success = c("Always", "Often"),
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("Always", "Often"), "sch3"))
 
 ```
 
 ```{r tab-sch3, tab.id="tab-sch3", tab.cap.pre="Table", tab.cap="How often pupils feel confident", eval=params$gender_split}
 
 input_data |>
-  create_full_summary(sch3,
-                      levels = c("Never", "Hardly ever", "Sometimes", "Often", "Always")) |>
-  table_from_summary(genders)
+  create_full_summary(
+    sch3,
+    levels = c("Never", "Hardly ever", "Sometimes", "Often", "Always"),
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  table_from_summary()
 
 ```
 

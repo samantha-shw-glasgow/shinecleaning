@@ -1,12 +1,9 @@
 #' reshape hbsc summary data
 #'
-#' @param dat
+#' @param dat HBSC data to pass in
 #' @param create_cols copy existing p7, s2 and s4 columns to fill missing years
 #'
 #' @return long-format dataframe
-#' @export
-#'
-#' @examples
 prep_hbsc <- function(dat = hbsc_scotland, create_cols = FALSE) {
 
   if (create_cols) {
@@ -74,12 +71,9 @@ prep_hbsc <- function(dat = hbsc_scotland, create_cols = FALSE) {
 #'
 #' @param classes classes to include
 #' @param success responses to include, can provide multiple
-#' @param var [Optional] variable to include
+#' @param var (Optional) variable to include
 #'
-#' @return
-#' @export
-#'
-#' @examples
+#' @return A tibble of proportion by gender
 get_hbsc_prop <- function(classes, success, var = NULL) {
 
   if (is.null(var)) {

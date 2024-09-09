@@ -8,3 +8,6 @@
 
 #' Simulated responses for secondary survey testing
 'sec_valid_responses'
+
+#' Modified HBSC Scotland dataset
+'hbsc_scotland_modified'
