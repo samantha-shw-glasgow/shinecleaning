@@ -24,6 +24,7 @@ create_collapsed_summary <- function(
     grouping_vars <- c("class")
   }
   subgroups <- data |>
+    filter(gender %in% inc_gender, class %in% inc_classes) |>
     group_by(across(all_of(grouping_vars))) |>
     mutate(success = {{var}} %in% success) |>
     summarise(
@@ -31,7 +32,6 @@ create_collapsed_summary <- function(
       denom = n(),
       .groups = "drop"
     ) |>
-    filter(gender %in% inc_gender, class %in% inc_classes) |>
     arrange(class)
 
   all <- subgroups |>
@@ -82,7 +82,7 @@ create_full_summary <- function(
     group_by(across(all_of(c(grouping_vars, "answer")))) |>
     summarise(numerator = n(), .groups = "drop") |>
     add_count(across(all_of(grouping_vars)), name = "denom", wt = numerator) |>
-    filter(gender %in% inc_gender, class %in% inc_classes) |>
+    filter(gender %in% inc_gender, class %in% inc_classes, answer %in% levels) |>
     arrange(class)
 
   all <- subgroups |>
