@@ -178,7 +178,7 @@ createReport_server <- function(id, data){
 				                    school_name = input$school_name,
 				                    filename = file,
 				                    number_invited = input$n_invited,
-				                    gender_split = input$gender_split,
+				                    gender_split = input$split,
 				                    term = input$school_term,
 				                    output_location = NULL)
 				    }
