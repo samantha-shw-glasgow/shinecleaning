@@ -1,3 +1,11 @@
+test_that("`data_prep` rejects wrong data", {
+
+  expect_error(data_prep(pri_valid_responses, "secondary"))
+  expect_error(data_prep(sec_valid_responses, "primary"))
+  expect_error(data_prep(pri_valid_responses, "fake_response"))
+
+})
+
 test_that("Me and My feelings score", {
 
   input_data_a <-  tibble(
@@ -21,13 +29,13 @@ test_that("Me and My feelings score", {
   )
 
   expected_a <-bind_cols(input_data_a,
-     tribble(
-      ~mme_score, ~mmb_score,   ~mme_cat,   ~mmb_cat,
-               6,          2, "Expected", "Expected",
-               5,         10, "Expected", "Elevated",
-               7,          6, "Expected", "Elevated",
-               7,          5, "Expected", "Expected"
-    )
+                         tribble(
+                           ~mme_score, ~mmb_score,   ~mme_cat,   ~mmb_cat,
+                           6,          2, "As expected", "As expected",
+                           5,         10, "As expected", "Elevated",
+                           7,          6, "As expected", "Elevated",
+                           7,          5, "As expected", "As expected"
+                         )
   )
 
   expect_equal(mm_score(input_data_a), expected_a)
@@ -53,19 +61,19 @@ test_that("Me and My feelings score", {
   )
 
   expected_b <-bind_cols(input_data_b,
-      tribble(
-      ~mme_score, ~mmb_score,   ~mme_cat,   ~mmb_cat,
-               6 * 10/7,          2, "Expected", "Expected",
-               NA_real_,         10, NA_character_, "Elevated",
-               7,          4 * 6 / 4, "Expected", "Elevated",
-               7,          NA_real_, "Expected", NA_character_
-    )
+                         tribble(
+                           ~mme_score, ~mmb_score,   ~mme_cat,   ~mmb_cat,
+                           6 * 10/7,          2, "As expected", "As expected",
+                           NA_real_,         10, NA_character_, "Elevated",
+                           7,          4 * 6 / 4, "As expected", "Elevated",
+                           7,          NA_real_, "As expected", NA_character_
+                         )
   )
 
 
   expect_identical(mm_score(input_data_b), expected_b)
 
-  })
+})
 
 test_that("WHO score", {
 
@@ -81,16 +89,16 @@ test_that("WHO score", {
   )
 
   expected_a <- bind_cols(input_data_a, tribble(
-      ~who_score, ~who_cat,
-      (4+3+2+4+1) * 4, "good",
-      (0+4+1+4+0) * 4, "low",
-      NA_real_, NA_character_
-    )
+    ~who_score, ~who_cat,
+    (4+3+2+4+1) * 4, "good",
+    (0+4+1+4+0) * 4, "low",
+    NA_real_, NA_character_
+  )
   )
 
   expect_identical(who_score(input_data_a), expected_a)
 
-  })
+})
 
 test_that("Secondary SEHS scoring variables calculating", {
 
@@ -131,7 +139,7 @@ test_that("Secondary SEHS scoring variables calculating", {
 
   expect_identical(out_dat, expected)
 
-  })
+})
 
 test_that("ASW score calculations", {
 
@@ -175,7 +183,7 @@ test_that("SDQ score output", {
     tibble(
       "{varname}_score" := rep(NA_real_, 3),
       "{varname}_cat" := rep(NA_character_, 3),
-      )
+    )
   }) |>
     reduce(bind_cols) |>
     bind_cols(input_data_e, x = _)
@@ -186,3 +194,4 @@ test_that("SDQ score output", {
   expect_identical(dim(test_output), dim(expected_shape))
 
 })
+

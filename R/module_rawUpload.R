@@ -44,7 +44,7 @@ rawUpload_server <- function(id){
 				  req(input$upload)
 				  readr::read_csv(input$upload$datapath,
 				                  col_types = readr::cols(.default = "c"),
-				                  show_col_types = F)
+				                  show_col_types = F)[-1:-2,]
 				})
 
 				# remove unwanted top rows, re-assign col types
@@ -63,7 +63,8 @@ rawUpload_server <- function(id){
 				    df <- df[-drop, ]
 				  }
 
-				  df |> readr::type_convert() # is this a good idea?
+				  df |> readr::type_convert() |> # is this a good idea?
+				    mutate(across(ends_with("Date"), as.character))
 				})
 
 				# run checks
