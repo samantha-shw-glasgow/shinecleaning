@@ -76,7 +76,7 @@ rawUpload_server <- function(id){
 				    data(),
 				    vars = c("class",
                       "gender",
-                      "dobmnth", "dobda", "dobyr",
+                      "dobmnth", "dobday", "dobyr",
                       "School ID code",
                       "Local Authority",
                       "postcode",
