@@ -15,7 +15,7 @@ createReportUI <- function(id){
 	  uiOutput(ns('report_warnings')),
 	  uiOutput(ns('report_ui')),
 	  br(),
-	  downloadButton(ns('generate'), 'Generate report'),
+	  shinyjs::disabled(downloadButton(ns('generate'), 'Generate report')),
 	)
 }
 
@@ -163,6 +163,18 @@ createReport_server <- function(id, data){
 				  }
 
 				})
+
+				## disable download button if there are warnings using shinyjs
+				observeEvent(data(), ignoreNULL = F, {
+				  if (is.null(data())) {
+				    shinyjs::disable('generate')
+				  } else if (any(check_vars()$fail)) {
+				    shinyjs::disable('generate')
+				  } else {
+				    shinyjs::enable('generate')
+				  }
+				})
+
 
 
 				## create report
