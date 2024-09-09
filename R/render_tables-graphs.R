@@ -183,7 +183,7 @@ bar_mean_single_var <-
 
 
     all <- data |>
-      mutate(class = "All", gender = "All") |>
+      mutate(class = "All", gender = if_else(.gender_split, "All", "All pupils")) |>
       summarise(mean_score = mean({{var}}, na.rm = TRUE),
                 .by = c(class, gender))
 
