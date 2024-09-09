@@ -1,3 +1,5 @@
+### This whole file should be split up and deprecated ###
+
 #' Bar graph of means for multiple variables (horizontal)
 #'
 #' `bar_mean_multiple_vars` returns a horizontal bar graph.
