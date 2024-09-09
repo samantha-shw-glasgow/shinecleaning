@@ -55,8 +55,6 @@ term <- params$term
 classes <- c("P6", "P7")
 genders <- c("Boys", "Girls", "All")
 
-if(!params$gender_split) genders <- "All"
-
 library(tidyverse)
 
 

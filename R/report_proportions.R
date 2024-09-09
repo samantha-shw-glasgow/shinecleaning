@@ -121,25 +121,53 @@ create_full_summary <- function(
 #' @param summary_data A dataframe produced by `create_collapsed_summary`
 #'
 #' @return A ggplot2 graph
-bar_from_summary <- function(summary_data,
-                             hbsc_data = NULL) {
+bar_from_summary <- function(summary_data, hbsc_data = NULL) {
+
+  hbsc_data_in <- tibble(
+    gender = character(),
+    class = character(),
+    hbsc_gender = character(),
+    hbsc_class = character()
+  )
+
+  if (!is.null(hbsc_data)) {
+    hbsc_data_in <-
+      hbsc_data |>
+      mutate(
+        hbsc_prop = prop,
+        hbsc_gender = gender,
+        gender = str_extract(gender, "^\\w*"),
+        class = factor(class, levels = levels(summary_data$class))
+      ) |>
+      select(class, gender, hbsc_gender, hbsc_prop)
+  }
 
   summary_data |>
     mutate(prop = numerator / denom) |>
+    left_join(hbsc_data_in, by = join_by(class, gender)) |>
     ggplot() +
-    aes(x = class, y = prop, fill = gender) +
+    aes(
+      x = class,
+      y = prop,
+      fill = gender,
+      shape = hbsc_gender
+    ) +
     geom_col(position = "dodge", size = 0) +
     {
       if (!is.null(hbsc_data))
         geom_point(
-          data = hbsc_data,
-          aes(colour = gender, shape = gender),
+          aes(
+            y = hbsc_prop,
+            fill = hbsc_gender,
+            colour = hbsc_gender
+          ),
           position = position_dodge(0.9),
           size = 2
         )
     } +
     scale_shape_manual(
       values = c("Boys (Scotland)" =  21, "Girls (Scotland)" = 24),
+      na.translate = FALSE,
       guide = guide_legend(
         order = 2,
         override.aes = list(
@@ -149,8 +177,10 @@ bar_from_summary <- function(summary_data,
       )
     ) +
     scale_fill_hbsc(
+      "",
       aesthetics = c("colour", "fill"),
-      breaks = c("All", "Boys", "Girls"),
+      breaks = c("All pupils", "All", "Boys", "Girls"),
+      na.translate = FALSE,
       guide = guide_legend(order = 1)
     ) +
     xlab("") +
