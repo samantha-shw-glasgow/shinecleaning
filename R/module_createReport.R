@@ -15,7 +15,7 @@ createReportUI <- function(id){
 	  uiOutput(ns('report_warnings')),
 	  uiOutput(ns('report_ui')),
 	  br(),
-	  downloadButton(ns('generate'), 'Generate report'),
+	  shinyjs::disabled(downloadButton(ns('generate'), 'Generate report')),
 	)
 }
 
@@ -164,6 +164,18 @@ createReport_server <- function(id, data){
 
 				})
 
+				## disable download button if there are warnings using shinyjs
+				observeEvent(check_vars(), ignoreNULL = F, {
+				  if (is.null(data())) {
+				    shinyjs::disable('generate')
+				  } else if (any(check_vars()$fail)) {
+				    shinyjs::disable('generate')
+				  } else {
+				    shinyjs::enable('generate')
+				  }
+				})
+
+
 
 				## create report
 
@@ -172,16 +184,25 @@ createReport_server <- function(id, data){
 				    paste0(input$school_name, '_report.docx')
 				    },
 				  content = function(file){
-				    if(input$report_type == 'Primary'){
 
-				      render_report(data_filt(),
-				                    school_name = input$school_name,
-				                    filename = file,
-				                    number_invited = input$n_invited,
-				                    gender_split = input$split,
-				                    term = input$school_term,
-				                    output_location = NULL)
-				    }
+				    showModal(modalDialog("Generating report...", footer=NULL))
+				    on.exit(removeModal(), add = TRUE)
+
+				    tryCatch({
+				      if(input$report_type == 'Primary'){
+  				      render_report(data_filt(),
+  				                    school_name = input$school_name,
+  				                    filename = file,
+  				                    number_invited = input$n_invited,
+  				                    gender_split = input$split,
+  				                    term = input$school_term,
+  				                    output_location = NULL)
+  				    }
+			      }, error = function(e) {
+
+			        warning(e)
+			        # showModal(modalDialog("Error generating report, please check input data"))
+			      })
 				  }
 				)
 		}

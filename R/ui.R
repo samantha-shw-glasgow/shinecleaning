@@ -12,8 +12,8 @@ ui <- function(req){
 	navbarPage(
 		theme = SHINE_theme,
 		header = list(assets()),
-		title = span(img(src = "img/SHINE_logo.png", height = 50),img(src = "img/hbsc_trans.png", height = 50)),
-		#  "SHINE Mental Health Survey Reporting Tool",
+		title = span(img(src = "img/SHINE_logo.png", height = 50)),
+		windowTitle = "SHINE Mental Health Survey Tool",
 		id = "main-menu",
 		tabPanel(
 		  title = "Data Cleaning",
@@ -42,9 +42,10 @@ ui <- function(req){
 				bslib::card(
 				  createReportUI('createReport')
 				)
-			),
+			)
 		)
 	)
+
 }
 
 #' Assets
@@ -63,6 +64,7 @@ assets <- function(){
 		tags$head(
 			# Place any additional depdendencies here
 			# e.g.: CDN
-		)
+		),
+		shinyjs::useShinyjs()
 	)
 }
