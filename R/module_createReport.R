@@ -199,9 +199,9 @@ createReport_server <- function(id, data){
   				                    output_location = NULL)
   				    }
 			      }, error = function(e) {
-
-			        warning(e)
-			        # showModal(modalDialog("Error generating report, please check input data"))
+			        showNotification(
+			          "Failed to generate report, please check the data.",
+			          type = "error")
 			      })
 				  }
 				)
