@@ -324,7 +324,7 @@ in this area. For more information on this scale, see page 6.
 
 ```{r bar-mm-emotional, fig.cap="Pupils' emotional scores"}
 input_data |>
-  share_elevated(mmb_cat,
+  share_elevated(mme_cat,
                  .split = params$gender_split,
                  classes = classes,
                  genders = genders) |>
@@ -333,7 +333,7 @@ input_data |>
 
 ```{r bar-mm-behavioural, fig.cap="Pupils' behavioural scores"}
 input_data |>
-  share_elevated(mme_cat,
+  share_elevated(mmb_cat,
                  .split = params$gender_split,
                  classes = classes,
                  genders = genders) |>
