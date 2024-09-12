@@ -2,6 +2,7 @@
 #'
 #' @param data The dataframe of valid responses
 #' @param varslist (named) list of variables to use. Names to match vars
+#' @param success A purrr-like function denoting numerator categories
 #' @param genders List of genders to split by
 #' @param classes List of classes to split by
 #' @param .censor `TRUE`/`FALSE` - apply censoring rules (must be `TRUE` in output reports)

@@ -19,6 +19,8 @@ summary_proportions_multiple(
 
 \item{varslist}{(named) list of variables to use. Names to match vars}
 
+\item{success}{A purrr-like function denoting numerator categories}
+
 \item{genders}{List of genders to split by}
 
 \item{classes}{List of classes to split by}
