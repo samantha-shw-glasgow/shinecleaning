@@ -198,12 +198,8 @@ print_rest_of_graphs(graphs)
 
 ```{r bar-low-lifesat, fig.cap="% of pupils who report low happiness in different aspects of life"}
 
-graphs <- list()
-
-if (params$gender_split) {
-  graphs <- map(classes, \(classes) {
-    input_data |>
-      bar_multiple_vars(
+graphs <-input_data |>
+      summary_proportions_multiple(
         varslist = list(
           lifesat1 = "Overall",
           lifesat2 = "Family",
@@ -218,44 +214,19 @@ if (params$gender_split) {
           lifesat11 = "Time use"
         ),
         success = ~ .x < 5,
-        group = "gender",
-        classes = classes
-      )
-  })
-}
+        genders = genders,
+        classes = classes,
+        .gender_split = params$gender_split
+      ) |> 
+  map(bar_proportions_multiple) |> 
+  print_first_graph()
 
-
-graphs <- input_data |>
-  bar_multiple_vars(
-    varslist = list(
-      lifesat1 = "Overall",
-      lifesat2 = "Family",
-      lifesat3 = "Home",
-      lifesat4 = "Choice",
-      lifesat5 = "Friends",
-      lifesat6 = "Things you have",
-      lifesat7 = "Health",
-      lifesat8 = "Appearance",
-      lifesat9 = "Future",
-      lifesat10 = "School",
-      lifesat11 = "Time use"
-    ),
-    success = ~ .x < 5,
-    classes = "All",
-    .gender_split = FALSE
-  ) |>
-  list() |>
-  append(graphs, values = _)
-
-print(graphs[[1]])
-
-graphs[[1]] <- NULL
 
 ```
 
 ```{r bar-lifesat-low-extra, eval=length(graphs)!=0}
 
-walk(graphs, print)
+print_rest_of_graphs(graphs)
 
 ```
 
