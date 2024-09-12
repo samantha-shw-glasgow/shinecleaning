@@ -539,12 +539,13 @@ walk(graphs, print)
 ```{r bar-coviality, fig.cap="Average covitality score"}
 
 input_data |> 
-  bar_mean_single_var(
+  summary_mean_single_var(
     cov_score,
     .gender_split = params$gender_split,
-    ymax = 60,
     classes = classes
-  )
+  ) |> 
+  bar_mean_single(ymax = 60)
+
 ```
 
 
