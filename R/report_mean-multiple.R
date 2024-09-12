@@ -88,6 +88,7 @@ summary_mean_multiple_vars <-
 bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
 
   class <- unique(summary_data$class)
+  genders <- unique(summary_data$gender)
 
   ggplot(
     summary_data,
@@ -129,7 +130,7 @@ bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
       hjust = -0.5,
       colour = "black",
       position = position_dodge(width = 0.8),
-      size = if_else(.gender_split, 2.5, 4)
+      size = if_else(length(genders) > 1, 2.5, 4)
     ) +
     coord_cartesian(xlim = c(0, xmax), clip = "off") +
     labs(
