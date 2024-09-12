@@ -27,6 +27,7 @@ Imports:
     rsvg,
     scales,
     shiny,
+    shinyjs,
     stringr,
     tibble,
     tidyr
