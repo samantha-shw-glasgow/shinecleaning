@@ -7,6 +7,7 @@
 #' @param varslist (named) list of variables to use. Names to match vars
 #' @param genders List of genders to split by
 #' @param classes List of classes to split by
+#' @param reorder Reorder by mean score? (default = TRUE)
 #' @param .censor `TRUE`/`FALSE` - apply censoring rules (must be `TRUE` in output reports)
 #' @param .gender_split `TRUE`/`FALSE` - split by gender when sufficient numbers of responses
 #'
@@ -21,6 +22,7 @@ summary_mean_multiple_vars <-
            varslist,
            genders = c("Boys", "Girls"),
            classes = "All",
+           reorder = TRUE,
            .censor = TRUE,
            .gender_split = TRUE
            ) {
@@ -128,6 +130,65 @@ bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
       size = if_else(.gender_split, 2.5, 4)
     ) +
     coord_cartesian(xlim = c(0, xmax), clip = "off") +
+    labs(
+      caption = if_else(any(summary_data$censored == 1), "* Numbers too low to show", ""),
+      title = paste(class, "pupils")
+    )
+}
+
+#' @rdname bar_mean_multiple_vars
+bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
+
+  class <- unique(summary_data$class)
+  varslist <- unique(summary_data$var)
+
+  summary_data |>
+    mutate(labels = forcats::fct_inorder(labels)) |>
+  ggplot(
+    aes(
+      .data$labels,
+      .data$mean,
+      linetype = factor(.data$censored),
+      fill = .data$gender,
+      colour = .data$gender,
+      group = .data$gender
+    )
+  ) +
+    geom_bar_t(aes(alpha = factor(.data$censored)),
+               stat = "identity",
+               position = position_dodge(width = 0.7)) +
+    scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
+    scale_linetype_manual(values = c("1" = "dashed", "0" = "blank"),
+                          guide = guide_none()) +
+    scale_x_discrete("", guide = guide_axis(n.dodge =
+                                              if_else(length(varslist) > 6,
+                                                      ceiling(length(varslist) / 4),
+                                                      1)
+    )) +
+    scale_fill_hbsc(
+      aesthetics = c("fill", "colour"),
+      name = "",
+      limits = force
+    ) +
+    theme(
+      legend.justification.right = "top",
+      legend.title = element_blank(),
+      plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
+      plot.caption = element_text(
+        hjust = 1,
+        size = 10,
+        face = "italic"
+      )
+    ) +
+    scale_y_continuous(ylab, expand = expansion(add = 0)) +
+    geom_text(
+      aes(label = .data$bar_lab_main),
+      vjust = -0.5,
+      colour = "black",
+      position = position_dodge(width = 0.7),
+      size = 4
+    ) +
+    coord_cartesian(ylim = c(0, ymax), clip = "off") +
     labs(
       caption = if_else(any(summary_data$censored == 1), "* Numbers too low to show", ""),
       title = paste(class, "pupils")
