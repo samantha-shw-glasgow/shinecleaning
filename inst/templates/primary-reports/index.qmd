@@ -30,7 +30,7 @@ params:
   school_name: 'Test school academy'
   term: 'Autumn 2024'
   number_invited: 1000
-  gender_split: false
+  gender_split: true
   class_split: true
 execute:
   enabled: true
@@ -542,6 +542,7 @@ input_data |>
   summary_mean_single_var(
     cov_score,
     .gender_split = params$gender_split,
+    genders = genders,
     classes = classes
   ) |> 
   bar_mean_single(ymax = 60)
