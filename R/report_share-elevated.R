@@ -110,15 +110,5 @@ bar_share_elevated <- function(graph_data) {
           axis.title.x = element_blank()) +
     labs(caption = if_else(any(graph_dat$censored == 1),
                            "* Numbers too low to show",
-                           ""),
-         title = if_else(all(c(graph_dat$class %in% "All")),
-                         "All pupils",
-                         paste(
-                           stringr::str_flatten_comma(
-                             unique(graph_dat$class[graph_dat$class != "All"]),
-                             " and "),
-                           "pupils"
-                           )
-                         )
-         )
+                           ""))
 }
