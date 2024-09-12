@@ -5,7 +5,6 @@
 #' @param varslist (named) list of variables to use. Names to match vars
 #' @param genders List of genders to split by
 #' @param classes List of classes to split by
-#' @param reorder Reorder by mean score? (default = TRUE)
 #' @param .censor `TRUE`/`FALSE` - apply censoring rules (must be `TRUE` in output reports)
 #' @param .gender_split `TRUE`/`FALSE` - split by gender when sufficient numbers of responses
 #'
@@ -20,7 +19,6 @@ summary_mean_multiple_vars <-
            varslist,
            genders = c("Boys", "Girls"),
            classes = "All",
-           reorder = TRUE,
            .censor = TRUE,
            .gender_split = TRUE
            ) {
