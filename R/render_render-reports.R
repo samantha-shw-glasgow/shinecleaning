@@ -35,7 +35,7 @@ render_report <- function(survey_data,
 
   report_name <- if_else(!is.na(school_name), school_name, local_authority_name)
 
-  is_la <- is.na(local_authority_name)
+  is_la <- !is.na(local_authority_name)
 
   if (is.null(number_invited))
     number_invited <- nrow(survey_data)
@@ -48,7 +48,7 @@ render_report <- function(survey_data,
     envir = render_env,
     output_file = filename,
     params = list(
-      is_la_report = FALSE,
+      is_la_report = is_la,
       school_name = report_name,
       term = term,
       number_invited = number_invited,
