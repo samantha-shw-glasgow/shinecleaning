@@ -32,18 +32,28 @@ share_elevated <-
 
     if (.split) {
       split_dat <-
-        map(levels, ~ data |>
-              group_by(gender, class) |>
-              summarise("{.x}" := sum({{outcome}} %in% .x), .groups = "drop")) |>
-        reduce(left_join, by = join_by(gender, class)) |>
-        mutate(denom = sum(c_across(where(is.numeric))), .by = c("gender", "class")) |>
-        dplyr::filter(class %in% classes,
-                      gender %in% genders)
+        map(classes, \(concat_class) {
+          map(
+            levels,
+            \(inc_level) data |>
+              dplyr::filter(class %in% concat_class, gender %in% genders) |>
+              summarise(
+                "{inc_level}" := sum({{outcome}} %in% inc_level),
+                class = str_flatten(concat_class, collapse = ", ", last = " and "),
+                .by = "gender"
+              )
+          ) |>
+            reduce(left_join, by = join_by(gender, class)) |>
+            mutate(denom = sum(c_across(where(is.numeric))),
+                   .by = c("gender", "class"))
+        }) |>
+        reduce(bind_rows) |>
+        arrange(class)
 
       clean_dat <- dplyr::bind_rows(clean_dat, split_dat)
     }
 
-    graph_dat <- clean_dat |>
+    graph_data <- clean_dat |>
       mutate(censored = if_else(denom < 3 & .censor, 1, 0)) |>
       pivot_longer(-c(denom, censored, gender, class),
                    names_to = "var",
@@ -55,7 +65,7 @@ share_elevated <-
       select(gender, class, var, n, denom, prop, censored) |>
       arrange(gender, class, var)
 
-    return(graph_dat)
+    return(graph_data)
   }
 
 #' Produce bar graph of % of sts with elevatved or expected mm scores
