@@ -33,6 +33,5 @@ summary_mean_multiple_vars(
 A summary table of means of multiple variables
 }
 \description{
-\code{bar_mean_multiple_vars} returns a horizontal bar graph.
-\code{bar_mean_multiple_vertical} returns a vertical graph.
+Table of means for multiple variables
 }
