@@ -8,8 +8,8 @@ create_collapsed_summary(
   data,
   var,
   success,
-  inc_gender,
-  inc_classes,
+  genders,
+  classes,
   .censor = FALSE,
   .gender_split = FALSE
 )
@@ -21,9 +21,9 @@ create_collapsed_summary(
 
 \item{success}{Character vector of categories as 'successes'}
 
-\item{inc_gender}{List of genders to split by}
+\item{genders}{List of genders to split by}
 
-\item{inc_classes}{List of classes to split by}
+\item{classes}{List of classes to split by}
 
 \item{.censor}{Whether to censor (must be TRUE for production reports)}
 
