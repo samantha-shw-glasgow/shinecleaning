@@ -90,7 +90,9 @@ bar_share_elevated <- function(graph_data) {
       )
     )
 
-  ggplot(data = graph_dat,
+  lab_length <- max(str_length(graph_dat$class))
+
+  gg_out <- ggplot(data = graph_dat,
          aes(x = x_lab, y = prop, fill = var)) +
     geom_bar(stat = "identity", position = "stack") +
     scale_fill_hbsc(name = "") +
@@ -111,4 +113,11 @@ bar_share_elevated <- function(graph_data) {
     labs(caption = if_else(any(graph_dat$censored == 1),
                            "* Numbers too low to show",
                            ""))
+
+  if(lab_length > 10) {
+    gg_out +
+      theme(axis.text.x = element_text(angle = 315, hjust = 0))
+  } else {
+    gg_out
+  }
 }
