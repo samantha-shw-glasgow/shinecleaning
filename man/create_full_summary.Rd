@@ -8,8 +8,8 @@ create_full_summary(
   data,
   var,
   levels,
-  inc_gender,
-  inc_classes,
+  genders,
+  classes,
   .censor = FALSE,
   .gender_split = FALSE
 )
@@ -21,9 +21,9 @@ create_full_summary(
 
 \item{levels}{Character vector of ordered levels}
 
-\item{inc_gender}{List of genders to split by}
+\item{genders}{List of genders to split by}
 
-\item{inc_classes}{List of classes to split by}
+\item{classes}{List of classes to split by}
 
 \item{.censor}{Whether to censor (must be TRUE for production reports)}
 

@@ -3,8 +3,8 @@
 #' @param data Valid input data
 #' @param var Variable to calculate by
 #' @param success Character vector of categories as 'successes'
-#' @param inc_gender List of genders to split by
-#' @param inc_classes List of classes to split by
+#' @param genders List of genders to split by
+#' @param classes List of classes to split by
 #' @param .censor Whether to censor (must be TRUE for production reports)
 #' @param .gender_split Gender split - passed from params
 #'
@@ -13,8 +13,8 @@ create_collapsed_summary <- function(
     data,
     var,
     success,
-    inc_gender,
-    inc_classes,
+    genders,
+    classes,
     .censor = FALSE,
     .gender_split = FALSE
 ) {
@@ -43,7 +43,7 @@ create_collapsed_summary <- function(
 
   if (.gender_split) {
     joined_dat <- subgroups |>
-      filter(gender %in% inc_gender, class %in% inc_classes) |>
+      filter(gender %in% genders, class %in% classes) |>
       bind_rows(all)
   } else {
     joined_dat <- all |>
@@ -64,8 +64,8 @@ create_collapsed_summary <- function(
 #' @param data Valid input data
 #' @param var Variable to calculate by
 #' @param levels Character vector of ordered levels
-#' @param inc_gender List of genders to split by
-#' @param inc_classes List of classes to split by
+#' @param genders List of genders to split by
+#' @param classes List of classes to split by
 #' @param .censor Whether to censor (must be TRUE for production reports)
 #' @param .gender_split Gender split - passed from params
 #'
@@ -74,8 +74,8 @@ create_full_summary <- function(
     data,
     var,
     levels,
-    inc_gender,
-    inc_classes,
+    genders,
+    classes,
     .censor = FALSE,
     .gender_split = FALSE
 ) {
@@ -104,7 +104,7 @@ create_full_summary <- function(
 
   if (.gender_split) {
     joined_dat <- subgroups |>
-      filter(gender %in% inc_gender, class %in% inc_classes) |>
+      filter(gender %in% genders, class %in% classes) |>
       bind_rows(all)
   } else {
     joined_dat <- all

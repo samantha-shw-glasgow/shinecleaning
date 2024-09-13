@@ -30,7 +30,7 @@ params:
   school_name: 'Test school academy'
   term: 'Autumn 2024'
   number_invited: 1000
-  gender_split: false
+  gender_split: true
   class_split: true
 execute:
   enabled: true
@@ -164,33 +164,9 @@ more information on this index, see page 6.
 
 ```{r bar-lifesat, fig.cap="Average scores for different aspects of life", eval=TRUE}
 
-graphs <- list()
-
-if (params$gender_split) {
-  graphs <- map(classes, \(classes) {
-    input_data |>
-      bar_mean_multiple_vars(
-        varslist = list(
-          lifesat1 = "Overall",
-          lifesat2 = "Family",
-          lifesat3 = "Home",
-          lifesat4 = "Choice",
-          lifesat5 = "Friends",
-          lifesat6 = "Things you have",
-          lifesat7 = "Health",
-          lifesat8 = "Appearance",
-          lifesat9 = "Future",
-          lifesat10 = "School",
-          lifesat11 = "Time use"
-        ),
-        classes = classes,
-        limits = c(0, 10)
-      )
-  })
-}
-
-graphs <- input_data |> 
-  bar_mean_multiple_vars(
+graphs <-
+  input_data |>
+  summary_mean_multiple_vars(
     varslist = list(
       lifesat1 = "Overall",
       lifesat2 = "Family",
@@ -204,33 +180,26 @@ graphs <- input_data |>
       lifesat10 = "School",
       lifesat11 = "Time use"
     ),
-    classes = "All",
-    limits = c(0, 10),
-    .gender_split = FALSE
+    genders = genders,
+    classes = classes,
+    .gender_split = params$gender_split
   ) |> 
-  list() |> 
-  append(graphs, values = _)
+  map(bar_mean_multiple_vars, xmax = 10) |> 
+  print_first_graph()
 
-print(graphs[[1]])
-
-graphs[[1]] <- NULL
 
 ```
 
 ```{r bar-lifesat-extra, eval=length(graphs)!=0}
 
-walk(graphs, print)
+print_rest_of_graphs(graphs)
 
 ```
 
 ```{r bar-low-lifesat, fig.cap="% of pupils who report low happiness in different aspects of life"}
 
-graphs <- list()
-
-if (params$gender_split) {
-  graphs <- map(classes, \(classes) {
-    input_data |>
-      bar_multiple_vars(
+graphs <-input_data |>
+      summary_proportions_multiple(
         varslist = list(
           lifesat1 = "Overall",
           lifesat2 = "Family",
@@ -245,44 +214,19 @@ if (params$gender_split) {
           lifesat11 = "Time use"
         ),
         success = ~ .x < 5,
-        group = "gender",
-        classes = classes
-      )
-  })
-}
+        genders = genders,
+        classes = classes,
+        .gender_split = params$gender_split
+      ) |> 
+  map(bar_proportions_multiple) |> 
+  print_first_graph()
 
-
-graphs <- input_data |>
-  bar_multiple_vars(
-    varslist = list(
-      lifesat1 = "Overall",
-      lifesat2 = "Family",
-      lifesat3 = "Home",
-      lifesat4 = "Choice",
-      lifesat5 = "Friends",
-      lifesat6 = "Things you have",
-      lifesat7 = "Health",
-      lifesat8 = "Appearance",
-      lifesat9 = "Future",
-      lifesat10 = "School",
-      lifesat11 = "Time use"
-    ),
-    success = ~ .x < 5,
-    classes = "All",
-    .gender_split = FALSE
-  ) |>
-  list() |>
-  append(graphs, values = _)
-
-print(graphs[[1]])
-
-graphs[[1]] <- NULL
 
 ```
 
 ```{r bar-lifesat-low-extra, eval=length(graphs)!=0}
 
-walk(graphs, print)
+print_rest_of_graphs(graphs)
 
 ```
 
@@ -324,7 +268,7 @@ in this area. For more information on this scale, see page 6.
 
 ```{r bar-mm-emotional, fig.cap="Pupils' emotional scores"}
 input_data |>
-  share_elevated(mmb_cat,
+  share_elevated(mme_cat,
                  .split = params$gender_split,
                  classes = classes,
                  genders = genders) |>
@@ -333,7 +277,7 @@ input_data |>
 
 ```{r bar-mm-behavioural, fig.cap="Pupils' behavioural scores"}
 input_data |>
-  share_elevated(mme_cat,
+  share_elevated(mmb_cat,
                  .split = params$gender_split,
                  classes = classes,
                  genders = genders) |>
@@ -490,27 +434,8 @@ health. For more information on this scale, see page 6.
 
 ```{r  bar-sehs, fig.cap="Average score in each SEHS domain"}
 
-graphs <- list()
-
-if (params$gender_split) {
-  graphs <- map(classes, \(classes) {
-    input_data |>
-      bar_mean_multiple_vertical(
-        varslist = list(
-          g_score = "Gratitude",
-          z_score = "Zest",
-          o_score = "Optimism",
-          p_score = "Persistance",
-          pro_score = "Pro-social"
-        ),
-        classes = classes,
-        ymax = 16
-      )
-  })
-}
-
-graphs <- input_data |> 
-  bar_mean_multiple_vertical(
+graphs <- input_data |>
+  summary_mean_multiple_vars(
     varslist = list(
       g_score = "Gratitude",
       z_score = "Zest",
@@ -518,33 +443,32 @@ graphs <- input_data |>
       p_score = "Persistance",
       pro_score = "Pro-social"
     ),
-    ymax = 16,
-    .gender_split = FALSE
-  ) |> 
-  list() |> 
-  append(graphs, values = _)
-
-print(graphs[[1]])
-
-graphs[[1]] <- NULL
+    genders = genders,
+    classes = classes,
+    .gender_split = params$gender_split
+  ) |>
+  map(bar_mean_multiple_vertical, ymax = 16) |>
+  print_first_graph()
 
 ```
 
 ```{r bar-sehs-extra, eval=length(graphs)!=0}
 
-walk(graphs, print)
+print_rest_of_graphs(graphs)
 
 ```
 
 ```{r bar-coviality, fig.cap="Average covitality score"}
 
 input_data |> 
-  bar_mean_single_var(
+  summary_mean_single_var(
     cov_score,
-    .gender_split = params$gender_split,
-    ymax = 60,
-    classes = classes
-  )
+    genders = genders,
+    classes = classes,
+    .gender_split = params$gender_split
+  ) |> 
+  bar_mean_single(ymax = 60)
+
 ```
 
 
