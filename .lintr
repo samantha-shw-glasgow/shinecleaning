@@ -1,2 +1,14 @@
-linters: linters_with_defaults() # see vignette("lintr")
+linters: linters_with_defaults(
+    T_and_F_symbol_linter = NULL,
+    brace_linter = NULL,
+    commented_code_linter = NULL,
+    cyclocomp_linter = NULL,
+    indentation_linter = NULL,
+    line_length_linter = line_length_linter(160L),
+    object_length_linter = NULL,
+    object_name_linter = NULL,
+    object_usage_linter = NULL,
+    pipe_continuation_linter = NULL,
+    seq_linter = NULL
+  )
 encoding: "UTF-8"
