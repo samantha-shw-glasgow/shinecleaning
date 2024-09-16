@@ -37,6 +37,11 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
+      - name: Lint
+        run: lintr::lint_dir()
+        shell: Rscript {0}
+        env:
+          LINTR_ERROR_ON_LINT: true
       - name: Check
         uses: r-lib/actions/check-r-package@v2
         with:
