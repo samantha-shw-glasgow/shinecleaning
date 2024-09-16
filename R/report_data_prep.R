@@ -26,7 +26,6 @@
 #' `sdq_score`: SDQ score for secondary schools
 #'
 data_prep <- function(survey_data, report_type = "primary") {
-
   # This should create:
   #  - WHO5 wellbeing score - `who_score` and `who_cat`
 
@@ -81,7 +80,6 @@ data_prep <- function(survey_data, report_type = "primary") {
 
 #' @rdname data_prep
 who_score <- function(survey_data) {
-
   # Sum the score of the five `Who` variables and multiply by 4
 
   who_responses <- c(
@@ -147,7 +145,6 @@ mm_score <- function(survey_data) {
 
 #' @rdname data_prep
 sehs_primary <- function(survey_data) {
-
   # Calculates:
   # - "g","z","o","p","pro" scores as 4-wide column means
   # - summed to "coviality" score
@@ -276,7 +273,6 @@ asw_score <- function(survey_data) {
 
 #' @rdname data_prep
 sdq_score <- function(survey_data) {
-
   # sdq_cutoff={"ep": [(0,5), (6, 6), (7, 10)],
   # "cp": [(0,3), (4, 4), (5, 10)],
   # "ha": [(0,5), (6, 6), (7, 10)],

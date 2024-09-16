@@ -21,13 +21,13 @@ ui <- function(req) {
         # shiny::h1("Data Cleaning"),
         # raw upload ui
         bslib::card(
-          rawUploadUI('rawUpload')
+          rawUploadUI("rawUpload")
         ),
         bslib::card(
-          dataCleaningUI('dataCleaning')
+          dataCleaningUI("dataCleaning")
         ),
         bslib::card(
-          cleaningOutputUI('cleaningOutput')
+          cleaningOutputUI("cleaningOutput")
         )
       ),
     ),
@@ -37,10 +37,10 @@ ui <- function(req) {
         # shiny::h1("Report Generator"),
         # raw upload ui
         bslib::card(
-          cleanUploadUI('cleanUpload')
+          cleanUploadUI("cleanUpload")
         ),
         bslib::card(
-          createReportUI('createReport')
+          createReportUI("createReport")
         )
       )
     )

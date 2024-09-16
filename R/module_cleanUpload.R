@@ -66,7 +66,9 @@ cleanUpload_server <- function(id) {
             error_message <- data.frame(message = c("Column names do not match"),
               level = c(3))
 
-            isolate({checks$checks <- error_message})
+            isolate({
+              checks$checks <- error_message
+            })
             return(NULL)
           } else {
             return(purrr::reduce(clean_data_list(), .f = dplyr::bind_rows))
@@ -82,7 +84,9 @@ cleanUpload_server <- function(id) {
           error_message <- data.frame(message = c("Data does not contain 'Keep row?' column"),
             level = c(3))
 
-          isolate({checks$checks <- error_message})
+          isolate({
+            checks$checks <- error_message
+          })
           return(NULL)
         } else {
           uploaded_data() |>

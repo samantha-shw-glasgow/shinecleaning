@@ -43,7 +43,7 @@ knitr::opts_chunk$set(echo = FALSE,
   message = FALSE,
   fig.height = 4.4,
   dpi = 330,
-  dev = 'svg',
+  dev = "svg",
   fig.width = 6.3,
   fig.topcaption = TRUE)
 school_name <- params$school_name
@@ -66,7 +66,7 @@ theme_update(
 ```
 
 ```{r front-page, echo=FALSE, eval = TRUE, results='asis'}
-cat(knitr::knit_child('front-cover.qmd', envir = environment(), quiet = TRUE))
+cat(knitr::knit_child("front-cover.qmd", envir = environment(), quiet = TRUE))
 ```
 
 \newpage
@@ -78,7 +78,7 @@ Contents
 `r officer::block_toc(level = 2, style = NULL, separator = ";")`
 
 ```{r introduction, echo=FALSE, eval = TRUE, results='asis'}
-cat(knitr::knit_child('introduction.qmd', envir = environment(), quiet = TRUE))
+cat(knitr::knit_child("introduction.qmd", envir = environment(), quiet = TRUE))
 ```
 
 \newpage
@@ -455,6 +455,6 @@ input_data |>
 \newpage
 
 ```{r outtro, echo=FALSE, eval = TRUE, results='asis'}
-cat(knitr::knit_child('outtro.qmd', envir = environment(), quiet = TRUE))
+cat(knitr::knit_child("outtro.qmd", envir = environment(), quiet = TRUE))
 ```
 

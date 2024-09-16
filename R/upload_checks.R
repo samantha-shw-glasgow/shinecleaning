@@ -67,19 +67,19 @@ make_upload_warning <- function(message, level) {
 #'
 #' @keywords internal
 upcheck_status <- function(data) {
-  fail = FALSE
-  message = NA
-  level = NA
+  fail <- FALSE
+  message <- NA
+  level <- NA
 
   if (!"Status" %in% colnames(data)) {
-    fail = TRUE
-    message = "`Status` (response type) column not found in this file. Unable to check for test responses."
-    level = 2
+    fail <- TRUE
+    message <- "`Status` (response type) column not found in this file. Unable to check for test responses."
+    level <- 2
   } else {
     if ("Survey Preview" %in% data$Status) {
-      fail = TRUE
-      message = "This file includes preview / test responses."
-      level = 1
+      fail <- TRUE
+      message <- "This file includes preview / test responses."
+      level <- 1
     }
   }
 
@@ -87,20 +87,20 @@ upcheck_status <- function(data) {
 }
 
 upcheck_schools <- function(data) {
-  fail = FALSE
-  message = NA
-  level = NA
+  fail <- FALSE
+  message <- NA
+  level <- NA
 
   if (!"School ID code" %in% colnames(data)) {
-    fail = TRUE
-    message = "`School ID code` column not found in this file. Please include school ID in the uploaded file."
-    level = 3
+    fail <- TRUE
+    message <- "`School ID code` column not found in this file. Please include school ID in the uploaded file."
+    level <- 3
   } else {
-    schIDs = data$`School ID code`
+    schIDs <- data$`School ID code`
     if (length(unique(schIDs)) > 1) {
-      fail = TRUE
-      message = "This file includes responses from multiple schools."
-      level = 1
+      fail <- TRUE
+      message <- "This file includes responses from multiple schools."
+      level <- 1
     }
   }
 
@@ -108,20 +108,20 @@ upcheck_schools <- function(data) {
 }
 
 upcheck_gender <- function(data) {
-  fail = FALSE
-  message = NA
-  level = NA
+  fail <- FALSE
+  message <- NA
+  level <- NA
 
   if (!"gender" %in% colnames(data)) {
-    fail = TRUE
-    message = "`gender` column not found in this file. Please include gender in the uploaded file."
-    level = 3
+    fail <- TRUE
+    message <- "`gender` column not found in this file. Please include gender in the uploaded file."
+    level <- 3
   } else {
-    genders = data$gender
+    genders <- data$gender
     if (any(stringr::str_detect(genders, "[0-9]"), na.rm = TRUE)) {
-      fail = TRUE
-      message = "This file has numeric values for gender where characters are expected. Please ensure you have downloaded the data with full text responses."
-      level = 3
+      fail <- TRUE
+      message <- "This file has numeric values for gender where characters are expected. Please ensure you have downloaded the data with full text responses."
+      level <- 3
     }
   }
 
@@ -129,20 +129,20 @@ upcheck_gender <- function(data) {
 }
 
 upcheck_has_columns <- function(data, columns, required = TRUE) {
-  fail = FALSE
-  message = NA
-  level = NA
+  fail <- FALSE
+  message <- NA
+  level <- NA
 
-  has_col = columns %in% colnames(data)
+  has_col <- columns %in% colnames(data)
 
   if (!all(has_col)) {
-    fail = TRUE
+    fail <- TRUE
     if (isTRUE(required)) {
-      message = paste0("This file is missing the following required column(s): ", paste0(columns[!has_col], collapse = ", "))
-      level = 3
+      message <- paste0("This file is missing the following required column(s): ", paste0(columns[!has_col], collapse = ", "))
+      level <- 3
     } else {
-      message = paste0("This file is missing the following expected column(s): ", paste0(columns[!has_col], collapse = ", "))
-      level = 2
+      message <- paste0("This file is missing the following expected column(s): ", paste0(columns[!has_col], collapse = ", "))
+      level <- 2
     }
   }
 
