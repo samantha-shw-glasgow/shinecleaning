@@ -20,7 +20,7 @@ prep_hbsc <- function(dat = hbsc_scotland, create_cols = FALSE) {
         s6_boys = s4_boys,
         s6_girls = s4_girls,
       )
-    }
+  }
 
   dat |>
     mutate(
@@ -45,9 +45,9 @@ prep_hbsc <- function(dat = hbsc_scotland, create_cols = FALSE) {
     ) |>
     select(-fields2) |>
     pivot_longer(cols = -c(fields, q, level),
-               values_to = "prop",
-               names_to = c("class", "gender"),
-               names_sep = "_") |>
+      values_to = "prop",
+      names_to = c("class", "gender"),
+      names_sep = "_") |>
     mutate(
       class = str_to_upper(class),
       gender = case_match(
@@ -80,29 +80,29 @@ get_hbsc_prop <- function(classes, success, var = NULL) {
     var = unique(SHINEcleaning::hbsc_scotland_modified$q[SHINEcleaning::hbsc_scotland_modified$level %in% success])
     if (length(var) > 1) {
       stop("Multiple variables found with response ", success, ". Please specify `var`.")
-      }
+    }
   }
 
   if (length(success) > 1) {
     data = SHINEcleaning::hbsc_scotland_modified |>
       filter(level %in% success,
-             q %in% var,
-             class %in% classes) |>
+        q %in% var,
+        class %in% classes) |>
       group_by(class, gender) |>
       mutate(prop = sum(prop))
   } else {
     data = SHINEcleaning::hbsc_scotland_modified |>
       filter(level == success,
-             q %in% var,
-             class %in% classes)
+        q %in% var,
+        class %in% classes)
   }
 
   out = data |>
-    mutate(prop = prop /100,
-           gender = case_match(gender,
-                               "Boy" ~ "Boys (Scotland)",
-                               "Girl" ~ "Girls (Scotland)"),
-           )
+    mutate(prop = prop / 100,
+      gender = case_match(gender,
+        "Boy" ~ "Boys (Scotland)",
+        "Girl" ~ "Girls (Scotland)"),
+    )
 
   return(out)
 

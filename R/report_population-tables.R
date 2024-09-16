@@ -9,9 +9,9 @@ date_range <- function(input_data) {
   end <- max(lubridate::ymd_hms(input_data$`StartDate`))
 
   start_date <- paste(lubridate::month(start, abbr = FALSE, label = TRUE),
-                      lubridate::year(start))
+    lubridate::year(start))
   end_date <- paste(lubridate::month(end, abbr = FALSE, label = TRUE),
-                    lubridate::year(end))
+    lubridate::year(end))
 
   if (start_date == end_date) {
     paste("in", start_date)

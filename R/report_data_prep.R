@@ -44,14 +44,14 @@ data_prep <- function(survey_data, report_type = "primary") {
   survey_out <- survey_data |>
     filter(.data$consent == "Yes, I am happy to take part") |>
     mutate(gender = .data$gender |>
-             stringr::str_replace("(?<=(Boy|Girl))$", "s")) |>  # pluralise for reporting
+      stringr::str_replace("(?<=(Boy|Girl))$", "s")) |>  # pluralise for reporting
     who_score()
 
   if (report_type == "primary") {
 
     if (!("mm1" %in% colnames(survey_out))) {
       stop("Dataset is missing expected variables for primary report. ",
-           "Did you correctly specify report type and are columns correctly named?")
+        "Did you correctly specify report type and are columns correctly named?")
     }
 
     survey_out |>
@@ -63,7 +63,7 @@ data_prep <- function(survey_data, report_type = "primary") {
 
     if (!("asw1" %in% colnames(survey_out))) {
       stop("Dataset is missing expected variables for secondary report. ",
-           "Did you correctly specify report type and are columns correctly named?")
+        "Did you correctly specify report type and are columns correctly named?")
     }
 
     survey_out |>
@@ -74,7 +74,7 @@ data_prep <- function(survey_data, report_type = "primary") {
 
   } else {
     stop(glue::glue("\"{report_type}\" is not a valid report type. ",
-                    "Specify \"primary\" or \"secondary\" to match data."))
+      "Specify \"primary\" or \"secondary\" to match data."))
   }
 
 }
@@ -94,12 +94,12 @@ who_score <- function(survey_data) {
   )
 
   survey_data |>
-    mutate(across(starts_with("who"), ~match(.x, who_responses) - 1)) |>
+    mutate(across(starts_with("who"), ~ match(.x, who_responses) - 1)) |>
     mutate(who_score = rowSums(pick(starts_with("who"))) * 4,
-           who_cat = case_when(
-             who_score <= 50 ~ "low",
-             who_score > 50 ~ "good"
-           ), .keep = "none") |>
+      who_cat = case_when(
+        who_score <= 50 ~ "low",
+        who_score > 50 ~ "good"
+    ), .keep = "none") |>
     bind_cols(survey_data, x = _)
 
 }
@@ -119,22 +119,22 @@ mm_score <- function(survey_data) {
   # mmb - six columns, up to 2 missing
 
   survey_data |>
-    transmute(across(starts_with("mm"), ~match(.x, mm_responses) - 1),
-              mm15 = 2L - .data$mm15,
-              mme_missing = rowSums(pick(matches(paste0("^mm", 1:10, "$"))) |> is.na()),
-              mmb_missing = rowSums(pick(matches(paste0("^mm", 11:16, "$"))) |> is.na())
+    transmute(across(starts_with("mm"), ~ match(.x, mm_responses) - 1),
+      mm15 = 2L - .data$mm15,
+      mme_missing = rowSums(pick(matches(paste0("^mm", 1:10, "$"))) |> is.na()),
+      mmb_missing = rowSums(pick(matches(paste0("^mm", 11:16, "$"))) |> is.na())
     ) |>
     mutate(
       mme_score = rowSums(pick(matches(paste0("^mm", 1:10, "$"))), na.rm = TRUE),
       mmb_score = rowSums(pick(matches(paste0("^mm", 11:16, "$"))), na.rm = TRUE),
       mme_score = case_when(
         mme_missing == 0 ~ mme_score,
-        mme_missing <=3 ~ 10 * mme_score / (10 - mme_missing),
+        mme_missing <= 3 ~ 10 * mme_score / (10 - mme_missing),
         mme_missing > 3 ~ NA_real_
       ),
       mmb_score = case_when(
         mmb_missing == 0 ~ mmb_score,
-        mmb_missing <=2 ~ 6 * mmb_score / (6 - mmb_missing),
+        mmb_missing <= 2 ~ 6 * mmb_score / (6 - mmb_missing),
         mmb_missing > 2 ~ NA_real_
       ),
       mme_cat = if_else(.data$mme_score <= 9, "As expected", "Elevated"),
@@ -161,9 +161,9 @@ sehs_primary <- function(survey_data) {
   )
 
   num_vars <- survey_data |>
-    transmute(across(starts_with("sehs"), ~match(.x, sehs_responses)))
+    transmute(across(starts_with("sehs"), ~ match(.x, sehs_responses)))
 
-  scores <- purrr::imap(c("g","z","o","p","pro"), \(variable, index) {
+  scores <- purrr::imap(c("g", "z", "o", "p", "pro"), \(variable, index) {
 
     start <- (index - 1) * 4 + 1
 
@@ -201,7 +201,7 @@ sehs_secondary <- function(survey_data) {
   )
 
   num_responses <- survey_data |>
-    transmute(across(starts_with("sehs"), ~match(.x, sehs_responses)))
+    transmute(across(starts_with("sehs"), ~ match(.x, sehs_responses)))
 
 
   scores <- purrr::imap(
@@ -227,9 +227,9 @@ sehs_secondary <- function(survey_data) {
       num_responses |>
         select(matches(rows_select)) |>
         mutate(score = rowSums(pick(matches(rows_select)), na.rm = TRUE),
-               n_valid = rowSums(!is.na(pick(
-                 matches(rows_select)
-               )))) |>
+          n_valid = rowSums(!is.na(pick(
+            matches(rows_select)
+          )))) |>
         mutate("{variable}_score" := case_when(
           n_valid == 3 ~ score,
           n_valid < 3 ~ NA_real_
@@ -239,9 +239,9 @@ sehs_secondary <- function(survey_data) {
     }) |>
     purrr::reduce(bind_cols) |>
     mutate(
-      belief_self_score = (.data$efficacy_score + .data$aware_score + .data$persist_score)/3,
-      belief_others_score = (.data$sch_support_score + .data$fam_support_score + .data$peer_support_score)/3,
-      emotional_competence_score = (.data$emt_regulation_score + .data$empathy_score + .data$control_score)/3
+      belief_self_score = (.data$efficacy_score + .data$aware_score + .data$persist_score) / 3,
+      belief_others_score = (.data$sch_support_score + .data$fam_support_score + .data$peer_support_score) / 3,
+      emotional_competence_score = (.data$emt_regulation_score + .data$empathy_score + .data$control_score) / 3
     )
 
   bind_cols(survey_data, scores)
@@ -263,9 +263,9 @@ asw_score <- function(survey_data) {
 
   survey_data |>
     transmute(
-      across(starts_with("ASW"), ~match(.x, asw_responses)),
+      across(starts_with("ASW"), ~ match(.x, asw_responses)),
       # reverse scores for select vars
-      across(matches(paste0("^ASW[1345678]$")), ~7 - .x)
+      across(matches(paste0("^ASW[1345678]$")), ~ 7 - .x)
     ) |>
     mutate(asw_score = rowSums(pick(starts_with("ASW"))), .keep = "none") |>
     bind_cols(survey_data, x = _)
@@ -277,7 +277,7 @@ asw_score <- function(survey_data) {
 #' @rdname data_prep
 sdq_score <- function(survey_data) {
 
-  #sdq_cutoff={"ep": [(0,5), (6, 6), (7, 10)],
+  # sdq_cutoff={"ep": [(0,5), (6, 6), (7, 10)],
   # "cp": [(0,3), (4, 4), (5, 10)],
   # "ha": [(0,5), (6, 6), (7, 10)],
   # "pp": [(0,3), (4, 5), (6, 10)],
@@ -303,17 +303,17 @@ sdq_score <- function(survey_data) {
 
   num_responses <- survey_data |>
     transmute(
-      across(starts_with("SDQ"), ~match(.x, sdq_responses) - 1),
+      across(starts_with("SDQ"), ~ match(.x, sdq_responses) - 1),
       # reverse scores for select vars
-      across(matches(paste0("^SDQ", c(7, 21, 25, 11, 14), "$")), ~2 - .x)
+      across(matches(paste0("^SDQ", c(7, 21, 25, 11, 14), "$")), ~ 2 - .x)
     )
 
   varlist <- list(
-    ep = quo(pick(matches(paste0("^SDQ", c(3,8,13,16,24), "$")))),
-    cp = quo(pick(matches(paste0("^SDQ", c(5,7,12,18,22), "$")))),
-    ha = quo(pick(matches(paste0("^SDQ", c(2,10,15,21,25), "$")))),
-    pp = quo(pick(matches(paste0("^SDQ", c(6,11,14,19,23), "$")))),
-    ps = quo(pick(matches(paste0("^SDQ", c(1,4,9,17,20), "$"))))
+    ep = quo(pick(matches(paste0("^SDQ", c(3, 8, 13, 16, 24), "$")))),
+    cp = quo(pick(matches(paste0("^SDQ", c(5, 7, 12, 18, 22), "$")))),
+    ha = quo(pick(matches(paste0("^SDQ", c(2, 10, 15, 21, 25), "$")))),
+    pp = quo(pick(matches(paste0("^SDQ", c(6, 11, 14, 19, 23), "$")))),
+    ps = quo(pick(matches(paste0("^SDQ", c(1, 4, 9, 17, 20), "$"))))
   )
 
   varlist |>
@@ -323,7 +323,7 @@ sdq_score <- function(survey_data) {
           score = rowSums(!!score_vars, na.rm = TRUE),
           n_valid = rowSums(!is.na(!!score_vars))) |>
         mutate(
-          corr_score = if_else(.data$n_valid >=3, .data$score / .data$n_valid * 5, NA_real_),
+          corr_score = if_else(.data$n_valid >= 3, .data$score / .data$n_valid * 5, NA_real_),
           score_cat = case_when(
             corr_score %in% sdq_cutoff[[name]][[1]] ~ "As expected",
             corr_score %in% sdq_cutoff[[name]][[2]] ~ "Borderline",
@@ -337,12 +337,11 @@ sdq_score <- function(survey_data) {
     }) |>
     purrr::reduce(bind_cols) |>
     mutate(sdq_total_score = .data$ep_score + .data$cp_score + .data$ha_score + .data$pp_score,
-           sdq_total_cat = case_when(
-             sdq_total_score %in% sdq_cutoff[["tot"]][[1]] ~ "As expected",
-             sdq_total_score %in% sdq_cutoff[["tot"]][[2]] ~ "Borderline",
-             sdq_total_score %in% sdq_cutoff[["tot"]][[3]] ~ "Difficulties"
-           )) |>
+      sdq_total_cat = case_when(
+        sdq_total_score %in% sdq_cutoff[["tot"]][[1]] ~ "As expected",
+        sdq_total_score %in% sdq_cutoff[["tot"]][[2]] ~ "Borderline",
+        sdq_total_score %in% sdq_cutoff[["tot"]][[3]] ~ "Difficulties"
+    )) |>
     bind_cols(survey_data, x = _)
 
 }
-

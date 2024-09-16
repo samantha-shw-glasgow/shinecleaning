@@ -21,10 +21,10 @@ render_report <- function(survey_data,
                           gender_split = TRUE,
                           filename = "primary_report.docx") {
 
-  if(!is.na(school_name) && !is.na(local_authority_name)) {
+  if (!is.na(school_name) && !is.na(local_authority_name)) {
     stop("Is this a school or Local Authority report?\n",
-         "Please provide only `school_name` or `local_authority_name`")
-  } else if(is.na(school_name) && is.na(local_authority_name)) {
+      "Please provide only `school_name` or `local_authority_name`")
+  } else if (is.na(school_name) && is.na(local_authority_name)) {
     stop("Please provide a `school_name` or a `local_authority_name`")
   }
 
@@ -53,7 +53,7 @@ render_report <- function(survey_data,
       term = term,
       number_invited = number_invited,
       gender_split = gender_split
-      )
+    )
   )
 
 }

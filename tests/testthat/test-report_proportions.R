@@ -2,25 +2,25 @@ input_data <- function() {
   tibble::tribble(
     ~gender, ~class,     ~health,
     "Girls",   "S6",      "Good",
-     "Boys",   "S6",      "Fair",
+    "Boys",   "S6",      "Fair",
     "Girls",   "S6",      "Good",
     "Girls",   "S6", "Excellent",
     "Girls",   "S6",      "Poor",
-     "Boys",   "S6",      "Poor",
-     "Boys",   "S6",      "Good",
+    "Boys",   "S6",      "Poor",
+    "Boys",   "S6",      "Good",
     "Girls",   "S6",      "Fair",
     "Girls",   "S1",      "Good",
-     "Boys",   "S1",      "Good",
+    "Boys",   "S1",      "Good",
     "Girls",   "S1",      "Fair",
     "Girls",   "S1",      "Poor",
-     "Boys",   "S1",      "Poor",
+    "Boys",   "S1",      "Poor",
     "Girls",   "S1",      "Poor",
     "Girls",   "S1",      "Poor",
-     "Boys",   "S1", "Excellent",
+    "Boys",   "S1", "Excellent",
     "Girls",   "S1",      "Poor",
     "Girls",   "S1", "Excellent",
-     "Boys",   "S1",      "Fair",
-     "Boys",   "S1",      "Good"
+    "Boys",   "S1",      "Fair",
+    "Boys",   "S1",      "Good"
   )
 }
 
@@ -84,12 +84,12 @@ describe("full summary", {
       "All",  "All",    "Poor",       7,          20,
     ) |>
       mutate(class = forcats::fct_inorder(class),
-             answer = factor(answer, levels = c("Poor", "Fair", "Good", "Excellent")))
+        answer = factor(answer, levels = c("Poor", "Fair", "Good", "Excellent")))
     result <-
       create_full_summary(input_data(),
-                          health,
-                          levels = c("Poor", "Fair", "Good", "Excellent"),
-                          genders, classes)
+        health,
+        levels = c("Poor", "Fair", "Good", "Excellent"),
+        genders, classes)
     expect_equal(result, expected)
   })
 
@@ -118,13 +118,13 @@ describe("full summary", {
       "All",  "All",    "Poor",       7,          20,
     ) |>
       mutate(class = forcats::fct_inorder(class),
-             answer = factor(answer, levels = c("Poor", "Fair", "Good", "Excellent")))
+        answer = factor(answer, levels = c("Poor", "Fair", "Good", "Excellent")))
     result <-
       create_full_summary(input_data(),
-                          health,
-                          levels = c("Poor", "Fair", "Good", "Excellent"),
-                          genders, classes,
-                          .gender_split = TRUE)
+        health,
+        levels = c("Poor", "Fair", "Good", "Excellent"),
+        genders, classes,
+        .gender_split = TRUE)
     expect_equal(result, expected)
   })
 })

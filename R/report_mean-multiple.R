@@ -21,7 +21,7 @@ summary_mean_multiple_vars <-
            classes = "All",
            .censor = TRUE,
            .gender_split = TRUE
-           ) {
+  ) {
 
 
     subgroups <- NULL
@@ -53,23 +53,23 @@ summary_mean_multiple_vars <-
       compact() |>
       map(\(class_data) {
 
-     class_data |>
-      tidyr::pivot_longer(-c(gender, class, denom),
-                          names_to = "var",
-                          values_to = "mean") |>
-      rowwise() |>
-      mutate(
-        censored = if_else(.data$denom < 3 & .censor, 1, 0),
-        mean = if_else(.data$censored == 1, 1, .data$mean),
-        labels = stringr::str_wrap(varslist[[.data$var]][1], 12),
-        bar_lab_main = if_else(.data$censored == 1, "*", sprintf("%.1f", .data$mean)),
-        bar_lab_cens = if_else(.data$censored == 1, "Numbers too low to show", "")
-      ) |>
-      filter(!is.na(gender)) |>
-      ungroup() |>
-      mutate(labels = forcats::fct_reorder(.data$labels, mean))
+        class_data |>
+          tidyr::pivot_longer(-c(gender, class, denom),
+            names_to = "var",
+            values_to = "mean") |>
+          rowwise() |>
+          mutate(
+            censored = if_else(.data$denom < 3 & .censor, 1, 0),
+            mean = if_else(.data$censored == 1, 1, .data$mean),
+            labels = stringr::str_wrap(varslist[[.data$var]][1], 12),
+            bar_lab_main = if_else(.data$censored == 1, "*", sprintf("%.1f", .data$mean)),
+            bar_lab_cens = if_else(.data$censored == 1, "Numbers too low to show", "")
+          ) |>
+          filter(!is.na(gender)) |>
+          ungroup() |>
+          mutate(labels = forcats::fct_reorder(.data$labels, mean))
 
-     })
+      })
 
   }
 
@@ -100,12 +100,12 @@ bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
     )
   ) +
     geom_bar_t(aes(alpha = factor(.data$censored)),
-               stat = "identity",
-               width = 0.7,
-               position = position_dodge(width = 0.7)) +
+      stat = "identity",
+      width = 0.7,
+      position = position_dodge(width = 0.7)) +
     scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
     scale_linetype_manual(values = c("1" = "dashed", "0" = "blank"),
-                          guide = guide_none()) +
+      guide = guide_none()) +
     scale_y_discrete("") +
     scale_fill_hbsc(
       aesthetics = c("fill", "colour"),
@@ -145,26 +145,26 @@ bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
 
   summary_data |>
     mutate(labels = forcats::fct_inorder(labels)) |>
-  ggplot(
-    aes(
-      .data$labels,
-      .data$mean,
-      linetype = factor(.data$censored),
-      fill = .data$gender,
-      colour = .data$gender,
-      group = .data$gender
-    )
-  ) +
+    ggplot(
+      aes(
+        .data$labels,
+        .data$mean,
+        linetype = factor(.data$censored),
+        fill = .data$gender,
+        colour = .data$gender,
+        group = .data$gender
+      )
+    ) +
     geom_bar_t(aes(alpha = factor(.data$censored)),
-               stat = "identity",
-               position = position_dodge(width = 0.7)) +
+      stat = "identity",
+      position = position_dodge(width = 0.7)) +
     scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
     scale_linetype_manual(values = c("1" = "dashed", "0" = "blank"),
-                          guide = guide_none()) +
+      guide = guide_none()) +
     scale_x_discrete("", guide = guide_axis(n.dodge =
-                                              if_else(length(varslist) > 6,
-                                                      ceiling(length(varslist) / 4),
-                                                      1)
+      if_else(length(varslist) > 6,
+        ceiling(length(varslist) / 4),
+        1)
     )) +
     scale_fill_hbsc(
       aesthetics = c("fill", "colour"),

@@ -18,10 +18,10 @@ test_that("mean single summary works", {
 
   expected_twogroup <- tibble::tribble(
     ~gender, ~mean_score, ~class, ~bar_lab_main,
-    "All", 2.5 , "All", "2.5",
+    "All", 2.5, "All", "2.5",
     "Boys", 1.0, "S1, S2 and S3", "1.0",
-    "Boys", 2.0 , "S4, S5 and S6", "2.0",
-    "Girls", 3.0, "S1, S2 and S3", "3.0" ,
+    "Boys", 2.0, "S4, S5 and S6", "2.0",
+    "Girls", 3.0, "S1, S2 and S3", "3.0",
     "Girls", 4.0, "S4, S5 and S6", "4.0",
   ) |>
     mutate(class = factor(class, levels = c("S1, S2 and S3", "S4, S5 and S6", "All")))
@@ -40,7 +40,7 @@ test_that("mean single summary works", {
   expected_sixgroup <- bind_rows(
     tibble::tribble(
       ~gender, ~mean_score, ~class, ~bar_lab_main,
-      "All", 2.5 , "All", "2.5"),
+      "All", 2.5, "All", "2.5"),
     input_data |> transmute(
       gender = gender,
       mean_score = score,

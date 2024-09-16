@@ -8,21 +8,21 @@
 #'
 #' @noRd
 #' @keywords internal
-server <- function(input, output, session){
-	send_message <- make_send_message(session)
+server <- function(input, output, session) {
+  send_message <- make_send_message(session)
 
-	#data cleaning
-	## get uploaded raw data
-	raw_data <- rawUpload_server('rawUpload') #this should return a reactive dataframe
-	## apply cleaninng rules
-	cleaned_data <- dataCleaning_server('dataCleaning', data = raw_data) #this should return a reactive dataframe
-	## create and download excel sheet
-	cleaningOutput_server('cleaningOutput', data = cleaned_data)
+  # data cleaning
+  ## get uploaded raw data
+  raw_data <- rawUpload_server('rawUpload') # this should return a reactive dataframe
+  ## apply cleaninng rules
+  cleaned_data <- dataCleaning_server('dataCleaning', data = raw_data) # this should return a reactive dataframe
+  ## create and download excel sheet
+  cleaningOutput_server('cleaningOutput', data = cleaned_data)
 
 
-	#report gen
-	## get uploaded cleaned data
-	report_data <- cleanUpload_server('cleanUpload') #this should return a reactive dataframe
-	## create and download report
-	createReport_server('createReport', data = report_data)
+  # report gen
+  ## get uploaded cleaned data
+  report_data <- cleanUpload_server('cleanUpload') # this should return a reactive dataframe
+  ## create and download report
+  createReport_server('createReport', data = report_data)
 }

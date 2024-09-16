@@ -18,7 +18,7 @@ summary_proportions_multiple <-
            classes = "All",
            .censor = TRUE,
            .gender_split = TRUE
-           ) {
+  ) {
 
     subgroups <- NULL
 
@@ -32,7 +32,7 @@ summary_proportions_multiple <-
             group_by(gender, class) |>
             mutate(across(everything(), success)) |>
             summarise(across(everything(), sum), denom = n(),
-                      .groups = "drop") |>
+              .groups = "drop") |>
             arrange(gender)
 
         })
@@ -44,7 +44,7 @@ summary_proportions_multiple <-
       group_by(gender, class) |>
       mutate(across(everything(), success)) |>
       summarise(across(everything(), sum), denom = n(),
-                .groups = "drop")
+        .groups = "drop")
 
 
     c(subgroups, list(all)) |>
@@ -53,12 +53,12 @@ summary_proportions_multiple <-
 
         class_data |>
           tidyr::pivot_longer(-c(gender, class, denom),
-                              names_to = "var",
-                              values_to = "n") |>
+            names_to = "var",
+            values_to = "n") |>
           rowwise() |>
           mutate(
             censored = if_else(.data$n < 3 &
-                                 .censor, 1, 0) |> factor(levels = c("1", "0")),
+              .censor, 1, 0) |> factor(levels = c("1", "0")),
             labels = stringr::str_wrap(varslist[[.data$var]][1], 12),
             prop = .data$n / .data$denom,
             prop = if_else(.data$censored == 1, 0.05, .data$prop),
@@ -99,11 +99,11 @@ bar_proportions_multiple <- function(summary_data) {
       )
     ) +
     geom_bar_t(aes(alpha = factor(.data$censored)),
-               stat = "identity",
-               position = position_dodge(width = 0.7)) +
+      stat = "identity",
+      position = position_dodge(width = 0.7)) +
     scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
     scale_linetype_manual(values = c("1" = "dashed", "0" = "blank"),
-                          guide = guide_none()) +
+      guide = guide_none()) +
     scale_fill_hbsc(
       aesthetics = c("fill", "colour"),
       name = "",

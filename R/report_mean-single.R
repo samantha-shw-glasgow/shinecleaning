@@ -19,7 +19,7 @@ summary_mean_single_var <-
            classes = "All",
            .censor = TRUE,
            .gender_split = TRUE
-           ) {
+  ) {
     subgroups <- tibble()
 
     if (.gender_split) {
@@ -28,7 +28,7 @@ summary_mean_single_var <-
           data |>
             filter(gender %in% genders, class %in% concat_class) |>
             summarise(
-              mean_score = mean({{var}}, na.rm = TRUE),
+              mean_score = mean({{ var }}, na.rm = TRUE),
               class = str_flatten(concat_class, collapse = ", ", last = " and "),
               .by = c(gender)
             )
@@ -40,12 +40,12 @@ summary_mean_single_var <-
 
     all <- data |>
       mutate(class = "All", gender = if_else(.gender_split, "All", "All pupils")) |>
-      summarise(mean_score = mean({{var}}, na.rm = TRUE),
-                .by = c(class, gender))
+      summarise(mean_score = mean({{ var }}, na.rm = TRUE),
+        .by = c(class, gender))
 
     bind_rows(subgroups, all) |>
       mutate(bar_lab_main = sprintf("%.1f", mean_score),
-             class = fct_inorder(class)) |>
+        class = fct_inorder(class)) |>
       arrange(gender, class)
 
   }
@@ -63,13 +63,13 @@ bar_mean_single <- function(summary_data, ymax, ylab = "Mean") {
     ggplot() +
     aes(x = class, y = mean_score, fill = gender) +
     geom_bar_t(stat = "identity",
-               position = position_dodge(width = 0.7),
-               linetype = "blank") +
+      position = position_dodge(width = 0.7),
+      linetype = "blank") +
     scale_x_discrete("") +
     scale_fill_hbsc(name = "") +
     theme(legend.justification.right = "top",
-          legend.title = element_blank(),
-          plot.margin = unit(c(0.8, 1, 0.5, 0), "cm")) +
+      legend.title = element_blank(),
+      plot.margin = unit(c(0.8, 1, 0.5, 0), "cm")) +
     scale_y_continuous(ylab, expand = expansion(add = 0)) +
     geom_text(
       aes(label = .data$bar_lab_main),

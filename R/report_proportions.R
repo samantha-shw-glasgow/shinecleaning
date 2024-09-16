@@ -17,7 +17,7 @@ create_collapsed_summary <- function(
     classes,
     .censor = FALSE,
     .gender_split = FALSE
-) {
+    ) {
   if (.gender_split) {
     grouping_vars <- c("class", "gender")
   } else {
@@ -25,7 +25,7 @@ create_collapsed_summary <- function(
   }
   subgroups <- data |>
     group_by(across(all_of(grouping_vars))) |>
-    mutate(success = {{var}} %in% success) |>
+    mutate(success = {{ var }} %in% success) |>
     summarise(
       numerator = sum(success, na.rm = TRUE),
       denom = n(),
@@ -78,7 +78,7 @@ create_full_summary <- function(
     classes,
     .censor = FALSE,
     .gender_split = FALSE
-) {
+    ) {
   var <- enquo(var)
   if (.gender_split) {
     grouping_vars <- c("class", "gender")
@@ -110,7 +110,7 @@ create_full_summary <- function(
     joined_dat <- all
   }
 
-   joined_dat |>
+  joined_dat |>
     transmute(
       class = forcats::fct_inorder(class),
       gender = replace_na(gender, "All"),
@@ -219,16 +219,14 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
 table_from_summary <- function(summary_data) {
 
   summary_data |>
-    mutate(prop = sprintf("%.0f", 100*numerator/denom)) |>
+    mutate(prop = sprintf("%.0f", 100 * numerator / denom)) |>
     pivot_wider(id_cols = answer, names_from = c(class, gender), values_from = prop) |>
     rename(All = All_All, ` ` = answer) |>
-    rename_with(~str_replace(.x, "(\\d)", "\\1\n%")) |>
+    rename_with(~ str_replace(.x, "(\\d)", "\\1\n%")) |>
     flextable() |>
-    separate_header()|>
+    separate_header() |>
     theme_vanilla() |>
     set_table_properties(layout = "autofit", width = 1) |>
     set_caption(align_with_table = FALSE) |>
     align(j = -1, align = "center", part = "all")
 }
-
-

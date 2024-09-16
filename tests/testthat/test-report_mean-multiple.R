@@ -18,8 +18,8 @@ test_that("mean by multiple vars", {
   result <- summary_mean_multiple_vars(
     input_data,
     list(
-      "var1" = "Variable 1" ,
-      "var2" = "Variable 2" ,
+      "var1" = "Variable 1",
+      "var2" = "Variable 2",
       "var3" = "Variable 3"
     ),
     .gender_split = FALSE,

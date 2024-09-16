@@ -39,13 +39,13 @@ execute:
 ```{r, echo = FALSE, warning = FALSE, message=FALSE}
 #| echo: false
 knitr::opts_chunk$set(echo = FALSE,
-                      warning = FALSE,
-                      message = FALSE,
-                      fig.height = 4.4,
-                      dpi=330,
-                      dev='svg',
-                      fig.width = 6.3,
-                      fig.topcaption=TRUE)
+  warning = FALSE,
+  message = FALSE,
+  fig.height = 4.4,
+  dpi = 330,
+  dev = 'svg',
+  fig.width = 6.3,
+  fig.topcaption = TRUE)
 school_name <- params$school_name
 is_la_report <- params$is_la_report
 term <- params$term
@@ -100,7 +100,6 @@ tab_responses(input_data, params$number_invited)
 ```{r tab-by-class, tab.id="tab-by-class", tab.cap="Overview of survey respondents", eval=params$gender_split, results='asis'}
 
 tab_categories(input_data, inc_gender = genders, inc_classes = classes)
-
 ```
 
 \newpage
@@ -128,7 +127,6 @@ input_data |>
     .gender_split = params$gender_split
   ) |>
   bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("Good", "Excellent"), "health"))
-
 ```
 
 ```{r tab-health, tab.id="tab-health", tab.cap.pre="Table", tab.cap="Pupil self-rated health", eval=params$gender_split}
@@ -142,7 +140,6 @@ input_data |>
     .gender_split = params$gender_split
   ) |>
   table_from_summary()
-
 ```
 
 
@@ -183,51 +180,45 @@ graphs <-
     genders = genders,
     classes = classes,
     .gender_split = params$gender_split
-  ) |> 
-  map(bar_mean_multiple_vars, xmax = 10) |> 
+  ) |>
+  map(bar_mean_multiple_vars, xmax = 10) |>
   print_first_graph()
-
-
 ```
 
 ```{r bar-lifesat-extra, eval=length(graphs)!=0}
 
 print_rest_of_graphs(graphs)
-
 ```
 
 ```{r bar-low-lifesat, fig.cap="% of pupils who report low happiness in different aspects of life"}
 
-graphs <-input_data |>
-      summary_proportions_multiple(
-        varslist = list(
-          lifesat1 = "Overall",
-          lifesat2 = "Family",
-          lifesat3 = "Home",
-          lifesat4 = "Choice",
-          lifesat5 = "Friends",
-          lifesat6 = "Things you have",
-          lifesat7 = "Health",
-          lifesat8 = "Appearance",
-          lifesat9 = "Future",
-          lifesat10 = "School",
-          lifesat11 = "Time use"
-        ),
-        success = ~ .x < 5,
-        genders = genders,
-        classes = classes,
-        .gender_split = params$gender_split
-      ) |> 
-  map(bar_proportions_multiple) |> 
+graphs <- input_data |>
+  summary_proportions_multiple(
+    varslist = list(
+      lifesat1 = "Overall",
+      lifesat2 = "Family",
+      lifesat3 = "Home",
+      lifesat4 = "Choice",
+      lifesat5 = "Friends",
+      lifesat6 = "Things you have",
+      lifesat7 = "Health",
+      lifesat8 = "Appearance",
+      lifesat9 = "Future",
+      lifesat10 = "School",
+      lifesat11 = "Time use"
+    ),
+    success = ~ .x < 5,
+    genders = genders,
+    classes = classes,
+    .gender_split = params$gender_split
+  ) |>
+  map(bar_proportions_multiple) |>
   print_first_graph()
-
-
 ```
 
 ```{r bar-lifesat-low-extra, eval=length(graphs)!=0}
 
 print_rest_of_graphs(graphs)
-
 ```
 
 \newpage
@@ -251,8 +242,7 @@ input_data |>
     classes,
     .gender_split = params$gender_split
   ) |>
-  bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("low"), "who")) 
-
+  bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("low"), "who"))
 ```
 
 \newpage
@@ -269,18 +259,18 @@ in this area. For more information on this scale, see page 6.
 ```{r bar-mm-emotional, fig.cap="Pupils' emotional scores"}
 input_data |>
   share_elevated(mme_cat,
-                 .split = params$gender_split,
-                 classes = classes,
-                 genders = genders) |>
+    .split = params$gender_split,
+    classes = classes,
+    genders = genders) |>
   bar_share_elevated()
 ```
 
 ```{r bar-mm-behavioural, fig.cap="Pupils' behavioural scores"}
 input_data |>
   share_elevated(mmb_cat,
-                 .split = params$gender_split,
-                 classes = classes,
-                 genders = genders) |>
+    .split = params$gender_split,
+    classes = classes,
+    genders = genders) |>
   bar_share_elevated()
 ```
 
@@ -309,7 +299,6 @@ input_data |>
     .gender_split = params$gender_split
   ) |>
   bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("I like it a lot", "I like it a bit"), "sch1"))
-
 ```
 
 ```{r tab-sch1, tab.id="tab-sch1", tab.cap.pre="Table", tab.cap="How much pupils liked school", eval=params$gender_split}
@@ -328,8 +317,6 @@ input_data |>
     .gender_split = params$gender_split
   ) |>
   table_from_summary()
-
-
 ```
 
 
@@ -355,7 +342,6 @@ input_data |>
     .gender_split = params$gender_split
   ) |>
   bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("A lot", "Some"), "sch2"))
-
 ```
 
 ```{r tab-sch2, tab.id="tab-sch2", tab.cap.pre="Table", tab.cap="How pressured pupils feel by schoolwork", eval=params$gender_split}
@@ -369,7 +355,6 @@ input_data |>
     .gender_split = params$gender_split
   ) |>
   table_from_summary()
-
 ```
 
 
@@ -394,7 +379,6 @@ input_data |>
     .gender_split = params$gender_split
   ) |>
   bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("Always", "Often"), "sch3"))
-
 ```
 
 ```{r tab-sch3, tab.id="tab-sch3", tab.cap.pre="Table", tab.cap="How often pupils feel confident", eval=params$gender_split}
@@ -408,7 +392,6 @@ input_data |>
     .gender_split = params$gender_split
   ) |>
   table_from_summary()
-
 ```
 
 \newpage
@@ -449,26 +432,23 @@ graphs <- input_data |>
   ) |>
   map(bar_mean_multiple_vertical, ymax = 16) |>
   print_first_graph()
-
 ```
 
 ```{r bar-sehs-extra, eval=length(graphs)!=0}
 
 print_rest_of_graphs(graphs)
-
 ```
 
 ```{r bar-coviality, fig.cap="Average covitality score"}
 
-input_data |> 
+input_data |>
   summary_mean_single_var(
     cov_score,
     genders = genders,
     classes = classes,
     .gender_split = params$gender_split
-  ) |> 
+  ) |>
   bar_mean_single(ymax = 60)
-
 ```
 
 
