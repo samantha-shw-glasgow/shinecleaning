@@ -3,6 +3,7 @@
 ^\.leprechaun$
 \.gitkeep
 \.github
+\.lintr
 ^[^/]*\.docx$
 temp_.*\.R
 ^LICENSE\.md$
