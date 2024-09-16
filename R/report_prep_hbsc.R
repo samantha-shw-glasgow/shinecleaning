@@ -5,7 +5,6 @@
 #'
 #' @return long-format dataframe
 prep_hbsc <- function(dat = hbsc_scotland, create_cols = FALSE) {
-
   if (create_cols) {
     dat <- dat |>
       mutate(
@@ -39,15 +38,18 @@ prep_hbsc <- function(dat = hbsc_scotland, create_cols = FALSE) {
         "sch3_3" ~ "sch3_Sometimes",
         "sch3_4" ~ "sch3_Often",
         "sch3_5" ~ "sch3_Always",
-        .default = fields),
+        .default = fields
+      ),
       q = str_split_i(fields2, "_", 1),
       level = str_split_i(fields2, "_", 2),
     ) |>
     select(-fields2) |>
-    pivot_longer(cols = -c(fields, q, level),
+    pivot_longer(
+      cols = -c(fields, q, level),
       values_to = "prop",
       names_to = c("class", "gender"),
-      names_sep = "_") |>
+      names_sep = "_"
+    ) |>
     mutate(
       class = str_to_upper(class),
       gender = case_match(
@@ -75,7 +77,6 @@ prep_hbsc <- function(dat = hbsc_scotland, create_cols = FALSE) {
 #'
 #' @return A tibble of proportion by gender
 get_hbsc_prop <- function(classes, success, var = NULL) {
-
   if (is.null(var)) {
     var <- unique(SHINEcleaning::hbsc_scotland_modified$q[SHINEcleaning::hbsc_scotland_modified$level %in% success])
     if (length(var) > 1) {
@@ -85,25 +86,31 @@ get_hbsc_prop <- function(classes, success, var = NULL) {
 
   if (length(success) > 1) {
     data <- SHINEcleaning::hbsc_scotland_modified |>
-      filter(level %in% success,
+      filter(
+        level %in% success,
         q %in% var,
-        class %in% classes) |>
+        class %in% classes
+      ) |>
       group_by(class, gender) |>
       mutate(prop = sum(prop))
   } else {
     data <- SHINEcleaning::hbsc_scotland_modified |>
-      filter(level == success,
+      filter(
+        level == success,
         q %in% var,
-        class %in% classes)
+        class %in% classes
+      )
   }
 
   out <- data |>
-    mutate(prop = prop / 100,
-      gender = case_match(gender,
+    mutate(
+      prop = prop / 100,
+      gender = case_match(
+        gender,
         "Boy" ~ "Boys (Scotland)",
-        "Girl" ~ "Girls (Scotland)"),
+        "Girl" ~ "Girls (Scotland)"
+      ),
     )
 
   return(out)
-
 }

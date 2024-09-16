@@ -11,7 +11,8 @@ createReportUI <- function(id) {
     selectInput(ns("report_type"),
       strong("Report type"),
       choices = c("Primary", "Secondary", "Primary cluster / Local Authority", "Secondary cluster / Local Authority", "School-level data", "Additional tables"),
-      selected = "Primary"),
+      selected = "Primary"
+    ),
     uiOutput(ns("report_warnings")),
     uiOutput(ns("report_ui")),
     br(),
@@ -29,12 +30,9 @@ createReportUI <- function(id) {
 createReport_server <- function(id, data) {
   moduleServer(
     id,
-    function(
-             input,
+    function(input,
              output,
-             session
-    ) {
-
+             session) {
       ns <- session$ns
       send_message <- make_send_message(session)
 
@@ -68,7 +66,7 @@ createReport_server <- function(id, data) {
         # non-report outputs
         if (input$report_type %in% c("School-level data", "Additional tables")) {
           h4("coming soon...", class = "text-center")
-        } else
+        } else {
           # report generators
           tagList(
             # For school reports only
@@ -77,17 +75,22 @@ createReport_server <- function(id, data) {
                 if (length(school_ids()) > 1) {
                   selectInput(ns("school_id"), "School ID", choices = school_ids())
                 },
-                textInput(ns("name"), "School name"))
+                textInput(ns("name"), "School name")
+              )
             },
             # For LA reports only
-            if (input$report_type %in% c("Primary cluster / Local Authority",
-              "Secondary cluster / Local Authority")) {
+            if (input$report_type %in% c(
+              "Primary cluster / Local Authority",
+              "Secondary cluster / Local Authority"
+            )) {
               tagList(
                 selectizeInput(ns("school_id"), "School IDs",
                   multiple = T,
                   selected = "All",
-                  choices = c("All", school_ids())),
-                textInput(ns("name"), "Local Authority / cluster name"))
+                  choices = c("All", school_ids())
+                ),
+                textInput(ns("name"), "Local Authority / cluster name")
+              )
             },
             # For all reports
             textInput(ns("school_term"), "Term of survey"),
@@ -100,13 +103,15 @@ createReport_server <- function(id, data) {
                 shinyjs::disabled(
                   bslib::input_switch(ns("split"),
                     "Split by gender and class",
-                    value = F)),
+                    value = F
+                  )
+                ),
                 make_upload_warning("Not enough pupils to split by class / gender", "1")
               )
             }
           )
-      }
-      )
+        }
+      })
 
 
       output$report_ui <- renderUI({
@@ -122,7 +127,8 @@ createReport_server <- function(id, data) {
       sehs <- paste0("sehs", 1:20)
       activity <- paste0("activity_", 4:14)
 
-      primary_vars <- c("gender",
+      primary_vars <- c(
+        "gender",
         "health",
         lifesat,
         sch,
@@ -153,8 +159,10 @@ createReport_server <- function(id, data) {
             } else {
               data()
             }
-          } else if (input$report_type %in% c("Primary cluster / Local Authority",
-            "Secondary cluster / Local Authority")) {
+          } else if (input$report_type %in% c(
+            "Primary cluster / Local Authority",
+            "Secondary cluster / Local Authority"
+          )) {
             if (isTruthy(input$school_id) && !"All" %in% input$school_id) {
               data() %>% filter(`School ID code` %in% input$school_id)
             } else {
@@ -164,7 +172,6 @@ createReport_server <- function(id, data) {
             data()
           }
         }
-
       })
 
       # output$test <- renderPrint({
@@ -196,7 +203,6 @@ createReport_server <- function(id, data) {
           paste0(input$name, "_report.docx")
         },
         content = function(file) {
-
           showModal(modalDialog("Generating report...", footer = NULL))
           on.exit(removeModal(), add = TRUE)
 
@@ -209,7 +215,8 @@ createReport_server <- function(id, data) {
                   number_invited = input$n_invited,
                   gender_split = input$split,
                   term = input$school_term,
-                  output_location = NULL)
+                  output_location = NULL
+                )
               }
               if (input$report_type == "Primary cluster / Local Authority") {
                 render_report(data_filt(),
@@ -218,14 +225,17 @@ createReport_server <- function(id, data) {
                   number_invited = input$n_invited,
                   gender_split = input$split,
                   term = input$school_term,
-                  output_location = NULL)
+                  output_location = NULL
+                )
               }
             },
             error = function(e) {
               showNotification(
                 "Failed to generate report, please check the data.",
-                type = "error")
-            })
+                type = "error"
+              )
+            }
+          )
         }
       )
     }

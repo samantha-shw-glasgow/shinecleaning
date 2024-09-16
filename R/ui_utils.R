@@ -1,7 +1,9 @@
-SHINE_colors <- list(primary = "#2d2e91",
+SHINE_colors <- list(
+  primary = "#2d2e91",
   secondary = "#23aae1",
   tertiary = "#4d648d",
-  quaternary = "#37474f")
+  quaternary = "#37474f"
+)
 
 SHINE_theme <- bslib::bs_theme(
   version = 5,
@@ -34,8 +36,11 @@ layout_central_column <- function(...) {
     col_widths = bslib::breakpoints(
       lg = c(-2, 8, -2),
       xl = c(-3, 6, -3),
-      xxl = c(-4, 4, -4)),
+      xxl = c(-4, 4, -4)
+    ),
     bslib::layout_columns(
       col_widths = 12,
-      ...))
+      ...
+    )
+  )
 }

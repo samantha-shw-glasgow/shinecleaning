@@ -99,8 +99,6 @@ partial_cases <- function(data) {
 
 #' @rdname validators
 duplicate_cases <- function(data) {
-
-
   if (!("sex" %in% colnames(data))) data$sex <- NA_character_
 
   messages <- data |>

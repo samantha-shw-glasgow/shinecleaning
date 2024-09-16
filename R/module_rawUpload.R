@@ -9,15 +9,18 @@ rawUploadUI <- function(id) {
   tagList(
     h2("Upload data from Qualtrics"),
     fileInput(ns("upload"),
-      label = span("Select survey data",
+      label = span(
+        "Select survey data",
         bslib::tooltip(
           icon("info-circle"),
           "Download data for the required school(s) from Qualtrics in 'csv' format, then upload it here.",
-          placement = "right")
+          placement = "right"
+        )
       ),
       buttonLabel = "Upload...",
       width = "100%",
-      accept = ".csv"),
+      accept = ".csv"
+    ),
     uiOutput(ns("warn"))
   )
 }
@@ -30,12 +33,9 @@ rawUploadUI <- function(id) {
 rawUpload_server <- function(id) {
   moduleServer(
     id,
-    function(
-             input,
+    function(input,
              output,
-             session
-    ) {
-
+             session) {
       ns <- session$ns
       send_message <- make_send_message(session)
 
@@ -44,7 +44,8 @@ rawUpload_server <- function(id) {
         req(input$upload)
         readr::read_csv(input$upload$datapath,
           col_types = readr::cols(.default = "c"),
-          show_col_types = F)[-1:-2, ]
+          show_col_types = F
+        )[-1:-2, ]
       })
 
       # remove unwanted top rows, re-assign col types
@@ -52,11 +53,13 @@ rawUpload_server <- function(id) {
         df <- raw_data()
         drop <- NULL
         if (any(df[1, ] == colnames(df),
-          na.rm = TRUE)) {
+          na.rm = TRUE
+        )) {
           drop <- c(drop, 1)
         }
         if (any(stringr::str_detect(df[2, ], "ImportId"),
-          na.rm = TRUE)) {
+          na.rm = TRUE
+        )) {
           drop <- c(drop, 2)
         }
         if (length(drop) > 0) {
@@ -69,12 +72,12 @@ rawUpload_server <- function(id) {
 
       # run checks
       output$warn <- renderUI({
-
         req(data(), cancelOutput = TRUE)
 
         checks <- upload_checks_raw(
           data(),
-          vars = c("class",
+          vars = c(
+            "class",
             "gender",
             "dobmnth", "dobday", "dobyr",
             "School ID code",
@@ -84,12 +87,12 @@ rawUpload_server <- function(id) {
             paste0("who", 1:5),
             paste0("lifesat", 1:5),
             paste0("fas", 1:5)
-        ))
+          )
+        )
 
         warnings <- purrr::pmap(checks, make_upload_warning)
 
         do.call(tagList, warnings)
-
       })
 
 

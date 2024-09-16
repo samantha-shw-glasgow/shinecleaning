@@ -1,19 +1,18 @@
 test_that("mean single summary works", {
-
   input_data <- tibble::tribble(
     ~class, ~gender, ~score,
-    "S1",  "Boys",               1,
-    "S2",  "Boys",               1,
-    "S3",  "Boys",               1,
-    "S4",  "Boys",               2,
-    "S5",  "Boys",               2,
-    "S6",  "Boys",               2,
-    "S1", "Girls",               3,
-    "S2", "Girls",               3,
-    "S3", "Girls",               3,
-    "S4", "Girls",               4,
-    "S5", "Girls",               4,
-    "S6", "Girls",               4
+    "S1", "Boys", 1,
+    "S2", "Boys", 1,
+    "S3", "Boys", 1,
+    "S4", "Boys", 2,
+    "S5", "Boys", 2,
+    "S6", "Boys", 2,
+    "S1", "Girls", 3,
+    "S2", "Girls", 3,
+    "S3", "Girls", 3,
+    "S4", "Girls", 4,
+    "S5", "Girls", 4,
+    "S6", "Girls", 4
   )
 
   expected_twogroup <- tibble::tribble(
@@ -40,7 +39,8 @@ test_that("mean single summary works", {
   expected_sixgroup <- bind_rows(
     tibble::tribble(
       ~gender, ~mean_score, ~class, ~bar_lab_main,
-      "All", 2.5, "All", "2.5"),
+      "All", 2.5, "All", "2.5"
+    ),
     input_data |> transmute(
       gender = gender,
       mean_score = score,
@@ -58,5 +58,4 @@ test_that("mean single summary works", {
     )
 
   expect_equal(result_sixgroup, expected_sixgroup)
-
 })

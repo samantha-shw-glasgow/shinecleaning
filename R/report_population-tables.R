@@ -8,17 +8,20 @@ date_range <- function(input_data) {
   start <- min(lubridate::ymd_hms(input_data$`StartDate`))
   end <- max(lubridate::ymd_hms(input_data$`StartDate`))
 
-  start_date <- paste(lubridate::month(start, abbr = FALSE, label = TRUE),
-    lubridate::year(start))
-  end_date <- paste(lubridate::month(end, abbr = FALSE, label = TRUE),
-    lubridate::year(end))
+  start_date <- paste(
+    lubridate::month(start, abbr = FALSE, label = TRUE),
+    lubridate::year(start)
+  )
+  end_date <- paste(
+    lubridate::month(end, abbr = FALSE, label = TRUE),
+    lubridate::year(end)
+  )
 
   if (start_date == end_date) {
     paste("in", start_date)
   } else {
     paste("from", start_date, "to", end_date)
   }
-
 }
 
 
@@ -32,7 +35,6 @@ date_range <- function(input_data) {
 #' @import flextable
 #'
 tab_responses <- function(input_data, n_invited) {
-
   n_responses <- nrow(input_data)
   n_missing <- n_invited - n_responses
   perc_rate <- 100 * n_responses / n_invited
@@ -49,7 +51,6 @@ tab_responses <- function(input_data, n_invited) {
     # border_inner_h(officer::fp_border("gray", width = 1)) |>
     set_table_properties(layout = "autofit", width = 1) |>
     set_caption("Response rate", align_with_table = FALSE)
-
 }
 
 #' Table of class by gender counts
@@ -60,8 +61,6 @@ tab_responses <- function(input_data, n_invited) {
 #'
 #' @return A flextable giving gender by class counts
 tab_categories <- function(data, inc_gender, inc_classes) {
-
-
   another_way <- sum(data$gender == "In another way")
   pnts <- sum(data$gender == "Prefer not to say")
   no_class <- sum(is.na(data$class) | data$class == "Prefer not to say")
@@ -101,5 +100,4 @@ tab_categories <- function(data, inc_gender, inc_classes) {
     theme_vanilla() |>
     set_table_properties(layout = "autofit", width = 1) |>
     set_caption(align_with_table = FALSE)
-
 }

@@ -16,8 +16,7 @@ create_collapsed_summary <- function(
     genders,
     classes,
     .censor = FALSE,
-    .gender_split = FALSE
-    ) {
+    .gender_split = FALSE) {
   if (.gender_split) {
     grouping_vars <- c("class", "gender")
   } else {
@@ -77,8 +76,7 @@ create_full_summary <- function(
     genders,
     classes,
     .censor = FALSE,
-    .gender_split = FALSE
-    ) {
+    .gender_split = FALSE) {
   var <- enquo(var)
   if (.gender_split) {
     grouping_vars <- c("class", "gender")
@@ -129,7 +127,6 @@ create_full_summary <- function(
 #'
 #' @return A ggplot2 graph
 bar_from_summary <- function(summary_data, hbsc_data = NULL) {
-
   hbsc_data_in <- tibble(
     gender = character(),
     class = character(),
@@ -161,7 +158,7 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
     ) +
     geom_col(position = "dodge", size = 0) +
     {
-      if (!is.null(hbsc_data))
+      if (!is.null(hbsc_data)) {
         geom_point(
           aes(
             y = hbsc_prop,
@@ -171,9 +168,10 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
           position = position_dodge(0.9),
           size = 2
         )
+      }
     } +
     scale_shape_manual(
-      values = c("Boys (Scotland)" =  21, "Girls (Scotland)" = 24),
+      values = c("Boys (Scotland)" = 21, "Girls (Scotland)" = 24),
       na.translate = FALSE,
       guide = guide_legend(
         order = 2,
@@ -194,7 +192,8 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
     scale_y_continuous("%", labels = scales::percent, expand = expansion()) +
     geom_text(
       aes(label = scales::percent(
-        .data$prop, suffix = "%", accuracy = 1
+        .data$prop,
+        suffix = "%", accuracy = 1
       )),
       color = "black",
       position = position_dodge(0.9),
@@ -217,7 +216,6 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
 #' @return A printed `flextable`
 #'
 table_from_summary <- function(summary_data) {
-
   summary_data |>
     mutate(prop = sprintf("%.0f", 100 * numerator / denom)) |>
     pivot_wider(id_cols = answer, names_from = c(class, gender), values_from = prop) |>

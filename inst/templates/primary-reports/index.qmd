@@ -38,14 +38,16 @@ execute:
 
 ```{r, echo = FALSE, warning = FALSE, message=FALSE}
 #| echo: false
-knitr::opts_chunk$set(echo = FALSE,
+knitr::opts_chunk$set(
+  echo = FALSE,
   warning = FALSE,
   message = FALSE,
   fig.height = 4.4,
   dpi = 330,
   dev = "svg",
   fig.width = 6.3,
-  fig.topcaption = TRUE)
+  fig.topcaption = TRUE
+)
 school_name <- params$school_name
 is_la_report <- params$is_la_report
 term <- params$term
@@ -98,7 +100,6 @@ tab_responses(input_data, params$number_invited)
 `r if(params$gender_split){"Table \\@ref(tab:tab-by-class) shows the number of pupils by year group and sex who completed the survey."}`
 
 ```{r tab-by-class, tab.id="tab-by-class", tab.cap="Overview of survey respondents", eval=params$gender_split, results='asis'}
-
 tab_categories(input_data, inc_gender = genders, inc_classes = classes)
 ```
 
@@ -117,7 +118,6 @@ their health was \'excellent\' or \'good\'. `r if(params$gender_split){"Table \\
 <!-- compared with the HBSC Scotland national average. Table [tab] shows all the responses from pupils. -->
 
 ```{r bar-health, fig.cap="% of pupils who report excellent or good health"}
-
 input_data |>
   create_collapsed_summary(
     health,
@@ -130,7 +130,6 @@ input_data |>
 ```
 
 ```{r tab-health, tab.id="tab-health", tab.cap.pre="Table", tab.cap="Pupil self-rated health", eval=params$gender_split}
-
 input_data |>
   create_full_summary(
     health,
@@ -160,7 +159,6 @@ aspect of life. Low happiness is defined as a score of less than 5. For
 more information on this index, see page 6.
 
 ```{r bar-lifesat, fig.cap="Average scores for different aspects of life", eval=TRUE}
-
 graphs <-
   input_data |>
   summary_mean_multiple_vars(
@@ -186,12 +184,10 @@ graphs <-
 ```
 
 ```{r bar-lifesat-extra, eval=length(graphs)!=0}
-
 print_rest_of_graphs(graphs)
 ```
 
 ```{r bar-low-lifesat, fig.cap="% of pupils who report low happiness in different aspects of life"}
-
 graphs <- input_data |>
   summary_proportions_multiple(
     varslist = list(
@@ -217,7 +213,6 @@ graphs <- input_data |>
 ```
 
 ```{r bar-lifesat-low-extra, eval=length(graphs)!=0}
-
 print_rest_of_graphs(graphs)
 ```
 
@@ -235,9 +230,9 @@ low mood (Figure \@ref(fig:bar-wellbeing)).
 <!-- 6. -->
 
 ```{r bar-wellbeing, fig.cap="% of pupils with low mood"}
-
 input_data |>
-  create_collapsed_summary(who_cat, success = c("low"),
+  create_collapsed_summary(who_cat,
+    success = c("low"),
     genders,
     classes,
     .gender_split = params$gender_split
@@ -261,7 +256,8 @@ input_data |>
   share_elevated(mme_cat,
     .split = params$gender_split,
     classes = classes,
-    genders = genders) |>
+    genders = genders
+  ) |>
   bar_share_elevated()
 ```
 
@@ -270,7 +266,8 @@ input_data |>
   share_elevated(mmb_cat,
     .split = params$gender_split,
     classes = classes,
-    genders = genders) |>
+    genders = genders
+  ) |>
   bar_share_elevated()
 ```
 
@@ -289,7 +286,6 @@ percentage of pupils who like school \'a lot\' or \'a bit\'.  `r if(params$gende
 
 
 ```{r bar-sch1, fig.cap="% of pupils who like school (a lot or a bit)"}
-
 input_data |>
   create_collapsed_summary(
     sch1,
@@ -302,7 +298,6 @@ input_data |>
 ```
 
 ```{r tab-sch1, tab.id="tab-sch1", tab.cap.pre="Table", tab.cap="How much pupils liked school", eval=params$gender_split}
-
 input_data |>
   create_full_summary(
     sch1,
@@ -331,8 +326,6 @@ lot\' or \'some\' pressure. `r if(params$gender_split){"Table \\@ref(tab:tab-sch
 <!-- compared with the HBSC Scotland national average. Table shows all responses to this question. -->
 
 ```{r bar-sch2, fig.cap="% of pupils who feel a lot of or some pressure from schoolwork"}
-
-
 input_data |>
   create_collapsed_summary(
     sch2,
@@ -345,7 +338,6 @@ input_data |>
 ```
 
 ```{r tab-sch2, tab.id="tab-sch2", tab.cap.pre="Table", tab.cap="How pressured pupils feel by schoolwork", eval=params$gender_split}
-
 input_data |>
   create_full_summary(
     sch2,
@@ -369,7 +361,6 @@ Figure \@ref(fig:bar-sch3) shows the proportion of pupils in your who responded 
 
 
 ```{r bar-sch3, fig.cap="% of pupils who feel always or often confident"}
-
 input_data |>
   create_collapsed_summary(
     sch3,
@@ -382,7 +373,6 @@ input_data |>
 ```
 
 ```{r tab-sch3, tab.id="tab-sch3", tab.cap.pre="Table", tab.cap="How often pupils feel confident", eval=params$gender_split}
-
 input_data |>
   create_full_summary(
     sch3,
@@ -416,7 +406,6 @@ health. For more information on this scale, see page 6.
 
 
 ```{r  bar-sehs, fig.cap="Average score in each SEHS domain"}
-
 graphs <- input_data |>
   summary_mean_multiple_vars(
     varslist = list(
@@ -435,12 +424,10 @@ graphs <- input_data |>
 ```
 
 ```{r bar-sehs-extra, eval=length(graphs)!=0}
-
 print_rest_of_graphs(graphs)
 ```
 
 ```{r bar-coviality, fig.cap="Average covitality score"}
-
 input_data |>
   summary_mean_single_var(
     cov_score,

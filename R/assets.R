@@ -71,8 +71,9 @@ serveAssets <- function(modules = NULL) {
 #' @keywords internal
 #' @name js-modules
 remove_modules <- function(files, modules) {
-  if (is.null(modules))
+  if (is.null(modules)) {
     return(files)
+  }
 
   # make pattern
   pattern <- collapse_files(modules)
@@ -84,8 +85,9 @@ remove_modules <- function(files, modules) {
 #' @rdname js-modules
 #' @keywords internal
 get_modules <- function(files, modules) {
-  if (is.null(modules))
+  if (is.null(modules)) {
     return(NULL)
+  }
 
   # make pattern
   pattern <- collapse_files(modules)

@@ -18,8 +18,7 @@ summary_mean_single_var <-
            genders = c("Boys", "Girls"),
            classes = "All",
            .censor = TRUE,
-           .gender_split = TRUE
-  ) {
+           .gender_split = TRUE) {
     subgroups <- tibble()
 
     if (.gender_split) {
@@ -40,14 +39,17 @@ summary_mean_single_var <-
 
     all <- data |>
       mutate(class = "All", gender = if_else(.gender_split, "All", "All pupils")) |>
-      summarise(mean_score = mean({{ var }}, na.rm = TRUE),
-        .by = c(class, gender))
+      summarise(
+        mean_score = mean({{ var }}, na.rm = TRUE),
+        .by = c(class, gender)
+      )
 
     bind_rows(subgroups, all) |>
-      mutate(bar_lab_main = sprintf("%.1f", mean_score),
-        class = fct_inorder(class)) |>
+      mutate(
+        bar_lab_main = sprintf("%.1f", mean_score),
+        class = fct_inorder(class)
+      ) |>
       arrange(gender, class)
-
   }
 
 #' Bar graph of mean of a single var
@@ -58,18 +60,21 @@ summary_mean_single_var <-
 #'
 #' @returns A ggplot2 graph
 bar_mean_single <- function(summary_data, ymax, ylab = "Mean") {
-
   summary_data |>
     ggplot() +
     aes(x = class, y = mean_score, fill = gender) +
-    geom_bar_t(stat = "identity",
+    geom_bar_t(
+      stat = "identity",
       position = position_dodge(width = 0.7),
-      linetype = "blank") +
+      linetype = "blank"
+    ) +
     scale_x_discrete("") +
     scale_fill_hbsc(name = "") +
-    theme(legend.justification.right = "top",
+    theme(
+      legend.justification.right = "top",
       legend.title = element_blank(),
-      plot.margin = unit(c(0.8, 1, 0.5, 0), "cm")) +
+      plot.margin = unit(c(0.8, 1, 0.5, 0), "cm")
+    ) +
     scale_y_continuous(ylab, expand = expansion(add = 0)) +
     geom_text(
       aes(label = .data$bar_lab_main),
@@ -79,5 +84,4 @@ bar_mean_single <- function(summary_data, ymax, ylab = "Mean") {
       size = 4
     ) +
     coord_cartesian(ylim = c(0, ymax), clip = "off")
-
 }

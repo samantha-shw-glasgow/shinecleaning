@@ -35,12 +35,14 @@ make_send_message <- function(session, prefix = NULL) {
   ns <- session$ns(NULL)
 
   ns2 <- ns
-  if (length(ns) > 0 && ns != "")
+  if (length(ns) > 0 && ns != "") {
     ns2 <- paste0(ns2, "-")
+  }
 
   function(msgId, ...) {
-    if (!is.null(prefix))
+    if (!is.null(prefix)) {
       msgId <- sprintf("%s-%s", prefix, msgId)
+    }
 
     session$sendCustomMessage(
       msgId,

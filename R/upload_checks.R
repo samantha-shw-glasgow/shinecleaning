@@ -36,25 +36,37 @@ upload_checks_clean <- function(data, vars) {
 make_upload_warning <- function(message, level) {
   if (level == 1) {
     return(
-      tags$div(span(icon("circle-exclamation"),
-        message),
-      class = "card p-2 m-2 text-info")
+      tags$div(
+        span(
+          icon("circle-exclamation"),
+          message
+        ),
+        class = "card p-2 m-2 text-info"
+      )
     )
   }
 
   if (level == 2) {
     return(
-      tags$div(span(icon("circle-question"),
-        message),
-      class = "card p-2 m-2 text-warning")
+      tags$div(
+        span(
+          icon("circle-question"),
+          message
+        ),
+        class = "card p-2 m-2 text-warning"
+      )
     )
   }
 
   if (level == 3) {
     return(
-      tags$div(span(icon("triangle-exclamation"),
-        message),
-      class = "card p-2 m-2 text-danger")
+      tags$div(
+        span(
+          icon("triangle-exclamation"),
+          message
+        ),
+        class = "card p-2 m-2 text-danger"
+      )
     )
   }
 }

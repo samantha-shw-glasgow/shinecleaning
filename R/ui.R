@@ -45,7 +45,6 @@ ui <- function(req) {
       )
     )
   )
-
 }
 
 #' Assets

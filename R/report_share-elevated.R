@@ -21,14 +21,14 @@ share_elevated <-
            .censor = TRUE,
            classes = "All",
            genders = c("Boy", "Girl")) {
-
-
     clean_dat <- map(levels, ~ data |>
       summarise("{.x}" := sum({{ outcome }} %in% .x))) |>
       reduce(bind_cols) |>
-      mutate(denom = sum(c_across(everything())),
+      mutate(
+        denom = sum(c_across(everything())),
         gender = "All",
-        class = "All")
+        class = "All"
+      )
 
     if (.split) {
       split_dat <-
@@ -44,8 +44,10 @@ share_elevated <-
               )
           ) |>
             reduce(left_join, by = join_by(gender, class)) |>
-            mutate(denom = sum(c_across(where(is.numeric))),
-              .by = c("gender", "class"))
+            mutate(
+              denom = sum(c_across(where(is.numeric))),
+              .by = c("gender", "class")
+            )
         }) |>
         reduce(bind_rows) |>
         arrange(class)
@@ -57,7 +59,8 @@ share_elevated <-
       mutate(censored = if_else(denom < 3 & .censor, 1, 0)) |>
       pivot_longer(-c(denom, censored, gender, class),
         names_to = "var",
-        values_to = "n") |>
+        values_to = "n"
+      ) |>
       mutate(
         prop = if_else(censored == 1, 1, n / denom),
         var = factor(var, levels = levels) |> fct_rev()
@@ -92,27 +95,33 @@ bar_share_elevated <- function(graph_data) {
 
   lab_length <- max(str_length(graph_dat$class))
 
-  gg_out <- ggplot(data = graph_dat,
-    aes(x = x_lab, y = prop, fill = var)) +
+  gg_out <- ggplot(
+    data = graph_dat,
+    aes(x = x_lab, y = prop, fill = var)
+  ) +
     geom_bar(stat = "identity", position = "stack") +
     scale_fill_hbsc(name = "") +
     scale_y_continuous("", labels = scales::percent, limits = c(0, 1)) +
     geom_text(aes(label = bar_lab_main),
       colour = "black",
       position = position_stack(vjust = 0.5),
-      size = 4) +
+      size = 4
+    ) +
     coord_cartesian(clip = "off") +
-    theme(legend.justification.right = "top",
+    theme(
+      legend.justification.right = "top",
       plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
       plot.caption = element_text(
         hjust = 1,
         size = 10,
         face = "italic"
       ),
-      axis.title.x = element_blank()) +
+      axis.title.x = element_blank()
+    ) +
     labs(caption = if_else(any(graph_dat$censored == 1),
       "* Numbers too low to show",
-      ""))
+      ""
+    ))
 
   if (lab_length > 10) {
     gg_out +

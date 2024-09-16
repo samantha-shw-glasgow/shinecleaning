@@ -7,7 +7,7 @@ test_that("columns are added with a single validator", {
   )
   expected <- tibble::tribble(
     ~"Error messages", ~"Keep row?", ~"Reviewer notes", ~id, ~Status,
-    "",                 1, "", 1, "IP Address",
+    "", 1, "", 1, "IP Address",
     "Preview response", 0, "", 2, "Survey Preview",
   )
   result <- apply_cleaning_rules(input, validators)

@@ -17,9 +17,7 @@ summary_proportions_multiple <-
            genders = c("Boys", "Girls"),
            classes = "All",
            .censor = TRUE,
-           .gender_split = TRUE
-  ) {
-
+           .gender_split = TRUE) {
     subgroups <- NULL
 
     if (.gender_split) {
@@ -31,10 +29,11 @@ summary_proportions_multiple <-
             mutate(class = str_flatten(concat_class, collapse = ", ", last = " and ")) |>
             group_by(gender, class) |>
             mutate(across(everything(), success)) |>
-            summarise(across(everything(), sum), denom = n(),
-              .groups = "drop") |>
+            summarise(across(everything(), sum),
+              denom = n(),
+              .groups = "drop"
+            ) |>
             arrange(gender)
-
         })
     }
 
@@ -43,18 +42,20 @@ summary_proportions_multiple <-
       select(gender, class, !!!names(varslist)) |>
       group_by(gender, class) |>
       mutate(across(everything(), success)) |>
-      summarise(across(everything(), sum), denom = n(),
-        .groups = "drop")
+      summarise(across(everything(), sum),
+        denom = n(),
+        .groups = "drop"
+      )
 
 
     c(subgroups, list(all)) |>
       compact() |>
       map(\(class_data) {
-
         class_data |>
           tidyr::pivot_longer(-c(gender, class, denom),
             names_to = "var",
-            values_to = "n") |>
+            values_to = "n"
+          ) |>
           rowwise() |>
           mutate(
             censored = if_else(.data$n < 3 &
@@ -72,9 +73,7 @@ summary_proportions_multiple <-
           filter(!is.na(.data$gender)) |>
           ungroup() |>
           mutate(labels = forcats::fct_reorder(.data$labels, .data$prop))
-
       })
-
   }
 
 #' Bar proportions multiple
@@ -83,7 +82,6 @@ summary_proportions_multiple <-
 #'
 #' @return A ggplot2 graph
 bar_proportions_multiple <- function(summary_data) {
-
   class <- unique(summary_data$class)
   genders <- unique(summary_data$gender)
 
@@ -100,10 +98,13 @@ bar_proportions_multiple <- function(summary_data) {
     ) +
     geom_bar_t(aes(alpha = factor(.data$censored)),
       stat = "identity",
-      position = position_dodge(width = 0.7)) +
+      position = position_dodge(width = 0.7)
+    ) +
     scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
-    scale_linetype_manual(values = c("1" = "dashed", "0" = "blank"),
-      guide = guide_none()) +
+    scale_linetype_manual(
+      values = c("1" = "dashed", "0" = "blank"),
+      guide = guide_none()
+    ) +
     scale_fill_hbsc(
       aesthetics = c("fill", "colour"),
       name = "",
@@ -138,5 +139,4 @@ bar_proportions_multiple <- function(summary_data) {
       caption = if_else(any(summary_data$censored == 1), "* Numbers too low to show", ""),
       title = paste(class, "pupils")
     )
-
 }

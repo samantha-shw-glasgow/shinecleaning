@@ -7,7 +7,6 @@
 #'
 #' @return `print_first_graph` invisibly returns list of graphs with first dropped
 print_first_graph <- function(graph_list) {
-
   print(graph_list[[1]])
 
   graph_list[[1]] <- NULL
@@ -18,9 +17,7 @@ print_first_graph <- function(graph_list) {
 #' @rdname print_first_graph
 
 print_rest_of_graphs <- function(graph_list) {
-
   walk(graph_list, print)
-
 }
 
 
@@ -29,8 +26,7 @@ print_rest_of_graphs <- function(graph_list) {
 #' @param ... Other arguments passed to `scale_fill_manual`
 #'
 scale_fill_hbsc <- function(...) {
-
-  primary_colour <-  "#4770b7"
+  primary_colour <- "#4770b7"
   # secondary_colour <- "#016bb2"
   # main_colour <- "#333333"
   global_all_pupils_colour <- "#37474f"
@@ -62,7 +58,6 @@ scale_fill_hbsc <- function(...) {
     ),
     ...
   )
-
 }
 
 #' Standard categorical fill scale
@@ -70,8 +65,7 @@ scale_fill_hbsc <- function(...) {
 #' @param ... Other arguments passed to `scale_fill_manual`
 #'
 scale_colour_hbsc <- function(...) {
-
-  primary_colour <-  "#4770b7"
+  primary_colour <- "#4770b7"
   # secondary_colour <- "#016bb2"
   # main_colour <- "#333333"
   global_all_pupils_colour <- "#37474f"
