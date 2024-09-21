@@ -1,0 +1,7 @@
+::: {custom-style="Title"}
+SHINE PUPIL MENTAL HEALTH SURVEY RESULTS
+
+`r school_name`
+
+`r term`
+:::
