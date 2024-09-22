@@ -91,12 +91,12 @@ describe("collapsed summary", {
       ) |> as.character()) |>
       summarise(
         numerator = sum(health %in% c("Excellent", "Good")),
-        denominator = n(),
+        denom = n(),
         .by = c("class", "gender")
       ) |>
       (
         \(d) summarise(d, across(c(
-          numerator, denominator
+          numerator, denom
         ), sum)) |> mutate(gender = "All", class = "All") |> bind_rows(d, x = _)
       )() |>
       mutate(
@@ -192,11 +192,11 @@ describe("full summary", {
       ) |>
       summarise(numerator = n(),
                 .by = c("gender", "class", "health")) |>
-      mutate(denominator = sum(numerator),
+      mutate(denom = sum(numerator),
              .by = c("gender", "class")) |>
       (
         \(d) summarise(d, across(c(
-          numerator, denominator
+          numerator, denom
         ), sum), .by = "health") |> mutate(gender = "All", class = "All") |> bind_rows(d, x = _)
       )() |>
       mutate(
