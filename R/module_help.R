@@ -16,7 +16,7 @@ helpUI <- function(id){
 		      bslib::accordion_panel(
 		        title = "Downloading data from Qualtrics",
 		        bslib::card_body(
-		          h4("Step 1 - Use the 'Data & Analysis' tab to filter responses to date range"),
+		          h4("Step 1 - Use the 'Data & Analysis' tab to filter responses by 'School ID code' for the chosen school(s)"),
 		          img(src = "img/qualtrics_1.jpeg", class = "help-img"),
 		          img(src = "img/qualtrics_2.jpeg", class = "help-img"),
 		          h4("Step 2 - Select 'Export Data...' from the 'Export & Import' menu"),
