@@ -43,6 +43,15 @@ ui <- function(req) {
           createReportUI("createReport")
         )
       )
+    ),
+    bslib::nav_spacer(),
+    bslib::nav_panel(
+      title = NULL,
+      value = "Help",
+      icon = icon("question-circle"),
+      layout_central_column(
+        helpUI("help")
+      )
     )
   )
 }
