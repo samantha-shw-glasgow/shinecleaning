@@ -271,6 +271,29 @@ Diagram 1: Factors influencing adolescent mental health
 
 ![](../img/diag1.png){width=100%}
 
+::: {custom-style="Heading no TOC"}
+Sleep and adolescent mental health
+:::
+
+Sleep is crucial to both physical and mental health and wellbeing and
+adolescents need sleep to function well. There's a relationship between
+sleep and mental health: lack of sleep is associated with many mental
+health conditions and lack of sleep can contribute to poor mental
+health.
+
+Inadequate sleep has a range of negative outcomes on adolescents
+including adverse impacts on mood, attention and school performance to
+other aspects such as mental health, risky behaviour and weight gain.^41^ ^42^
+Severe lack of sleep has been associated with greater interpersonal
+problems, lower life satisfaction, lower self-esteem and higher
+incidence of drug use.^43^ Chronic sleep loss is therefore considered an
+important public health issue.^44^
+
+The quality of sleep is also very important, with average sleep quality
+being more positively related to health, affect balance, life
+satisfaction, and negative moods and feelings than average sleep
+quantity.^45^ ^46^
+
 ::: {custom-style="Heading 2 no number"}
 School and adolescent mental health
 :::
@@ -278,27 +301,27 @@ School and adolescent mental health
 Young people spend a significant amount of time in school and it is an
 important sphere of influence. The school environment can positively
 impact on adolescent health and potentially mitigate the detrimental
-effects of other social factors.^38^
+effects of other social factors.^47^
 
 School connectedness and the extent to which pupils feel accepted,
 respected, included, cared for and supported by others in the school
 environment both as an individual and in terms of their, learning, plays
-an important part in adolescent wellbeing.^39^ There is some evidence to
+an important part in adolescent wellbeing.^48^ There is some evidence to
 suggest that school connectedness serves as a protective factor against
-risk behaviours^40^ and is an important determinant of adolescent mental
-health.^41^ In particular, school connectedness is associated with healthier
+risk behaviours^49^ and is an important determinant of adolescent mental
+health.^50^ In particular, school connectedness is associated with healthier
 behaviours such as being a less frequent smoker and cannabis user, less
-likely to binge drink^42^ and more likely to meet physical activity
-guidelines, as well as having fewer depressive symptoms.^43^ Better
+likely to binge drink^51^ and more likely to meet physical activity
+guidelines, as well as having fewer depressive symptoms.^52^ Better
 relationships with school staff and peers are also associated with
-positive subjective wellbeing. A sense of belonging to school has also
+positive subjective wellbeing.^53^ A sense of belonging to school has also
 been associated with increased academic motivation, participation and
-school engagement.^44^
+school engagement.^54^
 
 In contrast, high levels of school pressure are associated with higher
-levels of risky behaviour and poorer mental health. Young people who
+levels of risky behaviour and poorer mental health. ^55^ ^56^ Young people who
 feel under pressure to perform well academically are more likely to
-report depressive symptoms and lower life satisfaction.^45^
+report depressive symptoms and lower life satisfaction.^57^
 
 
 ::: {custom-style="Heading 1 no number"}
@@ -315,16 +338,17 @@ Understanding the data in this report
 -   There are symbols <!--(🟠 🔹) -->to show the national result for
     Scotland. This data is from the Health Behaviour in School-aged
     Children study (HBSC) which was carried out in 2022. Your report
-    shows the HBSC national average for pupils in Primary 7.
+    shows the HBSC national average for pupils in Secondary 2 and
+    Secondary 4.
 -   If you see \* in a figure or table, this indicates the data has been
     suppressed due to small numbers.
 
 
 ```{r, out.width="100%"}
 if (params$gender_split) {
-  knitr::include_graphics("../img/figure_understand.svg", dpi = NA)
+  knitr::include_graphics("../img/figure_understand_secondary.svg", dpi = NA)
 } else {
-  knitr::include_graphics("../img/figure_understanding_all.svg", dpi = NA)
+  knitr::include_graphics("../img/figure_understand_secondary2.svg", dpi = NA)
 }
 ```
 
