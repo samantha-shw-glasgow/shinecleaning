@@ -191,7 +191,7 @@ describe("full summary", {
         class = forcats::fct_collapse(class, "S1, S2 and S3" = classes_s2[[1]], "S4, S5 and S6" = classes_s2[[2]]) |> as.character()
       ) |>
       summarise(numerator = n(),
-                .by = c("gender", "class", "health")) |>
+                .by = c("class", "gender", "health")) |>
       mutate(denom = sum(numerator),
              .by = c("gender", "class")) |>
       (
@@ -203,7 +203,8 @@ describe("full summary", {
         class = forcats::fct_inorder(class),
         health = factor(health, levels = c("Poor", "Fair", "Good", "Excellent"))
       ) |>
-      arrange(class, gender, desc(health))
+      rename(answer = health) |>
+      arrange(class, gender, desc(answer))
 
     result <- create_full_summary(
       input_data_full(),
