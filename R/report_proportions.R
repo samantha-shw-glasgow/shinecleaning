@@ -133,7 +133,7 @@ create_full_summary <- function(
 bar_from_summary <- function(summary_data, hbsc_data = NULL) {
   hbsc_data_in <- tibble(
     gender = character(),
-    class = character(),
+    class = factor(levels = levels(summary_data$class)),
     hbsc_gender = character(),
     hbsc_class = character()
   )
