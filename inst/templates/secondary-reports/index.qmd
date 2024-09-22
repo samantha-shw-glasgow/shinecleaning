@@ -33,8 +33,12 @@ params:
   gender_split: true
   class_split: true
   classes: 
-    - S1 S2 S3 
-    - S4 S5 S6
+    - S1 
+    - S2 
+    - S3 
+    - S4 
+    - S5 
+    - S6
 execute:
   enabled: true
 ---
