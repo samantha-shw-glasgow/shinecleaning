@@ -248,6 +248,23 @@ input_data |>
   bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("low"), "who"))
 ```
 
+```{r bar-risk-depression, fig.cap="% of pupils 'at risk of depression'"}
+
+input_data |> 
+  create_collapsed_summary(
+    who_dep,
+    TRUE,
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |> 
+  bar_from_summary(
+    get_hbsc_prop(classes, "dep", "who")
+  )
+
+```
+
+
 \newpage
 
 ## Me and My Feelings

@@ -99,7 +99,9 @@ who_score <- function(survey_data) {
       who_cat = case_when(
         who_score <= 50 ~ "low",
         who_score > 50 ~ "good"
-      ), .keep = "none"
+      ),
+      who_dep = who_score <= 28,
+      .keep = "none"
     ) |>
     bind_cols(survey_data, x = _)
 }
