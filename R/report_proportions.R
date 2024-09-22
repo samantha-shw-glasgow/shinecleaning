@@ -17,19 +17,23 @@ create_collapsed_summary <- function(
     classes,
     .censor = FALSE,
     .gender_split = FALSE) {
-  if (.gender_split) {
-    grouping_vars <- c("class", "gender")
-  } else {
-    grouping_vars <- c("class")
-  }
-  subgroups <- data |>
-    group_by(across(all_of(grouping_vars))) |>
-    mutate(success = {{ var }} %in% success) |>
-    summarise(
-      numerator = sum(success, na.rm = TRUE),
-      denom = n(),
-      .groups = "drop"
-    ) |>
+
+  subgroups <-
+    map(classes, \(concat_class) {
+      data |>
+        filter(class %in% concat_class) |>
+        group_by(gender, class) |>
+        mutate(
+          success = {{ var }} %in% success,
+          class = str_flatten(concat_class, collapse = ", ", last = " and ")
+          ) |>
+        summarise(
+          numerator = sum(success, na.rm = TRUE),
+          denom = n(),
+          .groups = "drop"
+        )
+    }) |>
+  reduce(bind_rows) |>
     arrange(class)
 
   all <- subgroups |>
@@ -42,7 +46,7 @@ create_collapsed_summary <- function(
 
   if (.gender_split) {
     joined_dat <- subgroups |>
-      filter(gender %in% genders, class %in% classes) |>
+      filter(gender %in% genders) |>
       bind_rows(all)
   } else {
     joined_dat <- all |>
