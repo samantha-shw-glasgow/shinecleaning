@@ -11,8 +11,9 @@ render_report(
   local_authority_name = NA,
   term = NULL,
   number_invited = NULL,
-  output_location = getwd(),
+  output_location = NULL,
   gender_split = TRUE,
+  classes = NULL,
   filename = "primary_report.docx"
 )
 }
