@@ -11,11 +11,15 @@ SHINE_theme <- bslib::bs_theme(
   secondary = SHINE_colors$secondary,
   info = SHINE_colors$tertiary,
   base_font = bslib::font_google("Roboto"),
-  "bslib-spacer" = "1rem"
+  "bslib-spacer" = "1rem",
+  "accordion-padding-y" = "0.5rem",
+  "accordion-padding-x" = "0",
+  "accordion-border-width" = "0",
 ) |>
   bslib::bs_add_variables(
     "h2-font-size" = "$font-size-base * 1.5",
     "h3-font-size" = "$font-size-base * 1.25",
+    "h4-font-size" = "$font-size-base * 1.1",
     "headings_font_weight" = "$font-weight-bold",
     "nav-link-font-size" = "$font-size-base * 1.25 !important",
     "nav-link-font-weight" = "$font-weight-bold !important",
@@ -25,8 +29,10 @@ SHINE_theme <- bslib::bs_theme(
   ) |>
   bslib::bs_add_rules(
     list(
-      ".card-body {row-gap: 0rem}",
-      ".nav-link.active {font-weight: $font-weight-bold !important}"
+      ".accordion-title {font-weight: $font-weight-bold; color: $primary; font-size: $h3-font-size}",
+      ".card-body {row-gap: 0.5rem}",
+      ".nav-link.active {font-weight: $font-weight-bold !important}",
+      ".help-img {max-width: 100%; height: auto; border-radius: 0.25rem; box-shadow: 0 0 0.05rem 0.05rem rgba(0, 0, 0, 0.1); padding: 0.5rem}"
     )
   )
 
