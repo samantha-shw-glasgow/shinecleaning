@@ -13,6 +13,7 @@
 #'
 #'
 render_report <- function(survey_data,
+                          survey_type,
                           school_name = NA,
                           local_authority_name = NA,
                           term = NULL,
@@ -20,6 +21,17 @@ render_report <- function(survey_data,
                           output_location = getwd(),
                           gender_split = TRUE,
                           filename = "primary_report.docx") {
+
+  if(survey_type == "primary") {
+    template <- "primary-reports/index.qmd"
+  } else if (survey_type == "secondary") {
+    template <- "secondary-reports/index.qmd"
+  } else {
+    warning(glue::glue("\"{survey_type}\" is not a known type of survey"))
+    stop("Please specify 'primary' or 'secondary' as `survey_type`")
+  }
+
+
   if (!is.na(school_name) && !is.na(local_authority_name)) {
     stop(
       "Is this a school or Local Authority report?\n",
@@ -29,10 +41,11 @@ render_report <- function(survey_data,
     stop("Please provide a `school_name` or a `local_authority_name`")
   }
 
+
   render_env <- new.env()
 
   survey_data <- survey_data[grepl("^\\d", survey_data$`StartDate`), ] |>
-    data_prep()
+    data_prep(report_type = survey_type)
 
   report_name <- if_else(!is.na(school_name), school_name, local_authority_name)
 
@@ -45,7 +58,7 @@ render_report <- function(survey_data,
   assign("input_data", survey_data, envir = render_env)
 
   rmarkdown::render(
-    system.file("templates", "primary-reports/index.qmd", package = "SHINEcleaning"),
+    system.file("templates", template, package = "SHINEcleaning"),
     output_dir = output_location,
     envir = render_env,
     output_file = filename,
