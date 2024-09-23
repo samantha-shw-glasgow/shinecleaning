@@ -6,6 +6,7 @@
 \usage{
 render_report(
   survey_data,
+  survey_type,
   school_name = NA,
   local_authority_name = NA,
   term = NULL,
@@ -17,6 +18,8 @@ render_report(
 }
 \arguments{
 \item{survey_data}{A clean dataframe of survey results}
+
+\item{survey_type}{The report type - 'primary'/'secondary'}
 
 \item{school_name}{If a school report, the school's name}
 
