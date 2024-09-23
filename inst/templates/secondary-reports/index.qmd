@@ -281,7 +281,28 @@ information on the SDQ, see page 7.
 
 ```{r bar-cat-emot-cond-hyp-peer, fig.cap="SQD scores"}
 
+graphs <- input_data |>
+  share_elevated_multiple(
+    list(
+      ep_cat = "Emotional",
+      cp_cat = "Conduct",
+      ha_cat = "Hyperactivity",
+      pp_cat = "Peer"
+    ),
+    c("Difficulties", "Borderline", "As expected"),
+    classes = classes,
+    genders = genders,
+    .split = params$gender_split
+  ) |>
+  map(bar_share_elevated_multiple) |>
+  print_first_graph()
+
 ```
+
+```{r, bar-cat-emot-cond-hyp-peer-extra}
+print_rest_of_graphs(graphs)
+```
+
 
 ```{r bar-elevated-prosoc, fig.cap="Pupils' pro-social score"}
 
@@ -527,7 +548,7 @@ graphs <- input_data |>
 
 ```
 
-```{r}
+```{r bar-belief-self-extra}
 print_rest_of_graphs(graphs)
 ```
 
@@ -549,7 +570,7 @@ graphs <- input_data |>
 
 ```
 
-```{r}
+```{r bar-belief-others-extra}
 print_rest_of_graphs(graphs)
 ```
 
@@ -571,7 +592,7 @@ graphs <- input_data |>
 
 ```
 
-```{r}
+```{r bar-emotional-extra}
 print_rest_of_graphs(graphs)
 ```
 
@@ -605,7 +626,7 @@ graphs <- input_data |>
 
 ```
 
-```{r}
+```{r bar-sehs-score-extra}
 print_rest_of_graphs(graphs)
 ```
 
