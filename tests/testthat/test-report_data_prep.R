@@ -83,10 +83,10 @@ test_that("WHO score", {
   )
 
   expected_a <- bind_cols(input_data_a, tribble(
-    ~who_score, ~who_cat,
-    (4 + 3 + 2 + 4 + 1) * 4, "good",
-    (0 + 4 + 1 + 4 + 0) * 4, "low",
-    NA_real_, NA_character_
+    ~who_score, ~who_cat, ~who_dep,
+    (4 + 3 + 2 + 4 + 1) * 4, "good", FALSE,
+    (0 + 4 + 1 + 4 + 0) * 4, "low", FALSE,
+    NA_real_, NA_character_, na_lgl
   ))
 
   expect_identical(who_score(input_data_a), expected_a)
