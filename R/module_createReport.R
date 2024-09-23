@@ -210,6 +210,7 @@ createReport_server <- function(id, data) {
             {
               if (input$report_type == "Primary") {
                 render_report(data_filt(),
+                  survey_type = "primary",
                   school_name = input$name,
                   filename = file,
                   number_invited = input$n_invited,
@@ -220,6 +221,33 @@ createReport_server <- function(id, data) {
               }
               if (input$report_type == "Primary cluster / Local Authority") {
                 render_report(data_filt(),
+                  survey_type = "primary",
+                  local_authority_name = input$name,
+                  filename = file,
+                  number_invited = input$n_invited,
+                  gender_split = input$split,
+                  term = input$school_term,
+                  output_location = NULL
+                )
+              }
+              if (input$report_type == "Secondary") {
+                render_report(data_filt(),
+                  survey_type = "secondary",
+                  school_name = input$name,
+                  filename = file,
+                  number_invited = input$n_invited,
+                  gender_split = input$split,
+                  term = input$school_term,
+                  classes = list(
+                    c("S1", "S2", "S3"),
+                    c("S4", "S5", "S6")
+                  ),
+                  output_location = NULL
+                )
+              }
+              if (input$report_type == "Secondary cluster / Local Authority") {
+                render_report(data_filt(),
+                  survey_type = "secondary",
                   local_authority_name = input$name,
                   filename = file,
                   number_invited = input$n_invited,
