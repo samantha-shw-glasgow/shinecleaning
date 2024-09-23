@@ -34,6 +34,8 @@ render_report(
 
 \item{gender_split}{To split report outputs by gender}
 
+\item{classes}{Vector or nested list of classes (clustered by combinations)}
+
 \item{filename}{Name of file to output}
 }
 \description{

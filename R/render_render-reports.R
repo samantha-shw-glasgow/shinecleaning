@@ -10,6 +10,7 @@
 #' @param number_invited Number invited to complete the survey
 #' @param output_location Location of file output (defaults to working directory)
 #' @param gender_split To split report outputs by gender
+#' @param classes Vector or nested list of classes (clustered by combinations)
 #' @param filename Name of file to output
 #'
 #'
