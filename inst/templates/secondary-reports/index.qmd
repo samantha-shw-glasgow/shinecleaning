@@ -1,0 +1,638 @@
+---
+output: 
+  officedown::rdocx_document:
+    reference_docx: ../styling/doc_template.docx
+    number_sections: true
+    tables:
+      style: 'Table'
+      layout: autofit
+      width: 1.0
+      conditional:
+       first_row: true
+       first_column: false
+       last_row: false
+       last_column: false
+       no_hband: false
+       no_vband: true
+    # lists:
+    #   ol.style: 'Number alignment: Left'
+    #   ul.style: List Paragraph
+    page_margins:
+      bottom: 1
+      top: 1
+      right: 0.8
+      left: 0.8
+      header: 0
+      footer: 0
+      gutter: 0
+params:
+  is_la_report: false
+  school_name: 'Test school academy'
+  term: 'Autumn 2024'
+  number_invited: 1000
+  gender_split: true
+  class_split: true
+  classes: 
+    - S1 
+    - S2 
+    - S3 
+    - S4 
+    - S5 
+    - S6
+execute:
+  enabled: true
+---
+
+```{r, echo = FALSE, warning = FALSE, message=FALSE}
+#| echo: false
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.height = 4.4,
+  dpi = 330,
+  dev = "svg",
+  fig.width = 6.3,
+  fig.topcaption = TRUE
+)
+school_name <- params$school_name
+is_la_report <- params$is_la_report
+term <- params$term
+
+library(tidyverse)
+
+# In secondary reports only: this becomes a list of vectors, grouping classes in
+# low number situations
+classes <- params$classes |> map(str_split, " ") |> map(unlist)
+genders <- c("Boys", "Girls", "All")
+
+
+
+theme_update(
+  panel.grid = element_blank(),
+  legend.justification.right = "top",
+  plot.margin = unit(c(0.8, 1, 0.5, 0), "cm")
+)
+```
+
+```{r front-page, echo=FALSE, eval = TRUE, results='asis'}
+cat(knitr::knit_child("front-cover.qmd", envir = environment(), quiet = TRUE))
+```
+
+\newpage
+
+::: {custom-style="Heading no TOC"}
+Contents
+:::
+
+`r officer::block_toc(level = 2, style = NULL, separator = ";")`
+
+```{r introduction, echo=FALSE, eval = TRUE, results='asis'}
+cat(knitr::knit_child("introduction.qmd", envir = environment(), quiet = TRUE))
+```
+
+\newpage
+
+# School survey results
+
+## School survey response
+
+Pupils in your school completed the survey `r date_range(input_data)`.
+
+Table \@ref(tab:tab-response) shows the response rate.
+
+```{r tab-response, tab.id="tab-response", tab.cap="Response rate", tab.cap.pre="Table"}
+tab_responses(input_data, params$number_invited)
+```
+
+`r if(params$gender_split){"Table \\@ref(tab:tab-by-class) shows the number of pupils by year group and sex who completed the survey."}`
+
+```{r tab-by-class, tab.id="tab-by-class", tab.cap="Overview of survey respondents", eval=params$gender_split, results='asis'}
+tab_categories(input_data, inc_gender = genders, inc_classes = classes)
+```
+
+\newpage
+
+## General health
+
+General health is closely related to mental health, with stress and poor
+mental wellbeing sometimes causing physical symptoms.
+
+Pupils were asked to rate their own health as either poor/fair/good/excellent.
+
+Figure \@ref(fig:bar-health) shows the percentage of pupils who reported
+their health was \'excellent\' or \'good\'. `r if(params$gender_split){"Table \\@ref(tab:tab-health) shows the responses to this question from all pupils."}`
+
+<!-- compared with the HBSC Scotland national average. Table [tab] shows all the responses from pupils. -->
+
+```{r bar-health, fig.cap="% of pupils who report excellent or good health"}
+input_data |>
+  create_collapsed_summary(
+    health,
+    success = c("Good", "Excellent"),
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("Good", "Excellent"), "health"))
+```
+
+```{r tab-health, tab.id="tab-health", tab.cap.pre="Table", tab.cap="Pupil self-rated health", eval=params$gender_split}
+input_data |>
+  create_full_summary(
+    health,
+    levels = c("Poor", "Fair", "Good", "Excellent"),
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  table_from_summary()
+```
+
+
+\newpage
+
+## Good Childhood Index: Happiness with various aspects of life
+
+Pupils were asked to rate how happy they are with various aspects of
+their life. Response options ranged from 0 to 10, where 0 means \'very
+unhappy\', 5 means \'neither happy nor unhappy\' and 10 means \'very
+happy\'.
+
+Figure \@ref(fig:bar-lifesat) shows the average score out of 10, for each of
+the eleven aspects of life that pupils were asked about.
+
+Figure \@ref(fig:bar-low-lifesat) shows the percentage of pupils who scored low happiness in each
+aspect of life. Low happiness is defined as a score of less than 5. For
+more information on this index, see page 6.
+
+```{r bar-lifesat, fig.cap="Average scores for different aspects of life", eval=TRUE}
+graphs <-
+  input_data |>
+  summary_mean_multiple_vars(
+    varslist = list(
+      lifesat1 = "Overall",
+      lifesat2 = "Family",
+      lifesat3 = "Home",
+      lifesat4 = "Choice",
+      lifesat5 = "Friends",
+      lifesat6 = "Things you have",
+      lifesat7 = "Health",
+      lifesat8 = "Appearance",
+      lifesat9 = "Future",
+      lifesat10 = "School",
+      lifesat11 = "Time use"
+    ),
+    genders = genders,
+    classes = classes,
+    .gender_split = params$gender_split
+  ) |>
+  map(bar_mean_multiple_vars, xmax = 10) |>
+  print_first_graph()
+```
+
+```{r bar-lifesat-extra, eval=length(graphs)!=0}
+print_rest_of_graphs(graphs)
+```
+
+```{r bar-low-lifesat, fig.cap="% of pupils who report low happiness in different aspects of life"}
+graphs <- input_data |>
+  summary_proportions_multiple(
+    varslist = list(
+      lifesat1 = "Overall",
+      lifesat2 = "Family",
+      lifesat3 = "Home",
+      lifesat4 = "Choice",
+      lifesat5 = "Friends",
+      lifesat6 = "Things you have",
+      lifesat7 = "Health",
+      lifesat8 = "Appearance",
+      lifesat9 = "Future",
+      lifesat10 = "School",
+      lifesat11 = "Time use"
+    ),
+    success = ~ .x < 5,
+    genders = genders,
+    classes = classes,
+    .gender_split = params$gender_split
+  ) |>
+  map(bar_proportions_multiple) |>
+  print_first_graph()
+```
+
+```{r bar-lifesat-low-extra, eval=length(graphs)!=0}
+print_rest_of_graphs(graphs)
+```
+
+\newpage
+
+## WHO-5 Wellbeing Scale
+
+The WHO--5 Wellbeing Index is a five item scale which provides a measure
+of emotional functioning. Items are summed to create a score ranging
+from 0 to 100. A score of 50 or less on the WHO-5 indicates
+low mood (Figure \@ref(fig:bar-wellbeing)).
+
+Figure \@ref(fig:bar-risk-depression) shows the proportion of those that score 28 or less and are classified as 'at risk of depression'. Note that those at risk of depression are also included in the Figure \@ref(fig:bar-wellbeing), showing low mood.
+
+Both figures also include results from the HBSC Scotland national average. For more information on this scale, see page 6.
+
+
+```{r bar-wellbeing, fig.cap="% of pupils with low mood"}
+input_data |>
+  create_collapsed_summary(who_cat,
+    success = c("low"),
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("low"), "who"))
+```
+
+```{r bar-risk-depression, fig.cap="% of pupils 'at risk of depression'"}
+
+input_data |>
+  create_collapsed_summary(
+    who_dep,
+    TRUE,
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  bar_from_summary(
+    get_hbsc_prop(classes, "dep", "who")
+  )
+
+```
+
+
+\newpage
+
+## Strengths and Difficulties Questionnaire
+
+The Strength and Difficulties Questionnaire (SDQ) measures mental health
+difficulties in different areas: emotional symptoms, conduct,
+hyperactivity and peer relationships. In each area, the answers to
+questions are scored and pupils classified into groups, according to
+pre-determined cut-offs: as expected, borderline and difficulties. These
+fours areas are then summed to create a total score on the SDQ (Figure
+\@ref(fig:bar-elevated-sdq)) The SDQ also measures pro-social behaviour (Figure \@ref(fig:bar-elevated-prosoc)). For more
+information on the SDQ, see page 7.
+
+```{r bar-cat-emot-cond-hyp-peer, fig.cap="SQD scores"}
+
+graphs <- input_data |>
+  share_elevated_multiple(
+    list(
+      ep_cat = "Emotional",
+      cp_cat = "Conduct",
+      ha_cat = "Hyperactivity",
+      pp_cat = "Peer"
+    ),
+    c("Difficulties", "Borderline", "As expected"),
+    classes = classes,
+    genders = genders,
+    .split = params$gender_split
+  ) |>
+  map(bar_share_elevated_multiple) |>
+  print_first_graph()
+
+```
+
+```{r, bar-cat-emot-cond-hyp-peer-extra}
+print_rest_of_graphs(graphs)
+```
+
+
+```{r bar-elevated-prosoc, fig.cap="Pupils' pro-social score"}
+
+input_data |>
+  share_elevated(
+    ps_cat,
+    c("As expected", "Borderline", "Difficulties"),
+    classes = classes,
+    genders = genders
+  ) |>
+  bar_share_elevated()
+
+```
+
+```{r bar-elevated-sdq, fig.cap="Pupils' overall strength and difficulties score"}
+
+input_data |>
+  share_elevated(
+    sdq_total_cat,
+    c("As expected", "Borderline", "Difficulties"),
+    classes = classes,
+    genders = genders
+  ) |>
+  bar_share_elevated()
+
+```
+
+
+\newpage
+
+## Sleep
+
+Pupils were asked to complete the adolescent sleep wake scale that
+measures sleep quality. The answers to the ten questions are scored,
+with the maximum total score is 60 and the minimum score is 6. Higher
+scores indicate better sleep quality.
+
+```{r bar-mean-sleep, fig.cap="Pupils' average sleep quality score"}
+
+input_data |>
+  summary_mean_single_var(
+    asw_score,
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  bar_mean_single(ymax = 60)
+
+```
+
+
+\newpage
+
+
+## School
+
+### Liking school
+
+Pupils were asked how much they like school at present. Figure \@ref(fig:bar-sch1) shows the
+percentage of pupils who like school \'a lot\' or \'a bit\' compared with the HBSC Scotland national average.  `r if(params$gender_split){"Table \\@ref(tab:tab-sch1) shows the responses to this question from all pupils."}`
+
+
+```{r bar-sch1, fig.cap="% of pupils who like school (a lot or a bit)"}
+input_data |>
+  create_collapsed_summary(
+    sch1,
+    success = c("I like it a lot", "I like it a bit"),
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("I like it a lot", "I like it a bit"), "sch1"))
+```
+
+```{r tab-sch1, tab.id="tab-sch1", tab.cap.pre="Table", tab.cap="How much pupils liked school", eval=params$gender_split}
+input_data |>
+  create_full_summary(
+    sch1,
+    levels = c(
+      "I don’t like it at all",
+      "I don’t like it very much",
+      "I like it a bit",
+      "I like it a lot"
+    ),
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  table_from_summary()
+```
+
+
+\newpage
+
+### Pressured by schoolwork
+
+Pupils were asked about how pressured they feel about the schoolwork
+they have to do. Figure \@ref(fig:bar-sch2) shows the proportion of pupils who feel \'a
+lot\' or \'some\' pressure compared with the HBSC Scotland national average. `r if(params$gender_split){"Table \\@ref(tab:tab-sch2) shows the responses to this question from all pupils."}`
+
+
+```{r bar-sch2, fig.cap="% of pupils who feel a lot of or some pressure from schoolwork"}
+input_data |>
+  create_collapsed_summary(
+    sch2,
+    success = c("A lot", "Some"),
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("A lot", "Some"), "sch2"))
+```
+
+```{r tab-sch2, tab.id="tab-sch2", tab.cap.pre="Table", tab.cap="How pressured pupils feel by schoolwork", eval=params$gender_split}
+input_data |>
+  create_full_summary(
+    sch2,
+    levels = c("Not at all", "A little", "Some", "A lot"),
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  table_from_summary()
+```
+
+
+\newpage
+
+### Self-confidence {#self-confidence .col .s12 .lr_zero .black-text}
+
+Pupils were asked \'how often do you feel confident in yourself\'.
+Figure \@ref(fig:bar-sch3) shows the proportion of pupils in your who responded they
+\'always\' or \'often\' feel confident compared with the HBSC Scotland national average. `r if(params$gender_split){"Table \\@ref(tab:tab-sch3) shows the responses to this question from all pupils."}`
+
+```{r bar-sch3, fig.cap="% of pupils who feel always or often confident"}
+input_data |>
+  create_collapsed_summary(
+    sch3,
+    success = c("Always", "Often"),
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("Always", "Often"), "sch3"))
+```
+
+```{r tab-sch3, tab.id="tab-sch3", tab.cap.pre="Table", tab.cap="How often pupils feel confident", eval=params$gender_split}
+input_data |>
+  create_full_summary(
+    sch3,
+    levels = c("Never", "Hardly ever", "Sometimes", "Often", "Always"),
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  table_from_summary()
+```
+
+\newpage
+
+## Loneliness
+
+Pupils were asked how often they felt lonely during the past week.
+Figure \@ref(fig:bar-loneliness) shows those the percentage of pupils who said they felt lonely
+most or all of the time. `r if(params$gender_split){"Table \\@ref(tab:tab-loneliness) shows the responses to this question from all pupils."}`
+
+```{r bar-loneliness, fig.cap="% of pupils who feel lonely most or all of the time"}
+
+input_data |>
+  create_collapsed_summary(
+    loneliness,
+    c("Most of the time", "All of the time"),
+    classes = classes,
+    genders = genders,
+    .gender_split = params$gender_split
+  ) |>
+  bar_from_summary()
+```
+
+```{r tab-loneliness, tab.id="tab-loneliness", tab.cap.pre="Table", tab.cap="How often pupils feel lonely", eval=params$gender_split}
+
+input_data |>
+  create_full_summary(loneliness,
+                      c(
+                        "All of the time",
+                        "Most of the time",
+                        "Some of the time",
+                        "None of the time"
+                      ),
+                      genders = genders, classes = classes,
+                      .gender_split = params$gender_split) |>
+  table_from_summary()
+```
+
+
+
+\newpage
+
+
+## Social Emotional Health Survey Secondary school
+
+This thirty item scale measures different competences of positive
+socio-emotional health, which are fundamental for young people to
+develop to live engaging and meaningful lives.
+Figure \@ref(fig:bar-belief-self)
+shows the average scores in the subdomains of self-efficacy,
+self-awareness and persistence, which when added together, create an
+overall score of belief in self.
+Figure \@ref(fig:bar-beleif-others)
+shows the average
+scores in the subdomains of school support, family support and peer
+support, which when added together, create an overall score of belief in
+others.
+Figure \@ref(fig:bar-emotional)
+shows the average scores in the subdomains
+of emotional regulation, empathy and self-control, which when added
+together, create an overall score of emotional competence.
+Figure \@ref(fig:bar-optimism)
+shows the average scores in the subdomain of
+optimism.
+Figure \@ref(fig:bar-sehs-scores)
+shows the average scores in the domains
+of belief in self, belief in others and emotional competence.
+
+The maximum score for each domain and subdomain is out of 12. For more
+information on this measure see pages 7-8.
+
+```{r bar-belief-self, fig.cap="Belief in self (subdomains)-average scores"}
+
+graphs <- input_data |>
+  summary_mean_multiple_vars(
+    list(
+      efficacy_score = "Self-efficacy",
+      aware_score = "Self-awareness",
+      persist_score = "Persistance"
+      ),
+      genders,
+      classes,
+      .gender_split = params$gender_split
+    ) |>
+  map(bar_mean_multiple_vertical, ymax = 12) |>
+  print_first_graph()
+
+```
+
+```{r bar-belief-self-extra}
+print_rest_of_graphs(graphs)
+```
+
+```{r bar-belief-others, fig.cap="Belief in others (subdomains)-average scores"}
+
+graphs <- input_data |>
+  summary_mean_multiple_vars(
+    list(
+      sch_support_score = "School support",
+      fam_support_score = "Family support",
+      peer_support_score = "Peer support"
+      ),
+      genders,
+      classes,
+      .gender_split = params$gender_split
+    ) |>
+  map(bar_mean_multiple_vertical, ymax = 12) |>
+  print_first_graph()
+
+```
+
+```{r bar-belief-others-extra}
+print_rest_of_graphs(graphs)
+```
+
+```{r bar-emotional, fig.cap="Emotional competence (subdomains)-average scores"}
+
+graphs <- input_data |>
+  summary_mean_multiple_vars(
+    list(
+      emt_regulation_score = "Emotional regulation",
+      empathy_score = "Empathy",
+      control_score = "Self-control"
+      ),
+      genders,
+      classes,
+      .gender_split = params$gender_split
+    ) |>
+  map(bar_mean_multiple_vertical, ymax = 12) |>
+  print_first_graph()
+
+```
+
+```{r bar-emotional-extra}
+print_rest_of_graphs(graphs)
+```
+
+```{r bar-optimism, fig.cap="Optimism (subdomain)-average scores"}
+
+input_data |>
+  summary_mean_single_var(
+    optimism_score,
+    genders,
+    classes,
+    .gender_split = params$gender_split
+  ) |>
+  bar_mean_single(ymax = 12)
+```
+
+```{r bar-sehs-scores, fig.cap="Total average scores of domains of belief in self, belief in others and emotional competence"}
+
+graphs <- input_data |>
+  summary_mean_multiple_vars(
+    list(
+      belief_self_score = "Belief in self",
+      belief_others_score = "Belief in others",
+      emotional_competence_score = "Emotional competence"
+      ),
+      genders,
+      classes,
+      .gender_split = params$gender_split
+    ) |>
+  map(bar_mean_multiple_vertical, ymax = 12) |>
+  print_first_graph()
+
+```
+
+```{r bar-sehs-score-extra}
+print_rest_of_graphs(graphs)
+```
+
+\newpage
+
+```{r outtro, echo=FALSE, eval = TRUE, results='asis'}
+cat(knitr::knit_child("outtro.qmd", envir = environment(), quiet = TRUE))
+```
+

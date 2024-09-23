@@ -17,19 +17,23 @@ create_collapsed_summary <- function(
     classes,
     .censor = FALSE,
     .gender_split = FALSE) {
-  if (.gender_split) {
-    grouping_vars <- c("class", "gender")
-  } else {
-    grouping_vars <- c("class")
-  }
-  subgroups <- data |>
-    group_by(across(all_of(grouping_vars))) |>
-    mutate(success = {{ var }} %in% success) |>
-    summarise(
-      numerator = sum(success, na.rm = TRUE),
-      denom = n(),
-      .groups = "drop"
-    ) |>
+
+  subgroups <-
+    map(classes, \(concat_class) {
+      data |>
+        filter(class %in% concat_class) |>
+        group_by(gender, class) |>
+        mutate(
+          success = {{ var }} %in% success,
+          class = str_flatten(concat_class, collapse = ", ", last = " and ")
+          ) |>
+        summarise(
+          numerator = sum(success, na.rm = TRUE),
+          denom = n(),
+          .groups = "drop"
+        )
+    }) |>
+  reduce(bind_rows) |>
     arrange(class)
 
   all <- subgroups |>
@@ -42,7 +46,7 @@ create_collapsed_summary <- function(
 
   if (.gender_split) {
     joined_dat <- subgroups |>
-      filter(gender %in% genders, class %in% classes) |>
+      filter(gender %in% genders) |>
       bind_rows(all)
   } else {
     joined_dat <- all |>
@@ -78,17 +82,18 @@ create_full_summary <- function(
     .censor = FALSE,
     .gender_split = FALSE) {
   var <- enquo(var)
-  if (.gender_split) {
-    grouping_vars <- c("class", "gender")
-  } else {
-    grouping_vars <- c("class")
-  }
-  subgroups <- data |>
-    rename(answer = !!var) |>
-    group_by(across(all_of(c(grouping_vars, "answer")))) |>
-    summarise(numerator = n(), .groups = "drop") |>
-    add_count(across(all_of(grouping_vars)), name = "denom", wt = numerator) |>
-    filter(answer %in% levels) |>
+
+    subgroups <-
+    map(classes, \(concat_class) {
+      data |>
+        rename(answer = !!var) |>
+        filter(class %in% concat_class) |>
+        mutate(class = str_flatten(concat_class, collapse = ", ", last = " and ")) |>
+        summarise(numerator = n(), .by = c("gender", "answer", "class")) |>
+        add_count(across(c(gender, class)), name = "denom", wt = numerator) |>
+        filter(answer %in% levels)
+    }) |>
+    reduce(bind_rows) |>
     arrange(class)
 
   all <- subgroups |>
@@ -102,7 +107,7 @@ create_full_summary <- function(
 
   if (.gender_split) {
     joined_dat <- subgroups |>
-      filter(gender %in% genders, class %in% classes) |>
+      filter(gender %in% genders) |>
       bind_rows(all)
   } else {
     joined_dat <- all
@@ -129,7 +134,7 @@ create_full_summary <- function(
 bar_from_summary <- function(summary_data, hbsc_data = NULL) {
   hbsc_data_in <- tibble(
     gender = character(),
-    class = character(),
+    class = factor(levels = levels(summary_data$class)),
     hbsc_gender = character(),
     hbsc_class = character()
   )
@@ -220,7 +225,7 @@ table_from_summary <- function(summary_data) {
     mutate(prop = sprintf("%.0f", 100 * numerator / denom)) |>
     pivot_wider(id_cols = answer, names_from = c(class, gender), values_from = prop) |>
     rename(All = All_All, ` ` = answer) |>
-    rename_with(~ str_replace(.x, "(\\d)", "\\1\n%")) |>
+    rename_with(~ str_replace(.x, "(\\d)(?=_)", "\\1\n%")) |>
     flextable() |>
     separate_header() |>
     theme_vanilla() |>

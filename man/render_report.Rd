@@ -6,17 +6,21 @@
 \usage{
 render_report(
   survey_data,
+  survey_type,
   school_name = NA,
   local_authority_name = NA,
   term = NULL,
   number_invited = NULL,
-  output_location = getwd(),
+  output_location = NULL,
   gender_split = TRUE,
+  classes = NULL,
   filename = "primary_report.docx"
 )
 }
 \arguments{
 \item{survey_data}{A clean dataframe of survey results}
+
+\item{survey_type}{The report type - 'primary'/'secondary'}
 
 \item{school_name}{If a school report, the school's name}
 
@@ -29,6 +33,8 @@ render_report(
 \item{output_location}{Location of file output (defaults to working directory)}
 
 \item{gender_split}{To split report outputs by gender}
+
+\item{classes}{Vector or nested list of classes (clustered by combinations)}
 
 \item{filename}{Name of file to output}
 }
