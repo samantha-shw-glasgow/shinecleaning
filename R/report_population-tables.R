@@ -92,7 +92,7 @@ tab_categories <- function(data, inc_gender, inc_classes) {
 
   cat("\n")
 
-  inc_classes <- list_c(inc_classes)
+  inc_classes <- list_c(as.list(inc_classes))
 
   data |>
     filter(gender %in% inc_gender, class %in% inc_classes) |>
