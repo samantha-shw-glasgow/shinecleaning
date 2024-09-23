@@ -24,7 +24,7 @@ render_report <- function(survey_data,
                           classes = NULL,
                           filename = "primary_report.docx") {
 
-  if(survey_type == "primary") {
+  if (survey_type == "primary") {
     template <- "primary-reports/index.qmd"
   } else if (survey_type == "secondary") {
     template <- "secondary-reports/index.qmd"
@@ -67,7 +67,7 @@ render_report <- function(survey_data,
       gender_split = gender_split
     )
 
-  if(!is.null(classes)) params$classes <- classes
+  if (!is.null(classes)) params$classes <- classes
 
   rmarkdown::render(
     system.file("templates", template, package = "SHINEcleaning"),
