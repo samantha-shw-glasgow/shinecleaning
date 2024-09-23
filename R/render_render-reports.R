@@ -19,8 +19,9 @@ render_report <- function(survey_data,
                           local_authority_name = NA,
                           term = NULL,
                           number_invited = NULL,
-                          output_location = getwd(),
+                          output_location = NULL,
                           gender_split = TRUE,
+                          classes = NULL,
                           filename = "primary_report.docx") {
 
   if(survey_type == "primary") {
@@ -58,17 +59,21 @@ render_report <- function(survey_data,
 
   assign("input_data", survey_data, envir = render_env)
 
-  rmarkdown::render(
-    system.file("templates", template, package = "SHINEcleaning"),
-    output_dir = output_location,
-    envir = render_env,
-    output_file = filename,
-    params = list(
+  params <- list(
       is_la_report = is_la,
       school_name = report_name,
       term = term,
       number_invited = number_invited,
       gender_split = gender_split
     )
+
+  if(!is.null(classes)) params$classes <- classes
+
+  rmarkdown::render(
+    system.file("templates", template, package = "SHINEcleaning"),
+    output_dir = output_location,
+    envir = render_env,
+    output_file = filename,
+    params = params
   )
 }
