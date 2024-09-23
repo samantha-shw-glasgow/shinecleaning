@@ -318,7 +318,7 @@ sdq_score <- function(survey_data) {
           n_valid = rowSums(!is.na(!!score_vars))
         ) |>
         mutate(
-          corr_score = if_else(.data$n_valid >= 3, .data$score / .data$n_valid * 5, NA_real_),
+          corr_score = if_else(.data$n_valid >= 3, .data$score / .data$n_valid * 5, NA_real_) |> round(),
           score_cat = case_when(
             corr_score %in% sdq_cutoff[[name]][[1]] ~ "As expected",
             corr_score %in% sdq_cutoff[[name]][[2]] ~ "Borderline",
