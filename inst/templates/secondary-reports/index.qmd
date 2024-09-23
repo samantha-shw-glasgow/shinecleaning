@@ -233,9 +233,10 @@ of emotional functioning. Items are summed to create a score ranging
 from 0 to 100. A score of 50 or less on the WHO-5 indicates
 low mood (Figure \@ref(fig:bar-wellbeing)).
 
-<!-- The figure also includes the results from the HBSC -->
-<!-- Scotland national average. For more information on this scale, see page -->
-<!-- 6. -->
+Figure \@ref(fig:bar-risk-depression) shows the proportion of those that score 28 or less and are classified as 'at risk of depression'. Note that those at risk of depression are also included in the Figure \@ref(fig:bar-wellbeing), showing low mood.
+
+Both figures also include results from the HBSC Scotland national average. For more information on this scale, see page 6.
+
 
 ```{r bar-wellbeing, fig.cap="% of pupils with low mood"}
 input_data |>
@@ -250,14 +251,14 @@ input_data |>
 
 ```{r bar-risk-depression, fig.cap="% of pupils 'at risk of depression'"}
 
-input_data |> 
+input_data |>
   create_collapsed_summary(
     who_dep,
     TRUE,
     genders,
     classes,
     .gender_split = params$gender_split
-  ) |> 
+  ) |>
   bar_from_summary(
     get_hbsc_prop(classes, "dep", "who")
   )
@@ -267,34 +268,47 @@ input_data |>
 
 \newpage
 
-## Me and My Feelings
+## Strengths and Difficulties Questionnaire
 
-Pupils were asked to complete the Me and My Feelings questionnaire which
-measures emotional and behavioural difficulties. The answers to the
-sixteen questions are summed to produce scores and pupils classified
-into groups according to pre-determined cut-offs: \'as expected\' or
-\'elevated\'. Those in the elevated groups may experience difficulties
-in this area. For more information on this scale, see page 6.
+The Strength and Difficulties Questionnaire (SDQ) measures mental health
+difficulties in different areas: emotional symptoms, conduct,
+hyperactivity and peer relationships. In each area, the answers to
+questions are scored and pupils classified into groups, according to
+pre-determined cut-offs: as expected, borderline and difficulties. These
+fours areas are then summed to create a total score on the SDQ (Figure
+XXX) The SDQ also measures pro-social behaviour (Figure XXX). For more
+information on the SDQ, see page 7.
 
-```{r bar-mm-emotional, fig.cap="Pupils' emotional scores"}
-input_data |>
-  share_elevated(mme_cat,
-    .split = params$gender_split,
-    classes = classes,
-    genders = genders
-  ) |>
-  bar_share_elevated()
+```{r bar-cat-emot-cond-hyp-peer}
+
 ```
 
-```{r bar-mm-behavioural, fig.cap="Pupils' behavioural scores"}
-input_data |>
-  share_elevated(mmb_cat,
-    .split = params$gender_split,
+```{r bar-elevated-prosoc}
+
+input_data |> 
+  share_elevated(
+    ps_cat,
+    c("As expected", "Borderline", "Difficulties"),
     classes = classes,
     genders = genders
-  ) |>
+  ) |> 
   bar_share_elevated()
+
 ```
+
+```{r bar-elevated-sdq}
+
+input_data |> 
+  share_elevated(
+    sdq_total_cat,
+    c("As expected", "Borderline", "Difficulties"),
+    classes = classes,
+    genders = genders
+  ) |> 
+  bar_share_elevated()
+
+```
+
 
 \newpage
 
