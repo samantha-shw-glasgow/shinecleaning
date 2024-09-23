@@ -36,6 +36,7 @@ share_elevated_multiple <-
       arrange(gender, class, var) |>
       mutate(denom = sum(n), .by = c("gender", "class", "var")) |>
       mutate(prop = n / denom,
+             level = factor(level, levels = levels),
              censored = 0)
 
     if (.split) {
@@ -43,7 +44,7 @@ share_elevated_multiple <-
         map(classes, \(concat_class) {
           map(levels, \(level) {
             data |>
-              filter(class %in% concat_class) |>
+              filter(class %in% concat_class, gender %in% genders) |>
               pivot_longer(any_of(names(varlist)), names_to = "var", values_to = "val") |>
               filter(val == level) |>
               summarise(n = n(),
@@ -59,6 +60,7 @@ share_elevated_multiple <-
             arrange(gender, class, var) |>
             mutate(denom = sum(n), .by = c("gender", "class", "var")) |>
             mutate(prop = n / denom,
+                   level = factor(level, levels = levels),
                    censored = 0)
 
         })
@@ -70,4 +72,64 @@ share_elevated_multiple <-
     return(clean_dat)
   }
 
+#' Produce bar graph of multiple  % of sts with elevatved or expected scores
+#'
+#' @param graph_data The output of `share_elevated_multiple`.
+#'
+#' @return A ggplot2 graph
+#' @export
+#'
+bar_share_elevated_multiple <- function(graph_data) {
 
+  class <- unique(graph_data$class)
+  genders <- unique(graph_data$gender)
+
+  graph_dat <- graph_data |>
+    mutate(
+      x_lab = var,
+      bar_lab_main = if_else(
+        censored == 1,
+        "*",
+        scales::percent(prop, suffix = "%", accuracy = 1)
+      )
+    )
+
+  lab_length <- max(str_length(graph_dat$class))
+
+  gg_out <- ggplot(
+    data = graph_dat,
+    aes(x = x_lab, y = prop, fill = level)
+  ) +
+    geom_bar(stat = "identity", position = "stack") +
+    scale_fill_hbsc(name = "") +
+    scale_y_continuous("", labels = scales::percent, limits = c(0, 1)) +
+    geom_text(aes(label = bar_lab_main),
+              colour = "black",
+              position = position_stack(vjust = 0.5),
+              size = 4
+    ) +
+    coord_cartesian(clip = "off") +
+    theme(
+      legend.justification.right = "top",
+      plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
+      plot.caption = element_text(
+        hjust = 1,
+        size = 10,
+        face = "italic"
+      ),
+      axis.title.x = element_blank()
+    ) +
+    labs(caption = if_else(any(graph_dat$censored == 1),
+                           "* Numbers too low to show",
+                           ""
+    ),
+      title = paste(class, "pupils")
+    )
+
+  if (lab_length > 10) {
+    gg_out +
+      theme(axis.text.x = element_text(angle = 315, hjust = 0))
+  } else {
+    gg_out
+  }
+}

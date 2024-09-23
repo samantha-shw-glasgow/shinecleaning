@@ -32,6 +32,7 @@ test_that("share elevated - mupltiple variables", {
       arrange(gender, class, var) |>
       mutate(denom = sum(n), .by = c("gender", "class", "var")) |>
       mutate(prop = n / denom,
+             level = factor(level, levels = levels),
              censored = 0)
 
   })
@@ -50,6 +51,7 @@ test_that("share elevated - mupltiple variables", {
     arrange(gender, class, var) |>
     mutate(denom = sum(n), .by = c("gender", "class", "var")) |>
     mutate(prop = n / denom,
+           level = factor(level, levels = levels),
            censored = 0)
 
 
