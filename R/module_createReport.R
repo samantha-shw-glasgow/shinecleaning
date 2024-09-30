@@ -68,9 +68,7 @@ createReport_server <- function(id, data) {
             # For school reports only
             if (input$report_type %in% c("Primary", "Secondary")) {
               tagList(
-                if (length(school_ids()) > 1) {
-                  selectInput(ns("school_id"), "School ID", choices = school_ids())
-                },
+                selectInput(ns("school_id"), "School ID", choices = school_ids()),
                 textInput(ns("name"), "School name")
               )
             },
