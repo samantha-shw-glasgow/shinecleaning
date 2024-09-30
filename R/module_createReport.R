@@ -16,8 +16,8 @@ createReportUI <- function(id) {
     uiOutput(ns("report_warnings")),
     uiOutput(ns("report_ui")),
     br(),
-    shinyjs::disabled(downloadButton(ns("generate"), "Generate report"))
-    # verbatimTextOutput(ns('test'))
+    shinyjs::disabled(downloadButton(ns("generate"), "Generate report")),
+    verbatimTextOutput(ns('test'))
   )
 }
 
@@ -37,9 +37,9 @@ createReport_server <- function(id, data) {
       send_message <- make_send_message(session)
 
 
-      ## Prep
-      ## check if number of pupils is high enough for gender and class split options
+# Prep --------------------------------------------------------------------
 
+      ## check if number of pupils is high enough for gender and class split options
       additional_options <- reactive({
         if (!(input$report_type %in% c("School-level data", "Additional tables"))) {
           if (nrow(data()) < 10) {
@@ -52,12 +52,15 @@ createReport_server <- function(id, data) {
 
       ## get all school IDs
       school_ids <- reactive({
-        if (isTruthy(data)) {
+        if (isTruthy(data())) {
           unique(data()$`School ID code`)
         } else {
           NA
         }
       })
+
+
+# UI ----------------------------------------------------------------------
 
 
       ## update UI for report type
@@ -118,6 +121,11 @@ createReport_server <- function(id, data) {
         ui_options()
       })
 
+
+
+# Checks ------------------------------------------------------------------
+
+
       ## check for required variables
 
       ## var names
@@ -150,38 +158,6 @@ createReport_server <- function(id, data) {
         }
       })
 
-      ## filter by selected school IDs
-      data_filt <- reactive({
-        if (isTruthy(data())) {
-          if (input$report_type %in% c("Primary", "Secondary")) {
-            if (isTruthy(input$school_id)) {
-              data() %>% filter(`School ID code` == input$school_id)
-            } else {
-              data()
-            }
-          } else if (input$report_type %in% c(
-            "Primary cluster / Local Authority",
-            "Secondary cluster / Local Authority"
-          )) {
-            if (isTruthy(input$school_id) && !"All" %in% input$school_id) {
-              data() %>% filter(`School ID code` %in% input$school_id)
-            } else {
-              data()
-            }
-          } else if (input$report_type %in% c("School-level data", "Additional tables")) {
-            data()
-          }
-        }
-      })
-
-      # output$test <- renderPrint({
-      #   list(data = head(data_filt()),
-      #        local_authority_name = input$name,
-      #        number_invited = input$n_invited,
-      #        gender_split = input$split,
-      #        term = input$school_term)
-      # })
-
 
       ## disable download button if there are warnings using shinyjs
       observeEvent(check_vars(), ignoreNULL = F, {
@@ -194,6 +170,45 @@ createReport_server <- function(id, data) {
         }
       })
 
+
+# Filter data -------------------------------------------------------------
+
+
+      ## filter by selected school IDs
+      data_filt <- reactive({
+        if (isTruthy(data())) {
+          if (input$report_type %in% c("Primary", "Secondary")) {
+            if (isTruthy(input$school_id)) {
+              data() %>% filter(`School ID code` == input$school_id)
+            } else {
+              data()
+            }
+          } else if (input$report_type %in% c(
+            "Primary cluster / Local Authority",
+            "Secondary cluster / Local Authority")) {
+            if (isTruthy(input$school_id) && !"All" %in% input$school_id) {
+              data() %>% filter(`School ID code` %in% input$school_id)
+            } else {
+              data()
+            }
+          } else if (input$report_type %in% c("School-level data", "Additional tables")) {
+            data()
+          }
+        }
+      })
+#
+      # output$test <- renderPrint({
+      #   list(local_authority_name = input$name,
+      #        number_invited = input$n_invited,
+      #        gender_split = input$split,
+      #        term = input$school_term,
+      #        data = glimpse(data_filt()))
+      # })
+
+
+
+
+# Create report -----------------------------------------------------------
 
 
       ## create report
