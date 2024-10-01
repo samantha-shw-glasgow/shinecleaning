@@ -27,7 +27,7 @@ summary_mean_single_var <-
           data |>
             filter(gender %in% genders, class %in% concat_class) |>
             summarise(
-              mean_score = mean({{ var }}, na.rm = TRUE),
+              mean_score = quiet_means({{ var }}),
               class = str_flatten(concat_class, collapse = ", ", last = " and "),
               .by = c(gender)
             )
@@ -40,7 +40,7 @@ summary_mean_single_var <-
     all <- data |>
       mutate(class = "All", gender = if_else(.gender_split, "All", "All pupils")) |>
       summarise(
-        mean_score = mean({{ var }}, na.rm = TRUE),
+        mean_score = quiet_means({{ var }}),
         .by = c(class, gender)
       )
 
