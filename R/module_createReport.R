@@ -68,9 +68,7 @@ createReport_server <- function(id, data) {
             # For school reports only
             if (input$report_type %in% c("Primary", "Secondary")) {
               tagList(
-                if (length(school_ids()) > 1) {
-                  selectInput(ns("school_id"), "School ID", choices = school_ids())
-                },
+                selectInput(ns("school_id"), "School ID", choices = school_ids()),
                 textInput(ns("name"), "School name")
               )
             },
@@ -160,7 +158,7 @@ createReport_server <- function(id, data) {
       data_filt <- reactive({
         if (isTruthy(data())) {
           if (input$report_type %in% c("Primary", "Secondary")) {
-            if (isTruthy(input$school_id)) {
+            if (isTruthy(input$school_id) && !"All" %in% input$school_id) {
               data() %>% filter(`School ID code` == input$school_id)
             } else {
               data()
@@ -248,6 +246,8 @@ createReport_server <- function(id, data) {
           tryCatch(
             {
               if (input$report_type == "Primary") {
+                cat(glue::glue("Rendering {input$report_type} report"), "\n")
+                cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
                 render_report(data_filt(),
                   survey_type = "primary",
                   school_name = input$name,
@@ -259,6 +259,8 @@ createReport_server <- function(id, data) {
                 )
               }
               if (input$report_type == "Primary cluster / Local Authority") {
+                cat(glue::glue("Rendering {input$report_type} report"), "\n")
+                cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
                 render_report(data_filt(),
                   survey_type = "primary",
                   local_authority_name = input$name,
@@ -270,6 +272,8 @@ createReport_server <- function(id, data) {
                 )
               }
               if (input$report_type == "Secondary") {
+                cat(glue::glue("Rendering {input$report_type} report"), "\n")
+                cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
                 render_report(data_filt(),
                   survey_type = "secondary",
                   school_name = input$name,
@@ -285,6 +289,8 @@ createReport_server <- function(id, data) {
                 )
               }
               if (input$report_type == "Secondary cluster / Local Authority") {
+                cat(glue::glue("Rendering {input$report_type} report"), "\n")
+                cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
                 render_report(data_filt(),
                   survey_type = "secondary",
                   local_authority_name = input$name,
