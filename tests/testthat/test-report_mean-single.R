@@ -13,6 +13,42 @@ test_that("mean single summary works", {
     "S4", "Girls", 4,
     "S5", "Girls", 4,
     "S6", "Girls", 4
+  ) |>
+    mutate(score = as.character(score))
+
+  input_data_bad <- tibble::tribble(
+    ~class, ~gender, ~score,
+    "S1", "Boys", 1,
+    "S2", "Boys", 1,
+    "S3", "Boys", 1,
+    "S4", "Boys", 2,
+    "S5", "Boys", 2,
+    "S6", "Boys", 2,
+    "S1", "Girls", 3,
+    "S2", "Girls", 3,
+    "S3", "Girls", 3,
+    "S4", "Girls", 4,
+    "S5", "Girls", 4,
+    "S6", "Girls", 4,
+    "S6", "Girls", NA_integer_
+  ) |>
+    mutate(score = as.character(score))
+
+  input_data_pnts <- tibble::tribble(
+    ~class, ~gender, ~score,
+    "S1", "Boys", "1",
+    "S2", "Boys", "1",
+    "S3", "Boys", "1",
+    "S4", "Boys", "2",
+    "S5", "Boys", "2",
+    "S6", "Boys", "2",
+    "S1", "Girls", "3",
+    "S2", "Girls", "3",
+    "S3", "Girls", "3",
+    "S4", "Girls", "4",
+    "S5", "Girls", "4",
+    "S6", "Girls", "4",
+    "S6", "Girls", "Prefer not to say"
   )
 
   expected_twogroup <- tibble::tribble(
@@ -34,7 +70,27 @@ test_that("mean single summary works", {
       )
     )
 
+  result_twogroup_bad <- input_data_bad |>
+    summary_mean_single_var(
+      score,
+      classes = list(
+        c("S1", "S2", "S3"),
+        c("S4", "S5", "S6")
+      )
+    )
+
+  result_twogroup_pnts <- input_data_pnts |>
+    summary_mean_single_var(
+      score,
+      classes = list(
+        c("S1", "S2", "S3"),
+        c("S4", "S5", "S6")
+      )
+    )
+
   expect_equal(result_twogroup, expected_twogroup)
+  expect_equal(result_twogroup_bad, expected_twogroup)
+  expect_equal(result_twogroup_pnts, expected_twogroup)
 
   expected_sixgroup <- bind_rows(
     tibble::tribble(
@@ -43,9 +99,9 @@ test_that("mean single summary works", {
     ),
     input_data |> transmute(
       gender = gender,
-      mean_score = score,
+      mean_score = as.numeric(score),
       class = class,
-      bar_lab_main = sprintf("%.1f", score)
+      bar_lab_main = sprintf("%.1f", as.numeric(score))
     )
   ) |>
     mutate(class = factor(class, levels = c("S1", "S2", "S3", "S4", "S5", "S6", "All")))
