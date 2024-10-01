@@ -35,8 +35,7 @@ patterns. It can also be used to:
 -   Identify hidden or emerging issues, or groups at particular risk to
     facilitate the prioritisation & targeting of resources
 -   Shape your `r ifelse(params$is_la_report, "Local Authority", "school")` improvement plan`r ifelse(params$is_la_report, " and staff programme", "")`
--   Promote pupil voice and shared decision-making
-    `r ifelse(params$is_la_report, "as part of the whole-school approach strategy across the schools in the Local Authority", "")`
+-   Promote pupil voice and shared decision-making `r ifelse(params$is_la_report, "as part of the whole-school approach strategy across the schools in the Local Authority", "")`
 -   Support evidence-based action planning
 -   Design relevant health programmes and interventions
 -   Engage parents with pupil health concerns
