@@ -22,6 +22,7 @@ create_collapsed_summary <- function(
     map(classes, \(concat_class) {
       data |>
         filter(class %in% concat_class) |>
+        filter({{var}} != "Prefer not to say", !is.na({{var}})) |>
         group_by(gender, class) |>
         mutate(
           success = {{ var }} %in% success,
@@ -87,11 +88,11 @@ create_full_summary <- function(
     map(classes, \(concat_class) {
       data |>
         rename(answer = !!var) |>
+        filter(answer %in% levels) |>
         filter(class %in% concat_class) |>
         mutate(class = str_flatten(concat_class, collapse = ", ", last = " and ")) |>
         summarise(numerator = n(), .by = c("gender", "answer", "class")) |>
-        add_count(across(c(gender, class)), name = "denom", wt = numerator) |>
-        filter(answer %in% levels)
+        add_count(across(c(gender, class)), name = "denom", wt = numerator)
     }) |>
     reduce(bind_rows) |>
     arrange(class)
