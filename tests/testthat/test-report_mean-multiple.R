@@ -21,10 +21,10 @@ test_that("mean by multiple vars", {
   )
 
   expected <- list(tibble::tribble(
-    ~gender, ~class, ~denom, ~var, ~mean, ~censored, ~labels, ~bar_lab_main, ~bar_lab_cens,
-    "All pupils", "All", 1L, "var1", 1, 0, "Variable 1", "1.0", "",
-    "All pupils", "All", 1L, "var2", 2, 0, "Variable 2", "2.0", "",
-    "All pupils", "All", 1L, "var3", 3, 0, "Variable 3", "3.0", ""
+    ~gender, ~class, ~var, ~mean, ~denom, ~censored, ~labels, ~bar_lab_main, ~bar_lab_cens,
+    "All pupils", "All", "var1", 1, 1L, 0, "Variable 1", "1.0", "",
+    "All pupils", "All", "var2", 2, 1L, 0, "Variable 2", "2.0", "",
+    "All pupils", "All", "var3", 3, 1L, 0, "Variable 3", "3.0", ""
   ) |>
     mutate(labels = fct_inorder(labels)))
 
