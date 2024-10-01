@@ -7,6 +7,19 @@ test_that("mean by multiple vars", {
     var3 = 3
   )
 
+  input_data_bad <- bind_rows(
+    input_data,
+    tibble(class = "All", gender = "All")
+  )
+
+  input_data_pnts <- bind_rows(
+    input_data |> mutate(across(everything(), as.character)),
+    tibble(class = "All", gender = "All",
+           var1 = "Prefer not to say",
+           var2 = "Prefer not to say",
+           var3 = "Prefer not to say")
+  )
+
   expected <- list(tibble::tribble(
     ~gender, ~class, ~denom, ~var, ~mean, ~censored, ~labels, ~bar_lab_main, ~bar_lab_cens,
     "All pupils", "All", 1L, "var1", 1, 0, "Variable 1", "1.0", "",
@@ -27,5 +40,31 @@ test_that("mean by multiple vars", {
     .censor = FALSE
   )
 
+  result_bad <- summary_mean_multiple_vars(
+    input_data_bad,
+    list(
+      "var1" = "Variable 1",
+      "var2" = "Variable 2",
+      "var3" = "Variable 3"
+    ),
+    .gender_split = FALSE,
+    class = "All",
+    .censor = FALSE
+  )
+
+  result_pnts <- summary_mean_multiple_vars(
+    input_data_pnts,
+    list(
+      "var1" = "Variable 1",
+      "var2" = "Variable 2",
+      "var3" = "Variable 3"
+    ),
+    .gender_split = FALSE,
+    class = "All",
+    .censor = FALSE
+  )
+
   expect_equal(result, expected)
+  expect_equal(result_bad, expected)
+  expect_equal(result_pnts, expected)
 })
