@@ -113,6 +113,7 @@ bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
     theme(
       legend.justification.right = "top",
       legend.title = element_blank(),
+      legend.box.spacing = unit(c(0, 1.2, 0, 0), "cm"),
       plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
       plot.caption = element_text(
         hjust = 1,
@@ -123,10 +124,10 @@ bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
     scale_x_continuous(xlab, expand = expansion(add = 0)) +
     geom_text(
       aes(label = .data$bar_lab_main),
-      hjust = -0.5,
+      hjust = -0.3,
       colour = "black",
       position = position_dodge(width = 0.8),
-      size = if_else(length(genders) > 1, 2.5, 4)
+      size = if_else(length(genders) > 1, 2.5, 3.5)
     ) +
     coord_cartesian(xlim = c(0, xmax), clip = "off") +
     labs(

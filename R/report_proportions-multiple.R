@@ -124,6 +124,7 @@ bar_proportions_multiple <- function(summary_data) {
     theme(
       legend.justification.right = "top",
       legend.title = element_blank(),
+      legend.box.spacing = unit(c(0, 1.2, 0, 0), "cm"),
       plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
       plot.caption = element_text(
         hjust = 1,
@@ -139,10 +140,10 @@ bar_proportions_multiple <- function(summary_data) {
     ) +
     geom_text(
       aes(label = .data$bar_lab_main),
-      hjust = -0.5,
+      hjust = -0.3,
       colour = "black",
       position = position_dodge(width = 0.8),
-      size = if_else(length(genders) > 1, 2.5, 4)
+      size = if_else(length(genders) > 1, 2.5, 3.5)
     ) +
     coord_cartesian(clip = "off") +
     labs(
