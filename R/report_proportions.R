@@ -97,14 +97,12 @@ create_full_summary <- function(
     reduce(bind_rows) |>
     arrange(class)
 
-  all <- subgroups |>
-    summarise(
-      class = "All",
-      gender = "All",
-      numerator = sum(numerator),
-      .by = answer
-    ) |>
-    mutate(denom = sum(numerator))
+    all <- data |>
+      mutate(class = "All", gender = "All") |>
+      rename(answer = !!var) |>
+      filter(answer %in% levels) |>
+      summarise(numerator = n(), .by = c("gender", "answer", "class")) |>
+      add_count(across(c(gender, class)), name = "denom", wt = numerator)
 
   if (.gender_split) {
     joined_dat <- subgroups |>

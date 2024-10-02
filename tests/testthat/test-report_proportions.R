@@ -1,4 +1,4 @@
-input_data <- function(bad_val = NULL) {
+input_data <- function(bad_val = NULL, gender = "Girls", class = "S1") {
   out <- tibble::tribble(
     ~gender, ~class, ~health,
     "Girls", "S6", "Good",
@@ -26,7 +26,7 @@ input_data <- function(bad_val = NULL) {
   if (!is.null(bad_val)) {
     bind_rows(
       out,
-      tibble(gender = "Girls", class = "S1", health = bad_val)
+      tibble(gender = gender, class = class, health = bad_val)
     )
   } else {
     out
@@ -388,6 +388,86 @@ describe("full summary", {
                           .gender_split = TRUE
       )
     expect_equal(result, expected)
+
+  })
+
+  it("ignores missing class in all but 'All'", {
+    expected <- tibble::tribble(
+      ~class, ~gender,  ~answer,      ~numerator, ~denom,
+      "S1",   "Boys",   "Excellent",  1,          5,
+      "S1",   "Boys",   "Good",       2,          5,
+      "S1",   "Boys",   "Fair",       1,          5,
+      "S1",   "Boys",   "Poor",       1,          5,
+      "S1",   "Girls",  "Excellent",  1,          7,
+      "S1",   "Girls",  "Good",       1,          7,
+      "S1",   "Girls",  "Fair",       1,          7,
+      "S1",   "Girls",  "Poor",       4,          7,
+      # "S6",   "Boys",   "Excellent",  0,          3,
+      "S6",   "Boys",   "Good",       1,          3,
+      "S6",   "Boys",   "Fair",       1,          3,
+      "S6",   "Boys",   "Poor",       1,          3,
+      "S6",   "Girls",  "Excellent",  1,          5,
+      "S6",   "Girls",  "Good",       2,          5,
+      "S6",   "Girls",  "Fair",       1,          5,
+      "S6",   "Girls",  "Poor",       1,          5,
+      "All",  "All",    "Excellent",  3,          21,
+      "All",  "All",    "Good",       6,          21,
+      "All",  "All",    "Fair",       4,          21,
+      "All",  "All",    "Poor",       8,          21,
+    ) |>
+      mutate(
+        class = forcats::fct_inorder(class),
+        answer = factor(answer, levels = c("Poor", "Fair", "Good", "Excellent"))
+      )
+    result <-
+      create_full_summary(input_data("Poor", "Girls", "Prefer not to say"),
+                          health,
+                          levels = c("Poor", "Fair", "Good", "Excellent"),
+                          genders, classes,
+                          .gender_split = TRUE
+      )
+    expect_equal(result, expected)
+
+
+  })
+
+  it("ignores missing gender in all but 'All'", {
+    expected <- tibble::tribble(
+      ~class, ~gender,  ~answer,      ~numerator, ~denom,
+      "S1",   "Boys",   "Excellent",  1,          5,
+      "S1",   "Boys",   "Good",       2,          5,
+      "S1",   "Boys",   "Fair",       1,          5,
+      "S1",   "Boys",   "Poor",       1,          5,
+      "S1",   "Girls",  "Excellent",  1,          7,
+      "S1",   "Girls",  "Good",       1,          7,
+      "S1",   "Girls",  "Fair",       1,          7,
+      "S1",   "Girls",  "Poor",       4,          7,
+      # "S6",   "Boys",   "Excellent",  0,          3,
+      "S6",   "Boys",   "Good",       1,          3,
+      "S6",   "Boys",   "Fair",       1,          3,
+      "S6",   "Boys",   "Poor",       1,          3,
+      "S6",   "Girls",  "Excellent",  1,          5,
+      "S6",   "Girls",  "Good",       2,          5,
+      "S6",   "Girls",  "Fair",       1,          5,
+      "S6",   "Girls",  "Poor",       1,          5,
+      "All",  "All",    "Excellent",  3,          21,
+      "All",  "All",    "Good",       6,          21,
+      "All",  "All",    "Fair",       4,          21,
+      "All",  "All",    "Poor",       8,          21,
+    ) |>
+      mutate(
+        class = forcats::fct_inorder(class),
+        answer = factor(answer, levels = c("Poor", "Fair", "Good", "Excellent"))
+      )
+    result <-
+      create_full_summary(input_data("Poor", "Prefer not to say", "S1"),
+                          health,
+                          levels = c("Poor", "Fair", "Good", "Excellent"),
+                          genders, classes,
+                          .gender_split = TRUE
+      )
+    expect_equal(result, expected)
+
 
   })
 })
