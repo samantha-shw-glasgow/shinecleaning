@@ -15,13 +15,13 @@ create_collapsed_summary <- function(
     success,
     genders,
     classes,
-    .censor = FALSE,
+    .censor = TRUE,
     .gender_split = FALSE) {
 
   subgroups <-
     map(classes, \(concat_class) {
       data |>
-        filter(class %in% concat_class) |>
+        filter(class %in% concat_class, gender %in% genders) |>
         filter({{var}} != "Prefer not to say", !is.na({{var}})) |>
         group_by(gender, class) |>
         mutate(
@@ -37,12 +37,17 @@ create_collapsed_summary <- function(
   reduce(bind_rows) |>
     arrange(class)
 
-  all <- subgroups |>
+  all <- data |>
+    filter({{var}} != "Prefer not to say", !is.na({{var}})) |>
+    mutate(class = "All", gender = "All") |>
+    group_by(gender, class) |>
+    mutate(
+      success = {{ var }} %in% success
+    ) |>
     summarise(
-      class = "All",
-      gender = "All",
-      numerator = sum(numerator),
-      denom = sum(denom)
+      numerator = sum(success, na.rm = TRUE),
+      denom = n(),
+      .groups = "drop"
     )
 
   if (.gender_split) {
@@ -55,12 +60,12 @@ create_collapsed_summary <- function(
   }
 
   joined_dat |>
-    transmute(
+    mutate(
       class = forcats::fct_inorder(class),
-      gender = replace_na(gender, "All"),
-      numerator,
-      denom
-    )
+      censored = if_else(.data$numerator < 3 &
+                           .censor, 1, 0)
+    ) |>
+    relocate(gender, .after = class)
 }
 
 #' Full summary counts across all categories

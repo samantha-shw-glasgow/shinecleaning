@@ -64,10 +64,10 @@ classes_s2 <- list(
 describe("collapsed summary", {
   it("works without censoring and without gender split", {
     expected <- tibble::tribble(
-      ~class, ~gender, ~numerator, ~denom,
-      # "S1",   "All",    5,          12,
-      # "S6",   "All",    4,          8,
-      "All", "All pupils", 9, 20,
+      ~class, ~gender, ~numerator, ~denom, ~censored,
+      # "S1",   "All",    5,          12, 0,
+      # "S6",   "All",    4,          8, 0,
+      "All", "All pupils", 9, 20, 0
     ) |>
       mutate(class = forcats::fct_inorder(class))
     result <- create_collapsed_summary(
@@ -82,12 +82,12 @@ describe("collapsed summary", {
 
   it("works without censoring and with gender split", {
     expected <- tibble::tribble(
-      ~class, ~gender,  ~numerator, ~denom,
-      "S1",   "Boys",   3,          5,
-      "S1",   "Girls",  2,          7,
-      "S6",   "Boys",   1,          3,
-      "S6",   "Girls",  3,          5,
-      "All",  "All",    9,          20,
+      ~class, ~gender,  ~numerator, ~denom, ~censored,
+      "S1",   "Boys",   3,          5, 0,
+      "S1",   "Girls",  2,          7, 0,
+      "S6",   "Boys",   1,          3, 0,
+      "S6",   "Girls",  3,          5, 0,
+      "All",  "All",    9,          20, 0,
     ) |>
       mutate(class = forcats::fct_inorder(class))
     result <- create_collapsed_summary(
@@ -95,19 +95,19 @@ describe("collapsed summary", {
       health,
       c("Excellent", "Good"),
       genders, classes,
-      .gender_split = TRUE
+      .gender_split = TRUE, .censor = FALSE
     )
     expect_equal(result, expected)
   })
 
   it("Ignores NA values", {
     expected <- tibble::tribble(
-      ~class, ~gender,  ~numerator, ~denom,
-      "S1",   "Boys",   3,          5,
-      "S1",   "Girls",  2,          7,
-      "S6",   "Boys",   1,          3,
-      "S6",   "Girls",  3,          5,
-      "All",  "All",    9,          20,
+      ~class, ~gender,  ~numerator, ~denom, ~censored,
+      "S1",   "Boys",   3,          5, 0,
+      "S1",   "Girls",  2,          7, 0,
+      "S6",   "Boys",   1,          3, 0,
+      "S6",   "Girls",  3,          5, 0,
+      "All",  "All",    9,          20, 0,
     ) |>
       mutate(class = forcats::fct_inorder(class))
     result <- create_collapsed_summary(
@@ -115,19 +115,19 @@ describe("collapsed summary", {
       health,
       c("Excellent", "Good"),
       genders, classes,
-      .gender_split = TRUE
+      .gender_split = TRUE, .censor = FALSE
     )
     expect_equal(result, expected)
   })
 
   it("Ignores pnts values", {
     expected <- tibble::tribble(
-      ~class, ~gender,  ~numerator, ~denom,
-      "S1",   "Boys",   3,          5,
-      "S1",   "Girls",  2,          7,
-      "S6",   "Boys",   1,          3,
-      "S6",   "Girls",  3,          5,
-      "All",  "All",    9,          20,
+      ~class, ~gender,  ~numerator, ~denom, ~censored,
+      "S1",   "Boys",   3,          5, 0,
+      "S1",   "Girls",  2,          7, 0,
+      "S6",   "Boys",   1,          3, 0,
+      "S6",   "Girls",  3,          5, 0,
+      "All",  "All",    9,          20, 0,
     ) |>
       mutate(class = forcats::fct_inorder(class))
     result <- create_collapsed_summary(
@@ -135,7 +135,7 @@ describe("collapsed summary", {
       health,
       c("Excellent", "Good"),
       genders, classes,
-      .gender_split = TRUE
+      .gender_split = TRUE, .censor = FALSE
     )
     expect_equal(result, expected)
   })
@@ -158,7 +158,8 @@ describe("collapsed summary", {
         ), sum)) |> mutate(gender = "All", class = "All") |> bind_rows(d, x = _)
       )() |>
       mutate(
-        class = forcats::fct_inorder(class)
+        class = forcats::fct_inorder(class),
+        censored = 0
       )
 
     result <- create_collapsed_summary(
@@ -166,7 +167,7 @@ describe("collapsed summary", {
       health,
       c("Excellent", "Good"),
       genders, classes_s2,
-      .gender_split = TRUE
+      .gender_split = TRUE, .censor = FALSE
     )
 
     expect_equal(result, expected)
@@ -238,7 +239,7 @@ describe("full summary", {
         health,
         levels = c("Poor", "Fair", "Good", "Excellent"),
         genders, classes,
-        .gender_split = TRUE
+        .gender_split = TRUE, .censor = FALSE
       )
     expect_equal(result, expected)
   })
@@ -270,7 +271,7 @@ describe("full summary", {
       health,
       levels = c("Poor", "Fair", "Good", "Excellent"),
       genders, classes_s2,
-      .gender_split = TRUE
+      .gender_split = TRUE, .censor = FALSE
     )
 
     expect_equal(result, expected)
@@ -304,7 +305,7 @@ describe("full summary", {
       health,
       levels = c("Poor", "Fair", "Good", "Excellent"),
       genders, classes_s2,
-      .gender_split = TRUE
+      .gender_split = TRUE, .censor = FALSE
     )
 
     expect_equal(result, expected)
@@ -345,7 +346,7 @@ describe("full summary", {
                           health,
                           levels = c("Poor", "Fair", "Good", "Excellent"),
                           genders, classes,
-                          .gender_split = TRUE
+                          .gender_split = TRUE, .censor = FALSE
       )
     expect_equal(result, expected)
 
@@ -385,7 +386,7 @@ describe("full summary", {
                           health,
                           levels = c("Poor", "Fair", "Good", "Excellent"),
                           genders, classes,
-                          .gender_split = TRUE
+                          .gender_split = TRUE, .censor = FALSE
       )
     expect_equal(result, expected)
 
@@ -424,7 +425,7 @@ describe("full summary", {
                           health,
                           levels = c("Poor", "Fair", "Good", "Excellent"),
                           genders, classes,
-                          .gender_split = TRUE
+                          .gender_split = TRUE, .censor = FALSE
       )
     expect_equal(result, expected)
 
@@ -464,7 +465,7 @@ describe("full summary", {
                           health,
                           levels = c("Poor", "Fair", "Good", "Excellent"),
                           genders, classes,
-                          .gender_split = TRUE
+                          .gender_split = TRUE, .censor = FALSE
       )
     expect_equal(result, expected)
 
