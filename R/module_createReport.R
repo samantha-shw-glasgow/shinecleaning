@@ -15,9 +15,9 @@ createReportUI <- function(id) {
     ),
     uiOutput(ns("report_warnings")),
     uiOutput(ns("report_ui")),
+    uiOutput(ns("extra_warnings")),
     br(),
     shinyjs::disabled(downloadButton(ns("generate"), "Generate report"))
-    # verbatimTextOutput(ns('test'))
   )
 }
 
@@ -37,27 +37,22 @@ createReport_server <- function(id, data) {
       send_message <- make_send_message(session)
 
 
-      ## Prep
+# Prep --------------------------------------------------------------------
+
       ## check if number of pupils is high enough for gender and class split options
 
-      additional_options <- reactive({
-        if (!(input$report_type %in% c("School-level data", "Additional tables"))) {
-          if (nrow(data()) < 10) {
-            FALSE
-          } else {
-            TRUE
-          }
-        }
-      })
 
       ## get all school IDs
       school_ids <- reactive({
-        if (isTruthy(data)) {
+        if (isTruthy(data())) {
           unique(data()$`School ID code`)
         } else {
           NA
         }
       })
+
+
+# UI ----------------------------------------------------------------------
 
 
       ## update UI for report type
@@ -72,9 +67,7 @@ createReport_server <- function(id, data) {
             # For school reports only
             if (input$report_type %in% c("Primary", "Secondary")) {
               tagList(
-                if (length(school_ids()) > 1) {
-                  selectInput(ns("school_id"), "School ID", choices = school_ids())
-                },
+                selectInput(ns("school_id"), "School ID", choices = school_ids()),
                 textInput(ns("name"), "School name")
               )
             },
@@ -94,21 +87,10 @@ createReport_server <- function(id, data) {
             },
             # For all reports
             textInput(ns("school_term"), "Term of survey"),
-            numericInput(ns("n_invited"), "Number of invited students", value = NA),
-            if (isTRUE(additional_options())) {
-              bslib::input_switch(ns("split"), "Split by gender and class", value = T)
-            },
-            if (isFALSE(additional_options())) {
-              tagList(
-                shinyjs::disabled(
-                  bslib::input_switch(ns("split"),
-                    "Split by gender and class",
-                    value = F
-                  )
-                ),
-                make_upload_warning("Not enough pupils to split by class / gender", "1")
-              )
-            }
+            numericInput(ns("n_invited"),
+                         "Number of invited students", value = NA),
+            bslib::input_switch(ns("split"),
+                                "Split by gender and class", value = T),
           )
         }
       })
@@ -117,6 +99,11 @@ createReport_server <- function(id, data) {
       output$report_ui <- renderUI({
         ui_options()
       })
+
+
+
+# pre checks ------------------------------------------------------------------
+
 
       ## check for required variables
 
@@ -150,38 +137,6 @@ createReport_server <- function(id, data) {
         }
       })
 
-      ## filter by selected school IDs
-      data_filt <- reactive({
-        if (isTruthy(data())) {
-          if (input$report_type %in% c("Primary", "Secondary")) {
-            if (isTruthy(input$school_id)) {
-              data() %>% filter(`School ID code` == input$school_id)
-            } else {
-              data()
-            }
-          } else if (input$report_type %in% c(
-            "Primary cluster / Local Authority",
-            "Secondary cluster / Local Authority"
-          )) {
-            if (isTruthy(input$school_id) && !"All" %in% input$school_id) {
-              data() %>% filter(`School ID code` %in% input$school_id)
-            } else {
-              data()
-            }
-          } else if (input$report_type %in% c("School-level data", "Additional tables")) {
-            data()
-          }
-        }
-      })
-
-      # output$test <- renderPrint({
-      #   list(data = head(data_filt()),
-      #        local_authority_name = input$name,
-      #        number_invited = input$n_invited,
-      #        gender_split = input$split,
-      #        term = input$school_term)
-      # })
-
 
       ## disable download button if there are warnings using shinyjs
       observeEvent(check_vars(), ignoreNULL = F, {
@@ -194,6 +149,76 @@ createReport_server <- function(id, data) {
         }
       })
 
+
+# Filter data -------------------------------------------------------------
+
+
+      ## filter by selected school IDs
+      data_filt <- reactive({
+        if (isTruthy(data())) {
+          if (input$report_type %in% c("Primary", "Secondary")) {
+            if (isTruthy(input$school_id) && !"All" %in% input$school_id) {
+              data() %>% filter(`School ID code` == input$school_id)
+            } else {
+              data()
+            }
+          } else if (input$report_type %in% c(
+            "Primary cluster / Local Authority",
+            "Secondary cluster / Local Authority")) {
+            if (isTruthy(input$school_id) && !"All" %in% input$school_id) {
+              data() %>% filter(`School ID code` %in% input$school_id)
+            } else {
+              data()
+            }
+          } else if (input$report_type %in% c("School-level data", "Additional tables")) {
+            data()
+          }
+        }
+      })
+
+
+# post checks -------------------------------------------------------------
+
+      ## disable gender split switch if there are insuffient cases
+
+      gender_split <- reactive({
+        if (!(input$report_type %in% c("School-level data", "Additional tables"))) {
+          if (nrow(data_filt()) < 10) {
+            FALSE
+          } else {
+            TRUE
+          }
+        }
+      })
+
+      observeEvent({
+        gender_split()
+        input$report_type
+        }, {
+        if (isFALSE(gender_split())) {
+          bslib::update_switch("split", value = FALSE)
+          shinyjs::disable("split")
+        }
+
+        if (isTRUE(gender_split())) {
+          shinyjs::enable("split")
+          bslib::update_switch("split", value = TRUE)
+        }
+
+      })
+
+
+      output$extra_warnings <- renderUI({
+        if (isFALSE(gender_split())) {
+          tagList(
+            make_upload_warning("Too few responses to split by gender & class", 1)
+          )
+        }
+      })
+
+
+
+# Create report -----------------------------------------------------------
 
 
       ## create report
@@ -209,6 +234,8 @@ createReport_server <- function(id, data) {
           tryCatch(
             {
               if (input$report_type == "Primary") {
+                cat(glue::glue("Rendering {input$report_type} report"), "\n")
+                cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
                 render_report(data_filt(),
                   survey_type = "primary",
                   school_name = input$name,
@@ -220,6 +247,8 @@ createReport_server <- function(id, data) {
                 )
               }
               if (input$report_type == "Primary cluster / Local Authority") {
+                cat(glue::glue("Rendering {input$report_type} report"), "\n")
+                cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
                 render_report(data_filt(),
                   survey_type = "primary",
                   local_authority_name = input$name,
@@ -231,6 +260,8 @@ createReport_server <- function(id, data) {
                 )
               }
               if (input$report_type == "Secondary") {
+                cat(glue::glue("Rendering {input$report_type} report"), "\n")
+                cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
                 render_report(data_filt(),
                   survey_type = "secondary",
                   school_name = input$name,
@@ -246,6 +277,8 @@ createReport_server <- function(id, data) {
                 )
               }
               if (input$report_type == "Secondary cluster / Local Authority") {
+                cat(glue::glue("Rendering {input$report_type} report"), "\n")
+                cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
                 render_report(data_filt(),
                   survey_type = "secondary",
                   local_authority_name = input$name,
