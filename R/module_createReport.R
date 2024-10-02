@@ -17,8 +17,7 @@ createReportUI <- function(id) {
     uiOutput(ns("report_ui")),
     uiOutput(ns("extra_warnings")),
     br(),
-    shinyjs::disabled(downloadButton(ns("generate"), "Generate report")),
-    verbatimTextOutput(ns('test'))
+    shinyjs::disabled(downloadButton(ns("generate"), "Generate report"))
   )
 }
 
@@ -196,12 +195,12 @@ createReport_server <- function(id, data) {
         gender_split()
         input$report_type
         }, {
-        if(isFALSE(gender_split())){
+        if (isFALSE(gender_split())) {
           bslib::update_switch("split", value = FALSE)
           shinyjs::disable("split")
         }
 
-        if(isTRUE(gender_split())){
+        if (isTRUE(gender_split())) {
           shinyjs::enable("split")
           bslib::update_switch("split", value = TRUE)
         }
@@ -216,17 +215,6 @@ createReport_server <- function(id, data) {
           )
         }
       })
-
-
-      #
-      # output$test <- renderPrint({
-      #   list(local_authority_name = input$name,
-      #        number_invited = input$n_invited,
-      #        gender_split = input$split,
-      #        term = input$school_term,
-      #        data = glimpse(data_filt()))
-      # })
-
 
 
 
