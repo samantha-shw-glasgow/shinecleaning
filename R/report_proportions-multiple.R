@@ -106,7 +106,7 @@ bar_proportions_multiple <- function(summary_data) {
         group = .data$gender
       )
     ) +
-    geom_bar_t(aes(alpha = factor(.data$censored)),
+    geom_bar_t(aes(alpha = .data$censored),
       stat = "identity",
       position = position_dodge(width = 0.7)
     ) +

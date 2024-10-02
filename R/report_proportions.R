@@ -152,20 +152,30 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
         gender = str_extract(gender, "^\\w*"),
         class = factor(class, levels = levels(summary_data$class))
       ) |>
-      select(class, gender, hbsc_gender, hbsc_prop)
+      select(class, gender, hbsc_gender, hbsc_prop) |>
+      unique()
   }
 
   summary_data |>
-    mutate(prop = numerator / denom) |>
+    mutate(
+      prop = if_else(.data$censored == 1, 0.05, numerator / denom),
+      censored = factor(censored, levels = c("1", "0")),
+      bar_lab_main = if_else(
+        .data$censored == 1,
+        "*",
+        scales::percent(.data$prop, suffix = "%", accuracy = 1)
+      )
+    ) |>
     left_join(hbsc_data_in, by = join_by(class, gender)) |>
-    ggplot() +
-    aes(
-      x = class,
-      y = prop,
-      fill = gender,
-      shape = hbsc_gender
-    ) +
-    geom_col(position = "dodge", size = 0) +
+    ggplot(aes(
+      x = .data$class,
+      y = .data$prop,
+      fill = .data$gender,
+      linetype = .data$censored,
+      alpha = .data$censored,
+      shape = .data$hbsc_gender
+    )) +
+    geom_bar(position = "dodge", stat = "identity") +
     {
       if (!is.null(hbsc_data)) {
         geom_point(
@@ -190,6 +200,11 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
         )
       )
     ) +
+    scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
+    scale_linetype_manual(
+      values = c("1" = "dashed", "0" = "blank"),
+      guide = guide_none()
+    ) +
     scale_fill_hbsc(
       "",
       aesthetics = c("colour", "fill"),
@@ -200,10 +215,7 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
     xlab("") +
     scale_y_continuous("%", labels = scales::percent, expand = expansion()) +
     geom_text(
-      aes(label = scales::percent(
-        .data$prop,
-        suffix = "%", accuracy = 1
-      )),
+      aes(label = .data$bar_lab_main),
       color = "black",
       position = position_dodge(0.9),
       vjust = -0.5,
@@ -215,7 +227,8 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
       legend.key = element_blank(),
       legend.box.background = element_blank()
     ) +
-    coord_cartesian(ylim = c(0, 1), clip = "off")
+    coord_cartesian(ylim = c(0, 1), clip = "off") +
+    labs(caption = if_else(any(summary_data$censored == 1), "* Numbers too low to show", ""),)
 }
 
 #' A table of percentages from summary data
