@@ -30,7 +30,9 @@ summary_mean_multiple_vars <-
             filter(gender %in% genders, class %in% concat_class) |>
             select(gender, class, !!!names(varslist)) |>
             mutate(class = str_flatten(concat_class, collapse = ", ", last = " and ")) |>
-            summarise(across(everything(), quiet_means), .by = c("gender", "class")) |>
+            summarise(across(everything(), list(
+              mean = quiet_means, denom = ~how_many_valid(valid_numbers(.x))
+            ), .names = "{.col}__{.fn}"), .by = c("gender", "class")) |>
             arrange(gender)
         })
     }
@@ -38,18 +40,21 @@ summary_mean_multiple_vars <-
     all <- data |>
       mutate(class = "All", gender = if_else(.gender_split, "All", "All pupils")) |>
       select(gender, class, !!!names(varslist)) |>
-      summarise(across(everything(), quiet_means), .by = c("gender", "class"))
+      summarise(across(everything(), list(
+        mean = quiet_means, denom = ~how_many_valid(valid_numbers(.x))
+      ), .names = "{.col}__{.fn}"), .by = c("gender", "class"))
 
 
     c(subgroups, list(all)) |>
       compact() |>
       map(\(class_data) {
         class_data |>
-          tidyr::pivot_longer(-c(gender, class),
-            names_to = "var",
-            values_to = "mean"
-          ) |>
-          mutate(denom = sum(!is.na(mean)), .by = c("var", "gender", "class")) |>
+        tidyr::pivot_longer(-c(gender, class),
+                            names_to = c("var", "x"),
+                            names_sep = "__",
+                            values_to = "n"
+        ) |>
+          tidyr::pivot_wider(names_from = x, values_from = n) |>
           rowwise() |>
           mutate(
             censored = if_else(.data$denom < 3 & .censor, 1, 0),

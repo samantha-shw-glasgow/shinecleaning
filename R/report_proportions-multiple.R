@@ -33,7 +33,8 @@ summary_proportions_multiple <-
               across(everything(), success),
               ) |>
             summarise(across(everything(), list(n = ~sum(.x, na.rm = TRUE),
-                                                denom = ~sum(!is.na(.x)))),
+                                                denom = how_many_valid),
+                             .names = "{.col}__{.fn}"),
               .groups = "drop"
             ) |>
             arrange(gender)
@@ -49,10 +50,10 @@ summary_proportions_multiple <-
         across(everything(), success),
         ) |>
       summarise(across(everything(), list(n = ~sum(.x, na.rm = TRUE),
-                                          denom = ~sum(!is.na(.x)))),
+                                          denom = how_many_valid),
+                       .names = "{.col}__{.fn}"),
                 .groups = "drop"
       )
-
 
     c(subgroups, list(all)) |>
       compact() |>
@@ -60,7 +61,7 @@ summary_proportions_multiple <-
         class_data |>
           tidyr::pivot_longer(-c(gender, class),
             names_to = c("var", "x"),
-            names_sep = "_",
+            names_sep = "__",
             values_to = "n"
           ) |>
           tidyr::pivot_wider(names_from = x, values_from = n) |>
