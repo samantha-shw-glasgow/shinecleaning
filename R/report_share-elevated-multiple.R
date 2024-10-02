@@ -17,7 +17,7 @@ share_elevated_multiple <-
            .split = TRUE,
            .censor = TRUE,
            classes = "All",
-           genders = c("Boy", "Girl")) {
+           genders = c("Boys", "Girls")) {
 
 
 
