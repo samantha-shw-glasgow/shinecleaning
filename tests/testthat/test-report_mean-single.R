@@ -51,9 +51,53 @@ test_that("mean single summary works", {
     "S6", "Girls", "Prefer not to say"
   )
 
+  input_data_gender_pnts <- tibble::tribble(
+    ~class, ~gender, ~score,
+    "S1", "Boys", "1",
+    "S2", "Boys", "1",
+    "S3", "Boys", "1",
+    "S4", "Boys", "2",
+    "S5", "Boys", "2",
+    "S6", "Boys", "2",
+    "S1", "Girls", "3",
+    "S2", "Girls", "3",
+    "S3", "Girls", "3",
+    "S4", "Girls", "4",
+    "S5", "Girls", "4",
+    "S6", "Girls", "4",
+    "S6", "Prefer not to say", "4"
+  )
+
+  input_data_class_na <- tibble::tribble(
+    ~class, ~gender, ~score,
+    "S1", "Boys", "1",
+    "S2", "Boys", "1",
+    "S3", "Boys", "1",
+    "S4", "Boys", "2",
+    "S5", "Boys", "2",
+    "S6", "Boys", "2",
+    "S1", "Girls", "3",
+    "S2", "Girls", "3",
+    "S3", "Girls", "3",
+    "S4", "Girls", "4",
+    "S5", "Girls", "4",
+    "S6", "Girls", "4",
+    NA_character_, "Girls", "4"
+  )
+
   expected_twogroup <- tibble::tribble(
     ~gender, ~mean_score, ~class, ~bar_lab_main,
     "All", 2.5, "All", "2.5",
+    "Boys", 1.0, "S1, S2 and S3", "1.0",
+    "Boys", 2.0, "S4, S5 and S6", "2.0",
+    "Girls", 3.0, "S1, S2 and S3", "3.0",
+    "Girls", 4.0, "S4, S5 and S6", "4.0",
+  ) |>
+    mutate(class = factor(class, levels = c("S1, S2 and S3", "S4, S5 and S6", "All")))
+
+  expected_twogroup_one_nd <- tibble::tribble(
+    ~gender, ~mean_score, ~class, ~bar_lab_main,
+    "All", quiet_means(input_data_gender_pnts$score), "All", "2.6",
     "Boys", 1.0, "S1, S2 and S3", "1.0",
     "Boys", 2.0, "S4, S5 and S6", "2.0",
     "Girls", 3.0, "S1, S2 and S3", "3.0",
@@ -88,9 +132,29 @@ test_that("mean single summary works", {
       )
     )
 
+  result_twogroup_gender_pnts <- input_data_gender_pnts |>
+    summary_mean_single_var(
+      score,
+      classes = list(
+        c("S1", "S2", "S3"),
+        c("S4", "S5", "S6")
+      )
+    )
+
+  result_twogroup_class_na <- input_data_class_na |>
+    summary_mean_single_var(
+      score,
+      classes = list(
+        c("S1", "S2", "S3"),
+        c("S4", "S5", "S6")
+      )
+    )
+
   expect_equal(result_twogroup, expected_twogroup)
   expect_equal(result_twogroup_bad, expected_twogroup)
   expect_equal(result_twogroup_pnts, expected_twogroup)
+  expect_equal(result_twogroup_gender_pnts, expected_twogroup_one_nd)
+  expect_equal(result_twogroup_class_na, expected_twogroup_one_nd)
 
   expected_sixgroup <- bind_rows(
     tibble::tribble(
