@@ -28,9 +28,12 @@ summary_proportions_multiple <-
             select(gender, class, !!!names(varslist)) |>
             mutate(class = str_flatten(concat_class, collapse = ", ", last = " and ")) |>
             group_by(gender, class) |>
-            mutate(across(everything(), success)) |>
-            summarise(across(everything(), sum),
-              denom = n(),
+            mutate(
+              across(everything(), ~na_if(.x, "Prefer not to say")),
+              across(everything(), success),
+              ) |>
+            summarise(across(everything(), list(n = ~sum(.x, na.rm = TRUE),
+                                                denom = ~sum(!is.na(.x)))),
               .groups = "drop"
             ) |>
             arrange(gender)
@@ -41,10 +44,13 @@ summary_proportions_multiple <-
       mutate(class = "All", gender = if_else(.gender_split, "All", "All pupils")) |>
       select(gender, class, !!!names(varslist)) |>
       group_by(gender, class) |>
-      mutate(across(everything(), success)) |>
-      summarise(across(everything(), sum),
-        denom = n(),
-        .groups = "drop"
+      mutate(
+        across(everything(), ~na_if(.x, "Prefer not to say")),
+        across(everything(), success),
+        ) |>
+      summarise(across(everything(), list(n = ~sum(.x, na.rm = TRUE),
+                                          denom = ~sum(!is.na(.x)))),
+                .groups = "drop"
       )
 
 
@@ -52,10 +58,13 @@ summary_proportions_multiple <-
       compact() |>
       map(\(class_data) {
         class_data |>
-          tidyr::pivot_longer(-c(gender, class, denom),
-            names_to = "var",
+          tidyr::pivot_longer(-c(gender, class),
+            names_to = c("var", "x"),
+            names_sep = "_",
             values_to = "n"
           ) |>
+          tidyr::pivot_wider(names_from = x, values_from = n) |>
+          dplyr::relocate(denom, var, n, .after = everything()) |>
           rowwise() |>
           mutate(
             censored = if_else(.data$n < 3 &
