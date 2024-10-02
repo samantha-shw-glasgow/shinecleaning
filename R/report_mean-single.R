@@ -28,6 +28,7 @@ summary_mean_single_var <-
             filter(gender %in% genders, class %in% concat_class) |>
             summarise(
               mean_score = quiet_means({{ var }}),
+              denom = how_many_valid(valid_numbers({{ var }})),
               class = str_flatten(concat_class, collapse = ", ", last = " and "),
               .by = c(gender)
             )
@@ -41,12 +42,16 @@ summary_mean_single_var <-
       mutate(class = "All", gender = if_else(.gender_split, "All", "All pupils")) |>
       summarise(
         mean_score = quiet_means({{ var }}),
+        denom = how_many_valid(valid_numbers({{ var }})),
         .by = c(class, gender)
       )
 
     bind_rows(subgroups, all) |>
       mutate(
-        bar_lab_main = sprintf("%.1f", mean_score),
+        censored = if_else(.data$denom < 3 & .censor, 1, 0) |> factor(levels = c("1", "0")),
+        mean_score = if_else(.data$censored == 1, 1, .data$mean_score),
+        bar_lab_main = if_else(.data$censored == 1, "*", sprintf("%.1f", .data$mean_score)),
+        bar_lab_cens = if_else(.data$censored == 1, "Numbers too low to show", ""),
         class = fct_inorder(class)
       ) |>
       arrange(gender, class)
@@ -62,13 +67,18 @@ summary_mean_single_var <-
 bar_mean_single <- function(summary_data, ymax, ylab = "Mean") {
   summary_data |>
     ggplot() +
-    aes(x = class, y = mean_score, fill = gender) +
+    aes(x = class, y = mean_score, fill = gender, linetype = .data$censored, alpha = .data$censored) +
     geom_bar_t(
       stat = "identity",
       position = position_dodge(width = 0.7),
       linetype = "blank"
     ) +
     scale_x_discrete("") +
+    scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
+    scale_linetype_manual(
+      values = c("1" = "dashed", "0" = "blank"),
+      guide = guide_none()
+    ) +
     scale_fill_hbsc(name = "") +
     theme(
       legend.justification.right = "top",
@@ -83,5 +93,6 @@ bar_mean_single <- function(summary_data, ymax, ylab = "Mean") {
       position = position_dodge(width = 0.7),
       size = 4
     ) +
-    coord_cartesian(ylim = c(0, ymax), clip = "off")
+    coord_cartesian(ylim = c(0, ymax), clip = "off") +
+    labs(caption = if_else(any(summary_data$censored == 1), "* Numbers too low to show", ""))
 }
