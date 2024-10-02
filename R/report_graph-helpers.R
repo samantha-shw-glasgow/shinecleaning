@@ -107,3 +107,14 @@ scale_colour_hbsc <- function(...) {
 geom_bar_t <- function(..., width = 0.7) {
   geom_bar(..., width = width)
 }
+
+#' Find the mean of only the numeric entries, no warnings
+#'
+#' @param x A variable with mixed data types
+#'
+#' @return The mean of all numeric variables
+quiet_means <- function(x) {
+
+  mean(purrr::quietly(as.numeric)(x)$result, na.rm = TRUE)
+
+}
