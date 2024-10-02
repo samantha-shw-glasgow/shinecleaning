@@ -115,6 +115,27 @@ geom_bar_t <- function(..., width = 0.7) {
 #' @return The mean of all numeric variables
 quiet_means <- function(x) {
 
-  mean(purrr::quietly(as.numeric)(x)$result, na.rm = TRUE)
+  mean(valid_numbers(x), na.rm = TRUE)
+
+}
+
+#' Return only numeric values, no warnings
+#'
+#' @param x A variable with mixed data types
+#'
+#' @return A vector of only valid numbers (as numeric)
+valid_numbers <- function(x) {
+
+  purrr::quietly(as.numeric)(x)$result
+
+}
+
+#' Return count of non-NA values
+#'
+#' @param x A variable with potentially NA values
+#' @return Count of non-NA values
+how_many_valid <- function(x) {
+
+  sum(!is.na(x))
 
 }
