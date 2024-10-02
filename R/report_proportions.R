@@ -228,7 +228,7 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
       legend.box.background = element_blank()
     ) +
     coord_cartesian(ylim = c(0, 1), clip = "off") +
-    labs(caption = if_else(any(summary_data$censored == 1), "* Numbers too low to show", ""),)
+    labs(caption = if_else(any(summary_data$censored == 1), "* Numbers too low to show", ""))
 }
 
 #' A table of percentages from summary data
