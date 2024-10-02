@@ -203,7 +203,7 @@ graphs <- input_data |>
       lifesat10 = "School",
       lifesat11 = "Time use"
     ),
-    success = ~ .x < 5,
+    success = ~ as.numeric(.x) < 5,
     genders = genders,
     classes = classes,
     .gender_split = params$gender_split
