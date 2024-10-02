@@ -61,8 +61,8 @@ tab_responses <- function(input_data, n_invited) {
 #'
 #' @return A flextable giving gender by class counts
 tab_categories <- function(data, inc_gender, inc_classes) {
-  another_way <- sum(data$gender == "In another way")
-  pnts <- sum(data$gender == "Prefer not to say")
+  another_way <- sum(data$gender == "In another way", na.rm = TRUE)
+  pnts <- sum(is.na(data$gender) | data$gender == "Prefer not to say")
   no_class <- sum(is.na(data$class) | data$class == "Prefer not to say")
 
   if (another_way) {
