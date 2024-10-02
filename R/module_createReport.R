@@ -68,7 +68,8 @@ createReport_server <- function(id, data) {
             if (input$report_type %in% c("Primary", "Secondary")) {
               tagList(
                 selectInput(ns("school_id"), "School ID", choices = school_ids()),
-                textInput(ns("name"), "School name")
+                textInput(ns("name"), "School name"),
+                createReport_groupingsUI(ns("grouping"), input$report_type)
               )
             },
             # For LA reports only
@@ -99,6 +100,9 @@ createReport_server <- function(id, data) {
       output$report_ui <- renderUI({
         ui_options()
       })
+
+      createReport_groupings_server("test")
+      createReport_groupings_server("grouping")
 
 
 
