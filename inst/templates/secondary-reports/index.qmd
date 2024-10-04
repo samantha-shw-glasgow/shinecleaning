@@ -74,7 +74,7 @@ theme_update(
   plot.margin = unit(c(0.8, 1, 0.5, 0), "cm")
 )
 
-set_flextable_defaults(font.size = 9)
+set_flextable_defaults(font.size = 10)
 ```
 
 ```{r front-page, echo=FALSE, eval = TRUE, results='asis'}
@@ -101,7 +101,7 @@ cat(knitr::knit_child("introduction.qmd", envir = environment(), quiet = TRUE))
 
 Pupils in your `r ifelse(is_la_report, "Local Authority", "school")` completed the survey `r date_range(input_data)`.
 
-Table \@ref(tab:tab-response) shows the number of pupils invited to take part, the number who did not take part (this includesopt-outs and absences) and the overall response rate for the survey in your `r ifelse(is_la_report, "area", "school")`.
+Table \@ref(tab:tab-response) shows the number of pupils invited to take part, the number who did not take part (this includes opt-outs and absences) and the overall response rate for the survey in your `r ifelse(is_la_report, "area", "school")`.
 
 ```{r tab-response, tab.id="tab-response", tab.cap="Response rate", tab.cap.pre="Table"}
 tab_responses(input_data, params$number_invited)
