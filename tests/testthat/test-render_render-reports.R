@@ -39,7 +39,7 @@ test_that("primary report - missing class", {
   pri_test_a <- readr::read_csv(test_path("raw_data", "pri_test_small.csv"),
     show_col_types = FALSE
   )[-1:-2, ] |>
-    filter(class == "P7")
+    mutate(class = "P7")
 
   out_dir <- tempdir()
 
