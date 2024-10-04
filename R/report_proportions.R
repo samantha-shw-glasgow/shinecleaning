@@ -219,7 +219,7 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
       color = "black",
       position = position_dodge(0.9),
       vjust = -0.5,
-      size = 4
+      size = if_else(length(unique(summary_data$class)) > 3, 3, 4)
     ) +
     theme(
       plot.margin = unit(c(0.8, 0.5, 0.5, 1), "cm"),
