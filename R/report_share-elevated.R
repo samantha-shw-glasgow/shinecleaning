@@ -93,7 +93,8 @@ bar_share_elevated <- function(graph_data) {
       )
     )
 
-  lab_length <- max(str_length(graph_dat$class))
+  lab_length <- max(str_length(graph_dat$x_lab))
+  n_labs <- length(unique(graph_dat$x_lab))
 
   gg_out <- ggplot(
     data = graph_dat,
@@ -123,7 +124,7 @@ bar_share_elevated <- function(graph_data) {
       ""
     ))
 
-  if (lab_length > 10) {
+  if ((lab_length * n_labs) > 60) {
     gg_out +
       theme(axis.text.x = element_text(angle = 315, hjust = 0))
   } else {
