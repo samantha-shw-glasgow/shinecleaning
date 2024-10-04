@@ -152,4 +152,35 @@ describe("share elevated - multiple variables", {
     expect_equal(result_noclass, expected_noclass)
   })
 
+  it("handles missing class", {
+    expected_missing_class <-
+      list(expected_outs()[2][[1]],
+           expected_outs()[2][[1]] |>
+             mutate(
+               gender = "All",
+               class = "All",
+               var = str_extract(var, "Variable \\d")) |>
+             summarise(
+               n = sum(n),
+               denom = sum(denom),
+               .by = c("gender", "class", "var", "level", "censored")
+             ) |>
+             mutate(prop = n / denom) |>
+             select(gender, class, var, level, n, denom, prop, censored)
+    )
+
+    result_missing_class <- share_elevated_multiple(
+      input_data() |> filter(class == "P7"),
+      varlist = varlist,
+      classes = classes,
+      genders = c("Boys", "Girls"),
+      .split = TRUE
+    )
+
+    expect_equal(result_missing_class, expected_missing_class)
+
+
+
+  })
+
 })

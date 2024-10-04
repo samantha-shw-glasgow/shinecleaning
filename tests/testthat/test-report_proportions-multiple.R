@@ -52,7 +52,16 @@ describe("report multiple proportions", {
     "All", "All", 16, "health2",  5, 0, "Health var 2", 5 / 16, "31%", ""
   )
 
+  expected_all_oneclass <- tibble::tribble(
+    ~gender, ~class, ~denom, ~var, ~n, ~censored, ~labels, ~prop, ~bar_lab_main, ~bar_lab_cens,
+    "All", "All", 8, "health1", 5, 0, "Health var 1", 5 / 8, "62%", "",
+    "All", "All", 8, "health2",  2, 0, "Health var 2", 2 / 8, "25%", ""
+  )
+
   expected_c <- list(expected_p6, expected_p7, expected_all) |>
+    map(~mutate(.x, censored = factor(censored, levels = c(1, 0)), labels = factor(labels) |> fct_rev()))
+
+  expected_one_class <- list(expected_p7, expected_all_oneclass) |>
     map(~mutate(.x, censored = factor(censored, levels = c(1, 0)), labels = factor(labels) |> fct_rev()))
 
   classes <- c("P6", "P7")
@@ -132,7 +141,7 @@ describe("report multiple proportions", {
 
     result_one_gender_missing <-
       summary_proportions_multiple(
-        input_data("Good", "Prefer not to say", "P1"),
+        input_data("Good", "Prefer not to say", "P7"),
         list(health1 = "Health var 1", health2 = "Health var 2"),
         success = ~ .x == "Good",
         classes = classes,
@@ -144,5 +153,18 @@ describe("report multiple proportions", {
 
   })
 
+  it("handles missing classes", {
+
+    result_missing_class <-
+      summary_proportions_multiple(
+        input_data() |> filter(class == "P7"),
+        list(health1 = "Health var 1", health2 = "Health var 2"),
+        success = ~ .x == "Good",
+        classes = classes,
+        .censor = FALSE
+      )
+
+    expect_equal(result_missing_class, expected_one_class)
+  })
 
 })
