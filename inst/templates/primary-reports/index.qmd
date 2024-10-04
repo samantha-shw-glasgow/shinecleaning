@@ -89,7 +89,7 @@ cat(knitr::knit_child("introduction.qmd", envir = environment(), quiet = TRUE))
 
 ## School survey response
 
-Pupils in your school completed the survey `r date_range(input_data)`.
+Pupils in your `r ifelse(is_la_report, "Local Authority", "school")` completed the survey `r date_range(input_data)`.
 
 Table \@ref(tab:tab-response) shows the response rate.
 
@@ -113,9 +113,7 @@ mental wellbeing sometimes causing physical symptoms.
 Pupils were asked to rate their own health as either poor/fair/good/excellent.
 
 Figure \@ref(fig:bar-health) shows the percentage of pupils who reported
-their health was \'excellent\' or \'good\'. `r if(params$gender_split){"Table \\@ref(tab:tab-health) shows the responses to this question from all pupils."}`
-
-<!-- compared with the HBSC Scotland national average. Table [tab] shows all the responses from pupils. -->
+their health was \'excellent\' or \'good\'`r if(params$gender_split){paste0(" compared with the HBSC Scotland national average. Table \\@ref(tab:tab-health) shows the responses to this question from all pupils", ifelse(is_la_report, " in your Local Authority", " in your school"))}`.
 
 ```{r bar-health, fig.cap="% of pupils who report excellent or good health"}
 input_data |>
@@ -220,14 +218,12 @@ print_rest_of_graphs(graphs)
 
 ## WHO-5 Wellbeing Scale
 
-The WHO--5 Wellbeing Index is a five item scale which provides a measure
+The WHO-5 Wellbeing Index is a five item scale which provides a measure
 of emotional functioning. Items are summed to create a score ranging
 from 0 to 100. A score of 50 or less on the WHO-5 indicates
 low mood (Figure \@ref(fig:bar-wellbeing)).
+`r if(params$gender_split){"The figure also includes the results from the HBSC Scotland national average. For more information on this scale, see page 6."}`
 
-<!-- The figure also includes the results from the HBSC -->
-<!-- Scotland national average. For more information on this scale, see page -->
-<!-- 6. -->
 
 ```{r bar-wellbeing, fig.cap="% of pupils with low mood"}
 input_data |>
@@ -278,11 +274,7 @@ input_data |>
 ### Liking school
 
 Pupils were asked how much they like school at present. Figure \@ref(fig:bar-sch1) shows the
-percentage of pupils who like school \'a lot\' or \'a bit\'.  `r if(params$gender_split){"Table \\@ref(tab:tab-sch1) shows the responses to this question from all pupils."}`
-
-<!-- compared with the HBSC Scotland national average. -->
-
-<!-- Table shows all responses to this question for pupils. -->
+percentage of pupils who like school \'a lot\' or \'a bit\'`r if(params$gender_split){paste0(" compared with the HBSC Scotland national average. Table \\@ref(tab:tab-sch1) shows the responses to this question from all pupils", ifelse(is_la_report, " in your Local Authority", " in your school"))}`.
 
 
 ```{r bar-sch1, fig.cap="% of pupils who like school (a lot or a bit)"}
@@ -321,9 +313,7 @@ input_data |>
 
 Pupils were asked about how pressured they feel about the schoolwork
 they have to do. Figure \@ref(fig:bar-sch2) shows the proportion of pupils who feel \'a
-lot\' or \'some\' pressure. `r if(params$gender_split){"Table \\@ref(tab:tab-sch2) shows the responses to this question from all pupils."}`
-
-<!-- compared with the HBSC Scotland national average. Table shows all responses to this question. -->
+lot\' or \'some\' pressure`r if(params$gender_split){paste0(" compared with the HBSC Scotland national average. Table \\@ref(tab:tab-sch2) shows the responses to this question from all pupils", ifelse(is_la_report, " in your Local Authority", " in your school"))}`.
 
 ```{r bar-sch2, fig.cap="% of pupils who feel a lot of or some pressure from schoolwork"}
 input_data |>
@@ -355,9 +345,8 @@ input_data |>
 ### Self-confidence {#self-confidence .col .s12 .lr_zero .black-text}
 
 Pupils were asked \'how often do you feel confident in yourself\'.
-Figure \@ref(fig:bar-sch3) shows the proportion of pupils in your who responded they
-\'always\' or \'often\' feel confident. `r if(params$gender_split){"Table \\@ref(tab:tab-sch3) shows the responses to this question from all pupils."}`
-<!-- compared with the HBSC Scotland national average. Table shows all the responses to this question -->
+Figure \@ref(fig:bar-sch3) shows the proportion of pupils in your `r ifelse(params$is_la_report, "Local Authority", "school")` who responded they
+\'always\' or \'often\' feel confident`r if(params$gender_split){paste0(" compared with the HBSC Scotland national average. Table \\@ref(tab:tab-sch3) shows the responses to this question from all pupils", ifelse(is_la_report, " in your Local Authority", " in your school"))}`.
 
 
 ```{r bar-sch3, fig.cap="% of pupils who feel always or often confident"}
