@@ -23,7 +23,7 @@ summary_proportions_multiple <-
     if (.gender_split) {
       subgroups <-
         map(classes, \(concat_class) {
-          data |>
+          class_summary <- data |>
             filter(gender %in% genders, class %in% concat_class) |>
             select(gender, class, !!!names(varslist)) |>
             mutate(class = str_flatten(concat_class, collapse = ", ", last = " and ")) |>
@@ -38,6 +38,12 @@ summary_proportions_multiple <-
               .groups = "drop"
             ) |>
             arrange(gender)
+
+          if (nrow(class_summary) == 0) {
+            NULL
+          } else {
+            class_summary
+          }
         })
     }
 

@@ -42,18 +42,19 @@ share_elevated_multiple <-
     if (.split) {
       split_dat <-
         map(classes, \(concat_class) {
+          class_summary <-
           map(levels, \(level) {
-            data |>
+              data |>
               filter(class %in% concat_class, gender %in% genders) |>
               pivot_longer(any_of(names(varlist)), names_to = "var", values_to = "val") |>
               filter(val == level) |>
-              summarise(n = n(),
-                        .by = c("gender", "val", "var")) |>
+              summarise(n = n(), .by = c("gender", "val", "var")) |>
               mutate(
                 level = level,
                 class = str_flatten(concat_class, collapse = ", ", last = " and "),
                 var = paste(gender, varlist[var], sep = "-")
               )
+
           }) |>
             reduce(bind_rows) |>
             select(gender, class, var, level, n) |>
@@ -63,9 +64,15 @@ share_elevated_multiple <-
                    level = factor(level, levels = levels),
                    censored = 0)
 
+            if (nrow(class_summary) == 0) {
+              NULL
+            } else {
+              class_summary
+            }
+
         })
 
-      clean_dat <- append(split_dat, list(clean_dat))
+      clean_dat <- c(split_dat, list(clean_dat)) |> compact()
     }
 
 

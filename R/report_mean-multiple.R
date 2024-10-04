@@ -26,6 +26,7 @@ summary_mean_multiple_vars <-
     if (.gender_split) {
       subgroups <-
         map(classes, \(concat_class) {
+          class_summary <-
           data |>
             filter(gender %in% genders, class %in% concat_class) |>
             select(gender, class, !!!names(varslist)) |>
@@ -34,6 +35,12 @@ summary_mean_multiple_vars <-
               mean = quiet_means, denom = ~how_many_valid(valid_numbers(.x))
             ), .names = "{.col}__{.fn}"), .by = c("gender", "class")) |>
             arrange(gender)
+
+          if (nrow(class_summary) == 0) {
+            NULL
+          } else {
+            class_summary
+          }
         })
     }
 
