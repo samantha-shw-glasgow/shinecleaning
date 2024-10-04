@@ -190,7 +190,7 @@ bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
       vjust = -0.5,
       colour = "black",
       position = position_dodge(width = 0.7),
-      size = if_else(length(unique(summary_data$class)) > 3, 2.8, 4)
+      size = if_else(length(class) > 3, 2.8, 4)
     ) +
     coord_cartesian(ylim = c(0, ymax), clip = "off") +
     labs(
