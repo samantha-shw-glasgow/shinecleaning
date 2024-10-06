@@ -3,20 +3,14 @@
 #' @param id Unique id for module instance.
 #'
 #' @keywords internal
-createReport_groupingsUI <- function(id, defaults = c("Primary", "Secondary")){
+createReport_groupingsUI <- function(id){
 	ns <- NS(id)
 
 	tagList(
 		bslib::input_switch(ns("custom_group"), label = "Use custom school-year groupings in report", value = F, width = "100%"),
-		shinyjs::disabled(
-		  textAreaInput(ns("groupings"),
-		              width = "100%",
-		              label = "Specify custom grouping. Grouped school-years should be on the same line.",
-		              value = ifelse(defaults == "Primary",
-		                             "P6\nP7",
-		                             "S1, S2, S3\nS4, S5, S6"))
-		  ),
-		#htmlOutput(ns("group_text"))
+	  textAreaInput(ns("groupings"),
+	              width = "100%",
+	              label = "Specify custom grouping. Grouped school-years should be on the same line."),
 		tableOutput(ns("table"))
 	)
 }
@@ -26,7 +20,7 @@ createReport_groupingsUI <- function(id, defaults = c("Primary", "Secondary")){
 #' @param id Unique id for module instance.
 #'
 #' @keywords internal
-createReport_groupings_server <- function(id, data){
+createReport_groupings_server <- function(id, data, report_type){
 	moduleServer(
 		id,
 		function(
@@ -44,16 +38,18 @@ createReport_groupings_server <- function(id, data){
 				  str_split_1(input$groupings, pattern = "\n") |> str_extract_all("[A-z][0-9]")
 				})
 
-				output$test <- renderPrint(group_list())
+				default <- reactive({
+				  if(report_type == "Primary" | report_type == "Primary cluster / Local Authority") "P6\nP7"
+				  else if(report_type == "Secondary" | report_type == "Secondary cluster / Local Authority") "S1, S2, S3\nS4, S5, S6"
+				})
 
-				# output$group_text <- renderUI({
-				#   group_list() |>
-				#     imap(~paste0("Group ", .y,": ", paste0(.x, collapse= ", "))) |>
-				#     str_flatten("<br/>") |> HTML()
-				# })
-
-				observeEvent(input$custom_group, ignoreInit = T, {
-				  shinyjs::toggleState("groupings")
+				observe({
+				  if (isTRUE(input$custom_group)) shinyjs::enable("groupings")
+				  else {
+				    updateTextAreaInput(session, "groupings",
+				                        value = default())
+				    shinyjs::disable("groupings")
+				    }
 				})
 
 				grouped_data <- reactive({
@@ -62,8 +58,11 @@ createReport_groupings_server <- function(id, data){
 				})
 
 				output$table <- renderTable({
+				  if (report_type == "Primary" | report_type == "Primary cluster / Local Authority") inc_genders <- c("Girl", "Boy")
+				  else  inc_genders <- c("Girl", "Boy", "In another way")
+
 				  grouped_data() |>
-				    filter(gender %in% c("Girl", "Boy", "In another way"),
+				    filter(gender %in% inc_genders,
 				           class %in% unlist(group_list())) |>
 				    count(gender, `Year group` = classes_grouped) |>
 				    pivot_wider(names_from = gender, values_from = n)

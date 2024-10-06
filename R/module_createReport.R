@@ -68,8 +68,7 @@ createReport_server <- function(id, data) {
             if (input$report_type %in% c("Primary", "Secondary")) {
               tagList(
                 selectInput(ns("school_id"), "School ID", choices = school_ids()),
-                textInput(ns("name"), "School name"),
-                createReport_groupingsUI(ns("grouping"), input$report_type)
+                textInput(ns("name"), "School name")
               )
             },
             # For LA reports only
@@ -92,6 +91,7 @@ createReport_server <- function(id, data) {
                          "Number of invited students", value = NA),
             bslib::input_switch(ns("split"),
                                 "Split by gender and class", value = T),
+            createReport_groupingsUI(ns("grouping")),
           )
         }
       })
@@ -101,7 +101,8 @@ createReport_server <- function(id, data) {
         ui_options()
       })
 
-      createReport_groupings_server("grouping", data_filt)
+      createReport_groupings_server("grouping", data_filt,
+                                    report_type = input$report_type)
 
 
 
