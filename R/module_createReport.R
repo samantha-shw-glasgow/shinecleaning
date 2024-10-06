@@ -101,8 +101,7 @@ createReport_server <- function(id, data) {
         ui_options()
       })
 
-      createReport_groupings_server("test")
-      createReport_groupings_server("grouping")
+      createReport_groupings_server("grouping", data_filt)
 
 
 

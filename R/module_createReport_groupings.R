@@ -16,7 +16,8 @@ createReport_groupingsUI <- function(id, defaults = c("Primary", "Secondary")){
 		                             "P6\nP7",
 		                             "S1, S2, S3\nS4, S5, S6"))
 		  ),
-		htmlOutput(ns("group_text"))
+		#htmlOutput(ns("group_text"))
+		tableOutput(ns("table"))
 	)
 }
 
@@ -25,7 +26,7 @@ createReport_groupingsUI <- function(id, defaults = c("Primary", "Secondary")){
 #' @param id Unique id for module instance.
 #'
 #' @keywords internal
-createReport_groupings_server <- function(id){
+createReport_groupings_server <- function(id, data){
 	moduleServer(
 		id,
 		function(
@@ -45,17 +46,28 @@ createReport_groupings_server <- function(id){
 
 				output$test <- renderPrint(group_list())
 
-				output$group_text <- renderUI({
-				  group_list() |>
-				    imap(~paste0("Group ", .y,": ", paste0(.x, collapse= ", "))) |>
-				    str_flatten("<br/>") |> HTML()
-				})
+				# output$group_text <- renderUI({
+				#   group_list() |>
+				#     imap(~paste0("Group ", .y,": ", paste0(.x, collapse= ", "))) |>
+				#     str_flatten("<br/>") |> HTML()
+				# })
 
 				observeEvent(input$custom_group, ignoreInit = T, {
 				  shinyjs::toggleState("groupings")
 				})
 
+				grouped_data <- reactive({
+				  data() |>
+				    mutate("classes_grouped" = group_classes(class, group_list()))
+				})
 
+				output$table <- renderTable({
+				  grouped_data() |>
+				    filter(gender %in% c("Girl", "Boy", "In another way"),
+				           class %in% unlist(group_list())) |>
+				    count(gender, `Year group` = classes_grouped) |>
+				    pivot_wider(names_from = gender, values_from = n)
+				})
 		}
 	)
 }
