@@ -92,6 +92,7 @@ createReport_server <- function(id, data) {
             bslib::input_switch(ns("split"),
                                 "Split by gender and class", value = T),
             createReport_groupingsUI(ns("grouping")),
+            tableOutput(ns("preview"))
           )
         }
       })
@@ -100,10 +101,6 @@ createReport_server <- function(id, data) {
       output$report_ui <- renderUI({
         ui_options()
       })
-
-      createReport_groupings_server("grouping", data_filt,
-                                    report_type = reactive(input$report_type))
-
 
 
 # pre checks ------------------------------------------------------------------
@@ -228,6 +225,28 @@ createReport_server <- function(id, data) {
         }
       })
 
+
+# Group data ---------------------------------------------------------------
+
+      class_list <- createReport_groupings_server("grouping",
+                                                  data_filt,
+                                                  report_type = reactive(input$report_type))
+
+      grouped_data <- reactive({
+        data_filt() |>
+          mutate("classes_grouped" = group_classes(class, class_list()))
+      })
+
+      output$preview <- renderTable({
+        if (input$report_type == "Primary" | input$report_type == "Primary cluster / Local Authority") inc_genders <- c("Girl", "Boy")
+        else  inc_genders <- c("Girl", "Boy", "In another way")
+
+        grouped_data() |>
+          filter(gender %in% inc_genders,
+                 class %in% unlist(class_list())) |>
+          count(gender, `Year group` = classes_grouped) |>
+          pivot_wider(names_from = gender, values_from = n)
+      })
 
 # Create report -----------------------------------------------------------
 
