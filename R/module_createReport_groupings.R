@@ -11,7 +11,6 @@ createReport_groupingsUI <- function(id){
 	  textAreaInput(ns("groupings"),
 	              width = "100%",
 	              label = "Specify custom grouping. Grouped school-years should be on the same line."),
-		tableOutput(ns("table"))
 	)
 }
 
@@ -71,22 +70,7 @@ createReport_groupings_server <- function(id, data, report_type){
 				  }
 				})
 
-
-				grouped_data <- reactive({
-				  data() |>
-				  mutate("classes_grouped" = group_classes(class, group_list()))
-				})
-
-				output$table <- renderTable({
-				  if (report_type() == "Primary" | report_type() == "Primary cluster / Local Authority") inc_genders <- c("Girl", "Boy")
-				  else  inc_genders <- c("Girl", "Boy", "In another way")
-
-				  grouped_data() |>
-				    filter(gender %in% inc_genders,
-				           class %in% unlist(group_list())) |>
-				    count(gender, `Year group` = classes_grouped) |>
-				    pivot_wider(names_from = gender, values_from = n)
-				})
+				return(group_list)
 
 		}
 	)
