@@ -90,7 +90,7 @@ createReport_server <- function(id, data) {
             numericInput(ns("n_invited"),
                          "Number of invited students", value = NA),
             bslib::input_switch(ns("split"),
-                                "Split by gender and class", value = T),
+                                "Split by gender / school-year", value = T),
             createReport_groupingsUI(ns("grouping")),
             tableOutput(ns("preview"))
           )
@@ -220,7 +220,7 @@ createReport_server <- function(id, data) {
         req(data_filt(), cancelOutput = T)
         if (isFALSE(gender_split())) {
           tagList(
-            make_upload_warning("Too few responses to split by gender & class", 1)
+            make_upload_warning("Too few responses to split by gender & school-year", 1)
           )
         }
       })
