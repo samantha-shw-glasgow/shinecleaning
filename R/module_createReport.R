@@ -102,7 +102,7 @@ createReport_server <- function(id, data) {
       })
 
       createReport_groupings_server("grouping", data_filt,
-                                    report_type = input$report_type)
+                                    report_type = reactive(input$report_type))
 
 
 
