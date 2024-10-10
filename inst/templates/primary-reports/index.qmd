@@ -32,6 +32,9 @@ params:
   number_invited: 1000
   gender_split: true
   class_split: true
+  classes:
+    - P6
+    - P7
 execute:
   enabled: true
 ---
