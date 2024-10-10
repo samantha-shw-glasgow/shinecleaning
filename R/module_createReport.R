@@ -183,10 +183,16 @@ createReport_server <- function(id, data) {
 
 # post checks -------------------------------------------------------------
 
-      ## disable gender split switch if there are insuffient cases
+    ## disable gender split switch if there are insufficient cases
 
       gender_split <- reactive({
-        if (!(input$report_type %in% c("School-level data", "Additional tables"))) {
+        req(data_filt())
+        if (isTRUE(input$report_type %in% c(
+          "Primary cluster / Local Authority",
+          "Secondary cluster / Local Authority",
+          "Primary",
+          "Secondary"
+        ))) {
           if (nrow(data_filt()) < 10) {
             FALSE
           } else {
@@ -198,7 +204,8 @@ createReport_server <- function(id, data) {
       observeEvent({
         gender_split()
         input$report_type
-        }, {
+      }, {
+
         if (isFALSE(gender_split())) {
           bslib::update_switch("split", value = FALSE)
           shinyjs::disable("split")
@@ -213,13 +220,13 @@ createReport_server <- function(id, data) {
 
 
       output$extra_warnings <- renderUI({
+        req(data_filt(), cancelOutput = T)
         if (isFALSE(gender_split())) {
           tagList(
             make_upload_warning("Too few responses to split by gender & class", 1)
           )
         }
       })
-
 
 
 # Create report -----------------------------------------------------------
