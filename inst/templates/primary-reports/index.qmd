@@ -55,9 +55,7 @@ school_name <- params$school_name
 is_la_report <- params$is_la_report
 term <- params$term
 
-# In secondary reports only: this becomes a list of vectors, grouping classes in
-# low number situations
-classes <- c("P6", "P7")
+classes <- params$classes |> map(str_split, " ") |> map(unlist)
 genders <- c("Boys", "Girls", "All")
 
 library(tidyverse)
