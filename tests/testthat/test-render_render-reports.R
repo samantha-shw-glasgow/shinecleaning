@@ -11,6 +11,7 @@ test_that("primary report - sample data", {
     survey_type = "primary",
     school_name = "Test School A",
     output_location = out_dir,
+    classes = c("P6", "P7"),
     filename = "primary_report_a.docx"
   )
   expect_true(
@@ -29,6 +30,7 @@ test_that("secondary report - sample data", {
     survey_type = "secondary",
     school_name = "Test School A",
     output_location = out_dir,
+    classes = list(c("S1", "S2"), c("S3", "S4")),
     filename = "secondary_report_a.docx"
   )
 
