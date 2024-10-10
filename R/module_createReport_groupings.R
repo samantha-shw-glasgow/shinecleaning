@@ -34,31 +34,51 @@ createReport_groupings_server <- function(id, data, report_type){
 
 				# your code here
 
-				group_list <- reactive({
-				  str_split_1(input$groupings, pattern = "\n") |> str_extract_all("[A-z][0-9]")
+
+				observeEvent({
+				  input$custom_group
+				  report_type()
+				  }, {
+				  if (isTRUE(input$custom_group)) {
+				    shinyjs::enable("groupings")
+				  } else {
+				    updateTextAreaInput(session, "groupings", value = default())
+				    shinyjs::disable("groupings")
+				  }
+
 				})
+
 
 				default <- reactive({
-				  if(report_type == "Primary" | report_type == "Primary cluster / Local Authority") "P6\nP7"
-				  else if(report_type == "Secondary" | report_type == "Secondary cluster / Local Authority") "S1, S2, S3\nS4, S5, S6"
+
+				  if (report_type() == "Primary" | report_type() == "Primary cluster / Local Authority") {
+				    default <- "P6\nP7"
+				  } else if (report_type() == "Secondary") {
+				    default <- "S1, S2, S3\nS4, S5, S6"
+				  } else if (report_type() == "Secondary cluster / Local Authority") {
+				    default <- "S1\nS2\nS3\nS4\nS5\nS6"
+				  } else (default = "")
+
+				  return(default)
+
 				})
 
-				observe({
-				  if (isTRUE(input$custom_group)) shinyjs::enable("groupings")
-				  else {
-				    updateTextAreaInput(session, "groupings",
-				                        value = default())
-				    shinyjs::disable("groupings")
-				    }
+				group_list <- reactive({
+				  if(input$custom_group == F) {
+				    str_split_1(default(), pattern = "\n") |> str_extract_all("[A-z][0-9]")
+				  } else if(input$custom_group == T) {
+				    str_split_1(input$groupings, pattern = "\n") |> str_extract_all("[A-z][0-9]")
+				  }
 				})
+
 
 				grouped_data <- reactive({
 				  data() |>
-				    mutate("classes_grouped" = group_classes(class, group_list()))
+				  mutate("classes_grouped" = group_classes(class, group_list()))
 				})
 
 				output$table <- renderTable({
-				  if (report_type == "Primary" | report_type == "Primary cluster / Local Authority") inc_genders <- c("Girl", "Boy")
+				  if (report_type() == "Primary" | report_type() == "Primary cluster / Local Authority") inc_genders <- c("Girl", "Boy")
 				  else  inc_genders <- c("Girl", "Boy", "In another way")
 
 				  grouped_data() |>
@@ -67,6 +87,7 @@ createReport_groupings_server <- function(id, data, report_type){
 				    count(gender, `Year group` = classes_grouped) |>
 				    pivot_wider(names_from = gender, values_from = n)
 				})
+
 		}
 	)
 }
