@@ -54,7 +54,7 @@ createReport_groupings_server <- function(id, data, report_type){
 				  if (report_type() == "Primary" | report_type() == "Primary cluster / Local Authority") {
 				    default <- "P6\nP7"
 				  } else if (report_type() == "Secondary") {
-				    default <- "S1, S2, S3\nS4, S5, S6"
+				    default <- "S1, S2\nS3, S4\nS5, S6"
 				  } else if (report_type() == "Secondary cluster / Local Authority") {
 				    default <- "S1\nS2\nS3\nS4\nS5\nS6"
 				  } else (default = "")
