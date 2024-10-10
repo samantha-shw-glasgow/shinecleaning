@@ -273,6 +273,7 @@ createReport_server <- function(id, data) {
                   number_invited = input$n_invited,
                   gender_split = input$split,
                   term = input$school_term,
+                  #classes = class_list(),
                   output_location = NULL
                 )
               }
@@ -286,6 +287,7 @@ createReport_server <- function(id, data) {
                   number_invited = input$n_invited,
                   gender_split = input$split,
                   term = input$school_term,
+                  #classes = class_list(),
                   output_location = NULL
                 )
               }
@@ -299,10 +301,7 @@ createReport_server <- function(id, data) {
                   number_invited = input$n_invited,
                   gender_split = input$split,
                   term = input$school_term,
-                  classes = list(
-                    c("S1", "S2", "S3"),
-                    c("S4", "S5", "S6")
-                  ),
+                  classes = class_list(),
                   output_location = NULL
                 )
               }
@@ -316,6 +315,7 @@ createReport_server <- function(id, data) {
                   number_invited = input$n_invited,
                   gender_split = input$split,
                   term = input$school_term,
+                  classes = class_list(),
                   output_location = NULL
                 )
               }
