@@ -222,14 +222,24 @@ straightlining <- function(data) {
 
 #' @rdname validators
 duplicate_postcodes <- function(data) {
-  postcode_count <- data |>
-    dplyr::add_count(postcode_5_TEXT) |>
-    dplyr::pull(n)
+  data_with_count <- data |>
+    # Convert to uppercase, remove whitespace at the start and end,
+    # and make sure there's only one space in the middle
+    dplyr::mutate(
+      clean_postcode = postcode_5_TEXT |>
+        toupper() |>
+        stringr::str_trim() |>
+        stringr::str_replace_all("  *", " ")
+    ) |>
+    dplyr::add_count(clean_postcode)
+
   tibble::tibble(
     include = TRUE,
     message = ifelse(
-      postcode_count >= 5,
-      paste("Postcode occurs", postcode_count, "times"),
+      !is.na(data_with_count$clean_postcode) &
+      data_with_count$clean_postcode != "" &
+        data_with_count$n >= 5,
+      paste("Postcode occurs", data_with_count$n, "times"),
       ""
     )
   )
