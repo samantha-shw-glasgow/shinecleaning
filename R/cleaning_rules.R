@@ -176,16 +176,19 @@ age_year_mismatch <- function(data) {
   messages <- data |>
     calculate_expected_class() |>
     dplyr::mutate(
-      apparent_school_age = class_name_to_age(class),
+      school_age_based_on_class = class_name_to_age(class),
       message = dplyr::case_when(
-        apparent_school_age < school_age - 1 |
-          apparent_school_age > school_age + 1 ~
+        school_age_based_on_class > school_age + 1 &
+          school_age < 5 ~ "Unexpected class (below school age)",
+        school_age_based_on_class < school_age - 1 &
+          school_age > 17 ~ "Unexpected class (above school age)",
+        school_age_based_on_class < school_age - 1 |
+          school_age_based_on_class > school_age + 1 ~
           paste0("Unexpected class (", expected_class_name, " predicted)"),
         TRUE ~ ""
       )
     ) |>
-    dplyr::pull(message) |>
-    stringr::str_replace(" (NA predicted)", "")
+    dplyr::pull(message)
   tibble::tibble(
     include = TRUE,
     message = messages
