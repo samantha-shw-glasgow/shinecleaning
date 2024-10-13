@@ -6,15 +6,19 @@
 dataCleaningUI <- function(id) {
   ns <- NS(id)
 
+  # The order here will reflect the order that the error messages appear
+  # in the data cleaning spreadsheet. "Detect duplicate cases" is
+  # deliberately first. The order of the other checks more or less reflects
+  # importance.
   validator_options <- c(
-    "Exclude test responses",
-    "Exclude non-consenting",
-    "Detect partial cases",
     "Detect duplicate cases",
-    "Detect duplicate postcodes",
-    "Detect age/year mismatch",
+    "Detect partial cases",
     "Detect straightlining",
-    "Suggest class when missing"
+    "Detect age/year mismatch",
+    "Suggest class when missing",
+    "Detect duplicate postcodes",
+    "Exclude test responses",
+    "Exclude non-consenting"
   )
 
   tagList(
@@ -44,14 +48,14 @@ dataCleaning_server <- function(id, data) {
       send_message <- make_send_message(session)
 
       validator_functions <- c(
-        "Exclude test responses" = no_test_responses,
-        "Exclude non-consenting" = no_consent,
-        "Detect partial cases" = partial_cases,
         "Detect duplicate cases" = duplicate_cases,
-        "Detect duplicate postcodes" = duplicate_postcodes,
-        "Detect age/year mismatch" = age_year_mismatch,
+        "Detect partial cases" = partial_cases,
         "Detect straightlining" = straightlining,
-        "Suggest class when missing" = suggest_missing_class
+        "Detect age/year mismatch" = age_year_mismatch,
+        "Suggest class when missing" = suggest_missing_class,
+        "Detect duplicate postcodes" = duplicate_postcodes,
+        "Exclude test responses" = no_test_responses,
+        "Exclude non-consenting" = no_consent
       )
 
       clean_data <- reactive({
