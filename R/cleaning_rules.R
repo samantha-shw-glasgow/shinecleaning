@@ -201,18 +201,27 @@ straightlining <- function(data) {
     "sehs",
     "who"
   )
+  failed_prefixes <- rep("", nrow(data))
   for (prefix in prefixes) {
     results <- data |>
       dplyr::select(starts_with(prefix)) |>
       # Check if all columns are equal - see https://stackoverflow.com/a/76973366
       dplyr::mutate(all_equal = apply(dplyr::pick(dplyr::everything()), 1, dplyr::n_distinct, na.rm = T) == 1) |>
       dplyr::pull(all_equal)
-    data[[paste0("_straightline_", prefix)]] <- results
+    failed_prefixes <- ifelse(
+      results,
+      paste0(failed_prefixes, ", ", prefix),
+      failed_prefixes
+    )
   }
-  messages <- data |>
-    dplyr::select(dplyr::starts_with("_straightline_")) |>
-    apply(1, any) |>
-    ifelse("Straightlining detected", "")
+
+  failed_prefixes <- stringr::str_remove(failed_prefixes, "^, ")
+  messages <- ifelse(
+    failed_prefixes != "",
+    paste0("Straightlining detected (", failed_prefixes, ")"),
+    ""
+  )
+
   tibble::tibble(
     include = TRUE,
     message = messages
