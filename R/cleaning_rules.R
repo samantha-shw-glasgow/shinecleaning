@@ -229,7 +229,7 @@ straightlining <- function(data) {
 }
 
 #' @rdname validators
-duplicate_postcodes <- function(data) {
+recurring_postcodes <- function(data) {
   data_with_count <- data |>
     # Convert to uppercase, remove whitespace at the start and end,
     # and make sure there's only one space in the middle

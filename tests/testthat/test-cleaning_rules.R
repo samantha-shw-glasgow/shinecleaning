@@ -95,9 +95,9 @@ describe("suggest_missing_class", {
   })
 })
 
-describe("duplicate_postcodes", {
+describe("recurring_postcodes", {
   it("works as described in the example dataset", {
-    test_validator_with_data(duplicate_postcodes, "duplicate_postcodes.csv")
+    test_validator_with_data(recurring_postcodes, "recurring_postcodes.csv")
   })
 })
 
