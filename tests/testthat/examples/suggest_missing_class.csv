@@ -1,65 +1,58 @@
-TEST_COMMENT,RecordedDate,class,dobmnth,dobday,dobyr,expected_include,expected_message
-Doesn't flag when class isn't missing,2024-09-01 12:00:00,P1,August,31,2020,TRUE,
-Doesn't suggest a class when it can't be predicted,2024-09-01 12:00:00,,September,1,2021,TRUE,Missing class
-Suggests the right class based on date of birth,2024-09-01 12:00:00,,August,31,2021,TRUE,"Missing class, expected P1"
-,2024-09-01 12:00:00,,March,1,2021,TRUE,"Missing class, expected P1"
-,2024-09-01 12:00:00,,February,28,2021,TRUE,"Missing class, expected P1"
-,2024-09-01 12:00:00,,September,1,2020,TRUE,"Missing class, expected P1"
-,2024-09-01 12:00:00,,August,31,2020,TRUE,"Missing class, expected P2"
-,2024-09-01 12:00:00,,March,1,2020,TRUE,"Missing class, expected P2"
-,2024-09-01 12:00:00,Prefer not to say,February,28,2020,TRUE,"Missing class, expected P2"
-,2024-09-01 12:00:00,Prefer not to say,September,1,2019,TRUE,"Missing class, expected P2"
-,2024-09-01 12:00:00,Prefer not to say,August,31,2019,TRUE,"Missing class, expected P3"
-,2024-09-01 12:00:00,Prefer not to say,March,1,2019,TRUE,"Missing class, expected P3"
-,2024-09-01 12:00:00,Prefer not to say,February,28,2019,TRUE,"Missing class, expected P3"
-,2024-09-01 12:00:00,Prefer not to say,September,1,2018,TRUE,"Missing class, expected P3"
-,2024-09-01 12:00:00,,August,31,2018,TRUE,"Missing class, expected P4"
-,2024-09-01 12:00:00,,March,1,2018,TRUE,"Missing class, expected P4"
-,2024-09-01 12:00:00,,February,28,2018,TRUE,"Missing class, expected P4"
-,2024-09-01 12:00:00,,September,1,2017,TRUE,"Missing class, expected P4"
-,2024-09-01 12:00:00,,August,31,2017,TRUE,"Missing class, expected P5"
-,2024-09-01 12:00:00,,March,1,2017,TRUE,"Missing class, expected P5"
-,2024-09-01 12:00:00,,February,28,2017,TRUE,"Missing class, expected P5"
-,2024-09-01 12:00:00,,September,1,2016,TRUE,"Missing class, expected P5"
-,2024-09-01 12:00:00,,August,31,2016,TRUE,"Missing class, expected P6"
-,2024-09-01 12:00:00,,March,1,2016,TRUE,"Missing class, expected P6"
-,2024-09-01 12:00:00,,February,28,2016,TRUE,"Missing class, expected P6"
-,2024-09-01 12:00:00,,September,1,2015,TRUE,"Missing class, expected P6"
-,2024-09-01 12:00:00,,August,31,2015,TRUE,"Missing class, expected P7"
-,2024-09-01 12:00:00,,March,1,2015,TRUE,"Missing class, expected P7"
-,2024-09-01 12:00:00,,February,28,2015,TRUE,"Missing class, expected P7"
-,2024-09-01 12:00:00,,September,1,2014,TRUE,"Missing class, expected P7"
-,2024-09-01 12:00:00,,August,31,2014,TRUE,"Missing class, expected S1"
-,2024-09-01 12:00:00,,March,1,2014,TRUE,"Missing class, expected S1"
-,2024-09-01 12:00:00,,February,28,2014,TRUE,"Missing class, expected S1"
-,2024-09-01 12:00:00,,September,1,2013,TRUE,"Missing class, expected S1"
-,2024-09-01 12:00:00,,August,31,2013,TRUE,"Missing class, expected S2"
-,2024-09-01 12:00:00,,March,1,2013,TRUE,"Missing class, expected S2"
-,2024-09-01 12:00:00,,February,28,2013,TRUE,"Missing class, expected S2"
-,2024-09-01 12:00:00,,September,1,2012,TRUE,"Missing class, expected S2"
-,2024-09-01 12:00:00,,August,31,2012,TRUE,"Missing class, expected S3"
-,2024-09-01 12:00:00,,March,1,2012,TRUE,"Missing class, expected S3"
-,2024-09-01 12:00:00,,February,28,2012,TRUE,"Missing class, expected S3"
-,2024-09-01 12:00:00,,September,1,2011,TRUE,"Missing class, expected S3"
-,2024-09-01 12:00:00,,August,31,2011,TRUE,"Missing class, expected S4"
-,2024-09-01 12:00:00,,March,1,2011,TRUE,"Missing class, expected S4"
-,2024-09-01 12:00:00,,February,28,2011,TRUE,"Missing class, expected S4"
-,2024-09-01 12:00:00,,September,1,2010,TRUE,"Missing class, expected S4"
-,2024-09-01 12:00:00,,August,31,2010,TRUE,"Missing class, expected S5"
-,2024-09-01 12:00:00,,March,1,2010,TRUE,"Missing class, expected S5"
-,2024-09-01 12:00:00,,February,28,2010,TRUE,"Missing class, expected S5"
-,2024-09-01 12:00:00,,September,1,2009,TRUE,"Missing class, expected S5"
-,2024-09-01 12:00:00,,August,31,2009,TRUE,"Missing class, expected S6"
-,2024-09-01 12:00:00,,March,1,2009,TRUE,"Missing class, expected S6"
-,2024-09-01 12:00:00,,February,28,2009,TRUE,"Missing class, expected S6"
-,2024-09-01 12:00:00,,September,1,2008,TRUE,"Missing class, expected S6"
-,2024-09-01 12:00:00,,August,31,2008,TRUE,Missing class
-,2024-09-01 12:00:00,,March,1,2008,TRUE,Missing class
-,2024-09-01 12:00:00,,February,28,2008,TRUE,Missing class
-Suggests the right class based on date of response,2023-07-31 12:00:00,,September,1,2009,TRUE,"Missing class, expected S3"
-,2023-08-01 12:00:00,,September,1,2009,TRUE,"Missing class, expected S4"
-,2023-09-01 12:00:00,,September,1,2009,TRUE,"Missing class, expected S4"
-,2023-12-01 12:00:00,,September,1,2009,TRUE,"Missing class, expected S4"
-,2024-07-31 12:00:00,,September,1,2009,TRUE,"Missing class, expected S4"
-,2024-08-01 12:00:00,,September,1,2009,TRUE,"Missing class, expected S5"
-,2024-09-01 12:00:00,,September,1,2009,TRUE,"Missing class, expected S5"
+RecordedDate,class,dobmnth,dobday,dobyr,expected_include,expected_message,TEST_COMMENT
+2024-09-01 12:00:00,P1,September,1,2019,TRUE,,Doesn't flag when class isn't missing
+2024-09-01 12:00:00,,September,1,2019,TRUE,"Missing class (expected P1)",Suggests a class when class is empty
+2024-09-01 12:00:00,Prefer not to say,September,1,2019,TRUE,"Missing class (expected P1)",Suggests a class when class is 'Prefer not to say'
+2024-09-01 12:00:00,,February,28,2007,TRUE,"Missing class",Doesn't suggest a class when it can't be predicted
+2024-09-01 12:00:00,,March,1,2007,TRUE,"Missing class (expected S6)", Suggests the right class depending on birthdate
+2024-09-01 12:00:00,,August,31,2007,TRUE,"Missing class (expected S6)",
+2024-09-01 12:00:00,,September,1,2007,TRUE,"Missing class (expected S6)",
+2024-09-01 12:00:00,,February,28,2008,TRUE,"Missing class (expected S6)",
+2024-09-01 12:00:00,,March,1,2008,TRUE,"Missing class (expected S5)",
+2024-09-01 12:00:00,,August,31,2008,TRUE,"Missing class (expected S5)",
+2024-09-01 12:00:00,,September,1,2008,TRUE,"Missing class (expected S5)",
+2024-09-01 12:00:00,,February,28,2009,TRUE,"Missing class (expected S5)",
+2024-09-01 12:00:00,,March,1,2009,TRUE,"Missing class (expected S4)",
+2024-09-01 12:00:00,,August,31,2009,TRUE,"Missing class (expected S4)",
+2024-09-01 12:00:00,,September,1,2009,TRUE,"Missing class (expected S4)",
+2024-09-01 12:00:00,,February,28,2010,TRUE,"Missing class (expected S4)",
+2024-09-01 12:00:00,,March,1,2010,TRUE,"Missing class (expected S3)",
+2024-09-01 12:00:00,,August,31,2010,TRUE,"Missing class (expected S3)",
+2024-09-01 12:00:00,,September,1,2010,TRUE,"Missing class (expected S3)",
+2024-09-01 12:00:00,,February,28,2011,TRUE,"Missing class (expected S3)",
+2024-09-01 12:00:00,,March,1,2011,TRUE,"Missing class (expected S2)",
+2024-09-01 12:00:00,,August,31,2011,TRUE,"Missing class (expected S2)",
+2024-09-01 12:00:00,,September,1,2011,TRUE,"Missing class (expected S2)",
+2024-09-01 12:00:00,,February,28,2012,TRUE,"Missing class (expected S2)",
+2024-09-01 12:00:00,,March,1,2012,TRUE,"Missing class (expected S1)",
+2024-09-01 12:00:00,,August,31,2012,TRUE,"Missing class (expected S1)",
+2024-09-01 12:00:00,,September,1,2012,TRUE,"Missing class (expected S1)",
+2024-09-01 12:00:00,,February,28,2013,TRUE,"Missing class (expected S1)",
+2024-09-01 12:00:00,,March,1,2013,TRUE,"Missing class (expected P7)",
+2024-09-01 12:00:00,,August,31,2013,TRUE,"Missing class (expected P7)",
+2024-09-01 12:00:00,,September,1,2013,TRUE,"Missing class (expected P7)",
+2024-09-01 12:00:00,,February,28,2014,TRUE,"Missing class (expected P7)",
+2024-09-01 12:00:00,,March,1,2014,TRUE,"Missing class (expected P6)",
+2024-09-01 12:00:00,,August,31,2014,TRUE,"Missing class (expected P6)",
+2024-09-01 12:00:00,,September,1,2014,TRUE,"Missing class (expected P6)",
+2024-09-01 12:00:00,,February,28,2015,TRUE,"Missing class (expected P6)",
+2024-09-01 12:00:00,,March,1,2015,TRUE,"Missing class (expected P5)",
+2024-09-01 12:00:00,,August,31,2015,TRUE,"Missing class (expected P5)",
+2024-09-01 12:00:00,,September,1,2015,TRUE,"Missing class (expected P5)",
+2024-09-01 12:00:00,,February,28,2016,TRUE,"Missing class (expected P5)",
+2024-09-01 12:00:00,,March,1,2016,TRUE,"Missing class (expected P4)",
+2024-09-01 12:00:00,,August,31,2016,TRUE,"Missing class (expected P4)",
+2024-09-01 12:00:00,,September,1,2016,TRUE,"Missing class (expected P4)",
+2024-09-01 12:00:00,,February,28,2017,TRUE,"Missing class (expected P4)",
+2024-09-01 12:00:00,,March,1,2017,TRUE,"Missing class (expected P3)",
+2024-09-01 12:00:00,,August,31,2017,TRUE,"Missing class (expected P3)",
+2024-09-01 12:00:00,,September,1,2017,TRUE,"Missing class (expected P3)",
+2024-09-01 12:00:00,,February,28,2018,TRUE,"Missing class (expected P3)",
+2024-09-01 12:00:00,,March,1,2018,TRUE,"Missing class (expected P2)",
+2024-09-01 12:00:00,,August,31,2018,TRUE,"Missing class (expected P2)",
+2024-09-01 12:00:00,,September,1,2018,TRUE,"Missing class (expected P2)",
+2024-09-01 12:00:00,,February,28,2019,TRUE,"Missing class (expected P2)",
+2024-09-01 12:00:00,,March,1,2019,TRUE,"Missing class (expected P1)",
+2024-09-01 12:00:00,,August,31,2019,TRUE,"Missing class (expected P1)",
+2024-09-01 12:00:00,,September,1,2019,TRUE,"Missing class (expected P1)",
+2024-09-01 12:00:00,,February,28,2020,TRUE,"Missing class (expected P1)",
+2024-09-01 12:00:00,,March,1,2020,TRUE,"Missing class",
