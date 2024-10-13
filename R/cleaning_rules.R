@@ -110,12 +110,11 @@ duplicate_cases <- function(data) {
       dobyr,
       `School ID code`
     ) |>
-    dplyr::arrange(ResponseId) |>
     dplyr::mutate(
       duplicate_n = dplyr::n(),
       message = ifelse(
         duplicate_n > 1,
-        paste("Possible duplicates:", paste0(ResponseId, collapse = ", ")),
+        paste("Possible duplicates:", paste0(sort(ResponseId), collapse = ", ")),
         ""
       )
     ) |>
