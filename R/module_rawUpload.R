@@ -40,34 +40,9 @@ rawUpload_server <- function(id) {
       send_message <- make_send_message(session)
 
       # upload data
-      raw_data <- reactive({
-        req(input$upload)
-        readr::read_csv(input$upload$datapath,
-          col_types = readr::cols(.default = "c"),
-          show_col_types = F
-        )[-1:-2, ]
-      })
-
-      # remove unwanted top rows, re-assign col types
       data <- reactive({
-        df <- raw_data()
-        drop <- NULL
-        if (any(df[1, ] == colnames(df),
-          na.rm = TRUE
-        )) {
-          drop <- c(drop, 1)
-        }
-        if (any(stringr::str_detect(df[2, ], "ImportId"),
-          na.rm = TRUE
-        )) {
-          drop <- c(drop, 2)
-        }
-        if (length(drop) > 0) {
-          df <- df[-drop, ]
-        }
-
-        df |> readr::type_convert() |> # is this a good idea?
-          mutate(across(ends_with("Date"), as.character))
+        req(input$upload)
+        parse_raw_csv(input$upload$datapath)
       })
 
       # run checks
