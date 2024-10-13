@@ -144,9 +144,13 @@ class_name_to_age <- function(name) {
 calculate_expected_class <- function(data) {
   data |>
     dplyr::mutate(
-      dob_ym = lubridate::ym(paste(dobyr, dobmnth)),
+      dob = dplyr::case_when(
+        is.na(dobyr) ~ NA,
+        is.na(dobmnth) ~ lubridate::make_date(dobyr, 6, 1),
+        TRUE ~ lubridate::ym(paste(dobyr, dobmnth), quiet = TRUE),
+      ),
       current_year = lubridate::ymd_hms(RecordedDate),
-      school_birthyear = lubridate::year(dob_ym - months(2)),
+      school_birthyear = lubridate::year(dob - months(2)),
       current_year = lubridate::year(current_year - months(7)),
       school_age = current_year - school_birthyear,
       expected_class_name = age_to_class_name(school_age)

@@ -2,6 +2,9 @@ RecordedDate,class,dobmnth,dobday,dobyr,expected_include,expected_message,TEST_C
 2024-09-01 12:00:00,P1,September,1,2019,TRUE,,Doesn't flag when class isn't missing
 2024-09-01 12:00:00,,September,1,2019,TRUE,"Missing class (expected P1)",Suggests a class when class is empty
 2024-09-01 12:00:00,Prefer not to say,September,1,2019,TRUE,"Missing class (expected P1)",Suggests a class when class is 'Prefer not to say'
+2024-09-01 12:00:00,,,1,2007,TRUE,"Missing class (expected S6)",Assumes born March or later when month is missing
+2024-09-01 12:00:00,,March,,2007,TRUE,"Missing class (expected S6)",Suggests a class when day is missing
+2024-09-01 12:00:00,,March,1,,TRUE,"Missing class",Doesn't suggest a class when year is missing
 2024-09-01 12:00:00,,February,28,2007,TRUE,"Missing class",Doesn't suggest a class when it can't be predicted
 2024-09-01 12:00:00,,March,1,2007,TRUE,"Missing class (expected S6)", Suggests the right class depending on birthdate
 2024-09-01 12:00:00,,August,31,2007,TRUE,"Missing class (expected S6)",
