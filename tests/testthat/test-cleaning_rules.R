@@ -45,6 +45,20 @@ test_validator_with_data <- function(validator_fun, filename) {
   result <- validator_fun(data)
   expect_equal(result$include, data$expected_include)
   expect_equal(result$message, data$expected_message)
+
+  # Test with the rows in the input data rearranged in arbitrary order.
+  # We do this 10 times with different seeds.
+  # Only a single failure message is shown to avoid cluttered test results.
+  differences <- 0
+  for (i in 1:10) {
+    set.seed(i)
+    data <- slice(data, sample(1:n()))
+    result <- validator_fun(data)
+    differences <- differences +
+      length(waldo::compare(result$include, data$expected_include)) +
+      length(waldo::compare(result$message, data$expected_message))
+  }
+  expect(differences == 0, "Test fails when input data are reordered")
 }
 
 describe("duration_too_short", {
@@ -81,9 +95,9 @@ describe("suggest_missing_class", {
   })
 })
 
-describe("duplicate_postcodes", {
+describe("recurring_postcodes", {
   it("works as described in the example dataset", {
-    test_validator_with_data(duplicate_postcodes, "duplicate_postcodes.csv")
+    test_validator_with_data(recurring_postcodes, "recurring_postcodes.csv")
   })
 })
 

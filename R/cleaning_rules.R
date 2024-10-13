@@ -110,12 +110,11 @@ duplicate_cases <- function(data) {
       dobyr,
       `School ID code`
     ) |>
-    dplyr::arrange(ResponseId) |>
     dplyr::mutate(
       duplicate_n = dplyr::n(),
       message = ifelse(
         duplicate_n > 1,
-        paste("Possible duplicates:", paste0(ResponseId, collapse = ", ")),
+        paste("Possible duplicates:", paste0(sort(ResponseId), collapse = ", ")),
         ""
       )
     ) |>
@@ -202,18 +201,27 @@ straightlining <- function(data) {
     "sehs",
     "who"
   )
+  failed_prefixes <- rep("", nrow(data))
   for (prefix in prefixes) {
     results <- data |>
       dplyr::select(starts_with(prefix)) |>
       # Check if all columns are equal - see https://stackoverflow.com/a/76973366
       dplyr::mutate(all_equal = apply(dplyr::pick(dplyr::everything()), 1, dplyr::n_distinct, na.rm = T) == 1) |>
       dplyr::pull(all_equal)
-    data[[paste0("_straightline_", prefix)]] <- results
+    failed_prefixes <- ifelse(
+      results,
+      paste0(failed_prefixes, ", ", prefix),
+      failed_prefixes
+    )
   }
-  messages <- data |>
-    dplyr::select(dplyr::starts_with("_straightline_")) |>
-    apply(1, any) |>
-    ifelse("Straightlining detected", "")
+
+  failed_prefixes <- stringr::str_remove(failed_prefixes, "^, ")
+  messages <- ifelse(
+    failed_prefixes != "",
+    paste0("Straightlining detected (", failed_prefixes, ")"),
+    ""
+  )
+
   tibble::tibble(
     include = TRUE,
     message = messages
@@ -221,15 +229,25 @@ straightlining <- function(data) {
 }
 
 #' @rdname validators
-duplicate_postcodes <- function(data) {
-  postcode_count <- data |>
-    dplyr::add_count(postcode_5_TEXT) |>
-    dplyr::pull(n)
+recurring_postcodes <- function(data) {
+  data_with_count <- data |>
+    # Convert to uppercase, remove whitespace at the start and end,
+    # and make sure there's only one space in the middle
+    dplyr::mutate(
+      clean_postcode = postcode_5_TEXT |>
+        toupper() |>
+        stringr::str_trim() |>
+        stringr::str_replace_all("  *", " ")
+    ) |>
+    dplyr::add_count(clean_postcode)
+
   tibble::tibble(
     include = TRUE,
     message = ifelse(
-      postcode_count >= 5,
-      paste("Postcode occurs", postcode_count, "times"),
+      !is.na(data_with_count$clean_postcode) &
+      data_with_count$clean_postcode != "" &
+        data_with_count$n >= 5,
+      paste("Postcode occurs", data_with_count$n, "times"),
       ""
     )
   )

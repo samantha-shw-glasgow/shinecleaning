@@ -1,0 +1,32 @@
+TEST_COMMENT,postcode_5_TEXT,expected_include,expected_message
+Postcodes occurring 4 or fewer times are not flagged up,A,TRUE,
+,B,TRUE,
+,B,TRUE,
+,C,TRUE,
+,C,TRUE,
+,C,TRUE,
+,D,TRUE,
+,D,TRUE,
+,D,TRUE,
+,D,TRUE,
+Postcodes occurring 5 or more times are flagged up,E,TRUE,Postcode occurs 5 times
+,E,TRUE,Postcode occurs 5 times
+,E,TRUE,Postcode occurs 5 times
+,E,TRUE,Postcode occurs 5 times
+,E,TRUE,Postcode occurs 5 times
+,F,TRUE,Postcode occurs 6 times
+,F,TRUE,Postcode occurs 6 times
+,F,TRUE,Postcode occurs 6 times
+,F,TRUE,Postcode occurs 6 times
+,F,TRUE,Postcode occurs 6 times
+,F,TRUE,Postcode occurs 6 times
+Blank postcodes are not flagged up,,TRUE,
+,,TRUE,
+,,TRUE,
+,,TRUE,
+,,TRUE,
+Spacing and capitalisation are ignored,g1 1ab,TRUE,Postcode occurs 5 times
+,G1 1ab,TRUE,Postcode occurs 5 times
+,G1  1aB,TRUE,Postcode occurs 5 times
+, g1 1AB,TRUE,Postcode occurs 5 times
+,g1 1ab ,TRUE,Postcode occurs 5 times
