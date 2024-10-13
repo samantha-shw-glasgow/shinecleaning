@@ -12,11 +12,11 @@ dataCleaningUI <- function(id) {
   # importance.
   validator_options <- c(
     "Detect duplicate cases",
+    "Detect duplicate postcodes",
     "Detect partial cases",
     "Detect straightlining",
     "Detect age/year mismatch",
     "Suggest class when missing",
-    "Detect duplicate postcodes",
     "Exclude test responses",
     "Exclude non-consenting"
   )
@@ -49,11 +49,11 @@ dataCleaning_server <- function(id, data) {
 
       validator_functions <- c(
         "Detect duplicate cases" = duplicate_cases,
+        "Detect duplicate postcodes" = duplicate_postcodes,
         "Detect partial cases" = partial_cases,
         "Detect straightlining" = straightlining,
         "Detect age/year mismatch" = age_year_mismatch,
         "Suggest class when missing" = suggest_missing_class,
-        "Detect duplicate postcodes" = duplicate_postcodes,
         "Exclude test responses" = no_test_responses,
         "Exclude non-consenting" = no_consent
       )
