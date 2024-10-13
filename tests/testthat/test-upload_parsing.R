@@ -1,5 +1,5 @@
 test_that("test data get parsed correctly", {
-  data_path <- here::here("tests/testthat/raw_data/sec_test_cluster.csv")
+  data_path <- "raw_data/sec_test_cluster.csv"
   result <- parse_raw_csv(data_path)
 
   expected <- tibble::tibble(
