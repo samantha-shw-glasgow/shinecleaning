@@ -113,7 +113,8 @@ duplicate_cases <- function(data) {
     dplyr::mutate(
       duplicate_n = dplyr::n(),
       message = ifelse(
-        duplicate_n > 1,
+        duplicate_n > 1 & !is.na(gender) & !is.na(dobmnth) & !is.na(dobday) &
+          !is.na(dobyr) & !is.na(`School ID code`),
         paste("Possible duplicates:", paste0(sort(ResponseId), collapse = ", ")),
         ""
       )
