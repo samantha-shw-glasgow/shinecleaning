@@ -144,7 +144,7 @@ calculate_expected_class <- function(data) {
   data |>
     dplyr::mutate(
       dob_ym = lubridate::ym(paste(dobyr, dobmnth)),
-      current_year = lubridate::dmy_hm(RecordedDate),
+      current_year = lubridate::ymd_hms(RecordedDate),
       school_dob = lubridate::year(dob_ym - months(8)),
       school_year = lubridate::year(current_year - months(7)),
       expected_class_num = school_year - school_dob,
