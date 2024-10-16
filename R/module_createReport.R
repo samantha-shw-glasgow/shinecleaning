@@ -85,7 +85,11 @@ createReport_server <- function(id, data) {
             numericInput(ns("n_invited"),
                          "Number of invited students", value = NA),
             bslib::input_switch(ns("split"),
-                                "Split by gender / school-year", value = T),
+                                "Split by gender / school-year",
+                                value = T, width = "100%"),
+            bslib::input_switch(ns("custom_group"),
+                                label = "Use custom school-year groupings",
+                                value = F, width = "100%"),
             createReport_groupingsUI(ns("grouping")),
             tableOutput(ns("preview")),
             uiOutput(ns("report_warnings"))
@@ -128,6 +132,7 @@ createReport_server <- function(id, data) {
 # Group data ---------------------------------------------------------------
 
       class_list <- createReport_groupings_server("grouping",
+                                                  custom_group = reactive(input$custom_group),
                                                   report_type = reactive(input$report_type))
 
       grouped_data <- reactive({
@@ -169,7 +174,7 @@ createReport_server <- function(id, data) {
         }
       })
 
-      ### disable gender split switch if there are insufficient cases
+      ### disable split and group switches if there are insufficient cases
 
       observeEvent({
         gender_split()
@@ -179,10 +184,13 @@ createReport_server <- function(id, data) {
         if (isFALSE(gender_split())) {
           bslib::update_switch("split", value = FALSE)
           shinyjs::disable("split")
+          bslib::update_switch("custom_group", value = FALSE)
+          shinyjs::disable("custom_group")
         }
 
         if (isTRUE(gender_split())) {
           shinyjs::enable("split")
+          shinyjs::enable("custom_split")
           bslib::update_switch("split", value = TRUE)
         }
 

@@ -7,10 +7,9 @@ createReport_groupingsUI <- function(id){
 	ns <- NS(id)
 
 	tagList(
-		bslib::input_switch(ns("custom_group"), label = "Use custom school-year groupings", value = F, width = "100%"),
 	  shinyjs::hidden(textAreaInput(ns("groupings"),
 	              width = "100%",
-	              label = "Specify custom grouping. Grouped school-years should be on the same line.")),
+	              label = "Specify custom grouping. Grouped school-years should be on the same line."))
 	)
 }
 
@@ -19,7 +18,7 @@ createReport_groupingsUI <- function(id){
 #' @param id Unique id for module instance.
 #'
 #' @keywords internal
-createReport_groupings_server <- function(id, report_type){
+createReport_groupings_server <- function(id, custom_group, report_type){
 	moduleServer(
 		id,
 		function(
@@ -35,11 +34,11 @@ createReport_groupings_server <- function(id, report_type){
 
 
 				observeEvent({
-				  input$custom_group
+				  custom_group()
 				  report_type()
 				  }, {
 
-				  if (isTRUE(input$custom_group)) {
+				  if (isTRUE(custom_group())) {
 				    shinyjs::show("groupings")
 				  } else {
 				    updateTextAreaInput(session, "groupings", value = default())
@@ -64,9 +63,9 @@ createReport_groupings_server <- function(id, report_type){
 				})
 
 				group_list <- reactive({
-				  if(input$custom_group == F) {
+				  if(custom_group() == F) {
 				    str_split_1(default(), pattern = "\n") |> str_extract_all("[A-z][0-9]")
-				  } else if(input$custom_group == T) {
+				  } else if(custom_group() == T) {
 				    str_split_1(input$groupings, pattern = "\n") |> str_extract_all("[A-z][0-9]")
 				  }
 				})
