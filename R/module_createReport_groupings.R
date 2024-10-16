@@ -19,7 +19,7 @@ createReport_groupingsUI <- function(id){
 #' @param id Unique id for module instance.
 #'
 #' @keywords internal
-createReport_groupings_server <- function(id, data, report_type){
+createReport_groupings_server <- function(id, report_type){
 	moduleServer(
 		id,
 		function(
