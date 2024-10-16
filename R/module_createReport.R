@@ -14,7 +14,6 @@ createReportUI <- function(id) {
       selected = "Primary"
     ),
     uiOutput(ns("report_ui")),
-    br(),
     shinyjs::disabled(downloadButton(ns("generate"), "Generate report"))
   )
 }
@@ -89,7 +88,7 @@ createReport_server <- function(id, data) {
                                 "Split by gender / school-year", value = T),
             createReport_groupingsUI(ns("grouping")),
             tableOutput(ns("preview")),
-            uiOutput(ns("extra_warnings"))
+            uiOutput(ns("report_warnings"))
           )
         }
       })
@@ -126,41 +125,31 @@ createReport_server <- function(id, data) {
         }
       })
 
+# Group data ---------------------------------------------------------------
 
-# Checks and warnings -------------------------------------------------------------
+      class_list <- createReport_groupings_server("grouping",
+                                                  report_type = reactive(input$report_type))
 
-      ## check for required variables
-
-      ## var names
-      lifesat <- paste0("lifesat", 1:11)
-      sch <- paste0("sch", 1:3)
-      who <- paste0("who", 1:5)
-      sehs <- paste0("sehs", 1:20)
-      activity <- paste0("activity_", 4:14)
-
-      primary_vars <- c(
-        "gender",
-        "health",
-        lifesat,
-        sch,
-        who,
-        sehs # , activity #
-      )
-
-      check_vars <- reactive({
-        if (input$report_type == "Primary") {
-          upcheck_has_columns(data(), primary_vars)
-        }
+      grouped_data <- reactive({
+        data_filt() |>
+          mutate("classes_grouped" = group_classes(class, class_list()))
       })
 
-      output$report_warnings <- renderUI({
-        if (isTRUE(check_vars()$fail)) {
-          tagList(
-            make_warning(check_vars()$message, check_vars()$level)
-          )
-        }
+      output$preview <- renderTable({
+        if (input$report_type == "Primary" | input$report_type == "Primary cluster / Local Authority") inc_genders <- c("Girl", "Boy")
+        else  inc_genders <- c("Girl", "Boy", "In another way")
+
+        grouped_data() |>
+          filter(gender %in% inc_genders,
+                 class %in% unlist(class_list())) |>
+          count(gender, `Year group` = classes_grouped) |>
+          pivot_wider(names_from = gender, values_from = n)
       })
 
+
+
+
+# Checks and warnings ------------------------------------------------------
 
       ## Check if there are enough responses to split gender, class
 
@@ -199,6 +188,32 @@ createReport_server <- function(id, data) {
 
       })
 
+      # check for required variables
+
+      ## var names
+      lifesat <- paste0("lifesat", 1:11)
+      sch <- paste0("sch", 1:3)
+      who <- paste0("who", 1:5)
+      sehs <- paste0("sehs", 1:20)
+      activity <- paste0("activity_", 4:14)
+
+      primary_vars <- c(
+        "gender",
+        "health",
+        lifesat,
+        sch,
+        who,
+        sehs # , activity #
+      )
+
+      check_vars <- reactive({
+        if (input$report_type == "Primary") {
+          upcheck_has_columns(data(), primary_vars) |>
+            filter(fail == TRUE) |>
+            select(message, level)
+        }
+      })
+
       # check if all classes exist in the data, warn if not
 
       grouping_warnings <- reactive({
@@ -206,11 +221,11 @@ createReport_server <- function(id, data) {
 
         if (length(allClasses) == 0) {
           return(
-            make_warning(message = "No year-groups have been specified", level = 3)
+            data.frame(message = "No year-groups have been specified", level = 3)
           )
         } else if (any(duplicated(allClasses))) {
           return(
-            make_warning(message = paste0(
+            data.frame(message = paste0(
               "The following year-groups have been specified more than once: ",
               paste(unique(allClasses[duplicated(allClasses)]), collapse = ", ")
             ), level = 3)
@@ -221,7 +236,7 @@ createReport_server <- function(id, data) {
           missingClasses <- allClasses[!allClasses %in% unique(data_filt()$class)]
 
           return(
-            make_warning(message = paste(
+            data.frame(message = paste(
               "The following year-groups are expected but are missing from the data: ",
               paste(missingClasses, collapse = ", ")),
               level = 2)
@@ -229,50 +244,34 @@ createReport_server <- function(id, data) {
         }
       })
 
+      # create warning boxes and disable download button if there are warnings
 
-      ## output warnings
+      all_warnings <- reactive({
+        warnings <- rbind(check_vars(), grouping_warnings())
 
-      output$extra_warnings <- renderUI({
-        if (isFALSE(gender_split())) {
-          make_warning("Too few responses to split by gender & school-year", 1)
-        } else if (isTRUE(gender_split())) {
-          grouping_warnings()
-        }
+        if (gender_split() == FALSE) {
+          warnings <- rbind(warnings,
+                            data.frame(message = "Too few responses to split by gender / class",
+                                       level = 1))
+          }
+
+        return(warnings)
       })
 
+      output$report_warnings <- renderUI({
 
-      ## disable download button if there are warnings
+        if (any(all_warnings()$level == 3)) {
+            shinyjs::disable("generate")
+          } else {
+            shinyjs::enable("generate")
+          }
 
-      observeEvent(check_vars(), ignoreNULL = F, {
-        if (is.null(data())) {
-          shinyjs::disable("generate")
-        } else if (any(check_vars()$fail)) {
-          shinyjs::disable("generate")
-        } else {
-          shinyjs::enable("generate")
-        }
-      })
-
-
-# Group data ---------------------------------------------------------------
-
-      class_list <- createReport_groupings_server("grouping",
-                                                  report_type = reactive(input$report_type))
-
-      grouped_data <- reactive({
-        data_filt() |>
-          mutate("classes_grouped" = group_classes(class, class_list()))
-      })
-
-      output$preview <- renderTable({
-        if (input$report_type == "Primary" | input$report_type == "Primary cluster / Local Authority") inc_genders <- c("Girl", "Boy")
-        else  inc_genders <- c("Girl", "Boy", "In another way")
-
-        grouped_data() |>
-          filter(gender %in% inc_genders,
-                 class %in% unlist(class_list())) |>
-          count(gender, `Year group` = classes_grouped) |>
-          pivot_wider(names_from = gender, values_from = n)
+        tagList(
+          pmap(
+            all_warnings(),
+            make_warning
+          )
+        )
       })
 
 
