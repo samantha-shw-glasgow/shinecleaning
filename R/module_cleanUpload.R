@@ -115,7 +115,7 @@ cleanUpload_server <- function(id) {
 
         warnings <- purrr::pmap(
           checks$checks,
-          make_upload_warning
+          make_warning
         )
 
         do.call(tagList, warnings)
