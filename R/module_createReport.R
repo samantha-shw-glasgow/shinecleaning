@@ -13,9 +13,7 @@ createReportUI <- function(id) {
       choices = c("Primary", "Secondary", "Primary cluster / Local Authority", "Secondary cluster / Local Authority", "School-level data", "Additional tables"),
       selected = "Primary"
     ),
-    uiOutput(ns("report_warnings")),
     uiOutput(ns("report_ui")),
-    uiOutput(ns("extra_warnings")),
     br(),
     shinyjs::disabled(downloadButton(ns("generate"), "Generate report"))
   )
@@ -38,8 +36,6 @@ createReport_server <- function(id, data) {
 
 
 # Prep --------------------------------------------------------------------
-
-      ## check if number of pupils is high enough for gender and class split options
 
 
       ## get all school IDs
@@ -92,7 +88,8 @@ createReport_server <- function(id, data) {
             bslib::input_switch(ns("split"),
                                 "Split by gender / school-year", value = T),
             createReport_groupingsUI(ns("grouping")),
-            tableOutput(ns("preview"))
+            tableOutput(ns("preview")),
+            uiOutput(ns("extra_warnings"))
           )
         }
       })
@@ -139,7 +136,7 @@ createReport_server <- function(id, data) {
       })
 
 
-      ## disable download button if there are warnings using shinyjs
+      ## disable download button if there are warnings
       observeEvent(check_vars(), ignoreNULL = F, {
         if (is.null(data())) {
           shinyjs::disable("generate")
@@ -216,20 +213,9 @@ createReport_server <- function(id, data) {
       })
 
 
-      output$extra_warnings <- renderUI({
-        req(data_filt(), cancelOutput = T)
-        if (isFALSE(gender_split())) {
-          tagList(
-            make_upload_warning("Too few responses to split by gender & school-year", 1)
-          )
-        }
-      })
-
-
 # Group data ---------------------------------------------------------------
 
       class_list <- createReport_groupings_server("grouping",
-                                                  data_filt,
                                                   report_type = reactive(input$report_type))
 
       grouped_data <- reactive({
@@ -246,6 +232,45 @@ createReport_server <- function(id, data) {
                  class %in% unlist(class_list())) |>
           count(gender, `Year group` = classes_grouped) |>
           pivot_wider(names_from = gender, values_from = n)
+      })
+
+      ## check if all classes exist in the data, warn if not
+
+      grouping_warnings <- reactive({
+        allClasses <- unlist(class_list())
+
+        if (length(allClasses) == 0) {
+          return(
+            make_upload_warning(message = "No year-groups have been specified", level = 3)
+          )
+        } else if (any(duplicated(allClasses))) {
+          return(
+            make_upload_warning(message = paste0(
+              "The following year-groups have been specified more than once: ",
+              paste(unique(allClasses[duplicated(allClasses)]), collapse = ", ")
+            ), level = 3)
+          )
+
+        } else if (!all(allClasses %in% unique(data_filt()$class))) {
+
+          missingClasses <- allClasses[!allClasses %in% unique(data_filt()$class)]
+
+          return(
+            make_upload_warning(message = paste(
+              "The following year-groups are expected but are missing from the data: ",
+              paste(missingClasses, collapse = ", ")),
+              level = 2)
+          )
+        }
+      })
+
+
+      output$extra_warnings <- renderUI({
+          if (isFALSE(gender_split())) {
+            make_upload_warning("Too few responses to split by gender & school-year", 1)
+          } else if (isTRUE(gender_split())) {
+            grouping_warnings()
+          }
       })
 
 # Create report -----------------------------------------------------------
@@ -273,7 +298,7 @@ createReport_server <- function(id, data) {
                   number_invited = input$n_invited,
                   gender_split = input$split,
                   term = input$school_term,
-                  #classes = class_list(),
+                  classes = class_list(),
                   output_location = NULL
                 )
               }
@@ -287,7 +312,7 @@ createReport_server <- function(id, data) {
                   number_invited = input$n_invited,
                   gender_split = input$split,
                   term = input$school_term,
-                  #classes = class_list(),
+                  classes = class_list(),
                   output_location = NULL
                 )
               }
