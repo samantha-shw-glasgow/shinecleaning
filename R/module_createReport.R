@@ -135,19 +135,23 @@ createReport_server <- function(id, data) {
                                                   custom_group = reactive(input$custom_group),
                                                   report_type = reactive(input$report_type))
 
-      grouped_data <- reactive({
-        data_filt() |>
-          mutate("classes_grouped" = group_classes(class, class_list()))
-      })
 
       output$preview <- renderTable({
         if (input$report_type == "Primary" | input$report_type == "Primary cluster / Local Authority") inc_genders <- c("Girl", "Boy")
         else  inc_genders <- c("Girl", "Boy", "In another way")
 
-        grouped_data() |>
+        data_filt() |>
+          mutate(`Year group` = factor(
+            group_classes(class, class_list()),
+            levels = unique(group_classes(unlist(class_list()), class_list()))
+            ),
+            gender = factor(gender, levels = inc_genders)
+            ) |>
           filter(gender %in% inc_genders,
                  class %in% unlist(class_list())) |>
-          count(gender, `Year group` = classes_grouped) |>
+          count(gender,
+                `Year group`,
+                .drop = FALSE) |>
           pivot_wider(names_from = gender, values_from = n)
       })
 
