@@ -25,51 +25,6 @@ upload_checks_clean <- function(data, vars) {
   return(checks[checks$fail, c("message", "level")])
 }
 
-#' Make upload warning UI
-#'
-#' @param message character
-#' @param level integer, 1-3
-#'
-#' @return div html object
-#'
-#' @keywords internal
-make_upload_warning <- function(message, level) {
-  if (level == 1) {
-    return(
-      tags$div(
-        span(
-          icon("circle-exclamation"),
-          message
-        ),
-        class = "card p-2 m-2 text-info"
-      )
-    )
-  }
-
-  if (level == 2) {
-    return(
-      tags$div(
-        span(
-          icon("circle-question"),
-          message
-        ),
-        class = "card p-2 m-2 text-warning"
-      )
-    )
-  }
-
-  if (level == 3) {
-    return(
-      tags$div(
-        span(
-          icon("triangle-exclamation"),
-          message
-        ),
-        class = "card p-2 m-2 text-danger"
-      )
-    )
-  }
-}
 
 #' Data upload checks
 #'

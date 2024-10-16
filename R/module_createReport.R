@@ -100,8 +100,34 @@ createReport_server <- function(id, data) {
       })
 
 
-# pre checks ------------------------------------------------------------------
+# Filter data -------------------------------------------------------------
 
+
+      ## filter by selected school IDs
+      data_filt <- reactive({
+        if (isTruthy(data())) {
+          if (input$report_type %in% c("Primary", "Secondary")) {
+            if (isTruthy(input$school_id) && !"All" %in% input$school_id) {
+              data() %>% filter(`School ID code` == input$school_id)
+            } else {
+              data()
+            }
+          } else if (input$report_type %in% c(
+            "Primary cluster / Local Authority",
+            "Secondary cluster / Local Authority")) {
+            if (isTruthy(input$school_id) && !"All" %in% input$school_id) {
+              data() %>% filter(`School ID code` %in% input$school_id)
+            } else {
+              data()
+            }
+          } else if (input$report_type %in% c("School-level data", "Additional tables")) {
+            data()
+          }
+        }
+      })
+
+
+# Checks and warnings -------------------------------------------------------------
 
       ## check for required variables
 
@@ -130,54 +156,13 @@ createReport_server <- function(id, data) {
       output$report_warnings <- renderUI({
         if (isTRUE(check_vars()$fail)) {
           tagList(
-            make_upload_warning(check_vars()$message, check_vars()$level)
+            make_warning(check_vars()$message, check_vars()$level)
           )
         }
       })
 
 
-      ## disable download button if there are warnings
-      observeEvent(check_vars(), ignoreNULL = F, {
-        if (is.null(data())) {
-          shinyjs::disable("generate")
-        } else if (any(check_vars()$fail)) {
-          shinyjs::disable("generate")
-        } else {
-          shinyjs::enable("generate")
-        }
-      })
-
-
-# Filter data -------------------------------------------------------------
-
-
-      ## filter by selected school IDs
-      data_filt <- reactive({
-        if (isTruthy(data())) {
-          if (input$report_type %in% c("Primary", "Secondary")) {
-            if (isTruthy(input$school_id) && !"All" %in% input$school_id) {
-              data() %>% filter(`School ID code` == input$school_id)
-            } else {
-              data()
-            }
-          } else if (input$report_type %in% c(
-            "Primary cluster / Local Authority",
-            "Secondary cluster / Local Authority")) {
-            if (isTruthy(input$school_id) && !"All" %in% input$school_id) {
-              data() %>% filter(`School ID code` %in% input$school_id)
-            } else {
-              data()
-            }
-          } else if (input$report_type %in% c("School-level data", "Additional tables")) {
-            data()
-          }
-        }
-      })
-
-
-# post checks -------------------------------------------------------------
-
-    ## disable gender split switch if there are insufficient cases
+      ## Check if there are enough responses to split gender, class
 
       gender_split <- reactive({
         req(data_filt())
@@ -195,6 +180,8 @@ createReport_server <- function(id, data) {
         }
       })
 
+      ### disable gender split switch if there are insufficient cases
+
       observeEvent({
         gender_split()
         input$report_type
@@ -210,6 +197,60 @@ createReport_server <- function(id, data) {
           bslib::update_switch("split", value = TRUE)
         }
 
+      })
+
+      # check if all classes exist in the data, warn if not
+
+      grouping_warnings <- reactive({
+        allClasses <- unlist(class_list())
+
+        if (length(allClasses) == 0) {
+          return(
+            make_warning(message = "No year-groups have been specified", level = 3)
+          )
+        } else if (any(duplicated(allClasses))) {
+          return(
+            make_warning(message = paste0(
+              "The following year-groups have been specified more than once: ",
+              paste(unique(allClasses[duplicated(allClasses)]), collapse = ", ")
+            ), level = 3)
+          )
+
+        } else if (!all(allClasses %in% unique(data_filt()$class))) {
+
+          missingClasses <- allClasses[!allClasses %in% unique(data_filt()$class)]
+
+          return(
+            make_warning(message = paste(
+              "The following year-groups are expected but are missing from the data: ",
+              paste(missingClasses, collapse = ", ")),
+              level = 2)
+          )
+        }
+      })
+
+
+      ## output warnings
+
+      output$extra_warnings <- renderUI({
+        if (isFALSE(gender_split())) {
+          make_warning("Too few responses to split by gender & school-year", 1)
+        } else if (isTRUE(gender_split())) {
+          grouping_warnings()
+        }
+      })
+
+
+      ## disable download button if there are warnings
+
+      observeEvent(check_vars(), ignoreNULL = F, {
+        if (is.null(data())) {
+          shinyjs::disable("generate")
+        } else if (any(check_vars()$fail)) {
+          shinyjs::disable("generate")
+        } else {
+          shinyjs::enable("generate")
+        }
       })
 
 
@@ -234,44 +275,6 @@ createReport_server <- function(id, data) {
           pivot_wider(names_from = gender, values_from = n)
       })
 
-      ## check if all classes exist in the data, warn if not
-
-      grouping_warnings <- reactive({
-        allClasses <- unlist(class_list())
-
-        if (length(allClasses) == 0) {
-          return(
-            make_upload_warning(message = "No year-groups have been specified", level = 3)
-          )
-        } else if (any(duplicated(allClasses))) {
-          return(
-            make_upload_warning(message = paste0(
-              "The following year-groups have been specified more than once: ",
-              paste(unique(allClasses[duplicated(allClasses)]), collapse = ", ")
-            ), level = 3)
-          )
-
-        } else if (!all(allClasses %in% unique(data_filt()$class))) {
-
-          missingClasses <- allClasses[!allClasses %in% unique(data_filt()$class)]
-
-          return(
-            make_upload_warning(message = paste(
-              "The following year-groups are expected but are missing from the data: ",
-              paste(missingClasses, collapse = ", ")),
-              level = 2)
-          )
-        }
-      })
-
-
-      output$extra_warnings <- renderUI({
-          if (isFALSE(gender_split())) {
-            make_upload_warning("Too few responses to split by gender & school-year", 1)
-          } else if (isTRUE(gender_split())) {
-            grouping_warnings()
-          }
-      })
 
 # Create report -----------------------------------------------------------
 
