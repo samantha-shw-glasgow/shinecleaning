@@ -113,7 +113,8 @@ duplicate_cases <- function(data) {
     dplyr::mutate(
       duplicate_n = dplyr::n(),
       message = ifelse(
-        duplicate_n > 1,
+        duplicate_n > 1 & !is.na(gender) & !is.na(dobmnth) & !is.na(dobday) &
+          !is.na(dobyr) & !is.na(`School ID code`),
         paste("Possible duplicates:", paste0(sort(ResponseId), collapse = ", ")),
         ""
       )
@@ -125,30 +126,34 @@ duplicate_cases <- function(data) {
   )
 }
 
-class_num_to_name <- function(num) {
+age_to_class_name <- function(age) {
   c(
-    rep(NA, 3),
+    rep(NA, 4),
     c("P1", "P2", "P3", "P4", "P5", "P6", "P7"),
     c("S1", "S2", "S3", "S4", "S5", "S6")
-  )[num]
+  )[age]
 }
-class_name_to_num <- function(name) {
-  num <- c(
-    "P1" = 4, "P2" = 5, "P3" = 6, "P4" = 7, "P5" = 8, "P6" = 9, "P7" = 10,
-    "S1" = 11, "S2" = 12, "S3" = 13, "S4" = 14, "S5" = 15, "S6" = 16
+class_name_to_age <- function(name) {
+  age <- c(
+    "P1" = 5, "P2" = 6, "P3" = 7, "P4" = 8, "P5" = 9, "P6" = 10, "P7" = 11,
+    "S1" = 12, "S2" = 13, "S3" = 14, "S4" = 15, "S5" = 16, "S6" = 17
   )[name]
-  names(num) <- NULL
-  num
+  names(age) <- NULL
+  age
 }
 calculate_expected_class <- function(data) {
   data |>
     dplyr::mutate(
-      dob_ym = lubridate::ym(paste(dobyr, dobmnth)),
-      current_year = lubridate::dmy_hm(RecordedDate),
-      school_dob = lubridate::year(dob_ym - months(8)),
-      school_year = lubridate::year(current_year - months(7)),
-      expected_class_num = school_year - school_dob,
-      expected_class_name = class_num_to_name(expected_class_num)
+      dob = dplyr::case_when(
+        is.na(dobyr) ~ NA,
+        is.na(dobmnth) ~ lubridate::make_date(dobyr, 6, 1),
+        TRUE ~ lubridate::ym(paste(dobyr, dobmnth), quiet = TRUE),
+      ),
+      current_year = lubridate::ymd_hms(RecordedDate),
+      school_birthyear = lubridate::year(dob - months(2)),
+      current_year = lubridate::year(current_year - months(7)),
+      school_age = current_year - school_birthyear,
+      expected_class_name = age_to_class_name(school_age)
     )
 }
 
@@ -159,7 +164,7 @@ suggest_missing_class <- function(data) {
     dplyr::mutate(
       missing = is.na(class) | class == "Prefer not to say",
       message = dplyr::case_when(
-        missing & !is.na(expected_class_name) ~ paste("Missing class, expected", expected_class_name),
+        missing & !is.na(expected_class_name) ~ paste0("Missing class (expected ", expected_class_name, ")"),
         missing & is.na(expected_class_name)  ~ "Missing class",
         !missing                              ~ ""
       ),
@@ -176,10 +181,14 @@ age_year_mismatch <- function(data) {
   messages <- data |>
     calculate_expected_class() |>
     dplyr::mutate(
-      class_num = class_name_to_num(class),
+      school_age_based_on_class = class_name_to_age(class),
       message = dplyr::case_when(
-        class_num < expected_class_num - 1 |
-          class_num > expected_class_num + 1 ~
+        school_age_based_on_class > school_age + 1 &
+          school_age < 5 ~ "Unexpected class (below school age)",
+        school_age_based_on_class < school_age - 1 &
+          school_age > 17 ~ "Unexpected class (above school age)",
+        school_age_based_on_class < school_age - 1 |
+          school_age_based_on_class > school_age + 1 ~
           paste0("Unexpected class (", expected_class_name, " predicted)"),
         TRUE ~ ""
       )
