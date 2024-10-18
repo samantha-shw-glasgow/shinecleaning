@@ -179,6 +179,7 @@ createReport_server <- function(id, data) {
       })
 
       ### disable split and group switches if there are insufficient cases
+      # NOT WORKING PROPERLY DO NOT FORGET TO FIX THIS DYLAN!
 
       observeEvent({
         gender_split()
