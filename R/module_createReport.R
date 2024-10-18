@@ -291,6 +291,7 @@ createReport_server <- function(id, data) {
               }
             },
             error = function(e) {
+              print(paste0("Report error: ", e))
               showNotification(
                 "Failed to generate report, please check the data.",
                 type = "error"
