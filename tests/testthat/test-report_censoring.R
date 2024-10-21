@@ -50,4 +50,3 @@ describe("censor_summary_data", {
     expect_identical(result, expected)
   })
 })
-
