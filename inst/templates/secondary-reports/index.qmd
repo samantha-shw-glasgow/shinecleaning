@@ -279,7 +279,7 @@ fours areas are then summed to create a total score on the SDQ (Figure
 \@ref(fig:bar-elevated-sdq)) The SDQ also measures pro-social behaviour (Figure \@ref(fig:bar-elevated-prosoc)). For more
 information on the SDQ, see page 7.
 
-```{r bar-cat-emot-cond-hyp-peer, fig.cap="SQD scores"}
+```{r bar-cat-emot-cond-hyp-peer, fig.cap="SDQ scores"}
 
 graphs <- input_data |>
   share_elevated_multiple(
