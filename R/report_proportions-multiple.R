@@ -30,8 +30,8 @@ summary_proportions_multiple <-
               across(everything(), ~na_if(.x, "Prefer not to say")),
               across(everything(), success),
               ) |>
-            summarise(across(everything(), list(n = ~sum(.x, na.rm = TRUE),
-                                                denom = how_many_valid),
+            summarise(across(everything(), list(numerator = ~sum(.x, na.rm = TRUE),
+                                                denominator = how_many_valid),
                              .names = "{.col}__{.fn}"),
               .groups = "drop"
             ) |>
@@ -53,8 +53,8 @@ summary_proportions_multiple <-
         across(everything(), ~na_if(.x, "Prefer not to say")),
         across(everything(), success),
         ) |>
-      summarise(across(everything(), list(n = ~sum(.x, na.rm = TRUE),
-                                          denom = how_many_valid),
+      summarise(across(everything(), list(numerator = ~sum(.x, na.rm = TRUE),
+                                          denominator = how_many_valid),
                        .names = "{.col}__{.fn}"),
                 .groups = "drop"
       )
@@ -66,14 +66,14 @@ summary_proportions_multiple <-
           tidyr::pivot_longer(-c(gender, class),
             names_to = c("var", "x"),
             names_sep = "__",
-            values_to = "n"
+            values_to = "numerator"
           ) |>
-          tidyr::pivot_wider(names_from = x, values_from = n) |>
-          dplyr::relocate(denom, var, n, .after = everything()) |>
+          tidyr::pivot_wider(names_from = x, values_from = numerator) |>
+          dplyr::relocate(denominator, var, numerator, .after = everything()) |>
           rowwise() |>
           mutate(
             labels = stringr::str_wrap(varslist[[.data$var]][1], 12),
-            prop = .data$n / .data$denom
+            prop = .data$numerator / .data$denominator
           ) |>
           filter(!is.na(.data$gender)) |>
           ungroup() |>

@@ -15,7 +15,6 @@ create_collapsed_summary <- function(
     success,
     genders,
     classes,
-    .censor = TRUE,
     .gender_split = FALSE) {
 
   subgroups <-
@@ -30,7 +29,7 @@ create_collapsed_summary <- function(
           ) |>
         summarise(
           numerator = sum(success, na.rm = TRUE),
-          denom = n(),
+          denominator = n(),
           .groups = "drop"
         )
     }) |>
@@ -46,7 +45,7 @@ create_collapsed_summary <- function(
     ) |>
     summarise(
       numerator = sum(success, na.rm = TRUE),
-      denom = n(),
+      denominator = n(),
       .groups = "drop"
     )
 
@@ -60,11 +59,7 @@ create_collapsed_summary <- function(
   }
 
   joined_dat |>
-    mutate(
-      class = forcats::fct_inorder(class),
-      censored = if_else(.data$numerator < 3 &
-                           .censor, 1, 0)
-    ) |>
+    mutate(class = forcats::fct_inorder(class)) |>
     relocate(gender, .after = class)
 }
 
@@ -97,7 +92,7 @@ create_full_summary <- function(
         filter(class %in% concat_class) |>
         mutate(class = str_flatten(concat_class, collapse = ", ", last = " and ")) |>
         summarise(numerator = n(), .by = c("gender", "answer", "class")) |>
-        add_count(across(c(gender, class)), name = "denom", wt = numerator)
+        add_count(across(c(gender, class)), name = "denominator", wt = numerator)
     }) |>
     reduce(bind_rows) |>
     arrange(class)
@@ -107,7 +102,7 @@ create_full_summary <- function(
       rename(answer = !!var) |>
       filter(answer %in% levels) |>
       summarise(numerator = n(), .by = c("gender", "answer", "class")) |>
-      add_count(across(c(gender, class)), name = "denom", wt = numerator)
+      add_count(across(c(gender, class)), name = "denominator", wt = numerator)
 
   if (.gender_split) {
     joined_dat <- subgroups |>
@@ -123,7 +118,7 @@ create_full_summary <- function(
       gender = replace_na(gender, "All"),
       answer = factor(answer, levels = levels),
       numerator,
-      denom
+      denominator
     ) |>
     arrange(class, gender, desc(answer))
 }
@@ -158,10 +153,9 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
 
   summary_data |>
     mutate(
-      prop = if_else(.data$censored == 1, 0.05, numerator / denom),
-      censored = factor(censored, levels = c("1", "0")),
+      prop = if_else(.data$censored, 0.05, numerator / denominator),
       bar_lab_main = if_else(
-        .data$censored == 1,
+        .data$censored,
         "*",
         scales::percent(.data$prop, suffix = "%", accuracy = 1)
       )
@@ -200,9 +194,9 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
         )
       )
     ) +
-    scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
+    scale_alpha_manual(values = c("TRUE" = 0.6, "FALSE" = 1), guide = guide_none()) +
     scale_linetype_manual(
-      values = c("1" = "dashed", "0" = "blank"),
+      values = c("TRUE" = "dashed", "FALSE" = "blank"),
       guide = guide_none()
     ) +
     scale_fill_hbsc(
@@ -239,7 +233,7 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
 #'
 table_from_summary <- function(summary_data) {
   summary_data |>
-    mutate(prop = sprintf("%.0f", 100 * numerator / denom)) |>
+    mutate(prop = sprintf("%.0f", 100 * numerator / denominator)) |>
     pivot_wider(id_cols = answer, names_from = c(class, gender), values_from = prop) |>
     rename(All = All_All, ` ` = answer) |>
     rename_with(~ str_replace(.x, "(\\d)(?=_)", "\\1\n%")) |>
