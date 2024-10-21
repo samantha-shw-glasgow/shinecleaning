@@ -29,8 +29,7 @@ wellbeing. The report does not identify individual pupils but presents
 aggregated data by gender and year groups to help identify trends or
 patterns. It can also be used to:
 
--   Identify the main mental health and wellbeing issues affecting your
-    `r ifelse(params$is_la_report, "young people as part of the wider community", "pupils and whole school community")`
+-   Identify the main mental health and wellbeing issues affecting your `r ifelse(params$is_la_report, "young people as part of the wider community", "pupils and whole school community")`
 -   Focus on local needs and local context
 -   Identify hidden or emerging issues, or groups at particular risk to
     facilitate the prioritisation & targeting of resources
