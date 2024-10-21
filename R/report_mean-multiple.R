@@ -185,6 +185,7 @@ bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
       legend.justification.right = "top",
       legend.title = element_blank(),
       plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
+      plot.title = element_text(margin = margin(0, 0, 20, 0)),
       plot.caption = element_text(
         hjust = 1,
         size = 10,
