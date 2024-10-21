@@ -25,8 +25,6 @@ create_collapsed_summary(
 \item{classes}{List of classes to split by}
 
 \item{.gender_split}{Gender split - passed from params}
-
-\item{.censor}{Whether to censor (must be TRUE for production reports)}
 }
 \value{
 A dataframe of proportions/counts of successes

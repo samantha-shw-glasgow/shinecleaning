@@ -4,7 +4,6 @@
 #' @param varlist List of variable labels, with names corresponding to columns
 #' @param levels Levels to sum over
 #' @param .split Split by gender/class
-#' @param .censor Censor low variables
 #' @param classes Vector/list of classes, nested by clusters
 #' @param genders Vector of genders
 #'
@@ -15,7 +14,6 @@ share_elevated_multiple <-
            varlist,
            levels = c("As expected", "Elevated"),
            .split = TRUE,
-           .censor = TRUE,
            classes = "All",
            genders = c("Boys", "Girls")) {
 
@@ -36,8 +34,7 @@ share_elevated_multiple <-
       arrange(gender, class, var) |>
       mutate(denom = sum(n), .by = c("gender", "class", "var")) |>
       mutate(prop = n / denom,
-             level = factor(level, levels = levels),
-             censored = 0)
+             level = factor(level, levels = levels))
 
     if (.split) {
       split_dat <-
@@ -61,8 +58,7 @@ share_elevated_multiple <-
             arrange(gender, class, var) |>
             mutate(denom = sum(n), .by = c("gender", "class", "var")) |>
             mutate(prop = n / denom,
-                   level = factor(level, levels = levels),
-                   censored = 0)
+                   level = factor(level, levels = levels))
 
             if (nrow(class_summary) == 0) {
               NULL
@@ -95,7 +91,7 @@ bar_share_elevated_multiple <- function(graph_data) {
     mutate(
       x_lab = var,
       bar_lab_main = if_else(
-        censored == 1,
+        censored,
         "*",
         scales::percent(prop, suffix = "%", accuracy = 1)
       )
@@ -131,7 +127,7 @@ bar_share_elevated_multiple <- function(graph_data) {
       ),
       axis.title.x = element_blank()
     ) +
-    labs(caption = if_else(any(graph_dat$censored == 1),
+    labs(caption = if_else(any(graph_dat$censored),
                            "* Numbers too low to show",
                            ""
     ),

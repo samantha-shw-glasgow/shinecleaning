@@ -5,7 +5,6 @@
 #' @param success Character vector of categories as 'successes'
 #' @param genders List of genders to split by
 #' @param classes List of classes to split by
-#' @param .censor Whether to censor (must be TRUE for production reports)
 #' @param .gender_split Gender split - passed from params
 #'
 #' @return A dataframe of proportions/counts of successes

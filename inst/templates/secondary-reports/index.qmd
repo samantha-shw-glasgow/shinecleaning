@@ -301,6 +301,7 @@ graphs <- input_data |>
     genders = genders,
     .split = params$gender_split
   ) |>
+  map(censor_summary_data, "n") |>
   map(bar_share_elevated_multiple) |>
   print_first_graph()
 
