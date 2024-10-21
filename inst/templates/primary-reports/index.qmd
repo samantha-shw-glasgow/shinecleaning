@@ -424,7 +424,7 @@ input_data |>
     classes = classes,
     .gender_split = params$gender_split
   ) |>
-  bar_mean_single(ymax = 60)
+  bar_mean_single(ymax = 64)
 ```
 
 
