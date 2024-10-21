@@ -110,7 +110,11 @@ bar_share_elevated_multiple <- function(graph_data) {
   ) +
     geom_bar(stat = "identity", position = "stack") +
     scale_fill_hbsc(name = "") +
-    scale_y_continuous("", labels = scales::percent, limits = c(0, 1)) +
+    scale_y_continuous("",
+                       labels = scales::percent,
+                       limits = c(0, 1),
+                       expand = expansion(add = 0)
+                       ) +
     geom_text(aes(label = bar_lab_main),
               colour = "black",
               position = position_stack(vjust = 0.5),
