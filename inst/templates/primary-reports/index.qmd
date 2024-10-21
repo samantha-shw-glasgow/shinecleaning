@@ -207,6 +207,7 @@ graphs <- input_data |>
     classes = classes,
     .gender_split = params$gender_split
   ) |>
+  map(censor_summary_data) |>
   map(bar_proportions_multiple) |>
   print_first_graph()
 ```
