@@ -1,7 +1,7 @@
 describe("censor_summary_data", {
   it("adds a censored column", {
     input <- tibble::tribble(
-      ~description, ~denom, ~numerator,
+      ~description, ~denominator, ~numerator,
       "Description", 1, 0,
       "Description", 1, 1,
       "Description", 2, 0,
@@ -24,7 +24,7 @@ describe("censor_summary_data", {
       "Description", 5, 5,
     )
     expected <- tibble::tribble(
-      ~description, ~denom, ~numerator, ~censored,
+      ~description, ~denominator, ~numerator, ~censored,
       "Description", 1, 0, TRUE,
       "Description", 1, 1, TRUE,
       "Description", 2, 0, TRUE,
@@ -46,7 +46,7 @@ describe("censor_summary_data", {
       "Description", 5, 4, FALSE,
       "Description", 5, 5, FALSE,
     )
-    result <- censor_summary_data(input)
+    result <- censor_summary_data(input, "numerator")
     expect_identical(result, expected)
   })
 })
