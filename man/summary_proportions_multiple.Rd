@@ -10,7 +10,6 @@ summary_proportions_multiple(
   success = ~.x \%in\% c("More than once a week", "About every day"),
   genders = c("Boys", "Girls"),
   classes = "All",
-  .censor = TRUE,
   .gender_split = TRUE
 )
 }
@@ -24,8 +23,6 @@ summary_proportions_multiple(
 \item{genders}{List of genders to split by}
 
 \item{classes}{List of classes to split by}
-
-\item{.censor}{\code{TRUE}/\code{FALSE} - apply censoring rules (must be \code{TRUE} in output reports)}
 
 \item{.gender_split}{\code{TRUE}/\code{FALSE} - split by gender when sufficient numbers of responses}
 }
