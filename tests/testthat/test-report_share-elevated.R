@@ -41,7 +41,6 @@ describe("share elevated split", {
       input_data(),
       mme_cat,
       .split = TRUE,
-      .censor = TRUE,
       classes = c("P6", "P7"),
       genders = c("Boy", "Girl")
     )
@@ -56,7 +55,6 @@ describe("share elevated split", {
       input_data(NA_character_),
       mme_cat,
       .split = TRUE,
-      .censor = TRUE,
       classes = c("P6", "P7"),
       genders = c("Boy", "Girl")
     )
@@ -71,7 +69,6 @@ describe("share elevated split", {
       input_data("Prefer not to say"),
       mme_cat,
       .split = TRUE,
-      .censor = TRUE,
       classes = c("P6", "P7"),
       genders = c("Boy", "Girl")
     )
@@ -86,7 +83,6 @@ describe("share elevated split", {
       input_data("Elevated", class = NA_character_),
       mme_cat,
       .split = TRUE,
-      .censor = TRUE,
       classes = c("P6", "P7"),
       genders = c("Boy", "Girl")
     )
@@ -100,7 +96,6 @@ describe("share elevated split", {
       input_data("Elevated", gender = NA_character_),
       mme_cat,
       .split = TRUE,
-      .censor = TRUE,
       classes = c("P6", "P7"),
       genders = c("Boy", "Girl")
     )

@@ -4,7 +4,6 @@
 #' @param data The dataframe of valid responses
 #' @param outcome The variable to graph
 #' @param levels Levels of the variable (in ascending order)
-#' @param .censor `TRUE`/`FALSE` - apply censoring rules (must be `TRUE` in output reports)
 #' @param .split Split columns by gender x class
 #' @param classes Vector names of classes
 #' @param genders Vector names of genders
@@ -18,7 +17,6 @@ share_elevated <-
            outcome,
            levels = c("As expected", "Elevated"),
            .split = TRUE,
-           .censor = TRUE,
            classes = "All",
            genders = c("Boy", "Girl")) {
     clean_dat <- map(levels, ~ data |>
@@ -56,16 +54,15 @@ share_elevated <-
     }
 
     graph_data <- clean_dat |>
-      mutate(censored = if_else(denom < 3 & .censor, 1, 0)) |>
-      pivot_longer(-c(denom, censored, gender, class),
+      pivot_longer(-c(denom, gender, class),
         names_to = "var",
         values_to = "n"
       ) |>
       mutate(
-        prop = if_else(censored == 1, 1, n / denom),
+        prop = n / denom,
         var = factor(var, levels = levels) |> fct_rev()
       ) |>
-      select(gender, class, var, n, denom, prop, censored) |>
+      select(gender, class, var, n, denom, prop) |>
       arrange(gender, class, var)
 
     return(graph_data)
@@ -81,13 +78,14 @@ share_elevated <-
 bar_share_elevated <- function(graph_data) {
   graph_dat <- graph_data |>
     mutate(
+      prop = if_else(censored, 1, prop),
       x_lab = if_else(
         class == "All" & gender == "All",
         "All",
         stringr::str_c(class, " ", gender)
       ) |> forcats::fct_relevel("All", after = Inf),
       bar_lab_main = if_else(
-        censored == 1,
+        censored,
         "*",
         scales::percent(prop, suffix = "%", accuracy = 1)
       )
@@ -123,7 +121,7 @@ bar_share_elevated <- function(graph_data) {
       ),
       axis.title.x = element_blank()
     ) +
-    labs(caption = if_else(any(graph_dat$censored == 1),
+    labs(caption = if_else(any(graph_dat$censored),
       "* Numbers too low to show",
       ""
     ))

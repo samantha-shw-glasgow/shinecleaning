@@ -321,6 +321,7 @@ input_data |>
     classes = classes,
     genders = genders
   ) |>
+  censor_summary_data("denom") |>
   bar_share_elevated()
 
 ```
@@ -334,6 +335,7 @@ input_data |>
     classes = classes,
     genders = genders
   ) |>
+  censor_summary_data("denom") |>
   bar_share_elevated()
 
 ```

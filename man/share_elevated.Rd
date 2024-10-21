@@ -9,7 +9,6 @@ share_elevated(
   outcome,
   levels = c("As expected", "Elevated"),
   .split = TRUE,
-  .censor = TRUE,
   classes = "All",
   genders = c("Boy", "Girl")
 )
@@ -22,8 +21,6 @@ share_elevated(
 \item{levels}{Levels of the variable (in ascending order)}
 
 \item{.split}{Split columns by gender x class}
-
-\item{.censor}{\code{TRUE}/\code{FALSE} - apply censoring rules (must be \code{TRUE} in output reports)}
 
 \item{classes}{Vector names of classes}
 
