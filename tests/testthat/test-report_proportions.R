@@ -174,7 +174,7 @@ describe("collapsed summary", {
 })
 
 describe("full summary", {
-  it("works without censoring and without gender split", {
+  it("works without gender split", {
     expected <- tibble::tribble(
       ~class, ~gender,  ~answer,      ~numerator, ~denominator,
       # "S1",   "All",    "Excellent",  2,          12,
@@ -203,7 +203,7 @@ describe("full summary", {
     expect_equal(result, expected)
   })
 
-  it("works without censoring and with gender split", {
+  it("works with gender split", {
     expected <- tibble::tribble(
       ~class, ~gender,  ~answer,      ~numerator, ~denominator,
       "S1",   "Boys",   "Excellent",  1,          5,
@@ -236,7 +236,7 @@ describe("full summary", {
         health,
         levels = c("Poor", "Fair", "Good", "Excellent"),
         genders, classes,
-        .gender_split = TRUE, .censor = FALSE
+        .gender_split = TRUE
       )
     expect_equal(result, expected)
   })
@@ -268,7 +268,7 @@ describe("full summary", {
       health,
       levels = c("Poor", "Fair", "Good", "Excellent"),
       genders, classes_s2,
-      .gender_split = TRUE, .censor = FALSE
+      .gender_split = TRUE
     )
 
     expect_equal(result, expected)
@@ -302,7 +302,7 @@ describe("full summary", {
       health,
       levels = c("Poor", "Fair", "Good", "Excellent"),
       genders, classes_s2,
-      .gender_split = TRUE, .censor = FALSE
+      .gender_split = TRUE
     )
 
     expect_equal(result, expected)
@@ -343,7 +343,7 @@ describe("full summary", {
                           health,
                           levels = c("Poor", "Fair", "Good", "Excellent"),
                           genders, classes,
-                          .gender_split = TRUE, .censor = FALSE
+                          .gender_split = TRUE
       )
     expect_equal(result, expected)
 
@@ -379,11 +379,11 @@ describe("full summary", {
         answer = factor(answer, levels = c("Poor", "Fair", "Good", "Excellent"))
       )
     result <-
-      create_full_summary(input_data("Prefer nto to say"),
+      create_full_summary(input_data("Prefer not to say"),
                           health,
                           levels = c("Poor", "Fair", "Good", "Excellent"),
                           genders, classes,
-                          .gender_split = TRUE, .censor = FALSE
+                          .gender_split = TRUE
       )
     expect_equal(result, expected)
 
@@ -422,7 +422,7 @@ describe("full summary", {
                           health,
                           levels = c("Poor", "Fair", "Good", "Excellent"),
                           genders, classes,
-                          .gender_split = TRUE, .censor = FALSE
+                          .gender_split = TRUE
       )
     expect_equal(result, expected)
 
@@ -462,7 +462,7 @@ describe("full summary", {
                           health,
                           levels = c("Poor", "Fair", "Good", "Excellent"),
                           genders, classes,
-                          .gender_split = TRUE, .censor = FALSE
+                          .gender_split = TRUE
       )
     expect_equal(result, expected)
 

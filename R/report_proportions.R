@@ -70,7 +70,6 @@ create_collapsed_summary <- function(
 #' @param levels Character vector of ordered levels
 #' @param genders List of genders to split by
 #' @param classes List of classes to split by
-#' @param .censor Whether to censor (must be TRUE for production reports)
 #' @param .gender_split Gender split - passed from params
 #'
 #' @return A dataframe of counted variables
@@ -80,7 +79,6 @@ create_full_summary <- function(
     levels,
     genders,
     classes,
-    .censor = FALSE,
     .gender_split = FALSE) {
   var <- enquo(var)
 
