@@ -185,7 +185,7 @@ sehs_primary <- function(survey_data) {
       )
   }) |>
     purrr::reduce(bind_cols) |>
-    mutate(cov_score = rowSums(pick(ends_with("score"))))
+    mutate(cov_score = p_score + g_score + o_score + z_score)
 
   bind_cols(survey_data, scores)
 }
