@@ -148,6 +148,7 @@ input_data |>
     classes,
     .gender_split = params$gender_split
   ) |>
+  censor_summary_data() |>
   table_from_summary()
 ```
 
@@ -398,6 +399,7 @@ input_data |>
     classes,
     .gender_split = params$gender_split
   ) |>
+  censor_summary_data() |>
   table_from_summary()
 ```
 
@@ -433,6 +435,7 @@ input_data |>
     classes,
     .gender_split = params$gender_split
   ) |>
+  censor_summary_data() |>
   table_from_summary()
 ```
 
@@ -468,6 +471,7 @@ input_data |>
     classes,
     .gender_split = params$gender_split
   ) |>
+  censor_summary_data() |>
   table_from_summary()
 ```
 
@@ -506,6 +510,7 @@ input_data |>
                       ),
                       genders = genders, classes = classes,
                       .gender_split = params$gender_split) |>
+  censor_summary_data() |>
   table_from_summary()
 ```
 
