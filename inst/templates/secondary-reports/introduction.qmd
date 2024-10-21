@@ -62,6 +62,8 @@ If you have any queries relating to the report or would like to tell us
 how you\'re using this data in your school, please contact Dawn
 Haughton, the SHINE Network Manager, <Dawn.Haughton@glasgow.ac.uk>.
 
+\newpage
+
 ::: {custom-style="Heading 1 no number"}
 MENTAL HEALTH AND WELLBEING
 :::
