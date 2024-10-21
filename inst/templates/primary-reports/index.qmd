@@ -91,7 +91,7 @@ cat(knitr::knit_child("introduction.qmd", envir = environment(), quiet = TRUE))
 
 Pupils in your `r ifelse(is_la_report, "Local Authority", "school")` completed the survey `r date_range(input_data)`.
 
-Table \@ref(tab:tab-response) shows the response rate.
+Table \@ref(tab:tab-response) shows the number of pupils invited to take part, the number who did not take part (this includes opt-outs and absences) and the overall response rate for the survey in your `r ifelse(is_la_report, "area", "school")`.
 
 ```{r tab-response, tab.id="tab-response", tab.cap="Response rate", tab.cap.pre="Table"}
 tab_responses(input_data, params$number_invited)
