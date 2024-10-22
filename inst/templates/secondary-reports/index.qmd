@@ -401,7 +401,7 @@ input_data |>
 
 Pupils were asked about how pressured they feel about the schoolwork
 they have to do. Figure \@ref(fig:bar-sch2) shows the proportion of pupils who feel \'a
-lot\' or \'some\' pressure`r if(params$gender_split){" compared with the HBSC Scotland national average. Table \\@ref(tab:tab-sch2) shows the responses to this question from all pupils."}`.
+lot\' or \'some\' pressure`r if(params$gender_split){" compared with the HBSC Scotland national average. Table \\@ref(tab:tab-sch2) shows the responses to this question from all pupils"}`.
 
 
 ```{r bar-sch2, fig.cap="% of pupils who feel a lot of or some pressure from schoolwork"}
@@ -435,7 +435,7 @@ input_data |>
 
 Pupils were asked \'how often do you feel confident in yourself\'.
 Figure \@ref(fig:bar-sch3) shows the proportion of pupils in your who responded they
-\'always\' or \'often\' feel confident`r if(params$gender_split){" compared with the HBSC Scotland national average. Table \\@ref(tab:tab-sch3) shows the responses to this question from all pupils."}`.
+\'always\' or \'often\' feel confident`r if(params$gender_split){" compared with the HBSC Scotland national average. Table \\@ref(tab:tab-sch3) shows the responses to this question from all pupils"}`.
 
 ```{r bar-sch3, fig.cap="% of pupils who feel always or often confident"}
 input_data |>
