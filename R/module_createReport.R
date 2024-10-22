@@ -193,21 +193,39 @@ createReport_server <- function(id, data) {
       lifesat <- paste0("lifesat", 1:11)
       sch <- paste0("sch", 1:3)
       who <- paste0("who", 1:5)
-      sehs <- paste0("sehs", 1:20)
-      activity <- paste0("activity_", 4:14)
+      mm <- paste0("mm", 1:16)
+      sehs_pri <- paste0("sehs", 1:20)
+      sehs_sec <- paste0("sehs", 1:30)
+      asw <- paste0("asw", 1:10)
+      sdq <- paste0("sdq", 1:25)
 
       primary_vars <- c(
-        "gender",
         "health",
         lifesat,
         sch,
         who,
-        sehs # , activity #
+        sehs_pri,
+        mm
+      )
+
+      secondary_vars <- c(
+        "health",
+        lifesat,
+        who,
+        sehs_sec,
+        sdq,
+        asw
       )
 
       check_vars <- reactive({
         if (input$report_type == "Primary") {
           upcheck_has_columns(data(), primary_vars) |>
+            filter(fail == TRUE) |>
+            select(message, level)
+        }
+
+        if (input$report_type == "Secondary") {
+          upcheck_has_columns(data(), secondary_vars) |>
             filter(fail == TRUE) |>
             select(message, level)
         }
@@ -238,7 +256,7 @@ createReport_server <- function(id, data) {
             data.frame(message = paste(
               "The following year-groups are expected but are missing from the data: ",
               paste(missingClasses, collapse = ", ")),
-              level = 2)
+              level = 3)
           )
         }
       })
