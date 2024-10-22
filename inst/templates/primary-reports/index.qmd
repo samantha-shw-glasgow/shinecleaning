@@ -113,7 +113,8 @@ mental wellbeing sometimes causing physical symptoms.
 Pupils were asked to rate their own health as either poor/fair/good/excellent.
 
 Figure \@ref(fig:bar-health) shows the percentage of pupils who reported
-their health was \'excellent\' or \'good\'`r if(params$gender_split){paste0(" compared with the HBSC Scotland national average. Table \\@ref(tab:tab-health) shows the responses to this question from all pupils", ifelse(is_la_report, " in your Local Authority", " in your school"))}`.
+their health was \'excellent\' or \'good\'`r if(params$gender_split){" compared with the HBSC Scotland national average"}`.
+`r if(is_la_report){"Table \\@ref(tab:tab-health) shows the responses to this question from all pupil in your Local Authority."}`
 
 ```{r bar-health, fig.cap="% of pupils who report excellent or good health"}
 input_data |>
@@ -274,7 +275,8 @@ input_data |>
 ### Liking school
 
 Pupils were asked how much they like school at present. Figure \@ref(fig:bar-sch1) shows the
-percentage of pupils who like school \'a lot\' or \'a bit\'`r if(params$gender_split){paste0(" compared with the HBSC Scotland national average. Table \\@ref(tab:tab-sch1) shows the responses to this question from all pupils", ifelse(is_la_report, " in your Local Authority", " in your school"))}`.
+percentage of pupils who like school \'a lot\' or \'a bit\'`r if(params$gender_split){" compared with the HBSC Scotland national average"}`.
+`r if(is_la_report){"Table \\@ref(tab:tab-sch1) shows the responses to this question from all pupils."}`
 
 
 ```{r bar-sch1, fig.cap="% of pupils who like school (a lot or a bit)"}
@@ -313,7 +315,8 @@ input_data |>
 
 Pupils were asked about how pressured they feel about the schoolwork
 they have to do. Figure \@ref(fig:bar-sch2) shows the proportion of pupils who feel \'a
-lot\' or \'some\' pressure`r if(params$gender_split){paste0(" compared with the HBSC Scotland national average. Table \\@ref(tab:tab-sch2) shows the responses to this question from all pupils", ifelse(is_la_report, " in your Local Authority", " in your school"))}`.
+lot\' or \'some\' pressure`r if(params$gender_split){" compared with the HBSC Scotland national average"}`.
+`r if(is_la_report){"Table \\@ref(tab:tab-sch1) shows the responses to this question from all pupils."}`
 
 ```{r bar-sch2, fig.cap="% of pupils who feel a lot of or some pressure from schoolwork"}
 input_data |>
@@ -346,7 +349,9 @@ input_data |>
 
 Pupils were asked \'how often do you feel confident in yourself\'.
 Figure \@ref(fig:bar-sch3) shows the proportion of pupils in your `r ifelse(params$is_la_report, "Local Authority", "school")` who responded they
-\'always\' or \'often\' feel confident`r if(params$gender_split){paste0(" compared with the HBSC Scotland national average. Table \\@ref(tab:tab-sch3) shows the responses to this question from all pupils", ifelse(is_la_report, " in your Local Authority", " in your school"))}`.
+\'always\' or \'often\' feel confident`r if(params$gender_split){" compared with the HBSC Scotland national average"}`.
+`r if(is_la_report){"Table \\@ref(tab:tab-sch3) shows the responses to this question from all pupils."}`
+
 
 
 ```{r bar-sch3, fig.cap="% of pupils who feel always or often confident"}
