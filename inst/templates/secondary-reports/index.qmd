@@ -362,7 +362,7 @@ input_data |>
 ### Liking school
 
 Pupils were asked how much they like school at present. Figure \@ref(fig:bar-sch1) shows the
-percentage of pupils who like school \'a lot\' or \'a bit\'`r if(params$gender_split){" compared with the HBSC Scotland national average. Table \\@ref(tab:tab-sch1) shows the responses to this question from all pupils."}`.
+percentage of pupils who like school \'a lot\' or \'a bit\'`r if(params$gender_split){" compared with the HBSC Scotland national average. Table \\@ref(tab:tab-sch1) shows the responses to this question from all pupils"}`.
 
 
 ```{r bar-sch1, fig.cap="% of pupils who like school (a lot or a bit)"}
@@ -511,7 +511,7 @@ Figure \@ref(fig:bar-belief-self)
 shows the average scores in the subdomains of self-efficacy,
 self-awareness and persistence, which when added together, create an
 overall score of belief in self.
-Figure \@ref(fig:bar-beleif-others)
+Figure \@ref(fig:bar-belief-others)
 shows the average
 scores in the subdomains of school support, family support and peer
 support, which when added together, create an overall score of belief in
