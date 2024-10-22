@@ -18,7 +18,7 @@ upload_checks_raw <- function(data, vars) {
 
 upload_checks_clean <- function(data, vars) {
   checks <- rbind(
-    # upcheck_has_columns(data, vars),
+    upcheck_has_columns(data, vars, required = TRUE),
     upcheck_schools(data)
   )
 
