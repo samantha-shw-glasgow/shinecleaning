@@ -137,17 +137,16 @@ createReport_server <- function(id, data) {
 
 
       output$preview <- renderTable({
-        if (input$report_type == "Primary" | input$report_type == "Primary cluster / Local Authority") inc_genders <- c("Girl", "Boy")
-        else  inc_genders <- c("Girl", "Boy", "In another way")
 
         data_filt() |>
           mutate(`Year group` = factor(
             group_classes(class, class_list()),
             levels = unique(group_classes(unlist(class_list()), class_list()))
             ),
-            gender = factor(gender, levels = inc_genders)
+            gender = factor(gender,
+                            levels = c("Girl", "Boy", "In another way"))
             ) |>
-          filter(gender %in% inc_genders,
+          filter(gender %in% c("Girl", "Boy", "In another way"),
                  class %in% unlist(class_list())) |>
           count(gender,
                 `Year group`,
