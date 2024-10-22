@@ -67,7 +67,7 @@ make_warning <- function(message, level) {
           icon("circle-exclamation"),
           message
         ),
-        class = "card p-2 m-2 text-info"
+        class = "card p-2 mx-2 text-info"
       )
     )
   }
@@ -79,7 +79,7 @@ make_warning <- function(message, level) {
           icon("circle-question"),
           message
         ),
-        class = "card p-2 m-2 text-warning"
+        class = "card p-2 mx-2 text-warning"
       )
     )
   }
@@ -91,7 +91,7 @@ make_warning <- function(message, level) {
           icon("triangle-exclamation"),
           message
         ),
-        class = "card p-2 m-2 text-danger"
+        class = "card p-2 mx-2 text-danger"
       )
     )
   }

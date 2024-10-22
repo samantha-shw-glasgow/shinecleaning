@@ -11,7 +11,8 @@ createReportUI <- function(id) {
     selectInput(ns("report_type"),
       strong("Report type"),
       choices = c("Primary", "Secondary", "Primary cluster / Local Authority", "Secondary cluster / Local Authority", "School-level data", "Additional tables"),
-      selected = "Primary"
+      selected = "Primary",
+      width = "100%"
     ),
     uiOutput(ns("report_ui")),
     shinyjs::disabled(downloadButton(ns("generate"), "Generate report"))
@@ -62,8 +63,10 @@ createReport_server <- function(id, data) {
             # For school reports only
             if (input$report_type %in% c("Primary", "Secondary")) {
               tagList(
-                selectInput(ns("school_id"), "School ID", choices = school_ids()),
-                textInput(ns("name"), "School name")
+                selectInput(ns("school_id"), "School ID", choices = school_ids(),
+                            width = "100%"),
+                textInput(ns("name"), "School name",
+                          width = "100%")
               )
             },
             # For LA reports only
@@ -75,15 +78,19 @@ createReport_server <- function(id, data) {
                 selectizeInput(ns("school_id"), "School IDs",
                   multiple = T,
                   selected = "All",
-                  choices = c("All", school_ids())
+                  choices = c("All", school_ids()),
+                  width = "100%"
                 ),
-                textInput(ns("name"), "Local Authority / cluster name")
+                textInput(ns("name"), "Local Authority / cluster name",
+                          width = "100%")
               )
             },
             # For all reports
-            textInput(ns("school_term"), "Term of survey"),
+            textInput(ns("school_term"), "Term of survey", width = "100%"),
             numericInput(ns("n_invited"),
-                         "Number of invited students", value = NA),
+                         "Number of invited students",
+                         value = NA,
+                         width = "100%"),
             bslib::input_switch(ns("split"),
                                 "Split by gender / school-year",
                                 value = T, width = "100%"),
