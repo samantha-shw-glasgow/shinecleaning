@@ -13,7 +13,6 @@ ui <- function(req) {
     theme = SHINE_theme,
     header = list(assets()),
     title = span(img(src = "img/SHINE_logo.png", height = 50)),
-    tags$head(tags$link(rel = "shortcut icon", href = "img/shinemh.ico")),
     windowTitle = "SHINE Mental Health Survey Tool",
     id = "main-menu",
     tabPanel(
@@ -72,7 +71,8 @@ assets <- function() {
     serveAssets(), # base assets (assets.R)
     tags$head(
       # Place any additional depdendencies here
-      # e.g.: CDN
+      # e.g.: CDN,
+      tags$link(rel = "shortcut icon", href = "img/shinemh.ico")
     ),
     shinyjs::useShinyjs()
   )
