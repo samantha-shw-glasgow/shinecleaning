@@ -160,43 +160,29 @@ createReport_server <- function(id, data) {
 
 # Checks and warnings ------------------------------------------------------
 
-      ## Check if there are enough responses to split gender, class
+      # Check if there are enough responses to produce reports
 
-      gender_split <- reactive({
+      enough_responses <- reactive({
         req(data_filt())
-        if (isTRUE(input$report_type %in% c(
-          "Primary cluster / Local Authority",
-          "Secondary cluster / Local Authority",
-          "Primary",
-          "Secondary"
-        ))) {
-          if (nrow(data_filt()) < 10) {
-            FALSE
-          } else {
-            TRUE
-          }
+        if (nrow(data_filt()) >= 14) {
+          TRUE
+        } else {
+          FALSE
         }
       })
 
-      ### disable split and group switches if there are insufficient cases
-      # NOT WORKING PROPERLY DO NOT FORGET TO FIX THIS DYLAN!
+      # Check if there are enough responses to split gender, class
 
-      observeEvent({
-        gender_split()
-        input$report_type
-      }, {
+      gender_split <- reactive({
+        req(data_filt())
 
-        if (isFALSE(gender_split())) {
-          bslib::update_switch("split", value = FALSE)
-          shinyjs::disable("split")
-          bslib::update_switch("custom_group", value = FALSE)
-          shinyjs::disable("custom_group")
-        }
+        nboys <- sum(data_filt()$gender == "Girl", na.rm = TRUE)
+        ngirls <- sum(data_filt()$gender == "Boy", na.rm = TRUE)
 
-        if (isTRUE(gender_split())) {
-          shinyjs::enable("split")
-          shinyjs::enable("custom_split")
-          bslib::update_switch("split", value = TRUE)
+        if (nboys >= 20 && ngirls >= 20) {
+          TRUE
+        } else {
+          FALSE
         }
 
       })
@@ -260,15 +246,22 @@ createReport_server <- function(id, data) {
       # create warning boxes and disable download button if there are warnings
 
       all_warnings <- reactive({
-        warnings <- rbind(check_vars(), grouping_warnings())
 
-        if (gender_split() == FALSE) {
-          warnings <- rbind(warnings,
-                            data.frame(message = "Too few responses to split by gender / class",
-                                       level = 1))
+        if (enough_responses() == FALSE) {
+          return(data.frame(message = "There are not enough responses to generate a report", level = 3))
+        } else {
+
+          warnings <- rbind(check_vars(), grouping_warnings())
+
+          if (gender_split() == FALSE && input$split == TRUE) {
+            warnings <- rbind(warnings,
+                              data.frame(message = "Splitting by gender / class is not recommended due to the low number of responses",
+                                         level = 2))
           }
 
-        return(warnings)
+          return(warnings)
+        }
+
       })
 
       output$report_warnings <- renderUI({
