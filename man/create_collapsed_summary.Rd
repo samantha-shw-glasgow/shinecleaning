@@ -10,7 +10,6 @@ create_collapsed_summary(
   success,
   genders,
   classes,
-  .censor = TRUE,
   .gender_split = FALSE
 )
 }
@@ -24,8 +23,6 @@ create_collapsed_summary(
 \item{genders}{List of genders to split by}
 
 \item{classes}{List of classes to split by}
-
-\item{.censor}{Whether to censor (must be TRUE for production reports)}
 
 \item{.gender_split}{Gender split - passed from params}
 }

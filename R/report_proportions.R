@@ -5,7 +5,6 @@
 #' @param success Character vector of categories as 'successes'
 #' @param genders List of genders to split by
 #' @param classes List of classes to split by
-#' @param .censor Whether to censor (must be TRUE for production reports)
 #' @param .gender_split Gender split - passed from params
 #'
 #' @return A dataframe of proportions/counts of successes
@@ -15,7 +14,6 @@ create_collapsed_summary <- function(
     success,
     genders,
     classes,
-    .censor = TRUE,
     .gender_split = FALSE) {
 
   subgroups <-
@@ -30,7 +28,7 @@ create_collapsed_summary <- function(
           ) |>
         summarise(
           numerator = sum(success, na.rm = TRUE),
-          denom = n(),
+          denominator = n(),
           .groups = "drop"
         )
     }) |>
@@ -46,7 +44,7 @@ create_collapsed_summary <- function(
     ) |>
     summarise(
       numerator = sum(success, na.rm = TRUE),
-      denom = n(),
+      denominator = n(),
       .groups = "drop"
     )
 
@@ -60,11 +58,7 @@ create_collapsed_summary <- function(
   }
 
   joined_dat |>
-    mutate(
-      class = forcats::fct_inorder(class),
-      censored = if_else(.data$numerator < 3 &
-                           .censor, 1, 0)
-    ) |>
+    mutate(class = forcats::fct_inorder(class)) |>
     relocate(gender, .after = class)
 }
 
@@ -75,7 +69,6 @@ create_collapsed_summary <- function(
 #' @param levels Character vector of ordered levels
 #' @param genders List of genders to split by
 #' @param classes List of classes to split by
-#' @param .censor Whether to censor (must be TRUE for production reports)
 #' @param .gender_split Gender split - passed from params
 #'
 #' @return A dataframe of counted variables
@@ -85,7 +78,6 @@ create_full_summary <- function(
     levels,
     genders,
     classes,
-    .censor = FALSE,
     .gender_split = FALSE) {
   var <- enquo(var)
 
@@ -96,18 +88,20 @@ create_full_summary <- function(
         filter(answer %in% levels) |>
         filter(class %in% concat_class) |>
         mutate(class = str_flatten(concat_class, collapse = ", ", last = " and ")) |>
-        summarise(numerator = n(), .by = c("gender", "answer", "class")) |>
-        add_count(across(c(gender, class)), name = "denom", wt = numerator)
+        mutate(across(c(gender, answer, class), factor)) |>
+        group_by(gender, answer, class, .drop = FALSE) |>
+        summarise(numerator = n(), .groups = "drop") |>
+        add_count(across(c(gender, class)), name = "denominator", wt = numerator)
     }) |>
     reduce(bind_rows) |>
     arrange(class)
 
     all <- data |>
-      mutate(class = "All", gender = "All") |>
       rename(answer = !!var) |>
       filter(answer %in% levels) |>
-      summarise(numerator = n(), .by = c("gender", "answer", "class")) |>
-      add_count(across(c(gender, class)), name = "denom", wt = numerator)
+      summarise(numerator = n(), .by = "answer") |>
+      add_count(name = "denominator", wt = numerator) |>
+      mutate(class = "All", gender = "All")
 
   if (.gender_split) {
     joined_dat <- subgroups |>
@@ -120,10 +114,10 @@ create_full_summary <- function(
   joined_dat |>
     transmute(
       class = forcats::fct_inorder(class),
-      gender = replace_na(gender, "All"),
+      gender = as.character(gender),
       answer = factor(answer, levels = levels),
       numerator,
-      denom
+      denominator
     ) |>
     arrange(class, gender, desc(answer))
 }
@@ -158,10 +152,9 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
 
   summary_data |>
     mutate(
-      prop = if_else(.data$censored == 1, 0.05, numerator / denom),
-      censored = factor(censored, levels = c("1", "0")),
+      prop = if_else(.data$censored, 0.05, numerator / denominator),
       bar_lab_main = if_else(
-        .data$censored == 1,
+        .data$censored,
         "*",
         scales::percent(.data$prop, suffix = "%", accuracy = 1)
       )
@@ -200,9 +193,9 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
         )
       )
     ) +
-    scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
+    scale_alpha_manual(values = c("TRUE" = 0.6, "FALSE" = 1), guide = guide_none()) +
     scale_linetype_manual(
-      values = c("1" = "dashed", "0" = "blank"),
+      values = c("TRUE" = "dashed", "FALSE" = "blank"),
       guide = guide_none()
     ) +
     scale_fill_hbsc(
@@ -238,8 +231,12 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
 #' @return A printed `flextable`
 #'
 table_from_summary <- function(summary_data) {
-  summary_data |>
-    mutate(prop = sprintf("%.0f", 100 * numerator / denom)) |>
+  tab <- summary_data |>
+    mutate(prop = if_else(
+      censored,
+      "*",
+      sprintf("%.0f", 100 * numerator / denominator))
+    ) |>
     pivot_wider(id_cols = answer, names_from = c(class, gender), values_from = prop) |>
     rename(All = All_All, ` ` = answer) |>
     rename_with(~ str_replace(.x, "(\\d)(?=_)", "\\1\n%")) |>
@@ -249,4 +246,10 @@ table_from_summary <- function(summary_data) {
     set_table_properties(layout = "autofit", width = 1) |>
     set_caption(align_with_table = FALSE) |>
     align(j = -1, align = "center", part = "all")
+  if (any(summary_data$censored)) {
+    tab |>
+      add_footer_lines("* Numbers too low to show")
+  } else {
+    tab
+  }
 }

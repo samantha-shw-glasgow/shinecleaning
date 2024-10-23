@@ -9,7 +9,6 @@ share_elevated_multiple(
   varlist,
   levels = c("As expected", "Elevated"),
   .split = TRUE,
-  .censor = TRUE,
   classes = "All",
   genders = c("Boys", "Girls")
 )
@@ -22,8 +21,6 @@ share_elevated_multiple(
 \item{levels}{Levels to sum over}
 
 \item{.split}{Split by gender/class}
-
-\item{.censor}{Censor low variables}
 
 \item{classes}{Vector/list of classes, nested by clusters}
 

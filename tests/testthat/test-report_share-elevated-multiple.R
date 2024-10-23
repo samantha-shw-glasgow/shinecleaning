@@ -49,8 +49,7 @@ expected_outs <- function(...) {
              .by = c("gender", "class", "var")) |>
       mutate(
         prop = n / denom,
-        level = factor(level, levels = levels),
-        censored = 0
+        level = factor(level, levels = levels)
       )
 
   })
@@ -73,8 +72,7 @@ expected_outs <- function(...) {
            .by = c("gender", "class", "var")) |>
     mutate(
       prop = n / denom,
-      level = factor(level, levels = levels),
-      censored = 0
+      level = factor(level, levels = levels)
     )
 
   append(subgs, list(all))
@@ -163,10 +161,10 @@ describe("share elevated - multiple variables", {
              summarise(
                n = sum(n),
                denom = sum(denom),
-               .by = c("gender", "class", "var", "level", "censored")
+               .by = c("gender", "class", "var", "level")
              ) |>
              mutate(prop = n / denom) |>
-             select(gender, class, var, level, n, denom, prop, censored)
+             select(gender, class, var, level, n, denom, prop)
     )
 
     result_missing_class <- share_elevated_multiple(

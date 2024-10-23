@@ -5,7 +5,6 @@
 #' @param success A purrr-like function denoting numerator categories
 #' @param genders List of genders to split by
 #' @param classes List of classes to split by
-#' @param .censor `TRUE`/`FALSE` - apply censoring rules (must be `TRUE` in output reports)
 #' @param .gender_split `TRUE`/`FALSE` - split by gender when sufficient numbers of responses
 #'
 #' @return A summary table of % of 'success' in each group
@@ -16,7 +15,6 @@ summary_proportions_multiple <-
            success = ~ .x %in% c("More than once a week", "About every day"),
            genders = c("Boys", "Girls"),
            classes = "All",
-           .censor = TRUE,
            .gender_split = TRUE) {
     subgroups <- NULL
 
@@ -32,8 +30,8 @@ summary_proportions_multiple <-
               across(everything(), ~na_if(.x, "Prefer not to say")),
               across(everything(), success),
               ) |>
-            summarise(across(everything(), list(n = ~sum(.x, na.rm = TRUE),
-                                                denom = how_many_valid),
+            summarise(across(everything(), list(numerator = ~sum(.x, na.rm = TRUE),
+                                                denominator = how_many_valid),
                              .names = "{.col}__{.fn}"),
               .groups = "drop"
             ) |>
@@ -55,8 +53,8 @@ summary_proportions_multiple <-
         across(everything(), ~na_if(.x, "Prefer not to say")),
         across(everything(), success),
         ) |>
-      summarise(across(everything(), list(n = ~sum(.x, na.rm = TRUE),
-                                          denom = how_many_valid),
+      summarise(across(everything(), list(numerator = ~sum(.x, na.rm = TRUE),
+                                          denominator = how_many_valid),
                        .names = "{.col}__{.fn}"),
                 .groups = "drop"
       )
@@ -68,23 +66,14 @@ summary_proportions_multiple <-
           tidyr::pivot_longer(-c(gender, class),
             names_to = c("var", "x"),
             names_sep = "__",
-            values_to = "n"
+            values_to = "numerator"
           ) |>
-          tidyr::pivot_wider(names_from = x, values_from = n) |>
-          dplyr::relocate(denom, var, n, .after = everything()) |>
+          tidyr::pivot_wider(names_from = x, values_from = numerator) |>
+          dplyr::relocate(denominator, var, numerator, .after = everything()) |>
           rowwise() |>
           mutate(
-            censored = if_else(.data$n < 3 &
-              .censor, 1, 0) |> factor(levels = c("1", "0")),
             labels = stringr::str_wrap(varslist[[.data$var]][1], 12),
-            prop = .data$n / .data$denom,
-            prop = if_else(.data$censored == 1, 0.05, .data$prop),
-            bar_lab_main = if_else(
-              .data$censored == 1,
-              "*",
-              scales::percent(.data$prop, suffix = "%", accuracy = 1)
-            ),
-            bar_lab_cens = if_else(.data$censored == 1, "Numbers too low to show", "")
+            prop = .data$numerator / .data$denominator
           ) |>
           filter(!is.na(.data$gender)) |>
           ungroup() |>
@@ -102,6 +91,14 @@ bar_proportions_multiple <- function(summary_data) {
   genders <- unique(summary_data$gender)
 
   summary_data |>
+    mutate(
+      prop = if_else(.data$censored, 0.05, .data$prop),
+      bar_lab_main = if_else(
+        .data$censored,
+        "*",
+        scales::percent(.data$prop, suffix = "%", accuracy = 1)
+      )
+    ) |>
     ggplot(
       aes(
         .data$prop,
@@ -116,9 +113,9 @@ bar_proportions_multiple <- function(summary_data) {
       stat = "identity",
       position = position_dodge(width = 0.7)
     ) +
-    scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
+    scale_alpha_manual(values = c("TRUE" = 0.6, "FALSE" = 1), guide = guide_none()) +
     scale_linetype_manual(
-      values = c("1" = "dashed", "0" = "blank"),
+      values = c("TRUE" = "dashed", "FALSE" = "blank"),
       guide = guide_none()
     ) +
     scale_fill_hbsc(
@@ -153,7 +150,7 @@ bar_proportions_multiple <- function(summary_data) {
     ) +
     coord_cartesian(clip = "off") +
     labs(
-      caption = if_else(any(summary_data$censored == 1), "* Numbers too low to show", ""),
+      caption = if_else(any(summary_data$censored), "* Numbers too low to show", ""),
       title = paste(class, "pupils")
     )
 }

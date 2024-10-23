@@ -62,12 +62,12 @@ classes_s2 <- list(
 )
 
 describe("collapsed summary", {
-  it("works without censoring and without gender split", {
+  it("works without gender split", {
     expected <- tibble::tribble(
-      ~class, ~gender, ~numerator, ~denom, ~censored,
-      # "S1",   "All",    5,          12, 0,
-      # "S6",   "All",    4,          8, 0,
-      "All", "All pupils", 9, 20, 0
+      ~class, ~gender, ~numerator, ~denominator,
+      # "S1",   "All",    5,          12,
+      # "S6",   "All",    4,          8,
+      "All", "All pupils", 9, 20,
     ) |>
       mutate(class = forcats::fct_inorder(class))
     result <- create_collapsed_summary(
@@ -80,14 +80,14 @@ describe("collapsed summary", {
     expect_equal(result, expected)
   })
 
-  it("works without censoring and with gender split", {
+  it("works with gender split", {
     expected <- tibble::tribble(
-      ~class, ~gender,  ~numerator, ~denom, ~censored,
-      "S1",   "Boys",   3,          5, 0,
-      "S1",   "Girls",  2,          7, 0,
-      "S6",   "Boys",   1,          3, 0,
-      "S6",   "Girls",  3,          5, 0,
-      "All",  "All",    9,          20, 0,
+      ~class, ~gender,  ~numerator, ~denominator,
+      "S1",   "Boys",   3,          5,
+      "S1",   "Girls",  2,          7,
+      "S6",   "Boys",   1,          3,
+      "S6",   "Girls",  3,          5,
+      "All",  "All",    9,          20,
     ) |>
       mutate(class = forcats::fct_inorder(class))
     result <- create_collapsed_summary(
@@ -95,19 +95,19 @@ describe("collapsed summary", {
       health,
       c("Excellent", "Good"),
       genders, classes,
-      .gender_split = TRUE, .censor = FALSE
+      .gender_split = TRUE
     )
     expect_equal(result, expected)
   })
 
   it("Ignores NA values", {
     expected <- tibble::tribble(
-      ~class, ~gender,  ~numerator, ~denom, ~censored,
-      "S1",   "Boys",   3,          5, 0,
-      "S1",   "Girls",  2,          7, 0,
-      "S6",   "Boys",   1,          3, 0,
-      "S6",   "Girls",  3,          5, 0,
-      "All",  "All",    9,          20, 0,
+      ~class, ~gender,  ~numerator, ~denominator,
+      "S1",   "Boys",   3,          5,
+      "S1",   "Girls",  2,          7,
+      "S6",   "Boys",   1,          3,
+      "S6",   "Girls",  3,          5,
+      "All",  "All",    9,          20,
     ) |>
       mutate(class = forcats::fct_inorder(class))
     result <- create_collapsed_summary(
@@ -115,19 +115,19 @@ describe("collapsed summary", {
       health,
       c("Excellent", "Good"),
       genders, classes,
-      .gender_split = TRUE, .censor = FALSE
+      .gender_split = TRUE
     )
     expect_equal(result, expected)
   })
 
   it("Ignores pnts values", {
     expected <- tibble::tribble(
-      ~class, ~gender,  ~numerator, ~denom, ~censored,
-      "S1",   "Boys",   3,          5, 0,
-      "S1",   "Girls",  2,          7, 0,
-      "S6",   "Boys",   1,          3, 0,
-      "S6",   "Girls",  3,          5, 0,
-      "All",  "All",    9,          20, 0,
+      ~class, ~gender,  ~numerator, ~denominator,
+      "S1",   "Boys",   3,          5,
+      "S1",   "Girls",  2,          7,
+      "S6",   "Boys",   1,          3,
+      "S6",   "Girls",  3,          5,
+      "All",  "All",    9,          20,
     ) |>
       mutate(class = forcats::fct_inorder(class))
     result <- create_collapsed_summary(
@@ -135,7 +135,7 @@ describe("collapsed summary", {
       health,
       c("Excellent", "Good"),
       genders, classes,
-      .gender_split = TRUE, .censor = FALSE
+      .gender_split = TRUE
     )
     expect_equal(result, expected)
   })
@@ -149,25 +149,22 @@ describe("collapsed summary", {
       ) |> as.character()) |>
       summarise(
         numerator = sum(health %in% c("Excellent", "Good")),
-        denom = n(),
+        denominator = n(),
         .by = c("class", "gender")
       ) |>
       (
         \(d) summarise(d, across(c(
-          numerator, denom
+          numerator, denominator
         ), sum)) |> mutate(gender = "All", class = "All") |> bind_rows(d, x = _)
       )() |>
-      mutate(
-        class = forcats::fct_inorder(class),
-        censored = 0
-      )
+      mutate(class = forcats::fct_inorder(class))
 
     result <- create_collapsed_summary(
       input_data_full(),
       health,
       c("Excellent", "Good"),
       genders, classes_s2,
-      .gender_split = TRUE, .censor = FALSE
+      .gender_split = TRUE
     )
 
     expect_equal(result, expected)
@@ -177,9 +174,9 @@ describe("collapsed summary", {
 })
 
 describe("full summary", {
-  it("works without censoring and without gender split", {
+  it("works without gender split", {
     expected <- tibble::tribble(
-      ~class, ~gender,  ~answer,      ~numerator, ~denom,
+      ~class, ~gender,  ~answer,      ~numerator, ~denominator,
       # "S1",   "All",    "Excellent",  2,          12,
       # "S1",   "All",    "Fair",       2,          12,
       # "S1",   "All",    "Good",       3,          12,
@@ -206,9 +203,9 @@ describe("full summary", {
     expect_equal(result, expected)
   })
 
-  it("works without censoring and with gender split", {
+  it("works with gender split", {
     expected <- tibble::tribble(
-      ~class, ~gender,  ~answer,      ~numerator, ~denom,
+      ~class, ~gender,  ~answer,      ~numerator, ~denominator,
       "S1",   "Boys",   "Excellent",  1,          5,
       "S1",   "Boys",   "Good",       2,          5,
       "S1",   "Boys",   "Fair",       1,          5,
@@ -217,7 +214,7 @@ describe("full summary", {
       "S1",   "Girls",  "Good",       1,          7,
       "S1",   "Girls",  "Fair",       1,          7,
       "S1",   "Girls",  "Poor",       4,          7,
-      # "S6",   "Boys",   "Excellent",  0,          3,
+      "S6",   "Boys",   "Excellent",  0,          3,
       "S6",   "Boys",   "Good",       1,          3,
       "S6",   "Boys",   "Fair",       1,          3,
       "S6",   "Boys",   "Poor",       1,          3,
@@ -239,7 +236,7 @@ describe("full summary", {
         health,
         levels = c("Poor", "Fair", "Good", "Excellent"),
         genders, classes,
-        .gender_split = TRUE, .censor = FALSE
+        .gender_split = TRUE
       )
     expect_equal(result, expected)
   })
@@ -252,11 +249,11 @@ describe("full summary", {
       ) |>
       summarise(numerator = n(),
                 .by = c("class", "gender", "health")) |>
-      mutate(denom = sum(numerator),
+      mutate(denominator = sum(numerator),
              .by = c("gender", "class")) |>
       (
         \(d) summarise(d, across(c(
-          numerator, denom
+          numerator, denominator
         ), sum), .by = "health") |> mutate(gender = "All", class = "All") |> bind_rows(d, x = _)
       )() |>
       mutate(
@@ -271,7 +268,7 @@ describe("full summary", {
       health,
       levels = c("Poor", "Fair", "Good", "Excellent"),
       genders, classes_s2,
-      .gender_split = TRUE, .censor = FALSE
+      .gender_split = TRUE
     )
 
     expect_equal(result, expected)
@@ -286,11 +283,11 @@ describe("full summary", {
       ) |>
       summarise(numerator = n(),
                 .by = c("class", "gender", "health")) |>
-      mutate(denom = sum(numerator),
+      mutate(denominator = sum(numerator),
              .by = c("gender", "class")) |>
       (
         \(d) summarise(d, across(c(
-          numerator, denom
+          numerator, denominator
         ), sum), .by = "health") |> mutate(gender = "All", class = "All") |> bind_rows(d, x = _)
       )() |>
       mutate(
@@ -305,7 +302,7 @@ describe("full summary", {
       health,
       levels = c("Poor", "Fair", "Good", "Excellent"),
       genders, classes_s2,
-      .gender_split = TRUE, .censor = FALSE
+      .gender_split = TRUE
     )
 
     expect_equal(result, expected)
@@ -315,7 +312,7 @@ describe("full summary", {
   it("ignores NA rows", {
 
     expected <- tibble::tribble(
-      ~class, ~gender,  ~answer,      ~numerator, ~denom,
+      ~class, ~gender,  ~answer,      ~numerator, ~denominator,
       "S1",   "Boys",   "Excellent",  1,          5,
       "S1",   "Boys",   "Good",       2,          5,
       "S1",   "Boys",   "Fair",       1,          5,
@@ -324,7 +321,7 @@ describe("full summary", {
       "S1",   "Girls",  "Good",       1,          7,
       "S1",   "Girls",  "Fair",       1,          7,
       "S1",   "Girls",  "Poor",       4,          7,
-      # "S6",   "Boys",   "Excellent",  0,          3,
+      "S6",   "Boys",   "Excellent",  0,          3,
       "S6",   "Boys",   "Good",       1,          3,
       "S6",   "Boys",   "Fair",       1,          3,
       "S6",   "Boys",   "Poor",       1,          3,
@@ -346,7 +343,7 @@ describe("full summary", {
                           health,
                           levels = c("Poor", "Fair", "Good", "Excellent"),
                           genders, classes,
-                          .gender_split = TRUE, .censor = FALSE
+                          .gender_split = TRUE
       )
     expect_equal(result, expected)
 
@@ -355,7 +352,7 @@ describe("full summary", {
   it("ignores pnts rows", {
 
     expected <- tibble::tribble(
-      ~class, ~gender,  ~answer,      ~numerator, ~denom,
+      ~class, ~gender,  ~answer,      ~numerator, ~denominator,
       "S1",   "Boys",   "Excellent",  1,          5,
       "S1",   "Boys",   "Good",       2,          5,
       "S1",   "Boys",   "Fair",       1,          5,
@@ -364,7 +361,7 @@ describe("full summary", {
       "S1",   "Girls",  "Good",       1,          7,
       "S1",   "Girls",  "Fair",       1,          7,
       "S1",   "Girls",  "Poor",       4,          7,
-      # "S6",   "Boys",   "Excellent",  0,          3,
+      "S6",   "Boys",   "Excellent",  0,          3,
       "S6",   "Boys",   "Good",       1,          3,
       "S6",   "Boys",   "Fair",       1,          3,
       "S6",   "Boys",   "Poor",       1,          3,
@@ -382,11 +379,11 @@ describe("full summary", {
         answer = factor(answer, levels = c("Poor", "Fair", "Good", "Excellent"))
       )
     result <-
-      create_full_summary(input_data("Prefer nto to say"),
+      create_full_summary(input_data("Prefer not to say"),
                           health,
                           levels = c("Poor", "Fair", "Good", "Excellent"),
                           genders, classes,
-                          .gender_split = TRUE, .censor = FALSE
+                          .gender_split = TRUE
       )
     expect_equal(result, expected)
 
@@ -394,7 +391,7 @@ describe("full summary", {
 
   it("ignores missing class in all but 'All'", {
     expected <- tibble::tribble(
-      ~class, ~gender,  ~answer,      ~numerator, ~denom,
+      ~class, ~gender,  ~answer,      ~numerator, ~denominator,
       "S1",   "Boys",   "Excellent",  1,          5,
       "S1",   "Boys",   "Good",       2,          5,
       "S1",   "Boys",   "Fair",       1,          5,
@@ -403,7 +400,7 @@ describe("full summary", {
       "S1",   "Girls",  "Good",       1,          7,
       "S1",   "Girls",  "Fair",       1,          7,
       "S1",   "Girls",  "Poor",       4,          7,
-      # "S6",   "Boys",   "Excellent",  0,          3,
+      "S6",   "Boys",   "Excellent",  0,          3,
       "S6",   "Boys",   "Good",       1,          3,
       "S6",   "Boys",   "Fair",       1,          3,
       "S6",   "Boys",   "Poor",       1,          3,
@@ -425,7 +422,7 @@ describe("full summary", {
                           health,
                           levels = c("Poor", "Fair", "Good", "Excellent"),
                           genders, classes,
-                          .gender_split = TRUE, .censor = FALSE
+                          .gender_split = TRUE
       )
     expect_equal(result, expected)
 
@@ -434,7 +431,7 @@ describe("full summary", {
 
   it("ignores missing gender in all but 'All'", {
     expected <- tibble::tribble(
-      ~class, ~gender,  ~answer,      ~numerator, ~denom,
+      ~class, ~gender,  ~answer,      ~numerator, ~denominator,
       "S1",   "Boys",   "Excellent",  1,          5,
       "S1",   "Boys",   "Good",       2,          5,
       "S1",   "Boys",   "Fair",       1,          5,
@@ -443,7 +440,7 @@ describe("full summary", {
       "S1",   "Girls",  "Good",       1,          7,
       "S1",   "Girls",  "Fair",       1,          7,
       "S1",   "Girls",  "Poor",       4,          7,
-      # "S6",   "Boys",   "Excellent",  0,          3,
+      "S6",   "Boys",   "Excellent",  0,          3,
       "S6",   "Boys",   "Good",       1,          3,
       "S6",   "Boys",   "Fair",       1,          3,
       "S6",   "Boys",   "Poor",       1,          3,
@@ -465,7 +462,7 @@ describe("full summary", {
                           health,
                           levels = c("Poor", "Fair", "Good", "Excellent"),
                           genders, classes,
-                          .gender_split = TRUE, .censor = FALSE
+                          .gender_split = TRUE
       )
     expect_equal(result, expected)
 

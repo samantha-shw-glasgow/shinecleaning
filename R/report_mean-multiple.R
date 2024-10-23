@@ -5,7 +5,6 @@
 #' @param varslist (named) list of variables to use. Names to match vars
 #' @param genders List of genders to split by
 #' @param classes List of classes to split by
-#' @param .censor `TRUE`/`FALSE` - apply censoring rules (must be `TRUE` in output reports)
 #' @param .gender_split `TRUE`/`FALSE` - split by gender when sufficient numbers of responses
 #'
 #' @return A summary table of means of multiple variables
@@ -19,7 +18,6 @@ summary_mean_multiple_vars <-
            varslist,
            genders = c("Boys", "Girls"),
            classes = "All",
-           .censor = TRUE,
            .gender_split = TRUE) {
     subgroups <- NULL
 
@@ -32,7 +30,7 @@ summary_mean_multiple_vars <-
             select(gender, class, !!!names(varslist)) |>
             mutate(class = str_flatten(concat_class, collapse = ", ", last = " and ")) |>
             summarise(across(everything(), list(
-              mean = quiet_means, denom = ~how_many_valid(valid_numbers(.x))
+              mean = quiet_means, denominator = ~how_many_valid(valid_numbers(.x))
             ), .names = "{.col}__{.fn}"), .by = c("gender", "class")) |>
             arrange(gender)
 
@@ -48,7 +46,7 @@ summary_mean_multiple_vars <-
       mutate(class = "All", gender = if_else(.gender_split, "All", "All pupils")) |>
       select(gender, class, !!!names(varslist)) |>
       summarise(across(everything(), list(
-        mean = quiet_means, denom = ~how_many_valid(valid_numbers(.x))
+        mean = quiet_means, denominator = ~how_many_valid(valid_numbers(.x))
       ), .names = "{.col}__{.fn}"), .by = c("gender", "class"))
 
 
@@ -63,13 +61,7 @@ summary_mean_multiple_vars <-
         ) |>
           tidyr::pivot_wider(names_from = x, values_from = n) |>
           rowwise() |>
-          mutate(
-            censored = if_else(.data$denom < 3 & .censor, 1, 0),
-            mean = if_else(.data$censored == 1, 1, .data$mean),
-            labels = stringr::str_wrap(varslist[[.data$var]][1], 12),
-            bar_lab_main = if_else(.data$censored == 1, "*", sprintf("%.1f", .data$mean)),
-            bar_lab_cens = if_else(.data$censored == 1, "Numbers too low to show", "")
-          ) |>
+          mutate(labels = stringr::str_wrap(varslist[[.data$var]][1], 12)) |>
           filter(!is.na(gender)) |>
           ungroup() |>
           mutate(labels = forcats::fct_reorder(.data$labels, mean))
@@ -90,25 +82,30 @@ bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
   class <- unique(summary_data$class)
   genders <- unique(summary_data$gender)
 
-  ggplot(
-    summary_data,
-    aes(
-      .data$mean,
-      .data$labels,
-      linetype = factor(.data$censored),
-      fill = .data$gender,
-      colour = .data$gender,
-      group = .data$gender
-    )
-  ) +
-    geom_bar_t(aes(alpha = factor(.data$censored)),
+  summary_data |>
+    mutate(
+      mean = if_else(.data$censored, 1, .data$mean),
+      bar_lab_main = if_else(.data$censored, "*", sprintf("%.1f", .data$mean)),
+      bar_lab_cens = if_else(.data$censored, "Numbers too low to show", "")
+    ) |>
+    ggplot(
+      aes(
+        .data$mean,
+        .data$labels,
+        linetype = .data$censored,
+        fill = .data$gender,
+        colour = .data$gender,
+        group = .data$gender
+      )
+    ) +
+    geom_bar_t(aes(alpha = .data$censored),
       stat = "identity",
       width = 0.7,
       position = position_dodge(width = 0.7)
     ) +
-    scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
+    scale_alpha_manual(values = c("TRUE" = 0.6, "FALSE" = 1), guide = guide_none()) +
     scale_linetype_manual(
-      values = c("1" = "dashed", "0" = "blank"),
+      values = c("TRUE" = "dashed", "FALSE" = "blank"),
       guide = guide_none()
     ) +
     scale_y_discrete("") +
@@ -138,7 +135,7 @@ bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
     ) +
     coord_cartesian(xlim = c(0, xmax), clip = "off") +
     labs(
-      caption = if_else(any(summary_data$censored == 1), "* Numbers too low to show", ""),
+      caption = if_else(any(summary_data$censored), "* Numbers too low to show", ""),
       title = paste(class, "pupils")
     )
 }
@@ -149,7 +146,12 @@ bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
   varslist <- unique(summary_data$var)
 
   summary_data |>
-    mutate(labels = forcats::fct_inorder(labels)) |>
+    mutate(
+      mean = if_else(.data$censored, 1, .data$mean),
+      labels = forcats::fct_inorder(labels),
+      bar_lab_main = if_else(.data$censored, "*", sprintf("%.1f", .data$mean)),
+      bar_lab_cens = if_else(.data$censored, "Numbers too low to show", "")
+    ) |>
     ggplot(
       aes(
         .data$labels,
@@ -160,13 +162,13 @@ bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
         group = .data$gender
       )
     ) +
-    geom_bar_t(aes(alpha = factor(.data$censored)),
+    geom_bar_t(aes(alpha = .data$censored),
       stat = "identity",
       position = position_dodge(width = 0.7)
     ) +
-    scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
+    scale_alpha_manual(values = c("TRUE" = 0.6, "FALSE" = 1), guide = guide_none()) +
     scale_linetype_manual(
-      values = c("1" = "dashed", "0" = "blank"),
+      values = c("TRUE" = "dashed", "FALSE" = "blank"),
       guide = guide_none()
     ) +
     scale_x_discrete("", guide = guide_axis(
@@ -202,7 +204,7 @@ bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
     ) +
     coord_cartesian(ylim = c(0, ymax), clip = "off") +
     labs(
-      caption = if_else(any(summary_data$censored == 1), "* Numbers too low to show", ""),
+      caption = if_else(any(summary_data$censored), "* Numbers too low to show", ""),
       title = paste(class, "pupils")
     )
 }

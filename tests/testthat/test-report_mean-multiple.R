@@ -21,10 +21,10 @@ test_that("mean by multiple vars", {
   )
 
   expected <- list(tibble::tribble(
-    ~gender, ~class, ~var, ~mean, ~denom, ~censored, ~labels, ~bar_lab_main, ~bar_lab_cens,
-    "All pupils", "All", "var1", 1, 1L, 0, "Variable 1", "1.0", "",
-    "All pupils", "All", "var2", 2, 1L, 0, "Variable 2", "2.0", "",
-    "All pupils", "All", "var3", 3, 1L, 0, "Variable 3", "3.0", ""
+    ~gender, ~class, ~var, ~mean, ~denominator, ~labels,
+    "All pupils", "All", "var1", 1, 1L, "Variable 1",
+    "All pupils", "All", "var2", 2, 1L, "Variable 2",
+    "All pupils", "All", "var3", 3, 1L, "Variable 3",
   ) |>
     mutate(labels = fct_inorder(labels)))
 
@@ -36,8 +36,7 @@ test_that("mean by multiple vars", {
       "var3" = "Variable 3"
     ),
     .gender_split = FALSE,
-    class = "All",
-    .censor = FALSE
+    class = "All"
   )
 
   result_bad <- summary_mean_multiple_vars(
@@ -48,8 +47,7 @@ test_that("mean by multiple vars", {
       "var3" = "Variable 3"
     ),
     .gender_split = FALSE,
-    class = "All",
-    .censor = FALSE
+    class = "All"
   )
 
   result_pnts <- summary_mean_multiple_vars(
@@ -60,8 +58,7 @@ test_that("mean by multiple vars", {
       "var3" = "Variable 3"
     ),
     .gender_split = FALSE,
-    class = "All",
-    .censor = FALSE
+    class = "All"
   )
 
   expect_equal(result, expected)

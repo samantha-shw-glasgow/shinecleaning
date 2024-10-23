@@ -135,6 +135,7 @@ input_data |>
     classes,
     .gender_split = params$gender_split
   ) |>
+  censor_summary_data("numerator") |>
   bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("Good", "Excellent"), "health"))
 ```
 
@@ -147,6 +148,7 @@ input_data |>
     classes,
     .gender_split = params$gender_split
   ) |>
+  censor_summary_data("numerator") |>
   table_from_summary()
 ```
 
@@ -188,6 +190,7 @@ graphs <-
     classes = classes,
     .gender_split = params$gender_split
   ) |>
+  map(censor_summary_data, "denominator") |>
   map(bar_mean_multiple_vars, xmax = 10) |>
   print_first_graph()
 ```
@@ -217,6 +220,7 @@ graphs <- input_data |>
     classes = classes,
     .gender_split = params$gender_split
   ) |>
+  map(censor_summary_data, "numerator") |>
   map(bar_proportions_multiple) |>
   print_first_graph()
 ```
@@ -247,6 +251,7 @@ input_data |>
     classes,
     .gender_split = params$gender_split
   ) |>
+  censor_summary_data("numerator") |>
   bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("low"), "who"))
 ```
 
@@ -260,6 +265,7 @@ input_data |>
     classes,
     .gender_split = params$gender_split
   ) |>
+  censor_summary_data("numerator") |>
   bar_from_summary(
     get_hbsc_prop(classes, "dep", "who")
   )
@@ -295,6 +301,7 @@ graphs <- input_data |>
     genders = genders,
     .split = params$gender_split
   ) |>
+  map(censor_summary_data, "n") |>
   map(bar_share_elevated_multiple) |>
   print_first_graph()
 
@@ -314,6 +321,7 @@ input_data |>
     classes = classes,
     genders = genders
   ) |>
+  censor_summary_data("denom") |>
   bar_share_elevated()
 
 ```
@@ -327,6 +335,7 @@ input_data |>
     classes = classes,
     genders = genders
   ) |>
+  censor_summary_data("denom") |>
   bar_share_elevated()
 
 ```
@@ -350,6 +359,7 @@ input_data |>
     classes,
     .gender_split = params$gender_split
   ) |>
+  censor_summary_data("denom") |>
   bar_mean_single(ymax = 60)
 
 ```
@@ -376,6 +386,7 @@ input_data |>
     classes,
     .gender_split = params$gender_split
   ) |>
+  censor_summary_data("numerator") |>
   bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("I like it a lot", "I like it a bit"), "sch1"))
 ```
 
@@ -393,6 +404,7 @@ input_data |>
     classes,
     .gender_split = params$gender_split
   ) |>
+  censor_summary_data("numerator") |>
   table_from_summary()
 ```
 
@@ -415,6 +427,7 @@ input_data |>
     classes,
     .gender_split = params$gender_split
   ) |>
+  censor_summary_data("numerator") |>
   bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("A lot", "Some"), "sch2"))
 ```
 
@@ -427,6 +440,7 @@ input_data |>
     classes,
     .gender_split = params$gender_split
   ) |>
+  censor_summary_data("numerator") |>
   table_from_summary()
 ```
 
@@ -449,6 +463,7 @@ input_data |>
     classes,
     .gender_split = params$gender_split
   ) |>
+  censor_summary_data("numerator") |>
   bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("Always", "Often"), "sch3"))
 ```
 
@@ -461,6 +476,7 @@ input_data |>
     classes,
     .gender_split = params$gender_split
   ) |>
+  censor_summary_data("numerator") |>
   table_from_summary()
 ```
 
@@ -483,6 +499,7 @@ input_data |>
     genders = genders,
     .gender_split = params$gender_split
   ) |>
+  censor_summary_data("numerator") |>
   bar_from_summary()
 ```
 
@@ -498,6 +515,7 @@ input_data |>
                       ),
                       genders = genders, classes = classes,
                       .gender_split = params$gender_split) |>
+  censor_summary_data("numerator") |>
   table_from_summary()
 ```
 
@@ -547,6 +565,7 @@ graphs <- input_data |>
       classes,
       .gender_split = params$gender_split
     ) |>
+  map(censor_summary_data, "denominator") |>
   map(bar_mean_multiple_vertical, ymax = 12) |>
   print_first_graph()
 
@@ -569,6 +588,7 @@ graphs <- input_data |>
       classes,
       .gender_split = params$gender_split
     ) |>
+  map(censor_summary_data, "denominator") |>
   map(bar_mean_multiple_vertical, ymax = 12) |>
   print_first_graph()
 
@@ -591,6 +611,7 @@ graphs <- input_data |>
       classes,
       .gender_split = params$gender_split
     ) |>
+  map(censor_summary_data, "denominator") |>
   map(bar_mean_multiple_vertical, ymax = 12) |>
   print_first_graph()
 
@@ -609,6 +630,7 @@ input_data |>
     classes,
     .gender_split = params$gender_split
   ) |>
+  censor_summary_data("denom") |>
   bar_mean_single(ymax = 12)
 ```
 
@@ -625,6 +647,7 @@ graphs <- input_data |>
       classes,
       .gender_split = params$gender_split
     ) |>
+  map(censor_summary_data, "denominator") |>
   map(bar_mean_multiple_vertical, ymax = 12) |>
   print_first_graph()
 

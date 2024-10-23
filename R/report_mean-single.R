@@ -4,7 +4,6 @@
 #' @param var Variable to calculate mean of
 #' @param genders List of genders to split by
 #' @param classes List of classes to split by
-#' @param .censor `TRUE`/`FALSE` - apply censoring rules (must be `TRUE` in output reports)
 #' @param .gender_split `TRUE`/`FALSE` - split by gender when sufficient numbers of responses
 #'
 #' @return A summary table of means of a single variable
@@ -17,7 +16,6 @@ summary_mean_single_var <-
            var,
            genders = c("Boys", "Girls"),
            classes = "All",
-           .censor = TRUE,
            .gender_split = TRUE) {
     subgroups <- tibble()
 
@@ -47,13 +45,7 @@ summary_mean_single_var <-
       )
 
     bind_rows(subgroups, all) |>
-      mutate(
-        censored = if_else(.data$denom < 3 & .censor, 1, 0) |> factor(levels = c("1", "0")),
-        mean_score = if_else(.data$censored == 1, 1, .data$mean_score),
-        bar_lab_main = if_else(.data$censored == 1, "*", sprintf("%.1f", .data$mean_score)),
-        bar_lab_cens = if_else(.data$censored == 1, "Numbers too low to show", ""),
-        class = fct_inorder(class)
-      ) |>
+      mutate(class = fct_inorder(class)) |>
       arrange(gender, class)
   }
 
@@ -66,6 +58,11 @@ summary_mean_single_var <-
 #' @returns A ggplot2 graph
 bar_mean_single <- function(summary_data, ymax, ylab = "Mean") {
   summary_data |>
+    mutate(
+      mean_score = if_else(.data$censored, 1, .data$mean_score),
+      bar_lab_main = if_else(.data$censored, "*", sprintf("%.1f", .data$mean_score)),
+      bar_lab_cens = if_else(.data$censored, "Numbers too low to show", "")
+    ) |>
     ggplot() +
     aes(x = class, y = mean_score, fill = gender, linetype = .data$censored, alpha = .data$censored) +
     geom_bar_t(
@@ -74,9 +71,9 @@ bar_mean_single <- function(summary_data, ymax, ylab = "Mean") {
       linetype = "blank"
     ) +
     scale_x_discrete("") +
-    scale_alpha_manual(values = c("1" = 0.6, "0" = 1), guide = guide_none()) +
+    scale_alpha_manual(values = c("TRUE" = 0.6, "FALSE" = 1), guide = guide_none()) +
     scale_linetype_manual(
-      values = c("1" = "dashed", "0" = "blank"),
+      values = c("TRUE" = "dashed", "FALSE" = "blank"),
       guide = guide_none()
     ) +
     scale_fill_hbsc(name = "") +
@@ -94,5 +91,5 @@ bar_mean_single <- function(summary_data, ymax, ylab = "Mean") {
       size = if_else(length(unique(summary_data$class)) > 3, 3, 4)
     ) +
     coord_cartesian(ylim = c(0, ymax), clip = "off") +
-    labs(caption = if_else(any(summary_data$censored == 1), "* Numbers too low to show", ""))
+    labs(caption = if_else(any(summary_data$censored), "* Numbers too low to show", ""))
 }

@@ -9,7 +9,6 @@ summary_mean_multiple_vars(
   varslist,
   genders = c("Boys", "Girls"),
   classes = "All",
-  .censor = TRUE,
   .gender_split = TRUE
 )
 }
@@ -21,8 +20,6 @@ summary_mean_multiple_vars(
 \item{genders}{List of genders to split by}
 
 \item{classes}{List of classes to split by}
-
-\item{.censor}{\code{TRUE}/\code{FALSE} - apply censoring rules (must be \code{TRUE} in output reports)}
 
 \item{.gender_split}{\code{TRUE}/\code{FALSE} - split by gender when sufficient numbers of responses}
 }
