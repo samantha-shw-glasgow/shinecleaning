@@ -3,14 +3,12 @@
 #' @param id Unique id for module instance.
 #'
 #' @keywords internal
-createReport_groupingsUI <- function(id){
-	ns <- NS(id)
+createReport_groupingsUI <- function(id) {
+  ns <- NS(id)
 
-	tagList(
-	  shinyjs::hidden(textAreaInput(ns("groupings"),
-	              width = "100%",
-	              label = "Specify custom grouping. Grouped school-years should be on the same line."))
-	)
+  tagList(shinyjs::hidden(
+    textAreaInput(ns("groupings"), width = "100%", label = "Specify custom grouping. Grouped school-years should be on the same line.")
+  ))
 }
 
 #' createReport_groupings Server
@@ -18,62 +16,54 @@ createReport_groupingsUI <- function(id){
 #' @param id Unique id for module instance.
 #'
 #' @keywords internal
-createReport_groupings_server <- function(id, custom_group, report_type){
-	moduleServer(
-		id,
-		function(
-			input,
-			output,
-			session
-			){
+createReport_groupings_server <- function(id, custom_group, report_type) {
+  moduleServer(id, function(input, output, session) {
+    ns <- session$ns
+    send_message <- make_send_message(session)
 
-				ns <- session$ns
-				send_message <- make_send_message(session)
-
-				# your code here
+    # your code here
 
 
-				observeEvent({
-				  custom_group()
-				  report_type()
-				  }, {
+    observeEvent({
+      custom_group()
+      report_type()
+    }, {
+      if (isTRUE(custom_group())) {
+        shinyjs::show("groupings")
+      } else {
+        updateTextAreaInput(session, "groupings", value = default())
+        shinyjs::hide("groupings")
+      }
 
-				  if (isTRUE(custom_group())) {
-				    shinyjs::show("groupings")
-				  } else {
-				    updateTextAreaInput(session, "groupings", value = default())
-				    shinyjs::hide("groupings")
-				  }
-
-				})
+    })
 
 
-				default <- reactive({
+    default <- reactive({
+      if (report_type() == "Primary" |
+          report_type() == "Primary cluster / Local Authority") {
+        default <- "P6\nP7"
+      } else if (report_type() == "Secondary") {
+        default <- "S1, S2\nS3, S4\nS5, S6"
+      } else if (report_type() == "Secondary cluster / Local Authority") {
+        default <- "S1\nS2\nS3\nS4\nS5\nS6"
+      } else
+        (default <- "")
 
-				  if (report_type() == "Primary" | report_type() == "Primary cluster / Local Authority") {
-				    default <- "P6\nP7"
-				  } else if (report_type() == "Secondary") {
-				    default <- "S1, S2\nS3, S4\nS5, S6"
-				  } else if (report_type() == "Secondary cluster / Local Authority") {
-				    default <- "S1\nS2\nS3\nS4\nS5\nS6"
-				  } else (default = "")
+      return(default)
 
-				  return(default)
+    })
 
-				})
+    group_list <- reactive({
+      if (custom_group() == F) {
+        str_split_1(default(), pattern = "\n") |> str_extract_all("[A-z][0-9]")
+      } else if (custom_group() == T) {
+        str_split_1(input$groupings, pattern = "\n") |> str_extract_all("[A-z][0-9]")
+      }
+    })
 
-				group_list <- reactive({
-				  if(custom_group() == F) {
-				    str_split_1(default(), pattern = "\n") |> str_extract_all("[A-z][0-9]")
-				  } else if(custom_group() == T) {
-				    str_split_1(input$groupings, pattern = "\n") |> str_extract_all("[A-z][0-9]")
-				  }
-				})
+    return(group_list)
 
-				return(group_list)
-
-		}
-	)
+  })
 }
 
 # UI

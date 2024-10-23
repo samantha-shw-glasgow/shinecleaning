@@ -115,7 +115,7 @@ group_classes <- function(classes, groupings) {
 
   names(groupings) <- purrr::map(groupings, knitr::combine_words)
 
-  purrr::map_chr(classes, function(old_class){
+  purrr::map_chr(classes, function(old_class) {
 
       if (is.na(old_class) | old_class == "Prefer not to say") return(NA)
 
