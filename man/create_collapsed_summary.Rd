@@ -10,7 +10,7 @@ create_collapsed_summary(
   success,
   genders,
   classes,
-  .censor = FALSE,
+  .censor = TRUE,
   .gender_split = FALSE
 )
 }

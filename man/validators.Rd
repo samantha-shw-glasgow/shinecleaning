@@ -9,7 +9,7 @@
 \alias{suggest_missing_class}
 \alias{age_year_mismatch}
 \alias{straightlining}
-\alias{duplicate_postcodes}
+\alias{recurring_postcodes}
 \alias{no_consent}
 \title{Validators}
 \usage{
@@ -27,7 +27,7 @@ age_year_mismatch(data)
 
 straightlining(data)
 
-duplicate_postcodes(data)
+recurring_postcodes(data)
 
 no_consent(data)
 }
