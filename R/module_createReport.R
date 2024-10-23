@@ -201,7 +201,7 @@ createReport_server <- function(id, data) {
       who <- paste0("who", 1:5)
       mm <- paste0("mm", 1:16)
       sehs_pri <- paste0("sehs", 1:20)
-      sehs_sec <- paste0("sehs", 1:30)
+      sehs_sec <- paste0("sehss", 1:30)
       asw <- paste0("asw", 1:10)
       sdq <- paste0("sdq", 1:25)
 
