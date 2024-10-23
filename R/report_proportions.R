@@ -88,18 +88,20 @@ create_full_summary <- function(
         filter(answer %in% levels) |>
         filter(class %in% concat_class) |>
         mutate(class = str_flatten(concat_class, collapse = ", ", last = " and ")) |>
-        summarise(numerator = n(), .by = c("gender", "answer", "class")) |>
+        mutate(across(c(gender, answer, class), factor)) |>
+        group_by(gender, answer, class, .drop = FALSE) |>
+        summarise(numerator = n(), .groups = "drop") |>
         add_count(across(c(gender, class)), name = "denominator", wt = numerator)
     }) |>
     reduce(bind_rows) |>
     arrange(class)
 
     all <- data |>
-      mutate(class = "All", gender = "All") |>
       rename(answer = !!var) |>
       filter(answer %in% levels) |>
-      summarise(numerator = n(), .by = c("gender", "answer", "class")) |>
-      add_count(across(c(gender, class)), name = "denominator", wt = numerator)
+      summarise(numerator = n(), .by = "answer") |>
+      add_count(name = "denominator", wt = numerator) |>
+      mutate(class = "All", gender = "All")
 
   if (.gender_split) {
     joined_dat <- subgroups |>
@@ -112,7 +114,7 @@ create_full_summary <- function(
   joined_dat |>
     transmute(
       class = forcats::fct_inorder(class),
-      gender = replace_na(gender, "All"),
+      gender = as.character(gender),
       answer = factor(answer, levels = levels),
       numerator,
       denominator
