@@ -158,7 +158,7 @@ createReport_server <- function(id, data) {
           count(gender,
                 `Year group`,
                 .drop = FALSE) |>
-          pivot_wider(names_from = gender, values_from = n)
+          tidyr::pivot_wider(names_from = gender, values_from = n)
       })
 
 
@@ -297,7 +297,7 @@ createReport_server <- function(id, data) {
           }
 
         tagList(
-          pmap(
+          purrr::pmap(
             all_warnings(),
             make_warning
           )

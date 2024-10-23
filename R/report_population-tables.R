@@ -59,6 +59,9 @@ tab_responses <- function(input_data, n_invited) {
 #' @param inc_gender List of genders to include in table
 #' @param inc_classes List of classes to include in table
 #'
+#' @importFrom tidyr pivot_wider
+#' @import flextable
+#'
 #' @return A flextable giving gender by class counts
 tab_categories <- function(data, inc_gender, inc_classes) {
   another_way <- sum(data$gender == "In another way", na.rm = TRUE)
@@ -119,7 +122,7 @@ group_classes <- function(classes, groupings) {
 
       if (is.na(old_class) | old_class == "Prefer not to say") return(NA)
 
-      class_group <- keep(groupings, ~ old_class %in% .x) |> names()
+      class_group <- purrr::keep(groupings, ~ old_class %in% .x) |> names()
 
       if (length(class_group) == 0) {
         return("No group")
@@ -139,6 +142,9 @@ group_classes <- function(classes, groupings) {
 #' @param data Valid school input data (with columns `gender` and `class`)
 #' @param inc_gender List of genders to include in table
 #' @param class_groupings List of groups of classes to include in table
+#'
+#' @importFrom tidyr pivot_wider
+#' @import flextable
 #'
 #' @return A flextable giving gender by grouped class counts
 tab_categories_grouped <- function(data, inc_gender, class_groupings) {
