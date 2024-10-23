@@ -50,3 +50,49 @@ layout_central_column <- function(...) {
     )
   )
 }
+
+#' Make upload warning UI
+#'
+#' @param message character
+#' @param level integer, 1-3
+#'
+#' @return div html object
+#'
+#' @keywords internal
+make_warning <- function(message, level) {
+  if (level == 1) {
+    return(
+      tags$div(
+        span(
+          icon("circle-exclamation"),
+          message
+        ),
+        class = "card p-2 mx-2 text-info"
+      )
+    )
+  }
+
+  if (level == 2) {
+    return(
+      tags$div(
+        span(
+          icon("circle-question"),
+          message
+        ),
+        class = "card p-2 mx-2 text-warning"
+      )
+    )
+  }
+
+  if (level == 3) {
+    return(
+      tags$div(
+        span(
+          icon("triangle-exclamation"),
+          message
+        ),
+        class = "card p-2 mx-2 text-danger"
+      )
+    )
+  }
+}

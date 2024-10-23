@@ -17,6 +17,7 @@ Imports:
     ggplot2,
     glue,
     htmltools,
+    knitr,
     lubridate,
     officedown,
     openxlsx,
@@ -30,7 +31,8 @@ Imports:
     shinyjs,
     stringr,
     tibble,
-    tidyr
+    tidyr,
+    waldo
 Suggests: 
     lintr,
     pkgload,

@@ -65,7 +65,7 @@ rawUpload_server <- function(id) {
           )
         )
 
-        warnings <- purrr::pmap(checks, make_upload_warning)
+        warnings <- purrr::pmap(checks, make_warning)
 
         do.call(tagList, warnings)
       })

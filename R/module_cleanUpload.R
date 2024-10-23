@@ -41,12 +41,6 @@ cleanUpload_server <- function(id) {
       ns <- session$ns
       send_message <- make_send_message(session)
 
-      # create an empty df to hold warning messages
-      checks <- reactiveValues(checks = data.frame(
-        message = character(0),
-        level = integer(0)
-      ))
-
       # get uploaded data
 
       clean_data_list <- reactive({
@@ -83,19 +77,27 @@ cleanUpload_server <- function(id) {
         }
       })
 
+
+      # run upload checks
+
+      checks <- reactive({
+        req(uploaded_data())
+
+        vars <- c("Keep row?", "gender", "class", "School ID code")
+        upload_checks_clean(uploaded_data(), vars = vars)
+
+      })
+
+
       # filter out excluded observations
 
       filtered_data <- reactive({
         req(uploaded_data())
-        if (!"Keep row?" %in% colnames(uploaded_data())) {
-          error_message <- data.frame(
-            message = c("Data does not contain 'Keep row?' column"),
-            level = c(3)
-          )
+        req(checks())
 
-          isolate({
-            checks$checks <- error_message
-          })
+
+        if (any(checks()$level == 3)) {
+
           return(NULL)
         } else {
           uploaded_data() |>
@@ -108,14 +110,12 @@ cleanUpload_server <- function(id) {
       # create warning ui
       output$warn <- renderUI({
         req(clean_data_list, cancelOutput = TRUE)
+        req(checks(), cancelOutput = TRUE)
 
-        if (!is.null(filtered_data())) {
-          checks$checks <- upload_checks_clean(filtered_data(), vars = NULL)
-        }
 
         warnings <- purrr::pmap(
-          checks$checks,
-          make_upload_warning
+          checks(),
+          make_warning
         )
 
         do.call(tagList, warnings)

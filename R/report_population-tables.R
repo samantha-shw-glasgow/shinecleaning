@@ -103,3 +103,85 @@ tab_categories <- function(data, inc_gender, inc_classes) {
     set_table_properties(layout = "autofit", width = 1) |>
     set_caption(align_with_table = FALSE)
 }
+
+#' Create a vector of nicely named, class groupings
+#'
+#' @param classes character vector of classes
+#' @param groupings list of groups of classes, e.g. list(c("S1", "S2", "S3"), c("S4", "S5", "S6"))
+#'
+#' @return A character vector of class groupings
+
+group_classes <- function(classes, groupings) {
+
+  names(groupings) <- purrr::map(groupings, knitr::combine_words)
+
+  purrr::map_chr(classes, function(old_class) {
+
+      if (is.na(old_class) | old_class == "Prefer not to say") return(NA)
+
+      class_group <- keep(groupings, ~ old_class %in% .x) |> names()
+
+      if (length(class_group) == 0) {
+        return("No group")
+      }
+      if (length(class_group) > 1) {
+        warn("Multiple groups found for class ", old_class)
+        return("Multiple groups")
+      }
+
+      return(class_group)
+    })
+
+}
+
+#' Table of grouped classes by gender counts
+#'
+#' @param data Valid school input data (with columns `gender` and `class`)
+#' @param inc_gender List of genders to include in table
+#' @param class_groupings List of groups of classes to include in table
+#'
+#' @return A flextable giving gender by grouped class counts
+tab_categories_grouped <- function(data, inc_gender, class_groupings) {
+  another_way <- sum(data$gender == "In another way", na.rm = TRUE)
+  pnts <- sum(is.na(data$gender) | data$gender == "Prefer not to say")
+  no_class <- sum(is.na(data$class) | data$class == "Prefer not to say")
+
+  if (another_way) {
+    cat(
+      glue::glue(
+        "{another_way} pupil{ifelse(another_way > 1,'s','')}",
+        " identified 'In another way'. "
+      )
+    )
+  }
+  if (pnts) {
+    cat(
+      glue::glue(
+        "{pnts} pupil{ifelse(pnts > 1,'s','')}",
+        " did not provide details of their gender. "
+      )
+    )
+  }
+  if (no_class) {
+    cat(
+      glue::glue(
+        "{pnts} pupil{ifelse(pnts > 1,'s','')}",
+        " did not provide their year group. "
+      )
+    )
+  }
+
+  cat("\n")
+
+  data |>
+    filter(gender %in% inc_gender, class %in% unlist(class_groupings)) |>
+    mutate(
+      classes_grouped = group_classes(class, class_groupings)
+      ) |>
+    count(gender, `Year group` = classes_grouped) |>
+    pivot_wider(names_from = gender, values_from = n) |>
+    flextable() |>
+    theme_vanilla() |>
+    set_table_properties(layout = "autofit", width = 1) |>
+    set_caption(align_with_table = FALSE)
+}
