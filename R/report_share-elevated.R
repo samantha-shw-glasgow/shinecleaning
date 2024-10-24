@@ -84,10 +84,10 @@ bar_share_elevated <- function(graph_data) {
         "All",
         stringr::str_c(class, " ", gender)
       ) |> forcats::fct_relevel("All", after = Inf),
-      bar_lab_main = if_else(
-        censored,
-        "*",
-        scales::percent(prop, suffix = "%", accuracy = 1)
+      bar_lab_main = case_when(
+        censored ~ "*",
+        prop == 0 ~ "",
+        .default = scales::percent(prop, suffix = "%", accuracy = 1)
       )
     )
 

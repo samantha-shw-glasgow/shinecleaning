@@ -90,10 +90,10 @@ bar_share_elevated_multiple <- function(graph_data) {
   graph_dat <- graph_data |>
     mutate(
       x_lab = var,
-      bar_lab_main = if_else(
-        censored,
-        "*",
-        scales::percent(prop, suffix = "%", accuracy = 1)
+      bar_lab_main = case_when(
+        censored ~ "*",
+        prop == 0 ~ "",
+        .default = scales::percent(prop, suffix = "%", accuracy = 1)
       )
     )
 
