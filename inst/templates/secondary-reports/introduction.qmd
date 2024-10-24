@@ -345,10 +345,10 @@ Understanding the data in this report
 
 
 ```{r, out.width="100%"}
-if (params$gender_split) {
-  knitr::include_graphics("../img/figure_understand_secondary.svg", dpi = NA)
-} else {
-  knitr::include_graphics("../img/figure_understand_secondary2.svg", dpi = NA)
-}
+  knitr::include_graphics("../img/figure_understand_secondary.svg")
+```
+
+```{r, out.width="100%"}
+  knitr::include_graphics("../img/figure_understand_secondary2.svg")
 ```
 
