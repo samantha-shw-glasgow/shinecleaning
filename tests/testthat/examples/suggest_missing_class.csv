@@ -6,6 +6,9 @@ RecordedDate,class,dobmnth,dobday,dobyr,expected_include,expected_message,TEST_C
 2024-09-01 12:00:00,,March,,2007,TRUE,Missing class (expected S6),Suggests a class when day is missing
 2024-09-01 12:00:00,,March,1,,TRUE,Missing class,Doesn't suggest a class when year is missing
 2024-09-01 12:00:00,,February,28,2007,TRUE,Missing class,Doesn't suggest a class when it can't be predicted
+2024-09-01 12:00:00,,March,1,1980,TRUE,Missing class,Works but doesn't suggest a class for very high age
+2024-09-01 12:00:00,,March,1,2024,TRUE,Missing class,Works but doesn't suggest a class for very low age
+2024-09-01 12:00:00,,March,1,2026,TRUE,Missing class,Works but doesn't suggest a class for negative age
 2024-09-01 12:00:00,,March,1,2007,TRUE,Missing class (expected S6),Suggests the right class depending on birthdate
 2024-09-01 12:00:00,,August,31,2007,TRUE,Missing class (expected S6),
 2024-09-01 12:00:00,,September,1,2007,TRUE,Missing class (expected S6),
@@ -59,3 +62,16 @@ RecordedDate,class,dobmnth,dobday,dobyr,expected_include,expected_message,TEST_C
 2024-09-01 12:00:00,,September,1,2019,TRUE,Missing class (expected P1),
 2024-09-01 12:00:00,,February,28,2020,TRUE,Missing class (expected P1),
 2024-09-01 12:00:00,,March,1,2020,TRUE,Missing class,
+2024-09-01 12:00:00,,March,1,2007,TRUE,Missing class (expected S6),Suggests the right class depending on current date
+2023-09-01 12:00:00,,March,1,2007,TRUE,Missing class (expected S5),
+2022-09-01 12:00:00,,March,1,2007,TRUE,Missing class (expected S4),
+2021-09-01 12:00:00,,March,1,2007,TRUE,Missing class (expected S3),
+2020-09-01 12:00:00,,March,1,2007,TRUE,Missing class (expected S2),
+2019-09-01 12:00:00,,March,1,2007,TRUE,Missing class (expected S1),
+2018-09-01 12:00:00,,March,1,2007,TRUE,Missing class (expected P7),
+2017-09-01 12:00:00,,March,1,2007,TRUE,Missing class (expected P6),
+2016-09-01 12:00:00,,March,1,2007,TRUE,Missing class (expected P5),
+2015-09-01 12:00:00,,March,1,2007,TRUE,Missing class (expected P4),
+2014-09-01 12:00:00,,March,1,2007,TRUE,Missing class (expected P3),
+2013-09-01 12:00:00,,March,1,2007,TRUE,Missing class (expected P2),
+2012-09-01 12:00:00,,March,1,2007,TRUE,Missing class (expected P1),
