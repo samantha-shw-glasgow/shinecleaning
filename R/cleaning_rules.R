@@ -126,21 +126,22 @@ duplicate_cases <- function(data) {
   )
 }
 
-age_to_class_name <- function(age) {
-  c(
-    rep(NA, 4),
-    c("P1", "P2", "P3", "P4", "P5", "P6", "P7"),
-    c("S1", "S2", "S3", "S4", "S5", "S6")
-  )[age]
-}
-class_name_to_age <- function(name) {
-  age <- c(
-    "P1" = 5, "P2" = 6, "P3" = 7, "P4" = 8, "P5" = 9, "P6" = 10, "P7" = 11,
-    "S1" = 12, "S2" = 13, "S3" = 14, "S4" = 15, "S5" = 16, "S6" = 17
-  )[name]
-  names(age) <- NULL
-  age
-}
+class_lookup <- tibble::tribble(
+  ~school_age, ~class,
+  5, "P1",
+  6, "P2",
+  7, "P3",
+  8, "P4",
+  9, "P5",
+  10, "P6",
+  11, "P7",
+  12, "S1",
+  13, "S2",
+  14, "S3",
+  15, "S4",
+  16, "S5",
+  17, "S6"
+)
 calculate_expected_class <- function(data) {
   data |>
     dplyr::mutate(
@@ -152,9 +153,12 @@ calculate_expected_class <- function(data) {
       current_year = lubridate::ymd_hms(RecordedDate),
       school_birthyear = lubridate::year(dob - months(2)),
       current_year = lubridate::year(current_year - months(7)),
-      school_age = current_year - school_birthyear,
-      expected_class_name = age_to_class_name(school_age)
-    )
+      school_age = current_year - school_birthyear
+    ) |>
+    dplyr::left_join(class_lookup, by = "school_age") |>
+    dplyr::rename(class = class.x, expected_class_name = class.y) |>
+    dplyr::left_join(class_lookup, by = "class") |>
+    dplyr::rename(school_age = school_age.x, school_age_based_on_class = school_age.y)
 }
 
 #' @rdname validators
@@ -181,7 +185,6 @@ age_year_mismatch <- function(data) {
   messages <- data |>
     calculate_expected_class() |>
     dplyr::mutate(
-      school_age_based_on_class = class_name_to_age(class),
       message = dplyr::case_when(
         school_age_based_on_class > school_age + 1 &
           school_age < 5 ~ "Unexpected class (below school age)",
