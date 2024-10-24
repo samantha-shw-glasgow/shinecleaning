@@ -98,7 +98,7 @@ bar_share_elevated <- function(graph_data) {
     data = graph_dat,
     aes(x = x_lab, y = prop, fill = var)
   ) +
-    geom_bar(stat = "identity", position = "stack") +
+    geom_bar(stat = "identity", position = "fill") +
     scale_fill_hbsc(name = "") +
     scale_y_continuous("",
                        labels = scales::percent,
@@ -107,7 +107,7 @@ bar_share_elevated <- function(graph_data) {
                        ) +
     geom_text(aes(label = bar_lab_main),
       colour = "black",
-      position = position_stack(vjust = 0.5),
+      position = position_fill(vjust = 0.5),
       size = 4
     ) +
     coord_cartesian(clip = "off") +
