@@ -90,10 +90,10 @@ bar_share_elevated_multiple <- function(graph_data) {
   graph_dat <- graph_data |>
     mutate(
       x_lab = var,
-      bar_lab_main = if_else(
-        censored,
-        "*",
-        scales::percent(prop, suffix = "%", accuracy = 1)
+      bar_lab_main = case_when(
+        censored ~ "*",
+        prop == 0 ~ "",
+        .default = scales::percent(prop, suffix = "%", accuracy = 1)
       )
     )
 
@@ -104,7 +104,7 @@ bar_share_elevated_multiple <- function(graph_data) {
     data = graph_dat,
     aes(x = x_lab, y = prop, fill = level)
   ) +
-    geom_bar(stat = "identity", position = "stack") +
+    geom_bar(stat = "identity", position = "fill") +
     scale_fill_hbsc(name = "") +
     scale_y_continuous("",
                        labels = scales::percent,
@@ -113,7 +113,7 @@ bar_share_elevated_multiple <- function(graph_data) {
                        ) +
     geom_text(aes(label = bar_lab_main),
               colour = "black",
-              position = position_stack(vjust = 0.5),
+              position = position_fill(vjust = 0.5),
               size = 4
     ) +
     coord_cartesian(clip = "off") +

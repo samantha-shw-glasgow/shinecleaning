@@ -92,7 +92,7 @@ bar_proportions_multiple <- function(summary_data) {
 
   summary_data |>
     mutate(
-      prop = if_else(.data$censored, 0.05, .data$prop),
+      prop = if_else(.data$censored, 0.01, .data$prop),
       bar_lab_main = if_else(
         .data$censored,
         "*",
