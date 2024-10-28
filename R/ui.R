@@ -53,7 +53,8 @@ ui <- function(req) {
         helpUI("help")
       )
     ),
-  footer = tags$div(glue::glue("Dashboard version {packageVersion('SHINEcleaning')}"))
+  footer = tags$div(glue::glue("Dashboard version {packageVersion('SHINEcleaning')}"),
+                    class = "footer")
   )
 
 }
