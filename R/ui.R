@@ -52,8 +52,10 @@ ui <- function(req) {
       layout_central_column(
         helpUI("help")
       )
-    )
+    ),
+  footer = tags$div(glue::glue("Dashboard version {packageVersion('SHINEcleaning')}"))
   )
+
 }
 
 #' Assets
