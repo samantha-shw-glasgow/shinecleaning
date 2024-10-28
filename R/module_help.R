@@ -32,7 +32,10 @@ helpUI <- function(id) {
               h4("Detect duplicate cases"),
               "Flags responses that share the same date of birth, gender, and school ID as potential duplicates.",
               h4("Detect recurring postcodes"),
-              "Flags responses with a postcode that appears 6 or more times in the dataset. This may suggest that respondents have answered with their school postcode instead of their home postcode.",
+              paste(
+                "Flags responses with a postcode that appears 6 or more times in the dataset.",
+                "This may suggest that respondents have answered with their school postcode instead of their home postcode."
+              ),
               h4("Detect partial cases"),
               "Flags responses where more than half of the questions are unanswered.",
               h4("Detect straightlining"),
