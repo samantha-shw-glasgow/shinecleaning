@@ -13,7 +13,7 @@ rawUploadUI <- function(id) {
         "Select survey data",
         bslib::tooltip(
           icon("info-circle"),
-          "Download data for the required school(s) from Qualtrics in 'csv' format, then upload it here.",
+          "See the help section (top right) for guidance on downloading data from Qualtrics in the correct format.",
           placement = "right"
         )
       ),

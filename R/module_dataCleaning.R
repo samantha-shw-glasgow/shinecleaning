@@ -24,7 +24,14 @@ dataCleaningUI <- function(id) {
   tagList(
     h2("Cleaning options"),
     checkboxGroupInput(
-      ns("validator_selection"), "Validators to run:",
+      ns("validator_selection"),
+      label = span(
+        "Select validators to run",
+        bslib::tooltip(
+          icon("info-circle"),
+          "See the help section (top right) for information about the validator rules.",
+          placement = "right"
+        )),
       validator_options,
       selected = validator_options
     ),
