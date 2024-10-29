@@ -32,7 +32,10 @@ SHINE_theme <- bslib::bs_theme(
       ".accordion-title {font-weight: $font-weight-bold; color: $primary; font-size: $h3-font-size}",
       ".card-body {row-gap: 0.5rem}",
       ".nav-link.active {font-weight: $font-weight-bold !important}",
-      ".help-img {max-width: 100%; height: auto; border-radius: 0.25rem; box-shadow: 0 0 0.05rem 0.05rem rgba(0, 0, 0, 0.1); padding: 0.5rem}"
+      ".help-img {max-width: 100%; height: auto; border-radius: 0.25rem; box-shadow: 0 0 0.05rem 0.05rem rgba(0, 0, 0, 0.1); padding: 0.5rem}",
+      ".bslib-page-navbar {display: flex; min-height: 100vh; flex-direction: column;}",
+      ".footer {position:absolute; bottom:0; color: rgba(0, 0, 0, 0.3);}",
+      ".bslib-page-navbar .container-fluid {flex:1; position: relative;} "
     )
   )
 
@@ -40,6 +43,7 @@ layout_central_column <- function(...) {
   bslib::layout_columns(
     gap = 0,
     col_widths = bslib::breakpoints(
+      xs = 12,
       lg = c(-2, 8, -2),
       xl = c(-3, 6, -3),
       xxl = c(-4, 4, -4)
