@@ -27,6 +27,8 @@ serveAssets <- function(modules = NULL) {
     pattern = ".css$"
   )
 
+  css <- css[css != "html/R.css"]
+
   # so dependency processes correctly
   names(css) <- rep("file", length(css))
   names(javascript) <- rep("file", length(javascript))
