@@ -1,0 +1,67 @@
+RecordedDate,class,dobmnth,dobday,dobyr,expected_include,expected_message
+2024-09-01 12:00:00,S5,September,1,2006,TRUE,"Unexpected class (above school age)"
+2024-09-01 12:00:00,S6,September,1,2006,TRUE,""
+2024-09-01 12:00:00,S4,September,1,2007,TRUE,"Unexpected class (S6 predicted)"
+2024-09-01 12:00:00,S5,September,1,2007,TRUE,""
+2024-09-01 12:00:00,S6,September,1,2007,TRUE,""
+2024-09-01 12:00:00,S3,September,1,2008,TRUE,"Unexpected class (S5 predicted)"
+2024-09-01 12:00:00,S4,September,1,2008,TRUE,""
+2024-09-01 12:00:00,S5,September,1,2008,TRUE,""
+2024-09-01 12:00:00,S6,September,1,2008,TRUE,""
+2024-09-01 12:00:00,S2,September,1,2009,TRUE,"Unexpected class (S4 predicted)"
+2024-09-01 12:00:00,S3,September,1,2009,TRUE,""
+2024-09-01 12:00:00,S4,September,1,2009,TRUE,""
+2024-09-01 12:00:00,S5,September,1,2009,TRUE,""
+2024-09-01 12:00:00,S6,September,1,2009,TRUE,"Unexpected class (S4 predicted)"
+01/09/2024 12:00,S1,September,1,2010,TRUE,"Unexpected class (S3 predicted)"
+2024-09-01 12:00:00,S2,September,1,2010,TRUE,""
+2024-09-01 12:00:00,S3,September,1,2010,TRUE,""
+2024-09-01 12:00:00,S4,September,1,2010,TRUE,""
+2024-09-01 12:00:00,S5,September,1,2010,TRUE,"Unexpected class (S3 predicted)"
+2024-09-01 12:00:00,P7,September,1,2011,TRUE,"Unexpected class (S2 predicted)"
+2024-09-01 12:00:00,S1,September,1,2011,TRUE,""
+2024-09-01 12:00:00,S2,September,1,2011,TRUE,""
+2024-09-01 12:00:00,S3,September,1,2011,TRUE,""
+2024-09-01 12:00:00,S4,September,1,2011,TRUE,"Unexpected class (S2 predicted)"
+2024-09-01 12:00:00,P6,September,1,2012,TRUE,"Unexpected class (S1 predicted)"
+2024-09-01 12:00:00,P7,September,1,2012,TRUE,""
+2024-09-01 12:00:00,S1,September,1,2012,TRUE,""
+2024-09-01 12:00:00,S2,September,1,2012,TRUE,""
+2024-09-01 12:00:00,S3,September,1,2012,TRUE,"Unexpected class (S1 predicted)"
+2024-09-01 12:00:00,P5,September,1,2013,TRUE,"Unexpected class (P7 predicted)"
+2024-09-01 12:00:00,P6,September,1,2013,TRUE,""
+2024-09-01 12:00:00,P7,September,1,2013,TRUE,""
+2024-09-01 12:00:00,S1,September,1,2013,TRUE,""
+2024-09-01 12:00:00,S2,September,1,2013,TRUE,"Unexpected class (P7 predicted)"
+2024-09-01 12:00:00,P4,September,1,2014,TRUE,"Unexpected class (P6 predicted)"
+01/09/2024 12:00,P5,September,1,2014,TRUE,
+01/09/2024 12:00,P6,September,1,2014,TRUE,
+01/09/2024 12:00,P7,September,1,2014,TRUE,
+01/09/2024 12:00,S1,September,1,2014,TRUE,Unexpected class (P6 predicted)
+01/09/2024 12:00,P3,September,1,2015,TRUE,Unexpected class (P5 predicted)
+01/09/2024 12:00,P4,September,1,2015,TRUE,
+01/09/2024 12:00,P5,September,1,2015,TRUE,
+01/09/2024 12:00,P6,September,1,2015,TRUE,
+01/09/2024 12:00,P7,September,1,2015,TRUE,Unexpected class (P5 predicted)
+01/09/2024 12:00,P2,September,1,2016,TRUE,Unexpected class (P4 predicted)
+01/09/2024 12:00,P3,September,1,2016,TRUE,
+01/09/2024 12:00,P4,September,1,2016,TRUE,
+01/09/2024 12:00,P5,September,1,2016,TRUE,
+01/09/2024 12:00,P6,September,1,2016,TRUE,Unexpected class (P4 predicted)
+01/09/2024 12:00,P1,September,1,2017,TRUE,Unexpected class (P3 predicted)
+01/09/2024 12:00,P2,September,1,2017,TRUE,
+01/09/2024 12:00,P3,September,1,2017,TRUE,
+01/09/2024 12:00,P4,September,1,2017,TRUE,
+01/09/2024 12:00,P5,September,1,2017,TRUE,Unexpected class (P3 predicted)
+01/09/2024 12:00,P1,September,1,2018,TRUE,
+01/09/2024 12:00,P2,September,1,2018,TRUE,
+01/09/2024 12:00,P3,September,1,2018,TRUE,
+01/09/2024 12:00,P4,September,1,2018,TRUE,Unexpected class (P2 predicted)
+01/09/2024 12:00,P1,September,1,2019,TRUE,
+01/09/2024 12:00,P2,September,1,2019,TRUE,
+01/09/2024 12:00,P3,September,1,2019,TRUE,Unexpected class (P1 predicted)
+01/09/2024 12:00,P1,September,1,2020,TRUE,
+01/09/2024 12:00,P2,September,1,2020,TRUE,Unexpected class (below school age)
+01/09/2024 12:00,P4,,1,2018,TRUE,Unexpected class (P2 predicted)
+01/09/2024 12:00,P4,September,,2018,TRUE,Unexpected class (P2 predicted)
+01/09/2024 12:00,P4,September,1,,TRUE,
