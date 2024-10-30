@@ -150,6 +150,12 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
       unique()
   }
 
+  included_genders <- inner_join(summary_data, hbsc_data_in, by = join_by(class, gender)) |>
+    pull(hbsc_gender) |>
+    unique()
+
+  hbsc_data_colours <- list("Boys (Scotland)" = "#fb1e20", "Girls (Scotland)" = "#008000")[included_genders]
+
   summary_data |>
     mutate(
       prop = if_else(.data$censored, 0.05, numerator / denominator),
@@ -188,8 +194,8 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
       guide = guide_legend(
         order = 2,
         override.aes = list(
-          fill = list("#fb1e20", "#008000"),
-          colour = list(NA, NA)
+          fill = hbsc_data_colours,
+          colour = rep(NA, length(hbsc_data_colours))
         )
       )
     ) +
