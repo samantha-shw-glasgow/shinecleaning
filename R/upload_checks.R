@@ -67,7 +67,7 @@ upcheck_schools <- function(data) {
     schIDs <- data$`School ID code`
     if (length(unique(schIDs)) > 1) {
       fail <- TRUE
-      message <- "This file includes responses from multiple schools."
+      message <- "The data includes responses from multiple schools."
       level <- 1
     }
   }
