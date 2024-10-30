@@ -84,6 +84,8 @@ get_hbsc_prop <- function(classes, success, var = NULL) {
     }
   }
 
+  classes <- unlist(classes)
+
   if (length(success) > 1) {
     data <- SHINEcleaning::hbsc_scotland_modified |>
       filter(

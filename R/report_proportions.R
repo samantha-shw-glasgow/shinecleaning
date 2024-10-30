@@ -144,7 +144,13 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
         hbsc_prop = prop,
         hbsc_gender = gender,
         gender = str_extract(gender, "^\\w*"),
-        class = factor(class, levels = levels(summary_data$class))
+        class = map_chr(
+          class,
+          ~levels(summary_data$class)[which.max(
+            stringr::str_detect(levels(summary_data$class), .x)
+            )]
+        ) |>
+          factor(levels = levels(summary_data$class))
       ) |>
       select(class, gender, hbsc_gender, hbsc_prop) |>
       unique()
