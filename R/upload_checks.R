@@ -19,6 +19,7 @@ upload_checks_raw <- function(data, vars) {
 upload_checks_clean <- function(data, vars) {
   checks <- rbind(
     upcheck_has_columns(data, vars, required = TRUE),
+    upcheck_unique_response_ids(data),
     upcheck_schools(data)
   )
 
@@ -109,6 +110,26 @@ upcheck_has_columns <- function(data, columns, required = TRUE) {
       level <- 3
     } else {
       message <- paste0("This file is missing the following expected column(s): ", paste0(columns[!has_col], collapse = ", "))
+      level <- 2
+    }
+  }
+
+  return(data.frame(fail, message, level))
+}
+
+upcheck_unique_response_ids <- function(data) {
+  fail <- FALSE
+  message <- NA
+  level <- NA
+
+  if (!"ResponseId" %in% colnames(data)) {
+    fail <- TRUE
+    message <- "`ResponseId` column not found in this file. Unable to check for duplicate responses."
+    level <- 2
+  } else {
+    if (length(unique(data$ResponseId)) < nrow(data)) {
+      fail <- TRUE
+      message <- "The uploaded file(s) includes duplicate response IDs."
       level <- 2
     }
   }

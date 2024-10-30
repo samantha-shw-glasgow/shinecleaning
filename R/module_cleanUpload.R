@@ -48,32 +48,50 @@ cleanUpload_server <- function(id) {
         purrr::map(input$upload$datapath, ~ openxlsx::read.xlsx(.x, sheet = 1, sep.names = " "))
       })
 
-      # stack dataframes if multiple uploaded
+
+      stack_check <- reactiveVal(
+        data.frame(message = character(),
+                   level = integer())
+        ) ## create rv to hold error messages
 
       uploaded_data <- reactive({
         if (length(clean_data_list()) == 1) {
           return(clean_data_list()[[1]])
         }
-        if (length(clean_data_list()) > 1) {
-          if (!all(purrr::map_lgl(
-            clean_data_list(),
-            ~ identical(
-              colnames(.x),
-              colnames(clean_data_list()[[1]])
-            )
-          ))) {
+        if (length(clean_data_list()) > 1) { # stack dfs if multiple uploaded
+
+          tryCatch({
+            return(purrr::reduce(clean_data_list(), .f = dplyr::bind_rows))
+          }, error = function(e) {
             error_message <- data.frame(
-              message = c("Column names do not match"),
+              message = c("Unable to combine uploaded data files"),
               level = c(3)
             )
+            warning(paste0("Error combining data uploads: ", e$message))
+            stack_check(error_message)
 
-            isolate({
-              checks$checks <- error_message
-            })
             return(NULL)
-          } else {
-            return(purrr::reduce(clean_data_list(), .f = dplyr::bind_rows))
           }
+          )
+          # if (!all(purrr::map_lgl(
+          #   clean_data_list(),
+          #   ~ identical(
+          #     colnames(.x),
+          #     colnames(clean_data_list()[[1]])
+          #   )
+          # ))) { # col names don't match
+          #
+          #   error_message <- data.frame(
+          #     message = c("Column names do not match"),
+          #     level = c(3)
+          #   )
+          #   stack_check(error_message)
+          #
+          #   return(NULL)
+          #
+          # } else { # col names match
+          #   return(purrr::reduce(clean_data_list(), .f = dplyr::bind_rows))
+          # }
         }
       })
 
@@ -81,10 +99,13 @@ cleanUpload_server <- function(id) {
       # run upload checks
 
       checks <- reactive({
-        req(uploaded_data())
-
-        vars <- c("Keep row?", "gender", "class", "School ID code")
-        upload_checks_clean(uploaded_data(), vars = vars)
+        if(isTruthy(uploaded_data())) {
+          vars <- c("Keep row?", "gender", "class", "School ID code")
+          checks <- upload_checks_clean(uploaded_data(), vars = vars)
+          return(checks)
+        } else {
+          return(stack_check())
+        }
 
       })
 
