@@ -5,8 +5,8 @@
 #' @return A string describing month of survey (or range)
 #'
 date_range <- function(input_data) {
-  start <- min(lubridate::ymd_hms(input_data$`StartDate`))
-  end <- max(lubridate::ymd_hms(input_data$`StartDate`))
+  start <- min(lubridate::parse_date_time(input_data$`StartDate`, c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M")))
+  end <- max(lubridate::parse_date_time(input_data$`StartDate`, c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M")))
 
   start_date <- paste(
     lubridate::month(start, abbr = FALSE, label = TRUE),

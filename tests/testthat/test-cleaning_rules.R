@@ -111,6 +111,10 @@ describe("age_year_mismatch", {
   it("works as described in the example dataset", {
     test_validator_with_data(age_year_mismatch, "age_year_mismatch.csv")
   })
+
+  it("parses both date formats", {
+    test_validator_with_data(age_year_mismatch, "age_year_mixed_dates.csv")
+  })
 })
 
 describe("straightlining", {
