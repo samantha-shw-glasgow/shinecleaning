@@ -3,12 +3,11 @@
 
 ## Self-harm
 
-[n of pupils] pupils were asked if they had ever hurt themselves on purpose.
-Results are shown in Figure 8.1 for alland then by year groups and gender.
+`r sum(!is.na(input_data$selfh1))` pupils were asked if they had ever hurt themselves on purpose.
+Results are shown in Figure \@ref(fig:bar-self-harm) for all and then by year groups and gender.
 
 It is difficult to find accurate data on the prevalence of self-harm amongst adolescents, but lifetime self-harm is estimated to be between 10-20% ^58^. A survey of 15-year olds in HBSC England found that 22% of them had reported ever hurting themselves on purpose.
 
-<!-- Figure 8.1: % of pupils who have ever hurt themselves on purpose -->
 
 ```{r bar-self-harm, fig.cap="% of pupils who have ever hurt themselves on purpose"}
 input_data |> 
@@ -23,16 +22,22 @@ input_data |>
 ```
 
 
-Those pupils who reported that they had ever self-harmed were then asked how often they had done thisin the past year (Table 8.1).
-Note that this is as a percentage of all those who said they had ever hurt themselves on purpose and is nota percentage of the whole sample.
+Those pupils who reported that they had ever self-harmed were then asked how often they had done this in the past year (Table \@ref(tab:tab-self-harm)).
+
+Note that this is as a percentage of all those who said they had ever hurt themselves on purpose and is not a percentage of the whole sample.
 
 
 ```{r tab-self-harm, tab.id="tab-self-harm", tab.cap.pre="Table", tab.cap="Frequency of self-harm in past year"}
 input_data |>
   filter(selfh1 == "Yes") |> 
-  create_full_summary(
+  mutate(sh_con = fct_collapse(
     selfh2,
-    levels = c("More than 10 times", "6-10 times", "2-5 times", "Once", "None"),
+    "1-10 times" = c("6-10 times","2-5 times", "Once"),
+    "Don't know or prefer not to say" = c("Don't know", "Prefer not to say")
+    )) |> 
+  create_full_summary(
+    sh_con,
+    levels = c("More than 10 times", "1-10 times", "None", "Don't know or prefer not to say"),
     genders,
     classes,
     .gender_split = FALSE
@@ -41,3 +46,4 @@ input_data |>
   table_from_summary()
 ```
 
+\newpage
