@@ -9,16 +9,67 @@ Results are shown in Figure \@ref(fig:bar-self-harm) for all and then by year gr
 It is difficult to find accurate data on the prevalence of self-harm amongst adolescents, but lifetime self-harm is estimated to be between 10-20% ^58^. A survey of 15-year olds in HBSC England found that 22% of them had reported ever hurting themselves on purpose.
 
 
-```{r bar-self-harm, fig.cap="% of pupils who have ever hurt themselves on purpose"}
-input_data |> 
-  share_elevated(
-    selfh1,
-    levels = c("Prefer not to say", "No", "Yes"),
-    .split = FALSE,
-    classes, genders
-  ) |> 
-  censor_summary_data("denom") |> 
-  bar_share_elevated()
+```{r bar-self-harm, fig.cap="% of pupils who have ever hurt themselves on purpose", fig.height=9}
+pi_plots <- list(
+  input_data |>
+    share_elevated(
+      selfh1,
+      levels = c("Prefer not to say", "No", "Yes"),
+      .split = FALSE,
+      classes,
+      genders
+    ) |>
+    censor_summary_data("denom") |>
+    bar_share_elevated() +
+    coord_polar("y") +
+    theme_void() +
+    facet_wrap( ~ gender),
+  
+  input_data |>
+    mutate(class = "All") |>
+    share_elevated(
+      selfh1,
+      levels = c("Prefer not to say", "No", "Yes"),
+      .split = TRUE,
+      classes = "All",
+      genders
+    ) |>
+    censor_summary_data("denom") |>
+    filter(gender != "All") |>
+    bar_share_elevated() +
+    facet_wrap( ~ gender, scales = "free_x") +
+    coord_polar("y") +
+    theme_void() +
+    theme(legend.position = "none"),
+  
+  input_data |>
+    mutate(gender = "All") |>
+    share_elevated(
+      selfh1,
+      levels = c("Prefer not to say", "No", "Yes"),
+      .split = TRUE,
+      classes,
+      genders
+    ) |>
+    censor_summary_data("denom") |>
+    filter(class != "All") |>
+    bar_share_elevated() +
+    facet_wrap( ~ class, scales = "free_x") +
+    coord_polar("y") +
+    theme_void() +
+    theme(legend.position = "none")
+)
+
+library(patchwork)
+
+pi_plots |> 
+  patchwork::wrap_plots(ncol = 1) +
+  plot_layout(
+    design = "#AA#
+              BBBB
+              CCCC"
+  )
+
 ```
 
 
