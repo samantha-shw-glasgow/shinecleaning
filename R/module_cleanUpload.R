@@ -73,25 +73,6 @@ cleanUpload_server <- function(id) {
             return(NULL)
           }
           )
-          # if (!all(purrr::map_lgl(
-          #   clean_data_list(),
-          #   ~ identical(
-          #     colnames(.x),
-          #     colnames(clean_data_list()[[1]])
-          #   )
-          # ))) { # col names don't match
-          #
-          #   error_message <- data.frame(
-          #     message = c("Column names do not match"),
-          #     level = c(3)
-          #   )
-          #   stack_check(error_message)
-          #
-          #   return(NULL)
-          #
-          # } else { # col names match
-          #   return(purrr::reduce(clean_data_list(), .f = dplyr::bind_rows))
-          # }
         }
       })
 
@@ -99,7 +80,7 @@ cleanUpload_server <- function(id) {
       # run upload checks
 
       checks <- reactive({
-        if(isTruthy(uploaded_data())) {
+        if (isTruthy(uploaded_data())) {
           vars <- c("Keep row?", "gender", "class", "School ID code")
           checks <- upload_checks_clean(uploaded_data(), vars = vars)
           return(checks)
