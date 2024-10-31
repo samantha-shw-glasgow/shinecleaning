@@ -1,0 +1,43 @@
+---
+---
+
+## Self-harm
+
+[n of pupils] pupils were asked if they had ever hurt themselves on purpose.
+Results are shown in Figure 8.1 for alland then by year groups and gender.
+
+It is difficult to find accurate data on the prevalence of self-harm amongst adolescents, but lifetime self-harm is estimated to be between 10-20% ^58^. A survey of 15-year olds in HBSC England found that 22% of them had reported ever hurting themselves on purpose.
+
+<!-- Figure 8.1: % of pupils who have ever hurt themselves on purpose -->
+
+```{r bar-self-harm, fig.cap="% of pupils who have ever hurt themselves on purpose"}
+input_data |> 
+  share_elevated(
+    selfh1,
+    levels = c("Prefer not to say", "No", "Yes"),
+    .split = FALSE,
+    classes, genders
+  ) |> 
+  censor_summary_data("denom") |> 
+  bar_share_elevated()
+```
+
+
+Those pupils who reported that they had ever self-harmed were then asked how often they had done thisin the past year (Table 8.1).
+Note that this is as a percentage of all those who said they had ever hurt themselves on purpose and is nota percentage of the whole sample.
+
+
+```{r tab-self-harm, tab.id="tab-self-harm", tab.cap.pre="Table", tab.cap="Frequency of self-harm in past year"}
+input_data |>
+  filter(selfh1 == "Yes") |> 
+  create_full_summary(
+    selfh2,
+    levels = c("More than 10 times", "6-10 times", "2-5 times", "Once", "None"),
+    genders,
+    classes,
+    .gender_split = FALSE
+  ) |>
+  censor_summary_data("numerator") |>
+  table_from_summary()
+```
+
