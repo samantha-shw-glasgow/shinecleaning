@@ -482,6 +482,11 @@ input_data |>
 
 \newpage
 
+```{r la-sh-page, echo=FALSE, eval = is_la_report, results='asis'}
+cat(knitr::knit_child("la_additional_sh.qmd", envir = environment(), quiet = TRUE))
+```
+
+
 ## Loneliness
 
 Pupils were asked how often they felt lonely during the past week.
