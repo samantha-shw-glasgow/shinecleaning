@@ -54,7 +54,10 @@ scale_fill_hbsc <- function(...) {
       "Borderline" = global_elevated_colour,
       "1" = primary_colour,
       "Boys (Scotland)" = global_boys_scotland_avg_colour,
-      "Girls (Scotland)" = global_girls_scotland_avg_colour
+      "Girls (Scotland)" = global_girls_scotland_avg_colour,
+      "Prefer not to say" = global_difficulties_colour,
+      "No" = global_expected_colour,
+      "Yes" = global_elevated_colour
     ),
     ...
   )
