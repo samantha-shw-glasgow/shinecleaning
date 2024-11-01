@@ -6,4 +6,7 @@
 \.lintr
 ^[^/]*\.docx$
 temp_.*\.R
+temp_.*\.xlsx
+temp_.*\.txt
+latest_outputs/
 ^LICENSE\.md$

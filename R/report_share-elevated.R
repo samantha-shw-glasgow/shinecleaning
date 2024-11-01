@@ -108,7 +108,7 @@ bar_share_elevated <- function(graph_data) {
     geom_text(aes(label = bar_lab_main),
       colour = "black",
       position = position_fill(vjust = 0.5),
-      size = 4
+      size = if_else(length(unique(graph_data$class)) > 3, 2.5, 3)
     ) +
     coord_cartesian(clip = "off") +
     theme(

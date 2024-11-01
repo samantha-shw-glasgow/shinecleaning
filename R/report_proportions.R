@@ -71,6 +71,8 @@ create_collapsed_summary <- function(
 #' @param classes List of classes to split by
 #' @param .gender_split Gender split - passed from params
 #'
+#' @import ggplot2
+#'
 #' @return A dataframe of counted variables
 create_full_summary <- function(
     data,
@@ -224,7 +226,7 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
       color = "black",
       position = position_dodge(0.9),
       vjust = -0.5,
-      size = if_else(length(unique(summary_data$class)) > 3, 3, 4)
+      size = if_else(length(unique(summary_data$class)) > 3, 2.5, 4)
     ) +
     theme(
       plot.margin = unit(c(0.8, 0.5, 0.5, 1), "cm"),
@@ -258,6 +260,7 @@ table_from_summary <- function(summary_data) {
     set_table_properties(layout = "autofit", width = 1) |>
     keep_with_next() |>
     set_caption(align_with_table = FALSE) |>
+    fontsize(size = 9) |>
     align(j = -1, align = "center", part = "all")
   if (any(summary_data$censored)) {
     tab |>
