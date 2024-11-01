@@ -33,8 +33,6 @@ cleaningOutput_server <- function(id, data) {
         },
         content = function(file) {
           data() |>
-            mutate(age = calculate_age(RecordedDate, dobyr, dobmnth, dobday)) |>
-            relocate(age, .before = class) |>
             create_spreadsheet(file)
         }
       )
