@@ -38,6 +38,23 @@ create_spreadsheet <- function(data, file) {
     rule = "$B1==0",
     style = openxlsx::createStyle(fontColour = "#AAAAAA", bgFill = "#EEEEEE")
   )
+  # Highlight columns to be deleted
+  columns_to_highlight <- c(
+    "StartDate",
+    "EndDate",
+    "RecordedDate",
+    "dobmnth",
+    "dobday",
+    "dobyr"
+  )
+  openxlsx::addStyle(
+    wb,
+    1,
+    cols = match(columns_to_highlight, names(data)),
+    rows = 1:last_row,
+    style = openxlsx::createStyle(fontColour = "#000000", fgFill = "#FFFF00"),
+    gridExpand = TRUE
+  )
 
   openxlsx::saveWorkbook(wb, file = file, overwrite = TRUE)
   file
