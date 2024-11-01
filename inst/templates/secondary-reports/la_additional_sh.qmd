@@ -10,60 +10,75 @@ It is difficult to find accurate data on the prevalence of self-harm amongst ado
 
 
 ```{r bar-self-harm, fig.cap="% of pupils who have ever hurt themselves on purpose", fig.height=7}
-pi_plots <- list(
-  input_data |>
-    share_elevated(
-      selfh1,
-      levels = c("Prefer not to say", "No", "Yes"),
-      .split = FALSE,
-      classes,
-      genders
-    ) |>
-    censor_summary_data("denom") |>
-    bar_share_elevated() +
-    coord_polar("y") +
-    theme_void() +
-    facet_wrap(~ gender),
-  
-  input_data |>
-    mutate(class = "All") |>
-    share_elevated(
-      selfh1,
-      levels = c("Prefer not to say", "No", "Yes"),
-      .split = TRUE,
-      classes = "All",
-      genders
-    ) |>
-    censor_summary_data("denom") |>
-    filter(gender != "All") |>
-    bar_share_elevated() +
-    facet_wrap(~ gender, scales = "free_x") +
-    coord_polar("y") +
-    theme_void() +
-    theme(legend.position = "none"),
-  
-  input_data |>
-    mutate(gender = "All") |>
-    share_elevated(
-      selfh1,
-      levels = c("Prefer not to say", "No", "Yes"),
-      .split = TRUE,
-      classes = list(c("S1", "S2"), c("S3", "S4"), c("S5", "S6")),
-      genders
-    ) |>
-    censor_summary_data("denom") |>
-    filter(class != "All") |>
-    bar_share_elevated() +
-    facet_wrap(~ class, scales = "free_x") +
-    coord_polar("y") +
-    theme_void() +
-    theme(legend.position = "none")
-)
 
-library(patchwork)
+all_gr <- input_data |>
+  share_elevated(
+    selfh1,
+    levels = c("Prefer not to say", "No", "Yes"),
+    .split = FALSE,
+    classes,
+    genders
+  ) |>
+  censor_summary_data("denom") |>
+  bar_share_elevated() +
+  coord_polar("y") +
+  theme_void() +
+  facet_wrap(~ gender)
 
-pi_plots |> 
-  patchwork::wrap_plots(ncol = 1)
+gender_grs <- input_data |>
+  mutate(class = "All") |>
+  share_elevated(
+    selfh1,
+    levels = c("Prefer not to say", "No", "Yes"),
+    .split = TRUE,
+    classes = "All",
+    genders
+  ) |>
+  censor_summary_data("denom") |>
+  filter(gender != "All") |>
+  mutate(gender_out = gender) |>
+  nest(dat = -gender_out) |>
+  mutate(gr = map(dat, \(gr_dat) {
+    bar_share_elevated(gr_dat) +
+      facet_wrap( ~ gender, scales = "free_x") +
+      coord_polar("y") +
+      theme_void() +
+      theme(legend.position = "none")
+  })) |> 
+  pull(gr)
+
+class_grs <- input_data |>
+  mutate(gender = "All") |>
+  share_elevated(
+    selfh1,
+    levels = c("Prefer not to say", "No", "Yes"),
+    .split = TRUE,
+    classes = list(c("S1", "S2"), c("S3", "S4"), c("S5", "S6")),
+    genders
+  ) |>
+  censor_summary_data("denom") |>
+  filter(class != "All") |>
+  mutate(class_out = class) |>
+  nest(dat = -class_out) |>
+  mutate(gr = map(dat, \(gr_dat) {
+    bar_share_elevated(gr_dat) +
+      facet_wrap( ~ class, scales = "free_x") +
+      coord_polar("y") +
+      theme_void() +
+      theme(legend.position = "none")
+  })) |> 
+  pull(gr)
+
+
+append(
+  list(all_gr),
+  gender_grs
+) |> 
+  append(class_grs) |> 
+  patchwork::wrap_plots(design = "A##
+                                  BC#
+                                  DEF", 
+                        guides = "collect")
 
 ```
 
