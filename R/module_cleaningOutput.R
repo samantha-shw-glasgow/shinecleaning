@@ -32,7 +32,10 @@ cleaningOutput_server <- function(id, data) {
           paste("data-", Sys.Date(), ".xlsx", sep = "")
         },
         content = function(file) {
-          create_spreadsheet(data(), file)
+          data() |>
+            mutate(age = calculate_age(RecordedDate, dobyr, dobmnth, dobday)) |>
+            relocate(age, .before = class) |>
+            create_spreadsheet(file)
         }
       )
     }
