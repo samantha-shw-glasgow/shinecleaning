@@ -250,12 +250,13 @@ table_from_summary <- function(summary_data) {
       sprintf("%.0f", 100 * numerator / denominator))
     ) |>
     pivot_wider(id_cols = answer, names_from = c(class, gender), values_from = prop) |>
-    rename(All = All_All, ` ` = answer) |>
+    rename(`All\n%` = All_All, ` ` = answer) |>
     rename_with(~ str_replace(.x, "(\\d)(?=_)", "\\1\n%")) |>
     flextable() |>
     separate_header() |>
     theme_vanilla() |>
     set_table_properties(layout = "autofit", width = 1) |>
+    keep_with_next() |>
     set_caption(align_with_table = FALSE) |>
     align(j = -1, align = "center", part = "all")
   if (any(summary_data$censored)) {

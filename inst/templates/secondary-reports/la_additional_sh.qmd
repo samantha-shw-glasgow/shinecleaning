@@ -1,0 +1,110 @@
+---
+---
+
+## Self-harm
+
+`r sum(!is.na(input_data$selfh1))` pupils were asked if they had ever hurt themselves on purpose.
+Results are shown in Figure \@ref(fig:bar-self-harm) for all and then by year groups and gender.
+
+It is difficult to find accurate data on the prevalence of self-harm amongst adolescents, but lifetime self-harm is estimated to be between 10-20% ^58^. A survey of 15-year-olds in HBSC England found that 22% of them had reported ever hurting themselves on purpose.
+
+
+```{r bar-self-harm, fig.cap="% of pupils who have ever hurt themselves on purpose", fig.height=7}
+
+all_gr <- input_data |>
+  share_elevated(
+    selfh1,
+    levels = c("Prefer not to say", "No", "Yes"),
+    .split = FALSE,
+    classes,
+    genders
+  ) |>
+  censor_summary_data("denom") |>
+  bar_share_elevated() +
+  coord_polar("y") +
+  theme_void() +
+  facet_wrap(~ gender)
+
+gender_grs <- input_data |>
+  mutate(class = "All") |>
+  share_elevated(
+    selfh1,
+    levels = c("Prefer not to say", "No", "Yes"),
+    .split = TRUE,
+    classes = "All",
+    genders
+  ) |>
+  censor_summary_data("denom") |>
+  filter(gender != "All") |>
+  mutate(gender_out = gender) |>
+  nest(dat = -gender_out) |>
+  mutate(gr = map(dat, \(gr_dat) {
+    bar_share_elevated(gr_dat) +
+      facet_wrap(~ gender, scales = "free_x") +
+      coord_polar("y") +
+      theme_void() +
+      theme(legend.position = "none")
+  })) |>
+  pull(gr)
+
+class_grs <- input_data |>
+  mutate(gender = "All") |>
+  share_elevated(
+    selfh1,
+    levels = c("Prefer not to say", "No", "Yes"),
+    .split = TRUE,
+    classes = list(c("S1", "S2"), c("S3", "S4"), c("S5", "S6")),
+    genders
+  ) |>
+  censor_summary_data("denom") |>
+  filter(class != "All") |>
+  mutate(class_out = class) |>
+  nest(dat = -class_out) |>
+  mutate(gr = map(dat, \(gr_dat) {
+    bar_share_elevated(gr_dat) +
+      facet_wrap(~ class, scales = "free_x") +
+      coord_polar("y") +
+      theme_void() +
+      theme(legend.position = "none")
+  })) |>
+  pull(gr)
+
+
+append(
+  list(all_gr),
+  gender_grs
+) |>
+  append(class_grs) |>
+  patchwork::wrap_plots(design = "A##
+                                  BC#
+                                  DEF",
+                        guides = "collect")
+
+```
+
+
+Those pupils who reported that they had ever self-harmed were then asked how often they had done this in the past year (Table \@ref(tab:tab-self-harm)).
+
+Note that this is as a percentage of all those who said they had ever hurt themselves on purpose and is not a percentage of the whole sample.
+
+
+```{r tab-self-harm, tab.id="tab-self-harm", tab.cap.pre="Table", tab.cap="Frequency of self-harm in past year"}
+input_data |>
+  filter(selfh1 == "Yes") |>
+  mutate(sh_con = fct_collapse(
+    selfh2,
+    "1-10 times" = c("6-10 times", "2-5 times", "Once"),
+    "Don't know or prefer not to say" = c("Don't know", "Prefer not to say")
+    )) |>
+  create_full_summary(
+    sh_con,
+    levels = c("More than 10 times", "1-10 times", "None", "Don't know or prefer not to say"),
+    genders,
+    classes,
+    .gender_split = FALSE
+  ) |>
+  censor_summary_data("numerator") |>
+  table_from_summary()
+```
+
+\newpage
