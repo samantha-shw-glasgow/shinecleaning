@@ -152,7 +152,7 @@ calculate_expected_class <- function(data) {
       ),
       current_year = lubridate::parse_date_time(RecordedDate, c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M")),
       school_birthyear = lubridate::year(dob - months(2)),
-      current_year = lubridate::year(current_year |> floor_date("months") - months(7)),
+      current_year = lubridate::year(current_year |> lubridate::floor_date("months") - months(7)),
       school_age = current_year - school_birthyear
     ) |>
     dplyr::left_join(class_lookup, by = "school_age") |>
