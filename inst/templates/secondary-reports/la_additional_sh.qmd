@@ -40,11 +40,11 @@ gender_grs <- input_data |>
   nest(dat = -gender_out) |>
   mutate(gr = map(dat, \(gr_dat) {
     bar_share_elevated(gr_dat) +
-      facet_wrap( ~ gender, scales = "free_x") +
+      facet_wrap(~ gender, scales = "free_x") +
       coord_polar("y") +
       theme_void() +
       theme(legend.position = "none")
-  })) |> 
+  })) |>
   pull(gr)
 
 class_grs <- input_data |>
@@ -62,22 +62,22 @@ class_grs <- input_data |>
   nest(dat = -class_out) |>
   mutate(gr = map(dat, \(gr_dat) {
     bar_share_elevated(gr_dat) +
-      facet_wrap( ~ class, scales = "free_x") +
+      facet_wrap(~ class, scales = "free_x") +
       coord_polar("y") +
       theme_void() +
       theme(legend.position = "none")
-  })) |> 
+  })) |>
   pull(gr)
 
 
 append(
   list(all_gr),
   gender_grs
-) |> 
-  append(class_grs) |> 
+) |>
+  append(class_grs) |>
   patchwork::wrap_plots(design = "A##
                                   BC#
-                                  DEF", 
+                                  DEF",
                         guides = "collect")
 
 ```
@@ -90,12 +90,12 @@ Note that this is as a percentage of all those who said they had ever hurt thems
 
 ```{r tab-self-harm, tab.id="tab-self-harm", tab.cap.pre="Table", tab.cap="Frequency of self-harm in past year"}
 input_data |>
-  filter(selfh1 == "Yes") |> 
+  filter(selfh1 == "Yes") |>
   mutate(sh_con = fct_collapse(
     selfh2,
-    "1-10 times" = c("6-10 times","2-5 times", "Once"),
+    "1-10 times" = c("6-10 times", "2-5 times", "Once"),
     "Don't know or prefer not to say" = c("Don't know", "Prefer not to say")
-    )) |> 
+    )) |>
   create_full_summary(
     sh_con,
     levels = c("More than 10 times", "1-10 times", "None", "Don't know or prefer not to say"),
