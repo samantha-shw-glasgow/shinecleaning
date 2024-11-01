@@ -14,7 +14,7 @@ It is difficult to find accurate data on the prevalence of self-harm amongst ado
 all_gr <- input_data |>
   share_elevated(
     selfh1,
-    levels = c("Prefer not to say", "No", "Yes"),
+    levels = c("Yes", "Prefer not to say", "No"),
     .split = FALSE,
     classes,
     genders
@@ -29,7 +29,7 @@ gender_grs <- input_data |>
   mutate(class = "All") |>
   share_elevated(
     selfh1,
-    levels = c("Prefer not to say", "No", "Yes"),
+    levels = c("Yes", "Prefer not to say", "No"),
     .split = TRUE,
     classes = "All",
     genders
@@ -51,7 +51,7 @@ class_grs <- input_data |>
   mutate(gender = "All") |>
   share_elevated(
     selfh1,
-    levels = c("Prefer not to say", "No", "Yes"),
+    levels = c("Yes", "Prefer not to say", "No"),
     .split = TRUE,
     classes = list(c("S1", "S2"), c("S3", "S4"), c("S5", "S6")),
     genders
