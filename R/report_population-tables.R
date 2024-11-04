@@ -1,12 +1,12 @@
 #' Generate text to describe input date range
 #'
-#' @param input_data The dataframe of survey responses with the column `StartDate`
+#' @param input_data The dataframe of survey responses with the column `RecordedDate`
 #'
 #' @return A string describing month of survey (or range)
 #'
 date_range <- function(input_data) {
-  start <- min(lubridate::parse_date_time(input_data$`StartDate`, c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M")))
-  end <- max(lubridate::parse_date_time(input_data$`StartDate`, c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M")))
+  start <- min(lubridate::parse_date_time(input_data$`RecordedDate`, c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M")))
+  end <- max(lubridate::parse_date_time(input_data$`RecordedDate`, c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M")))
 
   start_date <- paste(
     lubridate::month(start, abbr = FALSE, label = TRUE),

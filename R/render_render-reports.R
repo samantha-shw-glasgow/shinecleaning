@@ -47,7 +47,7 @@ render_report <- function(survey_data,
 
   render_env <- new.env()
 
-  survey_data <- survey_data[grepl("^\\d", survey_data$`StartDate`), ] |>
+  survey_data <- survey_data[grepl("^\\d", survey_data$`RecordedDate`), ] |>
     data_prep(report_type = survey_type)
 
   report_name <- if_else(!is.na(school_name), school_name, local_authority_name)
