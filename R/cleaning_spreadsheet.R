@@ -1,4 +1,28 @@
 create_spreadsheet <- function(data, file) {
+  added_columns <- c(
+    "age"
+  )
+  columns_to_redact <- c(
+    "StartDate",
+    "EndDate",
+    "Status",
+    "Progress",
+    "Duration (in seconds)",
+    "Finished",
+    "DistributionChannel",
+    "UserLanguage",
+    "Email",
+    "postcode",
+    "postcode_5_TEXT",
+    "dobmnth",
+    "dobday",
+    "dobyr"
+  )
+  # Move columns to redact and added columns to the left of the spreadsheet
+  data <- data |>
+    dplyr::relocate(dplyr::any_of(added_columns), .after = "Reviewer notes") |>
+    dplyr::relocate(dplyr::any_of(columns_to_redact), .after = "Reviewer notes")
+
   wb <- openxlsx::createWorkbook()
   openxlsx::addWorksheet(wb, "Sheet 1")
   openxlsx::writeData(wb, 1, data, withFilter = TRUE)
@@ -17,7 +41,7 @@ create_spreadsheet <- function(data, file) {
     cols = 1,
     rows = 2:last_row,
     type = "notBlanks",
-    style = openxlsx::createStyle(fontColour = "#9C0006", bgFill = "#FFC7CE")
+    style = openxlsx::createStyle(fontColour = "#000000", bgFill = "#FFC7CE")
   )
   # Only allow "0" or "1" in "keep?" column
   openxlsx::dataValidation(
@@ -38,21 +62,22 @@ create_spreadsheet <- function(data, file) {
     rule = "$B1==0",
     style = openxlsx::createStyle(fontColour = "#AAAAAA", bgFill = "#EEEEEE")
   )
-  # Highlight columns to be deleted
-  columns_to_highlight <- c(
-    "StartDate",
-    "EndDate",
-    "RecordedDate",
-    "dobmnth",
-    "dobday",
-    "dobyr"
-  )
+  # Highlight added columns
   openxlsx::addStyle(
     wb,
     1,
-    cols = match(columns_to_highlight, names(data)),
+    cols = match(added_columns, names(data)),
     rows = 1:last_row,
-    style = openxlsx::createStyle(fontColour = "#000000", fgFill = "#FFFF00"),
+    style = openxlsx::createStyle(fontColour = "#000000", fgFill = "#C6EFCE"),
+    gridExpand = TRUE
+  )
+  # Highlight columns to be redacted
+  openxlsx::addStyle(
+    wb,
+    1,
+    cols = match(columns_to_redact, names(data)),
+    rows = 1:last_row,
+    style = openxlsx::createStyle(fontColour = "#DD0000", fgFill = "#EEEEEE"),
     gridExpand = TRUE
   )
 
