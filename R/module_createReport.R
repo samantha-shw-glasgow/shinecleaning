@@ -63,13 +63,18 @@ createReport_server <- function(id, data) {
         } else if (input$report_type == "Processed report data") {
           tagList(
             textInput(ns("name"), "File name", width = "100%"),
-            selectInput(ns("data_report_type"), "Data type", choices = c("Primary", "Secondary"), width = "100%"),
+            selectInput(ns("data_report_type"), "Data type",
+                        choices = c("Primary", "Secondary"),
+                        width = "100%"),
             selectizeInput(ns("school_id"), "School IDs",
                              multiple = T,
                              selected = "All",
                              choices = c("All", school_ids()),
                              width = "100%"),
-            make_warning("This will return a spreadsheet of the processed data used to generate the reports. This should not be treated as an analysis-ready dataset.", 2),
+            make_warning(
+              "This will return a spreadsheet of the processed data used to generate the reports.
+              This should not be treated as an analysis-ready dataset.",
+              2),
             uiOutput(ns("additional_warnings")),
             downloadButton(ns("additional_output"), "Download data")
           )
@@ -440,7 +445,7 @@ createReport_server <- function(id, data) {
           paste0(input$name, ".xlsx")
         },
         content = function(file) {
-          if (input$report_type == "Processed report data"){
+          if (input$report_type == "Processed report data") {
             cat(glue::glue("Returning processed report data"), "\n")
             cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
             report_data_spreadsheet(data_filt(), file, str_to_lower(input$data_report_type))
