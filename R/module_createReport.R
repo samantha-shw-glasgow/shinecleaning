@@ -10,12 +10,15 @@ createReportUI <- function(id) {
     h2("Report options"),
     selectInput(ns("report_type"),
       strong("Report type"),
-      choices = c("Primary", "Secondary", "Primary cluster / Local Authority", "Secondary cluster / Local Authority", "School-level data", "Additional tables"),
+      choices = c("Primary", "Secondary",
+                  "Primary cluster / Local Authority",
+                  "Secondary cluster / Local Authority",
+                  "Processed report data",
+                  "Additional tables"),
       selected = "Primary",
       width = "100%"
     ),
-    uiOutput(ns("report_ui")),
-    shinyjs::disabled(downloadButton(ns("generate"), "Generate report"))
+    uiOutput(ns("report_ui"))
   )
 }
 
@@ -57,6 +60,24 @@ createReport_server <- function(id, data) {
         # non-report outputs
         if (input$report_type %in% c("School-level data", "Additional tables")) {
           h4("coming soon...", class = "text-center")
+        } else if (input$report_type == "Processed report data") {
+          tagList(
+            textInput(ns("name"), "File name", width = "100%"),
+            selectInput(ns("data_report_type"), "Data type",
+                        choices = c("Primary", "Secondary"),
+                        width = "100%"),
+            selectizeInput(ns("school_id"), "School IDs",
+                             multiple = T,
+                             selected = "All",
+                             choices = c("All", school_ids()),
+                             width = "100%"),
+            make_warning(
+              "This will return a spreadsheet of the processed data used to generate the reports.
+              This should not be treated as an analysis-ready dataset.",
+              2),
+            uiOutput(ns("additional_warnings")),
+            downloadButton(ns("additional_output"), "Download data")
+          )
         } else {
           # report generators
           tagList(
@@ -99,7 +120,8 @@ createReport_server <- function(id, data) {
                                 value = F, width = "100%"),
             createReport_groupingsUI(ns("grouping")),
             tableOutput(ns("preview")),
-            uiOutput(ns("report_warnings"))
+            uiOutput(ns("report_warnings")),
+            shinyjs::disabled(downloadButton(ns("generate"), "Generate report"))
           )
         }
       })
@@ -124,7 +146,8 @@ createReport_server <- function(id, data) {
             }
           } else if (input$report_type %in% c(
             "Primary cluster / Local Authority",
-            "Secondary cluster / Local Authority")) {
+            "Secondary cluster / Local Authority",
+            "Processed report data")) {
             if (isTruthy(input$school_id) && !"All" %in% input$school_id) {
               data() %>% filter(`School ID code` %in% input$school_id)
             } else {
@@ -144,7 +167,6 @@ createReport_server <- function(id, data) {
 
 
       output$preview <- renderTable({
-
         data_filt() |>
           mutate(`Year group` = factor(
             group_classes(class, class_list()),
@@ -224,16 +246,29 @@ createReport_server <- function(id, data) {
       )
 
       check_vars <- reactive({
-        if (input$report_type == "Primary") {
+        if (input$report_type %in% c("Primary", "Primary cluster / Local Authority")) {
           upcheck_has_columns(data(), primary_vars) |>
             filter(fail == TRUE) |>
             select(message, level)
         }
 
-        if (input$report_type == "Secondary") {
+        if (input$report_type %in% c("Secondary", "Secondary cluster / Local Authority")) {
           upcheck_has_columns(data(), secondary_vars) |>
             filter(fail == TRUE) |>
             select(message, level)
+        }
+
+        if (input$report_type == "Processed report data") {
+          if (input$data_report_type == "Primary") {
+            upcheck_has_columns(data(), primary_vars) |>
+              filter(fail == TRUE) |>
+              select(message, level)
+          }
+          if (input$data_report_type == "Secondary") {
+            upcheck_has_columns(data(), secondary_vars) |>
+              filter(fail == TRUE) |>
+              select(message, level)
+          }
         }
       })
 
@@ -299,6 +334,22 @@ createReport_server <- function(id, data) {
         tagList(
           purrr::pmap(
             all_warnings(),
+            make_warning
+          )
+        )
+      })
+
+      output$additional_warnings <- renderUI({
+
+        if (any(check_vars()$level == 3)) {
+          shinyjs::disable("additional_output")
+        } else {
+          shinyjs::enable("additional_output")
+        }
+
+        tagList(
+          purrr::pmap(
+            check_vars(),
             make_warning
           )
         )
@@ -385,6 +436,20 @@ createReport_server <- function(id, data) {
               )
             }
           )
+        }
+      )
+
+      # other outputs
+      output$additional_output <- downloadHandler(
+        filename = function() {
+          paste0(input$name, ".xlsx")
+        },
+        content = function(file) {
+          if (input$report_type == "Processed report data") {
+            cat(glue::glue("Returning processed report data"), "\n")
+            cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
+            report_data_spreadsheet(data_filt(), file, str_to_lower(input$data_report_type))
+          }
         }
       )
     }
