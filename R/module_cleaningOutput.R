@@ -32,7 +32,8 @@ cleaningOutput_server <- function(id, data) {
           paste("data-", Sys.Date(), ".xlsx", sep = "")
         },
         content = function(file) {
-          create_spreadsheet(data(), file)
+          data() |>
+            create_spreadsheet(file)
         }
       )
     }

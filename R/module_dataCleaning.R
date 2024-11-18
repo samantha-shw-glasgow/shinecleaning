@@ -67,7 +67,8 @@ dataCleaning_server <- function(id, data) {
 
       clean_data <- reactive({
         validators <- validator_functions[input$validator_selection]
-        apply_cleaning_rules(data(), validators = validators)
+        apply_cleaning_rules(data(), validators = validators) |>
+          mutate(age = calculate_age(RecordedDate, dobyr, dobmnth, dobday))
       })
 
       return(clean_data) ## - must return reactive dataframe
