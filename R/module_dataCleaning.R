@@ -18,7 +18,8 @@ dataCleaningUI <- function(id) {
     "Detect age/year mismatch",
     "Suggest class when missing",
     "Exclude test responses",
-    "Exclude non-consenting"
+    "Exclude non-consenting",
+    "Highlight missing School ID"
   )
 
   tagList(
@@ -62,7 +63,8 @@ dataCleaning_server <- function(id, data) {
         "Detect age/year mismatch" = age_year_mismatch,
         "Suggest class when missing" = suggest_missing_class,
         "Exclude test responses" = no_test_responses,
-        "Exclude non-consenting" = no_consent
+        "Exclude non-consenting" = no_consent,
+        "Highlight missing School ID" = has_school_id
       )
 
       clean_data <- reactive({

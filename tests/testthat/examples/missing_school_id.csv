@@ -1,0 +1,7 @@
+﻿School ID code,expected_include,expected_message
+valid,TRUE,
+valid,TRUE,
+valid,TRUE,
+,TRUE,School ID missing
+,TRUE,School ID missing
+,TRUE,School ID missing
