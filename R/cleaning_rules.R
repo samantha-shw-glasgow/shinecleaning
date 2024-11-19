@@ -273,3 +273,12 @@ no_consent <- function(data) {
     message = ifelse(has_consented, "", "Consent not given")
   )
 }
+
+#' @rdname validators
+has_school_id <- function(data) {
+  has_no_id <- is.na(data$`School ID code`)
+  tibble::tibble(
+    include = TRUE,
+    message = ifelse(has_no_id, "School ID missing", "")
+  )
+}
