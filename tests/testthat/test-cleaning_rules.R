@@ -126,3 +126,9 @@ describe("straightlining", {
     test_validator_with_data(straightlining, "straightlining_secondary.csv")
   })
 })
+
+describe("missing School ID", {
+  it("detects missing ID", {
+    test_validator_with_data(has_school_id, "missing_school_id.csv")
+  })
+})
