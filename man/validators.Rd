@@ -11,6 +11,7 @@
 \alias{straightlining}
 \alias{recurring_postcodes}
 \alias{no_consent}
+\alias{has_school_id}
 \title{Validators}
 \usage{
 duration_too_short(data)
@@ -30,6 +31,8 @@ straightlining(data)
 recurring_postcodes(data)
 
 no_consent(data)
+
+has_school_id(data)
 }
 \arguments{
 \item{data}{Raw input dataset}
