@@ -7,7 +7,7 @@
 date_range(input_data)
 }
 \arguments{
-\item{input_data}{The dataframe of survey responses with the column \code{StartDate}}
+\item{input_data}{The dataframe of survey responses with the column \code{RecordedDate}}
 }
 \value{
 A string describing month of survey (or range)
