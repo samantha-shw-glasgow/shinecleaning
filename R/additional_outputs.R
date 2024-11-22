@@ -9,3 +9,136 @@ report_data_spreadsheet <- function(data, filename, report_type) {
   openxlsx::writeData(wb, 1, proc_data)
   openxlsx::saveWorkbook(wb, filename)
 }
+
+# create spreadsheet of summary of variables grouped by school, class and gender
+report_derived_spreadsheet <- function(data, filename, report_type, classes, genders = NULL) {
+
+  if (is.null(genders)) {
+    genders <- c("Boys", "Girls")
+  }
+
+  #process data
+  proc_data <- data |> data_prep(report_type) |>
+  mutate(across(where(is.character), ~na_if(., "Prefer not to say")))
+
+  #group by school and class
+  grouped_data <- map(classes, \(concat_class) {
+    proc_data |>
+      filter(class %in% concat_class, gender %in% genders) |>
+      mutate(
+        class = str_flatten(concat_class, collapse = ", ", last = " and "),
+        `Year groups` = str_c(class, gender, sep = " ")
+      )
+  }) |>
+    reduce(bind_rows) |>
+    group_by(`School ID code`, `Year groups`)
+
+  #calculate summaries
+
+  derived_data_all <- grouped_data |>
+    summarise(
+      #all
+      "Number taking part" = n(),
+      "% reporting good or excellent health" = mean(health == "Good" | health == "Excellent", na.rm = TRUE)*100,
+      "% reporting fair or poor health" = mean(health == "Fair" | health == "Poor", na.rm = TRUE)*100,
+      "Overall" = mean(valid_numbers(lifesat1), na.rm = TRUE),
+      "Family" = mean(valid_numbers(lifesat2), na.rm = TRUE),
+      "Home" = mean(valid_numbers(lifesat3), na.rm = TRUE),
+      "Choice" = mean(valid_numbers(lifesat4), na.rm = TRUE),
+      "Friends" = mean(valid_numbers(lifesat5), na.rm = TRUE),
+      "Things you have" = mean(valid_numbers(lifesat6), na.rm = TRUE),
+      "Health" = mean(valid_numbers(lifesat7), na.rm = TRUE),
+      "Appearance" = mean(valid_numbers(lifesat8), na.rm = TRUE),
+      "Future" = mean(valid_numbers(lifesat9), na.rm = TRUE),
+      "School" = mean(valid_numbers(lifesat10), na.rm = TRUE),
+      "Time use" = mean(valid_numbers(lifesat11), na.rm = TRUE),
+      "Low_Overall" = mean(valid_numbers(lifesat1) < 5, na.rm = TRUE) * 100,
+      "Low_Family" = mean(valid_numbers(lifesat2) < 5, na.rm = TRUE) * 100,
+      "Low_Home" = mean(valid_numbers(lifesat3) < 5, na.rm = TRUE) * 100,
+      "Low_Choice" = mean(valid_numbers(lifesat4) < 5, na.rm = TRUE) * 100,
+      "Low_Friends" = mean(valid_numbers(lifesat5) < 5, na.rm = TRUE) * 100,
+      "Low_Things you have" = mean(valid_numbers(lifesat6) < 5, na.rm = TRUE) * 100,
+      "Low_Health" = mean(valid_numbers(lifesat7) < 5, na.rm = TRUE) * 100,
+      "Low_Appearance" = mean(valid_numbers(lifesat8) < 5, na.rm = TRUE) * 100,
+      "Low_Future" = mean(valid_numbers(lifesat9) < 5, na.rm = TRUE) * 100,
+      "Low_School" = mean(valid_numbers(lifesat10) < 5, na.rm = TRUE) * 100,
+      "Low_Time use" = mean(valid_numbers(lifesat11) < 5, na.rm = TRUE) * 100,
+      "% reporting low mood" = mean(who_cat == "low", na.rm = TRUE) * 100,
+      "% reporting good mood" = mean(who_cat == "good", na.rm = TRUE) * 100)
+
+  if (report_type == "primary") {
+    derived_data_additional <- grouped_data |>
+      summarise(
+        "% scoring as expected-emotional" = mean(mme_cat == "As expected", na.rm = TRUE) * 100,
+        "% scoring elevated-emotional" = mean(mme_cat == "Elevated", na.rm = TRUE) * 100,
+        "% scoring as expected-behavioural" = mean(mmb_cat == "As expected", na.rm = TRUE) * 100,
+        "% scoring elevated-behavioural" = mean(mmb_cat == "Elevated", na.rm = TRUE) * 100,
+        "% who like school a lot or a bit" = mean(sch1 == "I like it a lot" | sch1 == "I like it a bit", na.rm = TRUE) * 100,
+        "% who like school not very much or not at all" = mean(sch1 == "I don’t like it very much" | sch1 == "I don’t like it at all", na.rm = TRUE) * 100,
+        "% who feel a lot or some pressure from schoolwork" = mean(sch2 == "A lot" | sch2 == "Some", na.rm = TRUE) * 100,
+        "% who feel a little or no pressure from schoolwork" = mean(sch2 == "A little" | sch2 == "Not at all", na.rm = TRUE) * 100,
+        "% who feel always or often confident" = mean(sch3 == "Always" | sch3 == "Often", na.rm = TRUE) * 100,
+        "% who feel sometimes confident" = mean(sch3 == "Sometimes", na.rm = TRUE) * 100,
+        "% who feel never or hardly ever confident" = mean(sch3 == "Never" | sch3 == "Hardly ever", na.rm = TRUE) * 100,
+        "Gratitude" = mean(valid_numbers(g_score), na.rm = TRUE),
+        "Zest" = mean(valid_numbers(z_score), na.rm = TRUE),
+        "Optimism" = mean(valid_numbers(o_score), na.rm = TRUE),
+        "Persistance" = mean(valid_numbers(p_score), na.rm = TRUE),
+        "Pro-social" = mean(valid_numbers(pro_score), na.rm = TRUE),
+        "Overall covitality score" = mean(valid_numbers(cov_score), na.rm = TRUE)
+        )
+  } else if (report_type == "secondary") {
+    derived_data_additional <- grouped_data |>
+      summarise(
+        "% at risk of depression" = mean(who_dep, na.rm = TRUE) * 100,
+        "Emotional_% as expected" = mean(ep_cat == "As expected", na.rm = TRUE) * 100,
+        "Emotional_% borderline and difficulties" = mean(ep_cat == "Borderline" | ep_cat == "Difficulties", na.rm = TRUE) * 100,
+        "Conduct_% as expected" = mean(cp_cat == "As expected", na.rm = TRUE) * 100,
+        "Conduct_% borderline and difficulties" = mean(cp_cat == "Borderline" | cp_cat == "Difficulties", na.rm = TRUE) * 100,
+        "Hyperactivity_% as expected" = mean(ha_cat == "As expected", na.rm = TRUE) * 100,
+        "Hyperactivity_% borderline and difficulties" = mean(ha_cat == "Borderline" | ha_cat == "Difficulties", na.rm = TRUE) * 100,
+        "Peer_% as expected" = mean(pp_cat == "As expected", na.rm = TRUE) * 100,
+        "Peer_% borderline and difficulties" = mean(pp_cat == "Borderline" | pp_cat == "Difficulties", na.rm = TRUE) * 100,
+        "Pro-social_% as expected" = mean(pro_cat == "As expected", na.rm = TRUE) * 100,
+        "Pro-social_% borderline and difficulties" = mean(pro_cat == "Borderline" | pro_cat == "Difficulties", na.rm = TRUE) * 100,
+        "Overall SDQ_% as expected" = mean(sdq_total_cat == "As expected", na.rm = TRUE) * 100,
+        "Overall SDQ_% borderline and difficulties" = mean(sdq_total_cat == "Borderline" | sdq_total_cat == "Difficulties", na.rm = TRUE) * 100,
+        "Average sleep quality score" = mean(valid_numbers(asw_score), na.rm = TRUE),
+        "% who like school a lot or a bit" = mean(sch1 == "I like it a lot" | sch1 == "I like it a bit", na.rm = TRUE) * 100,
+        "% who like school not very much or not at all" = mean(sch1 == "I don’t like it very much" | sch1 == "I don’t like it at all", na.rm = TRUE) * 100,
+        "% who feel a lot or some pressure from schoolwork" = mean(sch2 == "A lot" | sch2 == "Some", na.rm = TRUE) * 100,
+        "% who feel a little or no pressure from schoolwork" = mean(sch2 == "A little" | sch2 == "Not at all", na.rm = TRUE) * 100,
+        "% who feel always or often confident" = mean(sch3 == "Always" | sch3 == "Often", na.rm = TRUE) * 100,
+        "% who feel sometimes confident" = mean(sch3 == "Sometimes", na.rm = TRUE) * 100,
+        "% who feel never or hardly ever confident" = mean(sch3 == "Never" | sch3 == "Hardly ever", na.rm = TRUE) * 100,
+        "Number asked selfh1" = sum(!is.na(selfh1)),
+        "% who have ever hurt themselves on purpose" = mean(selfh1 == "Yes", na.rm = TRUE) * 100,
+        "Number asked selfh2" = sum(!is.na(selfh2)),
+        "Of those who have hurt themselves, % who have not in the past year" = mean(selfh2 == "None", na.rm = TRUE) * 100,
+        "% who feel lonely none or some of the time" = mean(loneliness == "None of the time" | loneliness == "Some of the time", na.rm = TRUE) * 100,
+        "% who feel lonely most or all of the time" = mean(loneliness == "Most of the time" | loneliness == "All of the time", na.rm = TRUE) * 100,
+        "Self-efficacy" = mean(valid_numbers(efficacy_score), na.rm = TRUE),
+        "Self-awareness" = mean(valid_numbers(awareness_score), na.rm = TRUE),
+        "Persistence" = mean(valid_numbers(persistence_score), na.rm = TRUE),
+        "School support" = mean(valid_numbers(sch_support_score), na.rm = TRUE),
+        "Family support" = mean(valid_numbers(fam_support_score), na.rm = TRUE),
+        "Peer support" = mean(valid_numbers(peer_support_score), na.rm = TRUE),
+        "Empathy" = mean(valid_numbers(empathy_score), na.rm = TRUE),
+        "Self-control" = mean(valid_numbers(control_score), na.rm = TRUE),
+        "Optimism" = mean(valid_numbers(optimism_score), na.rm = TRUE),
+        "Belief in self" = mean(valid_numbers(belief_self_score), na.rm = TRUE),
+        "Belief in others" = mean(valid_numbers(belief_others_score), na.rm = TRUE),
+        "Emotional competence" = mean(valid_numbers(emotional_competence_score), na.rm = TRUE),
+
+      )
+  }
+
+  derived_data <- full_join(derived_data_all, derived_data_additional, by = c("School ID code", "Year groups"))
+
+
+  #make spreadsheet
+  wb <- openxlsx::createWorkbook()
+  openxlsx::addWorksheet(wb, "Sheet 1")
+  openxlsx::writeData(wb, 1, derived_data)
+  openxlsx::saveWorkbook(wb, filename)
+}
