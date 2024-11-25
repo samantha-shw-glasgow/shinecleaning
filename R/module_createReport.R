@@ -8,13 +8,13 @@ createReportUI <- function(id) {
 
   tagList(
     h2("Report options"),
-    selectInput(ns("report_type"),
+    selectInput(ns("output_type"),
       strong("Report type"),
       choices = c("Primary", "Secondary",
                   "Primary cluster / Local Authority",
                   "Secondary cluster / Local Authority",
                   "Processed report data",
-                  "Additional tables"),
+                  "School-level data"),
       selected = "Primary",
       width = "100%"
     ),
@@ -58,12 +58,29 @@ createReport_server <- function(id, data) {
       ui_options <- reactive({
         req(data(), cancelOutput = T)
         # non-report outputs
-        if (input$report_type %in% c("School-level data", "Additional tables")) {
-          h4("coming soon...", class = "text-center")
-        } else if (input$report_type == "Processed report data") {
+        if (input$output_type  == "School-level data") {
           tagList(
             textInput(ns("name"), "File name", width = "100%"),
-            selectInput(ns("data_report_type"), "Data type",
+            selectInput(ns("data_output_type"), "Data type",
+                        choices = c("Primary", "Secondary"),
+                        width = "100%"),
+            selectizeInput(ns("school_id"), "School IDs",
+                           multiple = T,
+                           selected = "All",
+                           choices = c("All", school_ids()),
+                           width = "100%"),
+            bslib::input_switch(ns("custom_group"),
+                                label = "Use custom school-year groupings",
+                                value = F, width = "100%"),
+            createReport_groupingsUI(ns("grouping")),
+            tableOutput(ns("preview")),
+            uiOutput(ns("additional_warnings")),
+            downloadButton(ns("additional_output"), "Download data")
+          )
+        } else if (input$output_type == "Processed report data") {
+          tagList(
+            textInput(ns("name"), "File name", width = "100%"),
+            selectInput(ns("data_output_type"), "Data type",
                         choices = c("Primary", "Secondary"),
                         width = "100%"),
             selectizeInput(ns("school_id"), "School IDs",
@@ -82,7 +99,7 @@ createReport_server <- function(id, data) {
           # report generators
           tagList(
             # For school reports only
-            if (input$report_type %in% c("Primary", "Secondary")) {
+            if (input$output_type %in% c("Primary", "Secondary")) {
               tagList(
                 selectInput(ns("school_id"), "School ID", choices = school_ids(),
                             width = "100%"),
@@ -91,7 +108,7 @@ createReport_server <- function(id, data) {
               )
             },
             # For LA reports only
-            if (input$report_type %in% c(
+            if (input$output_type %in% c(
               "Primary cluster / Local Authority",
               "Secondary cluster / Local Authority"
             )) {
@@ -138,23 +155,22 @@ createReport_server <- function(id, data) {
       ## filter by selected school IDs
       data_filt <- reactive({
         if (isTruthy(data())) {
-          if (input$report_type %in% c("Primary", "Secondary")) {
+          if (input$output_type %in% c("Primary", "Secondary")) {
             if (isTruthy(input$school_id) && !"All" %in% input$school_id) {
               data() %>% filter(`School ID code` == input$school_id)
             } else {
               data()
             }
-          } else if (input$report_type %in% c(
+          } else if (input$output_type %in% c(
             "Primary cluster / Local Authority",
             "Secondary cluster / Local Authority",
-            "Processed report data")) {
+            "Processed report data",
+            "School-level data")) {
             if (isTruthy(input$school_id) && !"All" %in% input$school_id) {
               data() %>% filter(`School ID code` %in% input$school_id)
             } else {
               data()
             }
-          } else if (input$report_type %in% c("School-level data", "Additional tables")) {
-            data()
           }
         }
       })
@@ -163,8 +179,16 @@ createReport_server <- function(id, data) {
 
       class_list <- createReport_groupings_server("grouping",
                                                   custom_group = reactive(input$custom_group),
-                                                  report_type = reactive(input$report_type))
-
+                                                  report_type = reactive({
+                                                    if (input$output_type %in% c("Primary", "Primary cluster / Local Authority")) {
+                                                      "Primary"
+                                                    } else if (input$output_type %in% c("Secondary", "Secondary cluster / Local Authority")) {
+                                                      "Secondary"
+                                                    } else if (input$output_type %in% c("Processed report data", "School-level data")) {
+                                                      input$data_output_type
+                                                    }
+                                                    })
+                                                  )
 
       output$preview <- renderTable({
         data_filt() |>
@@ -246,25 +270,25 @@ createReport_server <- function(id, data) {
       )
 
       check_vars <- reactive({
-        if (input$report_type %in% c("Primary", "Primary cluster / Local Authority")) {
+        if (input$output_type %in% c("Primary", "Primary cluster / Local Authority")) {
           upcheck_has_columns(data(), primary_vars) |>
             filter(fail == TRUE) |>
             select(message, level)
         }
 
-        if (input$report_type %in% c("Secondary", "Secondary cluster / Local Authority")) {
+        if (input$output_type %in% c("Secondary", "Secondary cluster / Local Authority")) {
           upcheck_has_columns(data(), secondary_vars) |>
             filter(fail == TRUE) |>
             select(message, level)
         }
 
-        if (input$report_type == "Processed report data") {
-          if (input$data_report_type == "Primary") {
+        if (input$output_type %in% c("Processed report data", "School-level data")) {
+          if (input$data_output_type == "Primary") {
             upcheck_has_columns(data(), primary_vars) |>
               filter(fail == TRUE) |>
               select(message, level)
           }
-          if (input$data_report_type == "Secondary") {
+          if (input$data_output_type == "Secondary") {
             upcheck_has_columns(data(), secondary_vars) |>
               filter(fail == TRUE) |>
               select(message, level)
@@ -371,8 +395,8 @@ createReport_server <- function(id, data) {
 
           tryCatch(
             {
-              if (input$report_type == "Primary") {
-                cat(glue::glue("Rendering {input$report_type} report"), "\n")
+              if (input$output_type == "Primary") {
+                cat(glue::glue("Rendering {input$output_type} report"), "\n")
                 cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
                 render_report(data_filt(),
                   survey_type = "primary",
@@ -385,8 +409,8 @@ createReport_server <- function(id, data) {
                   output_location = NULL
                 )
               }
-              if (input$report_type == "Primary cluster / Local Authority") {
-                cat(glue::glue("Rendering {input$report_type} report"), "\n")
+              if (input$output_type == "Primary cluster / Local Authority") {
+                cat(glue::glue("Rendering {input$output_type} report"), "\n")
                 cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
                 render_report(data_filt(),
                   survey_type = "primary",
@@ -399,8 +423,8 @@ createReport_server <- function(id, data) {
                   output_location = NULL
                 )
               }
-              if (input$report_type == "Secondary") {
-                cat(glue::glue("Rendering {input$report_type} report"), "\n")
+              if (input$output_type == "Secondary") {
+                cat(glue::glue("Rendering {input$output_type} report"), "\n")
                 cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
                 render_report(data_filt(),
                   survey_type = "secondary",
@@ -413,8 +437,8 @@ createReport_server <- function(id, data) {
                   output_location = NULL
                 )
               }
-              if (input$report_type == "Secondary cluster / Local Authority") {
-                cat(glue::glue("Rendering {input$report_type} report"), "\n")
+              if (input$output_type == "Secondary cluster / Local Authority") {
+                cat(glue::glue("Rendering {input$output_type} report"), "\n")
                 cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
                 render_report(data_filt(),
                   survey_type = "secondary",
@@ -445,11 +469,32 @@ createReport_server <- function(id, data) {
           paste0(input$name, ".xlsx")
         },
         content = function(file) {
-          if (input$report_type == "Processed report data") {
-            cat(glue::glue("Returning processed report data"), "\n")
-            cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
-            report_data_spreadsheet(data_filt(), file, str_to_lower(input$data_report_type))
-          }
+          showModal(modalDialog("Generating output...", footer = NULL))
+          on.exit(removeModal(), add = TRUE)
+
+          tryCatch(
+            {
+              if (input$output_type == "Processed report data") {
+                cat(glue::glue("Returning processed report data"), "\n")
+                cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
+                report_data_spreadsheet(data_filt(), file, str_to_lower(input$data_output_type))
+              }
+              if (input$output_type == "School-level data") {
+                cat(glue::glue("Returning school-level data"), "\n")
+                cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
+                report_derived_spreadsheet(data_filt(), file,
+                                           str_to_lower(input$data_output_type),
+                                           class_list())
+              }
+            },
+            error = function(e) {
+                warning(paste0("Output error: ", e))
+                showNotification(
+                  paste0("Failed to generate output. Error message: ", e),
+                  type = "error"
+                )
+              }
+            )
         }
       )
     }
