@@ -33,10 +33,12 @@ data_prep <- function(survey_data, report_type = "primary") {
   #  - 'Me and my feelings' scores - emotional and behavioural `mm_score`
   #  - 'Gratitude', 'Zest', 'Optimism', 'Persistence', 'Pro-social' - `sehs_primary`
   #  - Overall coviality `cov_score`
+  #  - Family affluence score
   # Secondary:
   #  - secondary sehs (averaging by categories)
   #  - strenths and difficulties score - `sdq_score`
   #  - Adolescent sleep wake score - `asw_score`
+  #  - Family affluence score
   #
   # It should also filter refusal to complete survey
 
@@ -57,6 +59,7 @@ data_prep <- function(survey_data, report_type = "primary") {
     survey_out |>
       mm_score() |>
       sehs_primary() |>
+      fas_score() |>
       mutate(class = factor(class, levels = c("P6", "P7")))
   } else if (report_type == "secondary") {
     if (!("asw1" %in% colnames(survey_out))) {
@@ -70,6 +73,7 @@ data_prep <- function(survey_data, report_type = "primary") {
       sehs_secondary() |>
       asw_score() |>
       sdq_score() |>
+      fas_score() |>
       mutate(class = factor(class, levels = c("S1", "S2", "S3", "S4", "S5", "S6")))
   } else {
     stop(glue::glue(
