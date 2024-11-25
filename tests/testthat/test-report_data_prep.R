@@ -180,3 +180,30 @@ test_that("SDQ score output", {
   expect_identical(names(test_output), names(expected_shape))
   expect_identical(dim(test_output), dim(expected_shape))
 })
+
+test_that("FAS score output", {
+
+  fas1_levels <-  c("No", "Yes, one", "Yes, two or more")
+  fas2_levels <-  c("No", "Yes")
+  fas3_levels <-  c("None", "One", "Two", "More than two")
+  fas4_levels <-  c("Not at all", "Once", "Twice", "More than twice")
+  fas5_levels <-  c("None", "One", "Two", "More than two")
+  fas6_levels <-  c("No", "Yes")
+
+  input_data <- tibble::tribble(
+    ~fas1, ~fas2, ~fas3, ~fas4, ~fas5, ~fas6,
+    "No", "No", "None", "Not at all", "None", "No",
+    "Yes, two or more", "Yes", "More than two", "More than twice", "More than two", "Yes",
+    "Yes, one", "Yes", "One", "Once", "One", "Yes",
+    "Yes, one", "No", "Two", "Twice", "Two", "No"
+  )
+
+  results_out <- input_data |>
+    fas_score()
+
+  expected_out <- bind_cols(
+    input_data, tibble::tibble(fas_score = c(0L, 13L, 6L, 7L))
+  )
+
+  expect_identical(results_out, expected_out)
+})
