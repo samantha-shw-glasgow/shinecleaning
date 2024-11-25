@@ -341,3 +341,24 @@ sdq_score <- function(survey_data) {
     ) |>
     bind_cols(survey_data, x = _)
 }
+
+#' @rdname data_prep
+fas_score <- function(survey_data) {
+
+  survey_data |>
+    mutate(
+      fas1 = factor(fas1, levels = c("No", "Yes, one", "Yes, two or more")),
+      fas2 = factor(fas2, levels = c("No", "Yes")),
+      fas3 = factor(fas3, levels = c("None", "One", "Two", "More than two")),
+      fas4 = factor(fas4, levels = c(
+        "Not at all", "Once", "Twice", "More than twice"
+      )),
+      fas5 = factor(fas5, levels = c("None", "One", "Two", "More than two")),
+      fas6 = factor(fas6, levels = c("No", "Yes")),
+      across(starts_with("fas"), as.integer),
+      fas_score = fas1 + fas2 + fas3 + fas4 + fas5 + fas6 - 6
+    ) |>
+    select(fas_score) |>
+    bind_cols(survey_data)
+
+}
