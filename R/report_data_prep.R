@@ -25,6 +25,8 @@
 #'
 #' `sdq_score`: SDQ score for secondary schools
 #'
+#' `fas_score`: family affluence score (0-13)
+#'
 data_prep <- function(survey_data, report_type = "primary") {
   # This should create:
   #  - WHO5 wellbeing score - `who_score` and `who_cat`
