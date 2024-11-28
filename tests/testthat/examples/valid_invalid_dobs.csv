@@ -1,0 +1,8 @@
+dobyr,dobmnth,dobday,expected_include,expected_message
+2015,March,31,TRUE,
+2015,April,31,TRUE,Invalid or missing DOB
+2016,February,29,TRUE,
+2015,February,29,TRUE,Invalid or missing DOB
+2015,February,28,TRUE,
+2015,NA,12,TRUE,Invalid or missing DOB
+NA,NA,NA,TRUE,Invalid or missing DOB

@@ -282,3 +282,15 @@ has_school_id <- function(data) {
     message = ifelse(has_no_id, "School ID missing", "")
   )
 }
+
+#' @rdname validators
+valid_dob <- function(data) {
+  dob <- lubridate::ymd(paste(data$dobyr, data$dobmnth, data$dobday), quiet = TRUE)
+  invalid_dob <- is.na(dob)
+  # Alternative check - if a DOB is entered BUT not valid
+  # invalid_dob <- is.na(dob) & (!is.na(dobyr) | !is.na(dobmnth) | !is.na(dobday))
+  tibble::tibble(
+    include = TRUE,
+    message = ifelse(invalid_dob, "Invalid or missing DOB", "")
+  )
+}
