@@ -25,6 +25,8 @@
 #'
 #' `sdq_score`: SDQ score for secondary schools
 #'
+#' `fas_score`: family affluence score (0-13)
+#'
 data_prep <- function(survey_data, report_type = "primary") {
   # This should create:
   #  - WHO5 wellbeing score - `who_score` and `who_cat`
@@ -33,10 +35,12 @@ data_prep <- function(survey_data, report_type = "primary") {
   #  - 'Me and my feelings' scores - emotional and behavioural `mm_score`
   #  - 'Gratitude', 'Zest', 'Optimism', 'Persistence', 'Pro-social' - `sehs_primary`
   #  - Overall coviality `cov_score`
+  #  - Family affluence score
   # Secondary:
   #  - secondary sehs (averaging by categories)
   #  - strenths and difficulties score - `sdq_score`
   #  - Adolescent sleep wake score - `asw_score`
+  #  - Family affluence score
   #
   # It should also filter refusal to complete survey
 
@@ -57,6 +61,7 @@ data_prep <- function(survey_data, report_type = "primary") {
     survey_out |>
       mm_score() |>
       sehs_primary() |>
+      fas_score() |>
       mutate(class = factor(class, levels = c("P6", "P7")))
   } else if (report_type == "secondary") {
     if (!("asw1" %in% colnames(survey_out))) {
@@ -70,6 +75,7 @@ data_prep <- function(survey_data, report_type = "primary") {
       sehs_secondary() |>
       asw_score() |>
       sdq_score() |>
+      fas_score() |>
       mutate(class = factor(class, levels = c("S1", "S2", "S3", "S4", "S5", "S6")))
   } else {
     stop(glue::glue(
@@ -340,4 +346,25 @@ sdq_score <- function(survey_data) {
       )
     ) |>
     bind_cols(survey_data, x = _)
+}
+
+#' @rdname data_prep
+fas_score <- function(survey_data) {
+
+  survey_data |>
+    mutate(
+      fas1 = factor(fas1, levels = c("No", "Yes, one", "Yes, two or more")),
+      fas2 = factor(fas2, levels = c("No", "Yes")),
+      fas3 = factor(fas3, levels = c("None", "One", "Two", "More than two")),
+      fas4 = factor(fas4, levels = c(
+        "Not at all", "Once", "Twice", "More than twice"
+      )),
+      fas5 = factor(fas5, levels = c("None", "One", "Two", "More than two")),
+      fas6 = factor(fas6, levels = c("No", "Yes")),
+      across(starts_with("fas"), as.integer),
+      fas_score = as.integer(fas1 + fas2 + fas3 + fas4 + fas5 + fas6 - 6)
+    ) |>
+    select(fas_score) |>
+    bind_cols(survey_data, x = _)
+
 }

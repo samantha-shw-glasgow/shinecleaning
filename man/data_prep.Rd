@@ -8,6 +8,7 @@
 \alias{sehs_secondary}
 \alias{asw_score}
 \alias{sdq_score}
+\alias{fas_score}
 \title{Data preparation phase}
 \usage{
 data_prep(survey_data, report_type = "primary")
@@ -23,6 +24,8 @@ sehs_secondary(survey_data)
 asw_score(survey_data)
 
 sdq_score(survey_data)
+
+fas_score(survey_data)
 }
 \arguments{
 \item{survey_data}{The data to process}
@@ -45,6 +48,8 @@ The score-calculating functions return the dataset with relevant columns appende
 \code{asw_score}: Adolescent sleep-wake score for secondary schools
 
 \code{sdq_score}: SDQ score for secondary schools
+
+\code{fas_score}: family affluence score (0-13)
 }
 \description{
 These functions prepare the data by reshaping it and generating necessary variables.
