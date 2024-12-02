@@ -174,7 +174,11 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
   #make spreadsheet
   wb <- openxlsx::createWorkbook()
   openxlsx::addWorksheet(wb, "Sheet 1")
-  header_style <- openxlsx::createStyle(halign = "CENTER", textDecoration = "Bold")
+  header_style <- openxlsx::createStyle(
+    halign = "center",
+    textDecoration = "bold",
+    wrapText = TRUE
+  )
   openxlsx::writeData(wb, 1, list_flatten(col_headers), startRow = 1)
   openxlsx::writeData(wb, 1, derived_data, startRow = 2, headerStyle = header_style)
   walk(seq_along(col_headers),
@@ -192,5 +196,6 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
            wb, 1, rows = 1:last_row, cols = start, style = border_style, stack = TRUE
          )
        })
+  openxlsx::setColWidths(wb, 1, 4:ncol(derived_data), 12)
   openxlsx::saveWorkbook(wb, filename)
 }
