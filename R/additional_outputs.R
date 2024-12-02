@@ -174,13 +174,23 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
   #make spreadsheet
   wb <- openxlsx::createWorkbook()
   openxlsx::addWorksheet(wb, "Sheet 1")
+  header_style <- openxlsx::createStyle(halign = "CENTER", textDecoration = "Bold")
   openxlsx::writeData(wb, 1, list_flatten(col_headers), startRow = 1)
-  openxlsx::writeData(wb, 1, derived_data, startRow = 2)
+  openxlsx::writeData(wb, 1, derived_data, startRow = 2, headerStyle = header_style)
   walk(seq_along(col_headers),
        \(i)  {
          start <- sum(unlist(map(col_headers[1:i - 1], length))) + 1
          end <- sum(unlist(map(col_headers[1:i], length)))
          openxlsx::mergeCells(wb, 1, rows = 1, cols = start:end)
-         })
+
+         last_row <- nrow(derived_data) + 2
+         border_style <- openxlsx::createStyle(
+           border = "left", borderStyle = "medium"
+         )
+         openxlsx::addStyle(wb, 1, rows = 1, cols = start:end, style = header_style)
+         openxlsx::addStyle(
+           wb, 1, rows = 1:last_row, cols = start, style = border_style, stack = TRUE
+         )
+       })
   openxlsx::saveWorkbook(wb, filename)
 }
