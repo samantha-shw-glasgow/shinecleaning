@@ -39,8 +39,8 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
     summarise(
       #all
       "Number taking part" = n(),
-      "% reporting good or excellent health" = mean(health == "Good" | health == "Excellent", na.rm = TRUE)*100,
-      "% reporting fair or poor health" = mean(health == "Fair" | health == "Poor", na.rm = TRUE)*100,
+      "% reporting good or excellent health" = mean(health == "Good" | health == "Excellent", na.rm = TRUE) * 100,
+      "% reporting fair or poor health" = mean(health == "Fair" | health == "Poor", na.rm = TRUE) * 100,
       "Overall" = mean(valid_numbers(lifesat1), na.rm = TRUE),
       "Family" = mean(valid_numbers(lifesat2), na.rm = TRUE),
       "Home" = mean(valid_numbers(lifesat3), na.rm = TRUE),
