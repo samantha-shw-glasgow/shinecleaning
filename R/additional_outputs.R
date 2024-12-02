@@ -19,7 +19,7 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
 
   #process data
   proc_data <- data |> data_prep(report_type) |>
-  mutate(across(where(is.character), ~na_if(., "Prefer not to say")))
+    mutate(across(where(is.character), ~na_if(., "Prefer not to say")))
 
   #group by school and class
   grouped_data <- map(classes, \(concat_class) {
@@ -129,14 +129,16 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
         "Belief in self" = mean(valid_numbers(belief_self_score), na.rm = TRUE),
         "Belief in others" = mean(valid_numbers(belief_others_score), na.rm = TRUE),
         "Emotional competence" = mean(valid_numbers(emotional_competence_score), na.rm = TRUE),
-
       )
   }
 
   derived_data <- full_join(derived_data_all, derived_data_additional, by = c("School ID code", "Year groups"))
+  # Set all NaN values to NA so they display correctly in the spreadsheet
+  for (col in names(derived_data)) {
+    derived_data[[col]][is.nan(derived_data[[col]])] <- NA
+  }
 
-
-# create header row
+  # create header row
   if (report_type == "primary") {
     col_headers <- list(
       list("", "", ""),
@@ -149,9 +151,8 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
       list("Pressure from schoolwork", ""),
       list("Self-confidence", "", ""),
       list("Social Emotional Health - average scores", "", "", "", "", "")
-      )
-    }
-  else if (report_type == "secondary")  {
+    )
+  } else if (report_type == "secondary")  {
     col_headers <- list(
       list("", "", ""),
       list("General health", ""),
