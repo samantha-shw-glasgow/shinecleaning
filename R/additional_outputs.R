@@ -181,13 +181,14 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
   )
   openxlsx::writeData(wb, 1, list_flatten(col_headers), startRow = 1)
   openxlsx::writeData(wb, 1, derived_data, startRow = 2, headerStyle = header_style)
+  last_row <- nrow(derived_data) + 2
+
   walk(seq_along(col_headers),
        \(i)  {
          start <- sum(unlist(map(col_headers[1:i - 1], length))) + 1
          end <- sum(unlist(map(col_headers[1:i], length)))
          openxlsx::mergeCells(wb, 1, rows = 1, cols = start:end)
 
-         last_row <- nrow(derived_data) + 2
          border_style <- openxlsx::createStyle(
            border = "left", borderStyle = "medium"
          )
@@ -197,5 +198,8 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
          )
        })
   openxlsx::setColWidths(wb, 1, 4:ncol(derived_data), 12)
+  openxlsx::addStyle(wb, 1, rows = 3:last_row, cols = 4:ncol(derived_data),
+                     gridExpand = TRUE, stack = TRUE,
+                     style = openxlsx::createStyle(numFmt = "0.0"))
   openxlsx::saveWorkbook(wb, filename)
 }
