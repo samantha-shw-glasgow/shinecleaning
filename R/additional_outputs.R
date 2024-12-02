@@ -52,17 +52,17 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
       "Future" = mean(valid_numbers(lifesat9), na.rm = TRUE),
       "School" = mean(valid_numbers(lifesat10), na.rm = TRUE),
       "Time use" = mean(valid_numbers(lifesat11), na.rm = TRUE),
-      "Low_Overall" = mean(valid_numbers(lifesat1) < 5, na.rm = TRUE) * 100,
-      "Low_Family" = mean(valid_numbers(lifesat2) < 5, na.rm = TRUE) * 100,
-      "Low_Home" = mean(valid_numbers(lifesat3) < 5, na.rm = TRUE) * 100,
-      "Low_Choice" = mean(valid_numbers(lifesat4) < 5, na.rm = TRUE) * 100,
-      "Low_Friends" = mean(valid_numbers(lifesat5) < 5, na.rm = TRUE) * 100,
-      "Low_Things you have" = mean(valid_numbers(lifesat6) < 5, na.rm = TRUE) * 100,
-      "Low_Health" = mean(valid_numbers(lifesat7) < 5, na.rm = TRUE) * 100,
-      "Low_Appearance" = mean(valid_numbers(lifesat8) < 5, na.rm = TRUE) * 100,
-      "Low_Future" = mean(valid_numbers(lifesat9) < 5, na.rm = TRUE) * 100,
-      "Low_School" = mean(valid_numbers(lifesat10) < 5, na.rm = TRUE) * 100,
-      "Low_Time use" = mean(valid_numbers(lifesat11) < 5, na.rm = TRUE) * 100,
+      "% low: Overall" = mean(valid_numbers(lifesat1) < 5, na.rm = TRUE) * 100,
+      "% low: Family" = mean(valid_numbers(lifesat2) < 5, na.rm = TRUE) * 100,
+      "% low: Home" = mean(valid_numbers(lifesat3) < 5, na.rm = TRUE) * 100,
+      "% low: Choice" = mean(valid_numbers(lifesat4) < 5, na.rm = TRUE) * 100,
+      "% low: Friends" = mean(valid_numbers(lifesat5) < 5, na.rm = TRUE) * 100,
+      "% low: Things you have" = mean(valid_numbers(lifesat6) < 5, na.rm = TRUE) * 100,
+      "% low: Health" = mean(valid_numbers(lifesat7) < 5, na.rm = TRUE) * 100,
+      "% low: Appearance" = mean(valid_numbers(lifesat8) < 5, na.rm = TRUE) * 100,
+      "% low: Future" = mean(valid_numbers(lifesat9) < 5, na.rm = TRUE) * 100,
+      "% low: School" = mean(valid_numbers(lifesat10) < 5, na.rm = TRUE) * 100,
+      "% low: Time use" = mean(valid_numbers(lifesat11) < 5, na.rm = TRUE) * 100,
       "% reporting low mood" = mean(who_cat == "low", na.rm = TRUE) * 100,
       "% reporting good mood" = mean(who_cat == "good", na.rm = TRUE) * 100)
 
@@ -91,18 +91,18 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
     derived_data_additional <- grouped_data |>
       summarise(
         "% at risk of depression" = mean(who_dep, na.rm = TRUE) * 100,
-        "Emotional_% as expected" = mean(ep_cat == "As expected", na.rm = TRUE) * 100,
-        "Emotional_% borderline and difficulties" = mean(ep_cat == "Borderline" | ep_cat == "Difficulties", na.rm = TRUE) * 100,
-        "Conduct_% as expected" = mean(cp_cat == "As expected", na.rm = TRUE) * 100,
-        "Conduct_% borderline and difficulties" = mean(cp_cat == "Borderline" | cp_cat == "Difficulties", na.rm = TRUE) * 100,
-        "Hyperactivity_% as expected" = mean(ha_cat == "As expected", na.rm = TRUE) * 100,
-        "Hyperactivity_% borderline and difficulties" = mean(ha_cat == "Borderline" | ha_cat == "Difficulties", na.rm = TRUE) * 100,
-        "Peer_% as expected" = mean(pp_cat == "As expected", na.rm = TRUE) * 100,
-        "Peer_% borderline and difficulties" = mean(pp_cat == "Borderline" | pp_cat == "Difficulties", na.rm = TRUE) * 100,
-        "Pro-social_% as expected" = mean(pro_cat == "As expected", na.rm = TRUE) * 100,
-        "Pro-social_% borderline and difficulties" = mean(pro_cat == "Borderline" | pro_cat == "Difficulties", na.rm = TRUE) * 100,
-        "Overall SDQ_% as expected" = mean(sdq_total_cat == "As expected", na.rm = TRUE) * 100,
-        "Overall SDQ_% borderline and difficulties" = mean(sdq_total_cat == "Borderline" | sdq_total_cat == "Difficulties", na.rm = TRUE) * 100,
+        "Emotional: % as expected" = mean(ep_cat == "As expected", na.rm = TRUE) * 100,
+        "Emotional: % borderline and difficulties" = mean(ep_cat == "Borderline" | ep_cat == "Difficulties", na.rm = TRUE) * 100,
+        "Conduct: % as expected" = mean(cp_cat == "As expected", na.rm = TRUE) * 100,
+        "Conduct: % borderline and difficulties" = mean(cp_cat == "Borderline" | cp_cat == "Difficulties", na.rm = TRUE) * 100,
+        "Hyperactivity: % as expected" = mean(ha_cat == "As expected", na.rm = TRUE) * 100,
+        "Hyperactivity: % borderline and difficulties" = mean(ha_cat == "Borderline" | ha_cat == "Difficulties", na.rm = TRUE) * 100,
+        "Peer: % as expected" = mean(pp_cat == "As expected", na.rm = TRUE) * 100,
+        "Peer: % borderline and difficulties" = mean(pp_cat == "Borderline" | pp_cat == "Difficulties", na.rm = TRUE) * 100,
+        "Pro-social: % as expected" = mean(pro_cat == "As expected", na.rm = TRUE) * 100,
+        "Pro-social: % borderline and difficulties" = mean(pro_cat == "Borderline" | pro_cat == "Difficulties", na.rm = TRUE) * 100,
+        "Overall SDQ: % as expected" = mean(sdq_total_cat == "As expected", na.rm = TRUE) * 100,
+        "Overall SDQ: % borderline and difficulties" = mean(sdq_total_cat == "Borderline" | sdq_total_cat == "Difficulties", na.rm = TRUE) * 100,
         "Average sleep quality score" = mean(valid_numbers(asw_score), na.rm = TRUE),
         "% who like school a lot or a bit" = mean(sch1 == "I like it a lot" | sch1 == "I like it a bit", na.rm = TRUE) * 100,
         "% who like school not very much or not at all" = mean(sch1 == "I don’t like it very much" | sch1 == "I don’t like it at all", na.rm = TRUE) * 100,
@@ -136,9 +136,50 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
   derived_data <- full_join(derived_data_all, derived_data_additional, by = c("School ID code", "Year groups"))
 
 
+# create header row
+  if (report_type == "primary") {
+    col_headers <- list(
+      list("", "", ""),
+      list("General health", ""),
+      list("Happiness with life - average scores", "", "", "", "", "", "", "", "", "", ""),
+      list("Happiness with life - % with a low score", "", "", "", "", "", "", "", "", "", ""),
+      list("WHO Wellbeing Index", ""),
+      list("Me and My Feelings", "", "", ""),
+      list("Liking school", ""),
+      list("Pressure from schoolwork", ""),
+      list("Self-confidence", "", ""),
+      list("Social Emotional Health - average scores", "", "", "", "", "")
+      )
+    }
+  else if (report_type == "secondary")  {
+    col_headers <- list(
+      list("", "", ""),
+      list("General health", ""),
+      list("Happiness with life - average scores", "", "", "", "", "", "", "", "", "", ""),
+      list("Happiness with life - % with a low score", "", "", "", "", "", "", "", "", "", ""),
+      list("WHO Wellbeing Index", "", ""),
+      list("Strengths and Difficulties Score", "", "", "", "", "", "", "", "", "", "", "", ""),
+      list("Sleep quality"),
+      list("Liking school", ""),
+      list("Pressure from schoolwork", ""),
+      list("Self-confidence", "", ""),
+      list("Self-harm", "", "", ""),
+      list("Loneliness", ""),
+      list("Social Emotional Health - average scores", "", "", "", "", "", "", "", "", "", "", "", "", "")
+    )
+  }
+
+
   #make spreadsheet
   wb <- openxlsx::createWorkbook()
   openxlsx::addWorksheet(wb, "Sheet 1")
-  openxlsx::writeData(wb, 1, derived_data)
+  openxlsx::writeData(wb, 1, list_flatten(col_headers), startRow = 1)
+  openxlsx::writeData(wb, 1, derived_data, startRow = 2)
+  walk(seq_along(col_headers),
+       \(i)  {
+         start <- sum(unlist(map(col_headers[1:i - 1], length))) + 1
+         end <- sum(unlist(map(col_headers[1:i], length)))
+         openxlsx::mergeCells(wb, 1, rows = 1, cols = start:end)
+         })
   openxlsx::saveWorkbook(wb, filename)
 }
