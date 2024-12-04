@@ -107,7 +107,7 @@ Table \@ref(tab:tab-response) shows the number of pupils invited to take part, t
 tab_responses(input_data, params$number_invited)
 ```
 
-`r if(params$gender_split){"Table \\@ref(tab:tab-by-class) shows the number of pupils by year group and sex who completed the survey."}`
+`r if(params$gender_split){"Table \\@ref(tab:tab-by-class) shows the number of pupils by year group and gender who completed the survey."}`
 
 ```{r tab-by-class, tab.id="tab-by-class", tab.cap="Overview of survey respondents", eval=params$gender_split, results='asis'}
 tab_categories(input_data, inc_gender = genders, inc_classes = classes)
