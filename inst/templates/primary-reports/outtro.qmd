@@ -220,12 +220,12 @@ of the time/Most of the time/All of the time/Prefer not to say*
 Me and My Feelings 
 :::
 
-[*Emotional scale*]{.shine2}: I feel lonely/I cry a lot/I am unhappy
+[**Emotional scale**]{.shine2}: I feel lonely/I cry a lot/I am unhappy
 /Nobody likes me /I worry a lot /I have problems sleeping/ I wake up in
 the night /I am shy /I feel scared/I worry when I am at school\
 *Never/Sometimes/Always/Prefer not to say*
 
-[*Behavioural scale*]{.shine2}: I get very angry/I lose my temper/I hit
+[**Behavioural scale**]{.shine2}: I get very angry/I lose my temper/I hit
 out when I am angry /I do things to hurt people/I am calm/I break things
 on purpose\
 *Never/Sometimes/Always/Prefer not to say*
@@ -252,27 +252,27 @@ Sometimes/ Often/ Always/Prefer not to say*
 Social Emotional Health Survey (SEHS) 
 :::
 
-[*Gratitude*]{.shine2}\
+[**Gratitude**]{.shine2}\
 I am lucky to go to my school/I am thankful that I get to learn new
 things at school/We are lucky to have nice teachers at my school/ I feel
 thankful for my good friends at school
 
-[*Zest*]{.shine2}\
+[**Zest**]{.shine2}\
 I get excited when I learn something new at school/ I get really excited
 about my school projects/I wake up in the morning excited to go to
 school/I get excited when I am doing my classwork
 
-[*Optimism*]{.shine2}\
+[**Optimism**]{.shine2}\
 When I have problems at school, I know they will get better in the
 future/I expect good things to happen at my school/Each week, I expect
 to feel happy in class/ I expect to have fun with my friends at school
 
-[*Persistence*]{.shine2}\
+[**Persistence**]{.shine2}\
 I finish all my classwork/When I get a bad mark, I try even harder the
 next time /I keep working and working until I get my schoolwork right/ I
 do my classwork even when it's really hard for me
 
-[*Pro-social*]{.shine2}\
+[**Pro-social**]{.shine2}\
 I follow the classroom rules /I follow the playground rules at break
 times and lunch times/I listen when my teacher is talking/ I am nice to
 other students

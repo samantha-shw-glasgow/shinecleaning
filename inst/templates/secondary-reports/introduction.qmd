@@ -224,22 +224,22 @@ socio-emotional health, which are fundamental for young people to
 develop to live engaging and meaningful lives. The scale measures the
 following aspects:
 
-[*Belief in self*:]{.shine2} This assesses a young person’s
+[**Belief in self**:]{.shine2} This assesses a young person’s
 overall sense of self and personal competence and includes measures of
 self-awareness, self-efficacy and persistence.
 
-[*Belief in others*:]{.shine2} This is the young person’s
+[**Belief in others**:]{.shine2} This is the young person’s
 perception of their social support and levels of trust and
 connectedness. It comprises measures of school and peer support and
 family coherence which are important factors in resilience.
 
-[*Emotional competence*:]{.shine2} This is a young person’s
+[**Emotional competence**:]{.shine2} This is a young person’s
 ability to successfully manage emotions to establish interpersonal
 relationships. It comprises of measures of emotional regulation, empathy
 and self-control which are all positively related to social and academic
 success.^34^
 
-[*Optimism*:]{.shine2} is associated with greater interest
+[**Optimism**:]{.shine2} is associated with greater interest
 in school, persistence and coping as well as more positive social
 relationships.
 
