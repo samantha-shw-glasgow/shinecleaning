@@ -4,7 +4,7 @@ output:
     reference_docx: ../styling/doc_template.docx
     number_sections: true
     tables:
-      style: 'Table'
+      style: ShineTable
       layout: autofit
       width: 1.0
       conditional:
