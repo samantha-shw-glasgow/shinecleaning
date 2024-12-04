@@ -223,7 +223,7 @@ print_rest_of_graphs(graphs)
 
 ## WHO-5 Wellbeing Scale
 
-The WHO-5 Wellbeing Index is a five item scale which provides a measure
+The WHO-5 Wellbeing Index is a five-item scale which provides a measure
 of emotional functioning. Items are summed to create a score ranging
 from 0 to 100. A score of 50 or less on the WHO-5 indicates
 low mood (Figure \@ref(fig:bar-wellbeing)).

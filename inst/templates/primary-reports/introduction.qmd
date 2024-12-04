@@ -114,7 +114,7 @@ Mental health problems
 
 Mental health problems include a range of feelings and conditions, which
 may reflect an underlying mental illness. In adolescents, they broadly
-fall in to four main groups:^9^
+fall into four main groups:^9^
 
 1.  Emotional conditions: anxiety, depression, mania and bipolar
     affective disorder
@@ -141,7 +141,7 @@ economic outcomes.^16^ ^17^
 Adolescence is a critical time for young people to develop the
 socio-emotional capabilities to equip them for good health and wellbeing
 in adulthood.^18^ At the same time, it is a period of vulnerability; nearly
-half of all lifetime mental health conditions occur by 14 years old.^19^
+half of all life-time mental health conditions occur by 14 years old.^19^
 
 Whilst there are links between mental health problems and subjective
 wellbeing there is evidence to suggest they are distinct, offering a
@@ -213,9 +213,9 @@ Positive Mental Health
 :::
 
 [***Social Emotional Health Survey (SEHS):***]{.shine2} This is a
-20-item measure of "covitality", which is the co-occurrence of multiple
+20-item measure of "co-vitality", which is the co-occurrence of multiple
 positive psychological traits of gratitude, optimism, zest and
-persistence. When these traits co-occur (covitality) they are associated
+persistence. When these traits co-occur (co-vitality) they are associated
 with increased resilience, pro-social behaviour and school engagement
 and satisfaction.^31^ The traits are seen to be related to different aspects
 of wellbeing in adolescents:
@@ -235,8 +235,8 @@ the relationship between motivation and performance.^32^
 
 [Pro-social behaviour:]{.shine2} This refers to behaviour that benefits
 others and promotes social acceptance and relationships. It does not
-form part of the "covitality" score but there is an association between
-high levels of pro-social behaviour and high levels of covitality.
+form part of the "co-vitality" score but there is an association between
+high levels of pro-social behaviour and high levels of co-vitality.
 
 With the results from SEHS, schools are able to see how pupils score
 across the different domains. This may help schools to identify which
@@ -246,7 +246,7 @@ ones that reflect local needs, interest and values. It is advised to
 concentrate on developing one particular trait at a time, rather than
 looking at all four at once. It may also be possible to carry out a
 follow-up survey using the SEHS to see if the scores across the domains
-and the overall covitality score have improved, following interventions.^33^
+and the overall co-vitality score have improved, following interventions.^33^
 
 ::: {custom-style="Heading 2 no number"}
 Factors influencing adolescent mental health
@@ -254,7 +254,7 @@ Factors influencing adolescent mental health
 
 Many factors influence mental health and research is ongoing to
 understand better this complex field. An individual's mental health and
-wellbeing are determined by environmental, social and, individual
+wellbeing are determined by environmental, social and individual
 factors and how they interact.^34^ Contextual factors may influence or be a
 consequence of mental health and also serve as a risk or protective
 factor. They operate at different levels: individual, family, learning
@@ -276,7 +276,7 @@ Diagram 1: Factors influencing adolescent mental health
 School and adolescent mental health
 :::
 
-Young people spend a significant amount of time in school and it is an
+Young people spend a significant amount of time in school, and it is an
 important sphere of influence. The school environment can positively
 impact on adolescent health and potentially mitigate the detrimental
 effects of other social factors.^38^

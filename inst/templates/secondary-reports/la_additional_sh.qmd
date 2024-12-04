@@ -53,7 +53,7 @@ class_grs <- input_data |>
     selfh1,
     levels = c("Yes", "Prefer not to say", "No"),
     .split = TRUE,
-    classes = list(c("S1", "S2"), c("S3", "S4"), c("S5", "S6")),
+    classes = list(c("S3", "S4"), c("S5", "S6")),
     genders
   ) |>
   censor_summary_data("denom") |>
