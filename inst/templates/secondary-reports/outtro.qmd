@@ -236,27 +236,27 @@ Strength and Difficulties Questionnaire (SDQ)
 
 [© Robert Goodman, 2005]{.col .s12}
 
-[Emotional conduct:]{.shine2} I get a lot of headaches, stomach-aches or
+[*Emotional conduct*:]{.shine2} I get a lot of headaches, stomach-aches or
 sickness/ I worry a lot/ I am often unhappy, down-hearted or tearful/ I
 am nervous in new situations, I easily lose confidence/ I have many
 fears, I am easily scared
 
-[Conduct problems:]{.shine2} I get very angry and often lose my temper/
+[*Conduct problems*:]{.shine2} I get very angry and often lose my temper/
 I usually do as I am told/ I fight a lot. I can make other people do
 what I want/ I am often accused of lying or cheating/ I take things that
 are not mine from home, school or elsewhere
 
-[Hyperactivity:]{.shine2} I am restless, I cannot stay still for long /I
+[*Hyperactivity*:]{.shine2} I am restless, I cannot stay still for long /I
 am constantly fidgeting, or squirming/ I am easily distracted, I find it
 difficult to concentrate/ I think before I do things/ I finish the work
 I'm doing. My attention is good
 
-[Peer relationships:]{.shine2} I am usually on my own, I generally play
+[*Peer relationships*:]{.shine2} I am usually on my own, I generally play
 alone or keep to myself/ I have one good friend or more/ Other people my
 age generally like me/ Other children or young people pick on me or
 bully me / I get on better with adults than with people my own age
 
-[Pro-social:]{.shine2} I try to be nice to other people, I care about
+[*Pro-social*:]{.shine2} I try to be nice to other people, I care about
 their feelings/ I usually share with others (food, games, pens etc.) I
 am helpful if someone is hurt, upset or feeling ill/I am kind to younger
 children/I often volunteer to help others (parents, teachers, children)
@@ -318,37 +318,37 @@ Social Emotional Health Survey (SEHS)
 :::
 
 *Belief in self*\
-[Self-efficacy:]{.shine2} I can work out my problems/ I can do most
+[*Self-efficacy*:]{.shine2} I can work out my problems/ I can do most
 things if I try/ There are many things that I do well\
-[Self-awareness:]{.shine2} There is a purpose to my life/ I understand
+[*Self-awareness*:]{.shine2} There is a purpose to my life/ I understand
 my moods and feelings/ I understand why I do what I do\
-[Persistence:]{.shine2} When I do not understand something, I ask the
+[*Persistence*:]{.shine2} When I do not understand something, I ask the
 teacher again and again until I understand/I try to answer all the
 questions asked in class/When I try to solve a maths problem, I will not
 stop until I find a final solution
 
 *Belief in others*\
-[School support:]{.shine2} At my school, there is a teacher or some
+[*School support*:]{.shine2} At my school, there is a teacher or some
 other adult who always wants me to do my best/At my school, there is a
 teacher or some other adult who listens to me when I have something to
 say/At my school, there is a teacher or some other adult who believes
 that I will be a success\
-[Family support:]{.shine2} My family members really help and support one
+[*Family support*:]{.shine2} My family members really help and support one
 another/ There is a feeling of togetherness in my family/ My family
 really gets along well with each other\
-[Peer support:]{.shine2} I have a friend my age who really cares about
+[*Peer support*:]{.shine2} I have a friend my age who really cares about
 me/I have a friend my age who talks with me about my problems/I have a
 friend my age who helps me when I'm having a hard time
 
 *Emotional competence*\
-[Emotional regulation:]{.shine2} I accept responsibility for my
+[*Emotional regulation*:]{.shine2} I accept responsibility for my
 actions/When I make a mistake I admit it/I can deal with being told no\
-[Empathy:]{.shine2} I feel bad when someone gets his or her feelings
+[*Empathy*:]{.shine2} I feel bad when someone gets his or her feelings
 hurt/I try to understand what other people go through/I try to
 understand how other people feel and think\
-[Self-control:]{.shine2} I can wait for what I want/ I don't bother
+[*Self-control*:]{.shine2} I can wait for what I want/ I don't bother
 others when they are busy/ I think before I act\
-[Optimism:]{.shine2} Each day I look forward to having a lot of fun/ I
+[*Optimism*:]{.shine2} Each day I look forward to having a lot of fun/ I
 usually expect to have a good day/Overall, I expect more good things to
 happen to me than bad things
 
