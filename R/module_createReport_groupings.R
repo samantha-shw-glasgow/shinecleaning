@@ -39,6 +39,7 @@ createReport_groupings_server <- function(id, custom_group, report_type) {
 
 
     default <- reactive({
+      req(report_type())
       if (report_type() == "Primary" |
           report_type() == "Primary cluster / Local Authority") {
         default <- "P6\nP7"
