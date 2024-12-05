@@ -66,8 +66,8 @@ library(tidyverse)
 classes <- params$classes |> map(str_split, " ") |> map(unlist)
 genders <- c("Boys", "Girls", "All")
 
-any_senior_years <- 
-  map_lgl(classes, ~any(.x %in% c("S3", "S4", "S5", "S6"))) |> 
+any_senior_years <-
+  map_lgl(classes, ~any(.x %in% c("S3", "S4", "S5", "S6"))) |>
   any()
 
 senior_years <- input_data |>
