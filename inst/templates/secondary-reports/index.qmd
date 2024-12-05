@@ -66,6 +66,10 @@ library(tidyverse)
 classes <- params$classes |> map(str_split, " ") |> map(unlist)
 genders <- c("Boys", "Girls", "All")
 
+any_senior_years <- 
+  map_lgl(classes, ~any(.x %in% c("S3", "S4", "S5", "S6"))) |> 
+  any()
+
 senior_years <- input_data |>
   filter(class %in% c("S3", "S4", "S5", "S6"))
 
@@ -483,7 +487,7 @@ input_data |>
 
 \newpage
 
-```{r la-sh-page, echo=FALSE, eval = nrow(senior_years) > 0, results='asis'}
+```{r la-sh-page, echo=FALSE, eval = any_senior_years & nrow(senior_years) > 0, results='asis'}
 cat(knitr::knit_child("la_additional_sh.qmd", envir = environment(), quiet = TRUE))
 ```
 
