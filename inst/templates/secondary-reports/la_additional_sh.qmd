@@ -3,7 +3,7 @@
 
 ## Self-harm
 
-`r sum(!is.na(input_data$selfh1))` pupils were asked if they had ever hurt themselves on purpose.
+`r sum(!is.na(senior_years$selfh1))` pupils were asked if they had ever hurt themselves on purpose.
 Results are shown in Figure \@ref(fig:bar-self-harm) for all and then by year groups and gender.
 
 It is difficult to find accurate data on the prevalence of self-harm amongst adolescents, but lifetime self-harm is estimated to be between 10-20% ^58^. A survey of 15-year-olds in HBSC England found that 22% of them had reported ever hurting themselves on purpose.
@@ -11,7 +11,7 @@ It is difficult to find accurate data on the prevalence of self-harm amongst ado
 
 ```{r bar-self-harm, fig.cap="% of pupils who have ever hurt themselves on purpose", fig.height=7}
 
-all_gr <- input_data |>
+all_gr <- senior_years |>
   share_elevated(
     selfh1,
     levels = c("Yes", "Prefer not to say", "No"),
@@ -25,7 +25,7 @@ all_gr <- input_data |>
   theme_void() +
   facet_wrap(~ gender)
 
-gender_grs <- input_data |>
+gender_grs <- senior_years |>
   mutate(class = "All") |>
   share_elevated(
     selfh1,
@@ -47,13 +47,18 @@ gender_grs <- input_data |>
   })) |>
   pull(gr)
 
-class_grs <- input_data |>
+classes_groups <- list(
+  c("S3", "S4")[c("S3", "S4") %in% senior_years$class],
+  c("S5", "S6")[c("S5", "S6") %in% senior_years$class]
+)
+
+class_grs <- senior_years |>
   mutate(gender = "All") |>
   share_elevated(
     selfh1,
     levels = c("Yes", "Prefer not to say", "No"),
     .split = TRUE,
-    classes = list(c("S3", "S4"), c("S5", "S6")),
+    classes = classes_groups,
     genders
   ) |>
   censor_summary_data("denom") |>
@@ -89,7 +94,7 @@ Note that this is as a percentage of all those who said they had ever hurt thems
 
 
 ```{r tab-self-harm, tab.id="tab-self-harm", tab.cap.pre="Table", tab.cap="Frequency of self-harm in past year"}
-input_data |>
+senior_years |>
   filter(selfh1 == "Yes") |>
   mutate(sh_con = fct_collapse(
     selfh2,
