@@ -317,14 +317,12 @@ tables_out <- map(tables_out, \(tab) {
                  "As expected" = "As expected"
                )) |>
       summarise(across(c(n, prop), sum),
-                .by = c("gender", "class", "var", "level", "denom")) |> 
+                .by = c("gender", "class", "var", "level", "denom")) |>
       mutate(censored = FALSE)
-    
   } else {
-    tab |> 
+    tab |>
       mutate(censored = FALSE)
   }
-  
 })
 
 graphs <- tables_out |>
@@ -346,7 +344,7 @@ tab_out <- input_data |>
     c("As expected", "Borderline", "Difficulties"),
     classes = classes,
     genders = genders
-  ) 
+  )
 
 if (any(tab_out$n < 3)) {
     tab_out <- tab_out |>
@@ -357,16 +355,14 @@ if (any(tab_out$n < 3)) {
                  "As expected" = "As expected"
                )) |>
       summarise(across(c(n, prop), sum),
-                .by = c("gender", "class", "var", "denom")) |> 
+                .by = c("gender", "class", "var", "denom")) |>
       mutate(censored = FALSE)
-    
   } else {
-    tab_out <- tab_out |> 
+    tab_out <- tab_out |>
       mutate(censored = FALSE)
   }
-  
 
-tab_out |> 
+tab_out |>
   bar_share_elevated()
 
 ```
@@ -379,7 +375,7 @@ tab_out <- input_data |>
     c("As expected", "Borderline", "Difficulties"),
     classes = classes,
     genders = genders
-  ) 
+  )
 
 if (any(tab_out$n < 3)) {
     tab_out <- tab_out |>
@@ -390,16 +386,14 @@ if (any(tab_out$n < 3)) {
                  "As expected" = "As expected"
                )) |>
       summarise(across(c(n, prop), sum),
-                .by = c("gender", "class", "var", "denom")) |> 
+                .by = c("gender", "class", "var", "denom")) |>
       mutate(censored = FALSE)
-    
   } else {
-    tab_out <- tab_out |> 
+    tab_out <- tab_out |>
       mutate(censored = FALSE)
   }
-  
 
-tab_out |> 
+tab_out |>
   bar_share_elevated()
 ```
 
