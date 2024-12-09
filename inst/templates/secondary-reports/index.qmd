@@ -293,7 +293,7 @@ information on the SDQ, see page 7.
 
 ```{r bar-cat-emot-cond-hyp-peer, fig.cap="SDQ scores"}
 
-graphs <- input_data |>
+tables_out <- input_data |>
   share_elevated_multiple(
     list(
       ep_cat = "Emotional",
@@ -305,8 +305,27 @@ graphs <- input_data |>
     classes = classes,
     genders = genders,
     .split = params$gender_split
-  ) |>
-  map(censor_summary_data, "n") |>
+  )
+
+tables_out <- map(tables_out, \(tab) {
+  if (any(tab$n < 3)) {
+    tab |>
+      mutate(level =
+               fct_collapse(
+                 level,
+                 "Borderline or Difficulties" = c("Borderline", "Difficulties"),
+                 "As expected" = "As expected"
+               )) |>
+      summarise(across(c(n, prop), sum),
+                .by = c("gender", "class", "var", "level", "denom")) |>
+      mutate(censored = FALSE)
+  } else {
+    tab |>
+      mutate(censored = FALSE)
+  }
+})
+
+graphs <- tables_out |>
   map(bar_share_elevated_multiple) |>
   print_first_graph()
 
@@ -319,30 +338,63 @@ print_rest_of_graphs(graphs)
 
 ```{r bar-elevated-prosoc, fig.cap="Pupils' pro-social score"}
 
-input_data |>
+tab_out <- input_data |>
   share_elevated(
     ps_cat,
     c("As expected", "Borderline", "Difficulties"),
     classes = classes,
     genders = genders
-  ) |>
-  censor_summary_data("denom") |>
+  )
+
+if (any(tab_out$n < 3)) {
+    tab_out <- tab_out |>
+      mutate(var =
+               fct_collapse(
+                 var,
+                 "Borderline or Difficulties" = c("Borderline", "Difficulties"),
+                 "As expected" = "As expected"
+               )) |>
+      summarise(across(c(n, prop), sum),
+                .by = c("gender", "class", "var", "denom")) |>
+      mutate(censored = FALSE)
+  } else {
+    tab_out <- tab_out |>
+      mutate(censored = FALSE)
+  }
+
+tab_out |>
   bar_share_elevated()
 
 ```
 
 ```{r bar-elevated-sdq, fig.cap="Pupils' overall strength and difficulties score"}
 
-input_data |>
+tab_out <- input_data |>
   share_elevated(
     sdq_total_cat,
     c("As expected", "Borderline", "Difficulties"),
     classes = classes,
     genders = genders
-  ) |>
-  censor_summary_data("denom") |>
-  bar_share_elevated()
+  )
 
+if (any(tab_out$n < 3)) {
+    tab_out <- tab_out |>
+      mutate(var =
+               fct_collapse(
+                 var,
+                 "Borderline or Difficulties" = c("Borderline", "Difficulties"),
+                 "As expected" = "As expected"
+               )) |>
+      summarise(across(c(n, prop), sum),
+                .by = c("gender", "class", "var", "denom")) |>
+      mutate(censored = FALSE)
+  } else {
+    tab_out <- tab_out |>
+      mutate(censored = FALSE)
+  }
+
+tab_out |>
+  bar_share_elevated()
 ```
 
 
