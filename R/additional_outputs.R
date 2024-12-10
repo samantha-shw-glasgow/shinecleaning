@@ -99,8 +99,8 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
         "Hyperactivity: % borderline and difficulties" = mean(ha_cat == "Borderline" | ha_cat == "Difficulties", na.rm = TRUE) * 100,
         "Peer: % as expected" = mean(pp_cat == "As expected", na.rm = TRUE) * 100,
         "Peer: % borderline and difficulties" = mean(pp_cat == "Borderline" | pp_cat == "Difficulties", na.rm = TRUE) * 100,
-        "Pro-social: % as expected" = mean(pro_cat == "As expected", na.rm = TRUE) * 100,
-        "Pro-social: % borderline and difficulties" = mean(pro_cat == "Borderline" | pro_cat == "Difficulties", na.rm = TRUE) * 100,
+        "Pro-social: % as expected" = mean(ps_cat == "As expected", na.rm = TRUE) * 100,
+        "Pro-social: % borderline and difficulties" = mean(ps_cat == "Borderline" | ps_cat == "Difficulties", na.rm = TRUE) * 100,
         "Overall SDQ: % as expected" = mean(sdq_total_cat == "As expected", na.rm = TRUE) * 100,
         "Overall SDQ: % borderline and difficulties" = mean(sdq_total_cat == "Borderline" | sdq_total_cat == "Difficulties", na.rm = TRUE) * 100,
         "Average sleep quality score" = mean(valid_numbers(asw_score), na.rm = TRUE),
@@ -118,8 +118,8 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
         "% who feel lonely none or some of the time" = mean(loneliness == "None of the time" | loneliness == "Some of the time", na.rm = TRUE) * 100,
         "% who feel lonely most or all of the time" = mean(loneliness == "Most of the time" | loneliness == "All of the time", na.rm = TRUE) * 100,
         "Self-efficacy" = mean(valid_numbers(efficacy_score), na.rm = TRUE),
-        "Self-awareness" = mean(valid_numbers(awareness_score), na.rm = TRUE),
-        "Persistence" = mean(valid_numbers(persistence_score), na.rm = TRUE),
+        "Self-awareness" = mean(valid_numbers(aware_score), na.rm = TRUE),
+        "Persistence" = mean(valid_numbers(persist_score), na.rm = TRUE),
         "School support" = mean(valid_numbers(sch_support_score), na.rm = TRUE),
         "Family support" = mean(valid_numbers(fam_support_score), na.rm = TRUE),
         "Peer support" = mean(valid_numbers(peer_support_score), na.rm = TRUE),
@@ -201,5 +201,5 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
   openxlsx::addStyle(wb, 1, rows = 3:last_row, cols = 4:ncol(derived_data),
                      gridExpand = TRUE, stack = TRUE,
                      style = openxlsx::createStyle(numFmt = "0.0"))
-  openxlsx::saveWorkbook(wb, filename)
+  openxlsx::saveWorkbook(wb, filename, overwrite = TRUE)
 }
