@@ -201,5 +201,5 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
   openxlsx::addStyle(wb, 1, rows = 3:last_row, cols = 4:ncol(derived_data),
                      gridExpand = TRUE, stack = TRUE,
                      style = openxlsx::createStyle(numFmt = "0.0"))
-  openxlsx::saveWorkbook(wb, filename)
+  openxlsx::saveWorkbook(wb, filename, overwrite = TRUE)
 }
