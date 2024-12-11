@@ -477,13 +477,13 @@ createReport_server <- function(id, data) {
               if (input$output_type == "Processed report data") {
                 cat(glue::glue("Returning processed report data"), "\n")
                 cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
-                report_data_spreadsheet(data_filt(), file, str_to_lower(input$data_output_type))
+                report_data_spreadsheet(data_filt(), file, stringr::str_to_lower(input$data_output_type))
               }
               if (input$output_type == "School-level data") {
                 cat(glue::glue("Returning school-level data"), "\n")
                 cat(glue::glue("Data has {nrow(data_filt())} values"), "\n")
                 report_derived_spreadsheet(data_filt(), file,
-                                           str_to_lower(input$data_output_type),
+                                           stringr::str_to_lower(input$data_output_type),
                                            class_list())
               }
             },
