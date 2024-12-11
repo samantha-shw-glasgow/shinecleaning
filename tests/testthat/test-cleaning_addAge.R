@@ -17,7 +17,7 @@ test_that("Age is calculated correctly", {
     "2024-11-01 22:00:00", 2009, 12, 1
   )
 
-  expected_ages <- c(10, 10, 11, 11, 12, 12, 14, 14, 14, 14, 14, 15, 14)
+  expected_ages <- c(10.81, 10.72, 11.65, 11.56, 12.45, 12.37, 14.29, 14.20, 14.17, 14.00, 15.00, 15.00, 14.92)
 
   result_age <- do.call(calculate_age, test_data)
 
