@@ -4,7 +4,7 @@
 ## Self-harm
 
 `r sum(!is.na(senior_years$selfh1))` pupils were asked if they had ever hurt themselves on purpose.
-Results are shown in Figure \@ref(fig:bar-self-harm) for all and then by year groups and gender.
+Results are shown in Figure \@ref(fig:bar-self-harm) for all and then by year groups and gender. The two questions below were only presented to young people in S3 and above.
 
 It is difficult to find accurate data on the prevalence of self-harm amongst adolescents, but lifetime self-harm is estimated to be between 10-20% ^58^. A survey of 15-year-olds in HBSC England found that 22% of them had reported ever hurting themselves on purpose.
 
