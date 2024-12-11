@@ -19,7 +19,7 @@ is hoped that the ensuing discussions and
 in response to the data report will support improvements in
 `r ifelse(is_la_report, "young people\'s", "pupil")` wellbeing.
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Approaching the data:
 :::
 
@@ -42,7 +42,7 @@ Approaching the data:
     groups in the `r ifelse(is_la_report, "Local Authority", "school")`
     or will the whole report be shared with everyone fully?
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Consider the context:
 :::
 
@@ -90,7 +90,7 @@ Consider the context:
 ::::::
 
 ::::: page
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Reflecting on the data:
 :::
 
@@ -113,7 +113,7 @@ Reflecting on the data:
     more negative outcomes across a number of
     measures`r ifelse(is_la_report, " in the primary or     secondary sector or relevant to a specific gender group", "")`?
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Working together:
 :::
 
@@ -193,14 +193,14 @@ Who can help
 Secondary School Questions
 :::
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 General health
 :::
 
 Would you say your health is......?\
 *Excellent/Good/Fair/Poor/Prefer not to say*
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Good Childhood Index: Life satisfaction
 :::
 
@@ -220,7 +220,7 @@ How happy are you with the things that you do in your free time?\
 *0-10 (0= not at all happy, 5 =neither happy nor unhappy, 10=very
 happy/prefer not to say)*
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 WHO Wellbeing 5 Index
 :::
 
@@ -230,7 +230,7 @@ daily life has been filled with things that interest me\
 *At no time/Some of the time/less than half of the time/More than half
 of the time/Most of the time/All of the time/Prefer not to say*
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Strength and Difficulties Questionnaire (SDQ)
 :::
 
@@ -263,7 +263,7 @@ children/I often volunteer to help others (parents, teachers, children)
 
 *Not true/Somewhat true/Certainly true*
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Adolescent Sleep Wake Scale
 :::
 
@@ -280,7 +280,7 @@ up for the day. / In the morning, I wake up feeling rested and alert.\
 *Never/Once in a while/Sometimes/Quite often/Frequently, if not
 always/Always/Prefer not to say*
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 School
 :::
 
@@ -294,7 +294,7 @@ How pressured (stressed) do you feel by the schoolwork you have to do?\
 How often do you feel confident in yourself?\
 *Never/Hardly ever/Sometimes/Often/Always/Prefer not to say*
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Self-harm
 :::
 
@@ -305,7 +305,7 @@ How many times have you done this in the last year?\
 *None/Once/2-5 times/6-10 times/More than 10 times/Don't know/Prefer not
 to say*
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Loneliness
 :::
 
@@ -313,7 +313,7 @@ How often have you felt lonely during the past week?\
 *None of the time/some of the time/ most of the time/All of the
 time/Prefer not to say*
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Social Emotional Health Survey (SEHS)
 :::
 

@@ -18,7 +18,7 @@ collaborations in response to the data report will support improvements
 in `r ifelse(is_la_report, "young people\'s", "pupil")`
 wellbeing.
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Approaching the data: 
 :::
 
@@ -38,7 +38,7 @@ Approaching the data:
     groups in the `r ifelse(is_la_report, "Local Authority", "school")` or will the whole report be shared with everyone
     fully?
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Consider the context: 
 :::
 
@@ -76,7 +76,7 @@ Consider the context:
 :::
 
 ::: page
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Reflecting on the data: 
 :::
 
@@ -98,7 +98,7 @@ Reflecting on the data:
     of measures`r ifelse(is_la_report, " in the primary or
     secondary sector or relevant to a specific gender group", "")`?
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Working together: 
 :::
 
@@ -179,14 +179,14 @@ Who can help
 Primary School Questions 
 :::
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 General health
 :::
 
 Would you say your health is......?\
 *Excellent/Good/Fair/Poor/Prefer not to say*
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Good Childhood Index: Life satisfaction 
 :::
 
@@ -206,7 +206,7 @@ How happy are you with the things that you do in your free time?\
 *0-10 (0= not at all happy, 5 =neither happy nor unhappy, 10=very
 happy/prefer not to say)*
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 WHO Wellbeing 5 Index 
 :::
 
@@ -216,7 +216,7 @@ daily life has been filled with things that interest me\
 *At no time/Some of the time/less than half of the time/More than half
 of the time/Most of the time/All of the time/Prefer not to say*
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Me and My Feelings 
 :::
 
@@ -234,7 +234,7 @@ on purpose\
 :::
 \newpage
 ::: page
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 School 
 :::
 
@@ -248,7 +248,7 @@ How pressured (stressed) do you feel by the schoolwork you have to do?
 How often do you feel confident in yourself? *Never/Hardly ever/
 Sometimes/ Often/ Always/Prefer not to say*
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Social Emotional Health Survey (SEHS) 
 :::
 
