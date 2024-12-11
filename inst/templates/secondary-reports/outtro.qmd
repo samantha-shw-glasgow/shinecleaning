@@ -295,7 +295,7 @@ How often do you feel confident in yourself?\
 *Never/Hardly ever/Sometimes/Often/Always/Prefer not to say*
 
 ::: {custom-style="Heading 2 no number"}
-Self-harm (optional)
+Self-harm
 :::
 
 Have you ever hurt yourself on purpose in any way?\
