@@ -7,7 +7,7 @@ editor:
 ::: {#cq .col .s12 .lr_zero .section .scrollspy}
 ::: page
 ::: {custom-style="Heading 1 no number"}
-CHALLENGE QUESTIONS 
+Challenge Questions
 :::
 
 The aim of these challenge questions is to support interpretation of the
@@ -144,7 +144,7 @@ Framework".
 \newpage
 
 ::: {custom-style="Heading 1 no number"}
-WHO CAN HELP
+Who can help
 :::
 
 | Organisation                                                                                                                                                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                      |
@@ -176,7 +176,7 @@ WHO CAN HELP
 ::: {#psq .col .s12 .lr_zero .section .scrollspy}
 ::: page
 ::: {custom-style="Heading 1 no number"}
-PRIMARY SCHOOL QUESTIONS 
+Primary School Questions 
 :::
 
 ::: {custom-style="Heading 2 no number"}
@@ -285,7 +285,7 @@ to say*
 \newpage
 
 ::: {custom-style="Heading 1 no number"}
-REFERENCES
+References
 :::
 
 ::: {custom-style="References List"}

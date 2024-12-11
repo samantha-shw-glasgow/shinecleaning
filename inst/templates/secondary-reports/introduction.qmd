@@ -18,7 +18,7 @@ from some individual local authorities.
 \newpage
 
 ::: {custom-style="Heading 1 no number"}
-INTRODUCTION
+Introduction
 :::
 
 Welcome to your Scottish Schools Health and Wellbeing Improvement
@@ -64,7 +64,7 @@ Haughton, the SHINE Network Manager, <Dawn.Haughton@glasgow.ac.uk>.
 \newpage
 
 ::: {custom-style="Heading 1 no number"}
-MENTAL HEALTH AND WELLBEING
+Mental Health and Wellbeing
 :::
 
 Mental wellbeing, one of the Scottish Government's public health
@@ -108,7 +108,7 @@ factor in determining an individual's resilience to adverse life
 circumstances.^8^
 
 ::: {custom-style="Heading 2 no number"}
-Mental health problems
+Mental Health Problems
 :::
 
 Mental health problems include a range of feelings and conditions, which
@@ -175,7 +175,7 @@ individual has multiple positive traits, this leads to increased levels
 of wellbeing.^27^ ^28^
 
 ::: {custom-style="Heading 1 no number"}
-Measuring Mental Health in the SHINE survey
+Measuring Mental Health in the SHINE Survey
 :::
 
 ::: {custom-style="Heading 2 no number"}
@@ -191,7 +191,7 @@ of satisfaction, which may indicate that additional support is
 required. ^29^ ^30^
 
 ::: {custom-style="Heading 2 no number"}
-Mental health problems
+Mental Health Problems
 :::
 
 [***WHO Wellbeing 5 Index:***]{.shine2} These are five positively worded
@@ -270,7 +270,7 @@ the maximum total is 60 and the minimum score is 6. Higher scores
 indicate better sleep quality.
 
 ::: {custom-style="Heading 2 no number"}
-Factors influencing adolescent mental health
+Factors Influencing Adolescent Mental Health
 :::
 
 Many factors influence mental health and research is ongoing to
@@ -294,7 +294,7 @@ Diagram 1: Factors influencing adolescent mental health
 ![](../img/diag1.png){width=100%}
 
 ::: {custom-style="Heading no TOC"}
-Sleep and adolescent mental health
+Sleep and Adolescent Mental Health
 :::
 
 Sleep is crucial to both physical and mental health and wellbeing and
@@ -317,7 +317,7 @@ satisfaction, and negative moods and feelings than average sleep
 quantity.^45^ ^46^
 
 ::: {custom-style="Heading 2 no number"}
-School and adolescent mental health
+School and Adolescent Mental Health
 :::
 
 Young people spend a significant amount of time in school, and it is an
