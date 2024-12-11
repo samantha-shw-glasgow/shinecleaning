@@ -34,7 +34,8 @@ share_elevated_multiple <-
       arrange(gender, class, var) |>
       mutate(denom = sum(n), .by = c("gender", "class", "var")) |>
       mutate(prop = n / denom,
-             level = factor(level, levels = levels))
+             level = factor(level, levels = levels)) |>
+      list()
 
     if (.split) {
       split_dat <-
@@ -68,7 +69,7 @@ share_elevated_multiple <-
 
         })
 
-      clean_dat <- c(split_dat, list(clean_dat)) |> compact()
+      clean_dat <- c(split_dat, clean_dat) |> compact()
     }
 
 
