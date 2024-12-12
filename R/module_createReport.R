@@ -282,18 +282,6 @@ createReport_server <- function(id, data) {
             select(message, level)
         }
 
-        if (input$output_type %in% c("Processed report data", "School-level data")) {
-          if (input$data_output_type == "Primary") {
-            upcheck_has_columns(data(), primary_vars) |>
-              filter(fail == TRUE) |>
-              select(message, level)
-          }
-          if (input$data_output_type == "Secondary") {
-            upcheck_has_columns(data(), secondary_vars) |>
-              filter(fail == TRUE) |>
-              select(message, level)
-          }
-        }
       })
 
       # check if all classes exist in the data, warn if not
@@ -363,9 +351,28 @@ createReport_server <- function(id, data) {
         )
       })
 
+      ## alternate checks for additional outputs
+
       output$additional_warnings <- renderUI({
 
-        if (any(check_vars()$level == 3)) {
+        req(input$data_output_type, cancelOutput = TRUE)
+
+        error <- data.frame("message" = character(length = 0L),
+                            "level" = numeric(length = 0L))
+
+#        if (input$output_type %in% c("Processed report data", "School-level data")) {
+        if (input$data_output_type == "Primary") {
+          error <- upcheck_has_columns(data(), primary_vars) |>
+            filter(fail == TRUE) |>
+            select(message, level)
+        }
+        if (input$data_output_type == "Secondary") {
+          error <- upcheck_has_columns(data(), secondary_vars) |>
+            filter(fail == TRUE) |>
+            select(message, level)
+        }
+
+        if (any(error$level == 3)) {
           shinyjs::disable("additional_output")
         } else {
           shinyjs::enable("additional_output")
@@ -373,10 +380,14 @@ createReport_server <- function(id, data) {
 
         tagList(
           purrr::pmap(
-            check_vars(),
+            error,
             make_warning
           )
         )
+
+#        }
+
+
       })
 
 
