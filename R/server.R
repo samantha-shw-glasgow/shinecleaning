@@ -10,7 +10,7 @@
 #' @keywords internal
 server <- function(input, output, session) {
 
-  options(shiny.maxRequestSize = 10000*1024^2)
+  options(shiny.maxRequestSize = 10000 * 1024 ^ 2)
 
   send_message <- make_send_message(session)
 
