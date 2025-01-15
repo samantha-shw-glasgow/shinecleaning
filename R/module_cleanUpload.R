@@ -41,18 +41,34 @@ cleanUpload_server <- function(id) {
       ns <- session$ns
       send_message <- make_send_message(session)
 
+      # create rv to hold error messages
+
+      preparse_check <- reactiveVal(
+        data.frame(message = character(),
+                   level = integer())
+      )
+
       # get uploaded data
 
       clean_data_list <- reactive({
         req(input$upload)
-        purrr::map(input$upload$datapath, ~ openxlsx::read.xlsx(.x, sheet = 1, sep.names = " "))
+
+        files <- input$upload
+
+        valid_files <- grepl("\\.xlsx$", files$name, ignore.case = TRUE)
+
+        if (!all(valid_files)) {
+          preparse_check(
+            data.frame(
+              message = c("Only Excel (`.xlsx`) files can be uploaded"),
+              level = c(3)
+            )
+          )
+          return(NULL)
+        } else {
+          purrr::map(files$datapath, ~ openxlsx::read.xlsx(.x, sheet = 1, sep.names = " "))
+        }
       })
-
-
-      stack_check <- reactiveVal(
-        data.frame(message = character(),
-                   level = integer())
-        ) ## create rv to hold error messages
 
       uploaded_data <- reactive({
         if (length(clean_data_list()) == 1) {
@@ -68,7 +84,7 @@ cleanUpload_server <- function(id) {
               level = c(3)
             )
             warning(paste0("Error combining data uploads: ", e$message))
-            stack_check(error_message)
+            preparse_check(error_message)
 
             return(NULL)
           }
@@ -85,7 +101,7 @@ cleanUpload_server <- function(id) {
           checks <- upload_checks_clean(uploaded_data(), vars = vars)
           return(checks)
         } else {
-          return(stack_check())
+          return(preparse_check())
         }
 
       })
