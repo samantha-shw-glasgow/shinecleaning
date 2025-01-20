@@ -398,7 +398,11 @@ createReport_server <- function(id, data) {
 
       output$generate <- downloadHandler(
         filename = function() {
-          paste0(input$name, "_report.docx")
+          name <- input$name
+          if(name == "" | is.null(name)) {
+            name <- "unnamed_SHINE"
+          }
+          paste0(name, "_report.docx")
         },
         content = function(file) {
           showModal(modalDialog("Generating report...", footer = NULL))
@@ -477,7 +481,11 @@ createReport_server <- function(id, data) {
       # other outputs
       output$additional_output <- downloadHandler(
         filename = function() {
-          paste0(input$name, ".xlsx")
+          name <- input$name
+          if(name == "" | is.null(name)) {
+            name <- "unnamed_SHINE_output"
+          }
+          paste0(name, ".xlsx")
         },
         content = function(file) {
           showModal(modalDialog("Generating output...", footer = NULL))
