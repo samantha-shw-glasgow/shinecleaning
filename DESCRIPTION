@@ -1,10 +1,15 @@
 Package: SHINEcleaning
-Title: What the Package Does (One Line, Title Case)
+Title: Running a dashboard for the cleaning and compiling of reports from SHINE data
 Version: 0.2.4
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Authors@R: c(
+    person("Dylan", "Lewis", , "dylan@rtraining.co.uk", role = c("ctb", "cre"),
+           comment = c(Organisation = "R Training")),
+    person("Erik", "Igelström", , "erik@rtraining.co.uk", role = c("aut", "ctb"),
+           comment = c(Organisation = "R Training")),
+    person("Andy", "Baxter", , "andy@rtraining.co.uk", role = c("aut", "ctb"),
+           comment = c(Organisation = "R Training"))
+  )
+Description: Allows a user to clean collected data from the Scottish 'Schools Health and Wellbeing Improvement Research Network' survey and generate school-specific or LA-wide reports.
 License: CC BY 4.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
