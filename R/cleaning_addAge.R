@@ -9,9 +9,7 @@
 calculate_age <- function(record_date, dobyr, dobmnth, dobday) {
     dob <- lubridate::ymd(paste(dobyr, dobmnth, dobday), quiet = TRUE)
     record_date <- lubridate::parse_date_time(record_date, c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M")) |> as.Date()
-    age <- lubridate::interval(dob, record_date) |>
-      lubridate::as.period() |>
-      lubridate::year() |>
-      as.integer()
+    age <- round(lubridate::decimal_date(record_date) - lubridate::decimal_date(dob), 2)
+
     return(age)
 }

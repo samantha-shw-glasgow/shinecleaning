@@ -260,7 +260,7 @@ table_from_summary <- function(summary_data) {
     set_table_properties(layout = "autofit", width = 1) |>
     keep_with_next() |>
     set_caption(align_with_table = FALSE) |>
-    fontsize(size = 9) |>
+    fontsize(size = 9, part = "all") |>
     align(j = -1, align = "center", part = "all")
   if (any(summary_data$censored)) {
     tab |>

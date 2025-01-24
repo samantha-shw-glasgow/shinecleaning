@@ -19,7 +19,8 @@ dataCleaningUI <- function(id) {
     "Suggest class when missing",
     "Exclude test responses",
     "Exclude non-consenting",
-    "Highlight missing School ID"
+    "Highlight missing School ID",
+    "Check valid date of birth"
   )
 
   tagList(
@@ -64,7 +65,8 @@ dataCleaning_server <- function(id, data) {
         "Suggest class when missing" = suggest_missing_class,
         "Exclude test responses" = no_test_responses,
         "Exclude non-consenting" = no_consent,
-        "Highlight missing School ID" = has_school_id
+        "Highlight missing School ID" = has_school_id,
+        "Check valid date of birth" = valid_dob
       )
 
       clean_data <- reactive({

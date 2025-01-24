@@ -7,7 +7,7 @@ editor:
 ::: {#cq .col .s12 .lr_zero .section .scrollspy}
 ::: page
 ::: {custom-style="Heading 1 no number"}
-CHALLENGE QUESTIONS 
+Challenge Questions
 :::
 
 The aim of these challenge questions is to support interpretation of the
@@ -18,7 +18,7 @@ collaborations in response to the data report will support improvements
 in `r ifelse(is_la_report, "young people\'s", "pupil")`
 wellbeing.
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Approaching the data: 
 :::
 
@@ -38,7 +38,7 @@ Approaching the data:
     groups in the `r ifelse(is_la_report, "Local Authority", "school")` or will the whole report be shared with everyone
     fully?
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Consider the context: 
 :::
 
@@ -76,7 +76,7 @@ Consider the context:
 :::
 
 ::: page
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Reflecting on the data: 
 :::
 
@@ -98,7 +98,7 @@ Reflecting on the data:
     of measures`r ifelse(is_la_report, " in the primary or
     secondary sector or relevant to a specific gender group", "")`?
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Working together: 
 :::
 
@@ -123,13 +123,14 @@ folder in the RESOURCES section.
 
 |    |    |
 |:------------------------------|:----------------------------------------|
-| [SHINE School Case Study Collection](https://shine.sphsu.gla.ac.uk/wp-content/uploads/2023/05/SHINE-School-Case-Study-Collection.pdf)                   | A collection of school and Local Authority case studies detailing how the SHINE data reports have been used to inform and support improvement planning for mental health and wellbeing in schools. |
-| [SHINE 2020-22 mental health survey findings poster](https://shine.sphsu.gla.ac.uk/wp-content/uploads/2023/05/SHINE-2020-22-survey-findings-poster.pdf) | A poster with the key findings from the full SHINE mental health survey dataset findings from 2020-2022. This could be displayed on a school notice board or used as part of a PSE lesson.         |
-| [SHINE Reflective and Challenge Questions](https://shine.sphsu.gla.ac.uk/wp-content/uploads/2023/05/Reflective-and-challenge-questions.pdf)             | The reflective questions can be used alongside the challenge questions to guide a more operational approach to working with the SHINE data reports.                                                |
-| [SHINE National Primary Report 2020-2022](https://shine.sphsu.gla.ac.uk/wp-content/uploads/2023/06/SHINE-MH-primary-survey-report_v2.pdf)              | This data report shows the full SHINE mental health dataset findings from 2020-2022 for all participating primary schools in Scotland.                                                             |
-| [SHINE National Secondary Report 2020-2022](https://shine.sphsu.gla.ac.uk/wp-content/uploads/2023/06/SHINE-MH-secondary-survey-report_v2.pdf)           | This data report shows the full SHINE mental health dataset findings from 2020-2022 for all participating secondary schools in Scotland.                                                           |
+| [SHINE School Case Study Collection](https://drive.google.com/file/d/1X0cmDf5K2Zgq9zNEM0LLo3f2D6040gn6/view?usp=sharing)                   | A collection of school and Local Authority case studies detailing how the SHINE data reports have been used to inform and support improvement planning for mental health and wellbeing in schools. |
+| [SHINE 2020-22 mental health survey findings poster](https://drive.google.com/file/d/1eRtZ954iq2QbpUIDUjKl8HtyQ0NZUtu7/view?usp=sharing) | A poster with the key findings from the full SHINE mental health survey dataset findings from 2020-2022. This could be displayed on a school notice board or used as part of a PSE lesson.         |
+| [SHINE Reflective and Challenge Questions](https://drive.google.com/file/d/1VSThPygnN89vPada6oh4VU_CsAfduA-M/view?usp=sharing)             | The reflective questions can be used alongside the challenge questions to guide a more operational approach to working with the SHINE data reports.                                                |
+| [SHINE National Primary Report 2020-2022](https://drive.google.com/file/d/1gnU1SnE0qT9rIk10dBy8aFx9QhCsSoa2/view?usp=drive_link)              | This data report shows the full SHINE mental health dataset findings from 2020-2022 for all participating primary schools in Scotland.                                                             |
+| [SHINE National Secondary Report 2020-2022](https://drive.google.com/file/d/1YE69rgwjNpaP7u67R3-HxrnUclsgyvwk/view?usp=sharing)           | This data report shows the full SHINE mental health dataset findings from 2020-2022 for all participating secondary schools in Scotland.                                                           |
 
 \
+
 
 The SHINE HWB data reports are designed to be shared across the learning
 community to facilitate a while school approach to improving pupil
@@ -143,7 +144,7 @@ Framework".
 \newpage
 
 ::: {custom-style="Heading 1 no number"}
-WHO CAN HELP
+Who can help
 :::
 
 | Organisation                                                                                                                                                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                      |
@@ -151,15 +152,15 @@ WHO CAN HELP
 | MIND for better mental health https://www.mind.org.uk/information-support/for-children-and-young-people/                                                           | MIND provides advice and support to empower anyone experiencing a mental health problem. They have information dedicated to supporting children and young people.                                                                                                                                                                                                                                                                |
 | Anna Freud National Centre for Children and Families https://www.annafreud.org/on-my-mind/                                                                         | These resources, co-produced with young people, aim to provide information to young people on mental health and wellbeing to help them make informed choices about their health.                                                                                                                                                                                                                                                 |
 | Mental Health Foundation https://mentalhealthfoundation.org/                                                                                                       | The Mental Health Foundation's mission is to raise awareness of mental health issues through education, community and support and thereby reducing the stigma associated with mental health. The website provides information on different mental health conditions.                                                                                                                                                             |
-| Barnado's https://mymentalhealth.barnardos.org.uk/                                                                                                                 | Barnado's has put together a mental health hub for young people to learn about mental health issues and access support for their wellbeing.                                                                                                                                                                                                                                                                                      |
+| Barnardo's https://mymentalhealth.barnardos.org.uk/                                                                                                                 | Barnardo's has put together a mental health hub for young people to learn about mental health issues and access support for their wellbeing.                                                                                                                                                                                                                                                                                      |
 | SAMH (Scottish Association for Mental Health) https://www.samh.org.uk/                                                                                             | SAMH currently operates over 60 services in communities across Scotland providing services around mental health, social care, homelessness, addictions, employment services and more. The website has dedicated pages to support young people with their mental health, including resources for teachers and schools.                                                                                                            |
 | See Me Scotland https://www.seemescotland.org/young-people                                                                                                         | See Me is passionate about ending mental health stigma and discrimination. The organisation has produced schools resources, campaigns and information to tackle stigma and discrimination for young people.                                                                                                                                                                                                                      |
 | Childline https://www.childline.org.uk/ Call 0800 1111 For Me (the Childline App for young people)                                                                 | Childline is a free, confidential service for anyone under 19 in the UK to assist with any issue. Support can be accessed by telephone, e-mail and through 1-2-1 counselling.                                                                                                                                                                                                                                                    |
 | Samaritans Scotland https://www.samaritans.org/scotland/how-we-can-help/schools/                                                                                   | Samaritans supports schools, college communities and other youth settings across the UK and Republic of Ireland through our postvention services, lesson plans and school talks                                                                                                                                                                                                                                                  |
-| Respectme https://respectme.org.uk/                                                                                                                                | Respectme envisage a "respecting, just, equal and inclusive Scotland in which all children and young people can live free from bullying and harassment and are encouraged to reach their full potential." Their work is focused on children's rights.                                                                                                                                                                            |
+| RespectMe https://respectme.org.uk/                                                                                                                                | RespectMe envisage a "respecting, just, equal and inclusive Scotland in which all children and young people can live free from bullying and harassment and are encouraged to reach their full potential." Their work is focused on children's rights.                                                                                                                                                                            |
 | PAPYRUS - Prevention of Young Suicide https://papyrus-uk.org/                                                                                                      | A national charity dedicated to the prevention of young suicide.                                                                                                                                                                                                                                                                                                                                                                 |
 | Mental Health Foundation campaign-"Mental Health in Schools : Make it Count" https://www.mentalhealth.org.uk/projects/peer-education-project-pep/schools-resources | The foundation has developed resources to assist schools, education staff, parents and children and young people to look after their mental health.                                                                                                                                                                                                                                                                              |
-| Breathing Space https://www.breathingspace.scot/ Call : 0800 838587 For the BSL service – click on the link on the website                                         | Breathing Space provides a free national phoneline service to address serious concerns about the mental wellbeing of people in Scotland.                                                                                                                                                                                                                                                                                         |
+| Breathing Space https://www.breathingspace.scot/ Call : 0800 838587 For the BSL service – click on the link on the website                                         | Breathing Space provides a free national phone-line service to address serious concerns about the mental wellbeing of people in Scotland.                                                                                                                                                                                                                                                                                         |
 | Moodcafé http://www.moodcafe.co.uk/                                                                                                                                | Resources for a range of mental health issues and learning disabilities developed for young people, adults and families by NHS Fife.                                                                                                                                                                                                                                                                                             |
 | Young Minds https://youngminds.org.uk/                                                                                                                             | Resources and information for young people, their parents and people working with young people to support young people's mental health.                                                                                                                                                                                                                                                                                          |
 | Salvesen Mind Room https://www.mindroom.org/help-and-support/                                                                                                      | Salvesen Mindroom Centre is a Scottish charity dedicated to supporting, informing and empowering all those living with learning difficulties. It produces resources for parents and professionals and young people.                                                                                                                                                                                                              |
@@ -175,17 +176,17 @@ WHO CAN HELP
 ::: {#psq .col .s12 .lr_zero .section .scrollspy}
 ::: page
 ::: {custom-style="Heading 1 no number"}
-PRIMARY SCHOOL QUESTIONS 
+Primary School Questions 
 :::
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 General health
 :::
 
 Would you say your health is......?\
 *Excellent/Good/Fair/Poor/Prefer not to say*
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Good Childhood Index: Life satisfaction 
 :::
 
@@ -205,7 +206,7 @@ How happy are you with the things that you do in your free time?\
 *0-10 (0= not at all happy, 5 =neither happy nor unhappy, 10=very
 happy/prefer not to say)*
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 WHO Wellbeing 5 Index 
 :::
 
@@ -215,16 +216,16 @@ daily life has been filled with things that interest me\
 *At no time/Some of the time/less than half of the time/More than half
 of the time/Most of the time/All of the time/Prefer not to say*
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Me and My Feelings 
 :::
 
-[Emotional scale]{.shine2}: I feel lonely/I cry a lot/I am unhappy
+[**Emotional scale**]{.shine2}: I feel lonely/I cry a lot/I am unhappy
 /Nobody likes me /I worry a lot /I have problems sleeping/ I wake up in
 the night /I am shy /I feel scared/I worry when I am at school\
 *Never/Sometimes/Always/Prefer not to say*
 
-[Behavioural scale]{.shine2}: I get very angry/I lose my temper/I hit
+[**Behavioural scale**]{.shine2}: I get very angry/I lose my temper/I hit
 out when I am angry /I do things to hurt people/I am calm/I break things
 on purpose\
 *Never/Sometimes/Always/Prefer not to say*
@@ -233,7 +234,7 @@ on purpose\
 :::
 \newpage
 ::: page
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 School 
 :::
 
@@ -247,31 +248,31 @@ How pressured (stressed) do you feel by the schoolwork you have to do?
 How often do you feel confident in yourself? *Never/Hardly ever/
 Sometimes/ Often/ Always/Prefer not to say*
 
-::: {custom-style="Heading 2 no number"}
+::: {custom-style="Heading 2 No TOC"}
 Social Emotional Health Survey (SEHS) 
 :::
 
-[Gratitude]{.shine2}\
+[**Gratitude**]{.shine2}\
 I am lucky to go to my school/I am thankful that I get to learn new
 things at school/We are lucky to have nice teachers at my school/ I feel
 thankful for my good friends at school
 
-[Zest]{.shine2}\
+[**Zest**]{.shine2}\
 I get excited when I learn something new at school/ I get really excited
 about my school projects/I wake up in the morning excited to go to
 school/I get excited when I am doing my classwork
 
-[Optimism]{.shine2}\
+[**Optimism**]{.shine2}\
 When I have problems at school, I know they will get better in the
 future/I expect good things to happen at my school/Each week, I expect
 to feel happy in class/ I expect to have fun with my friends at school
 
-[Persistence]{.shine2}\
+[**Persistence**]{.shine2}\
 I finish all my classwork/When I get a bad mark, I try even harder the
 next time /I keep working and working until I get my schoolwork right/ I
 do my classwork even when it's really hard for me
 
-[Pro-social]{.shine2}\
+[**Pro-social**]{.shine2}\
 I follow the classroom rules /I follow the playground rules at break
 times and lunch times/I listen when my teacher is talking/ I am nice to
 other students
@@ -284,7 +285,7 @@ to say*
 \newpage
 
 ::: {custom-style="Heading 1 no number"}
-REFERENCES
+References
 :::
 
 ::: {custom-style="References List"}

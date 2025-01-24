@@ -4,7 +4,7 @@ output:
     reference_docx: ../styling/doc_template.docx
     number_sections: true
     tables:
-      style: 'Table'
+      style: ShineTable
       layout: autofit
       width: 1.0
       conditional:
@@ -66,7 +66,12 @@ library(tidyverse)
 classes <- params$classes |> map(str_split, " ") |> map(unlist)
 genders <- c("Boys", "Girls", "All")
 
+any_senior_years <-
+  map_lgl(classes, ~any(.x %in% c("S3", "S4", "S5", "S6"))) |>
+  any()
 
+senior_years <- input_data |>
+  filter(class %in% c("S3", "S4", "S5", "S6"))
 
 theme_update(
   panel.grid = element_blank(),
@@ -107,7 +112,7 @@ Table \@ref(tab:tab-response) shows the number of pupils invited to take part, t
 tab_responses(input_data, params$number_invited)
 ```
 
-`r if(params$gender_split){"Table \\@ref(tab:tab-by-class) shows the number of pupils by year group and sex who completed the survey."}`
+`r if(params$gender_split){"Table \\@ref(tab:tab-by-class) shows the number of pupils by year group and gender who completed the survey."}`
 
 ```{r tab-by-class, tab.id="tab-by-class", tab.cap="Overview of survey respondents", eval=params$gender_split, results='asis'}
 tab_categories(input_data, inc_gender = genders, inc_classes = classes)
@@ -233,12 +238,12 @@ print_rest_of_graphs(graphs)
 
 ## WHO-5 Wellbeing Scale
 
-The WHO--5 Wellbeing Index is a five item scale which provides a measure
+The WHO--5 Wellbeing Index is a five-item scale which provides a measure
 of emotional functioning. Items are summed to create a score ranging
 from 0 to 100. A score of 50 or less on the WHO-5 indicates
 low mood (Figure \@ref(fig:bar-wellbeing)).
 
-Figure \@ref(fig:bar-risk-depression) shows the proportion of those that score 28 or less and are classified as 'at risk of depression'. Note that those at risk of depression are also included in the Figure \@ref(fig:bar-wellbeing), showing low mood.
+Figure \@ref(fig:bar-risk-depression) shows the proportion of those that score 28 or less and are classified as 'at risk of depression'. Note that those at risk of depression are also included in Figure \@ref(fig:bar-wellbeing), showing low mood.
 
 Both figures also include results from the HBSC Scotland national average. For more information on this scale, see page 6.
 
@@ -282,13 +287,13 @@ difficulties in different areas: emotional symptoms, conduct,
 hyperactivity and peer relationships. In each area, the answers to
 questions are scored and pupils classified into groups, according to
 pre-determined cut-offs: as expected, borderline and difficulties. These
-fours areas are then summed to create a total score on the SDQ (Figure
+four areas are then summed to create a total score on the SDQ (Figure
 \@ref(fig:bar-elevated-sdq)) The SDQ also measures pro-social behaviour (Figure \@ref(fig:bar-elevated-prosoc)). For more
 information on the SDQ, see page 7.
 
 ```{r bar-cat-emot-cond-hyp-peer, fig.cap="SDQ scores"}
 
-graphs <- input_data |>
+tables_out <- input_data |>
   share_elevated_multiple(
     list(
       ep_cat = "Emotional",
@@ -300,8 +305,27 @@ graphs <- input_data |>
     classes = classes,
     genders = genders,
     .split = params$gender_split
-  ) |>
-  map(censor_summary_data, "n") |>
+  )
+
+tables_out <- map(tables_out, \(tab) {
+  if (any(tab$n < 3)) {
+    tab |>
+      mutate(level =
+               fct_collapse(
+                 level,
+                 "Borderline or Difficulties" = c("Borderline", "Difficulties"),
+                 "As expected" = "As expected"
+               )) |>
+      summarise(across(c(n, prop), sum),
+                .by = c("gender", "class", "var", "level", "denom")) |>
+      mutate(censored = FALSE)
+  } else {
+    tab |>
+      mutate(censored = FALSE)
+  }
+})
+
+graphs <- tables_out |>
   map(bar_share_elevated_multiple) |>
   print_first_graph()
 
@@ -314,30 +338,63 @@ print_rest_of_graphs(graphs)
 
 ```{r bar-elevated-prosoc, fig.cap="Pupils' pro-social score"}
 
-input_data |>
+tab_out <- input_data |>
   share_elevated(
     ps_cat,
     c("As expected", "Borderline", "Difficulties"),
     classes = classes,
     genders = genders
-  ) |>
-  censor_summary_data("denom") |>
+  )
+
+if (any(tab_out$n < 3)) {
+    tab_out <- tab_out |>
+      mutate(var =
+               fct_collapse(
+                 var,
+                 "Borderline or Difficulties" = c("Borderline", "Difficulties"),
+                 "As expected" = "As expected"
+               )) |>
+      summarise(across(c(n, prop), sum),
+                .by = c("gender", "class", "var", "denom")) |>
+      mutate(censored = FALSE)
+  } else {
+    tab_out <- tab_out |>
+      mutate(censored = FALSE)
+  }
+
+tab_out |>
   bar_share_elevated()
 
 ```
 
 ```{r bar-elevated-sdq, fig.cap="Pupils' overall strength and difficulties score"}
 
-input_data |>
+tab_out <- input_data |>
   share_elevated(
     sdq_total_cat,
     c("As expected", "Borderline", "Difficulties"),
     classes = classes,
     genders = genders
-  ) |>
-  censor_summary_data("denom") |>
-  bar_share_elevated()
+  )
 
+if (any(tab_out$n < 3)) {
+    tab_out <- tab_out |>
+      mutate(var =
+               fct_collapse(
+                 var,
+                 "Borderline or Difficulties" = c("Borderline", "Difficulties"),
+                 "As expected" = "As expected"
+               )) |>
+      summarise(across(c(n, prop), sum),
+                .by = c("gender", "class", "var", "denom")) |>
+      mutate(censored = FALSE)
+  } else {
+    tab_out <- tab_out |>
+      mutate(censored = FALSE)
+  }
+
+tab_out |>
+  bar_share_elevated()
 ```
 
 
@@ -482,7 +539,7 @@ input_data |>
 
 \newpage
 
-```{r la-sh-page, echo=FALSE, eval = is_la_report, results='asis'}
+```{r la-sh-page, echo=FALSE, eval = any_senior_years & nrow(senior_years) > 0, results='asis'}
 cat(knitr::knit_child("la_additional_sh.qmd", envir = environment(), quiet = TRUE))
 ```
 

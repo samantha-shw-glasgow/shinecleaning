@@ -18,7 +18,7 @@ from some individual local authorities.
 \newpage
 
 ::: {custom-style="Heading 1 no number"}
-INTRODUCTION
+Introduction
 :::
 
 Welcome to your Scottish Schools Health and Wellbeing Improvement
@@ -64,7 +64,7 @@ Haughton, the SHINE Network Manager, <Dawn.Haughton@glasgow.ac.uk>.
 \newpage
 
 ::: {custom-style="Heading 1 no number"}
-MENTAL HEALTH AND WELLBEING
+Mental Health and Wellbeing
 :::
 
 Mental wellbeing, one of the Scottish Government's public health
@@ -108,12 +108,12 @@ factor in determining an individual's resilience to adverse life
 circumstances.^8^
 
 ::: {custom-style="Heading 2 no number"}
-Mental health problems
+Mental Health Problems
 :::
 
 Mental health problems include a range of feelings and conditions, which
 may reflect an underlying mental illness. In adolescents, they broadly
-fall in to four main groups:^9^
+fall into four main groups:^9^
 
 1.  Emotional conditions: anxiety, depression, mania and bipolar
     affective disorder
@@ -140,7 +140,7 @@ economic outcomes.^16^ ^17^
 Adolescence is a critical time for young people to develop the
 socio-emotional capabilities to equip them for good health and wellbeing
 in adulthood.^18^ At the same time, it is a period of vulnerability; nearly
-half of all lifetime mental health conditions occur by 14 years old.^19^
+half of all life-time mental health conditions occur by 14 years old.^19^
 
 Whilst there are links between mental health problems and subjective
 wellbeing there is evidence to suggest they are distinct, offering a
@@ -175,7 +175,7 @@ individual has multiple positive traits, this leads to increased levels
 of wellbeing.^27^ ^28^
 
 ::: {custom-style="Heading 1 no number"}
-Measuring Mental Health in the SHINE survey
+Measuring Mental Health in the SHINE Survey
 :::
 
 ::: {custom-style="Heading 2 no number"}
@@ -191,7 +191,7 @@ of satisfaction, which may indicate that additional support is
 required. ^29^ ^30^
 
 ::: {custom-style="Heading 2 no number"}
-Mental health problems
+Mental Health Problems
 :::
 
 [***WHO Wellbeing 5 Index:***]{.shine2} These are five positively worded
@@ -199,70 +199,92 @@ questions that, when combined, provide a measure of emotional
 functioning. These scores can then be classified to indicate those young
 people with low mood. This **does not** indicate a clinical diagnosis.
 
-[***Me and My Feelings:***]{.shine2} These 16 questions are measures of
-emotional and behavioural mental health. The questions are combined into
-two separate scales and scored according to pre-determined cut-offs,
-with pupils classified as having 'normal' or 'elevated' difficulties in
-that area. The Me and My Feelings classifications **do not** indicate a
-clinical diagnosis but highlight that pupils in the elevated group may
-experience difficulties.
+[***Strength and Difficulties Questionnaire (SDQ):***]{.shine2}
+This is a brief behavioural screening questionnaire of
+25 items that measures different areas of mental distress: emotional
+symptoms, conduct problems, hyperactivity and peer relationship
+problems. The questions are added together to create a score in each
+domain according to which young people are classified as having normal,
+borderline or difficulties in that area. All the different aspects may
+also be added together to create a total difficulties score. Scores on
+the SDQ do not represent a clinical diagnosis but may highlight those
+who are experiencing difficulties in that particular area.
+
+The SDQ also measures pro-social behaviour; this is behaviour that
+benefits others and promotes social acceptance and positive
+relationships.
 
 ::: {custom-style="Heading 2 no number"}
 Positive Mental Health
 :::
 
-[***Social Emotional Health Survey (SEHS):***]{.shine2} This is a
-20-item measure of "covitality", which is the co-occurrence of multiple
-positive psychological traits of gratitude, optimism, zest and
-persistence. When these traits co-occur (covitality) they are associated
-with increased resilience, pro-social behaviour and school engagement
-and satisfaction.^31^ The traits are seen to be related to different aspects
-of wellbeing in adolescents:
+[***Social Emotional Health Survey (SEHS):***]{.shine2}
+This thirty item scale measures different competences of positive
+socio-emotional health, which are fundamental for young people to
+develop to live engaging and meaningful lives. The scale measures the
+following aspects:
 
-[Gratitude]{.shine2} is associated with increased life satisfaction and
-social interaction including perception of support and providing support
-to others as well as academic achievement.
+[**Belief in self**:]{.shine2} This assesses a young person’s
+overall sense of self and personal competence and includes measures of
+self-awareness, self-efficacy and persistence.
 
-[Optimism]{.shine2} is associated with greater interest in school,
-persistence and coping as well as more positive social relationships.
+[**Belief in others**:]{.shine2} This is the young person’s
+perception of their social support and levels of trust and
+connectedness. It comprises measures of school and peer support and
+family coherence which are important factors in resilience.
 
-[Zest]{.shine2} has a positive association with relationships with
-others, improved emotional wellbeing and autonomy.
+[**Emotional competence**:]{.shine2} This is a young person’s
+ability to successfully manage emotions to establish interpersonal
+relationships. It comprises of measures of emotional regulation, empathy
+and self-control which are all positively related to social and academic
+success.^34^
 
-[Persistence]{.shine2} has been shown to increase learning, mediating
-the relationship between motivation and performance.^32^
+[**Optimism**:]{.shine2} is associated with greater interest
+in school, persistence and coping as well as more positive social
+relationships.
 
-[Pro-social behaviour:]{.shine2} This refers to behaviour that benefits
-others and promotes social acceptance and relationships. It does not
-form part of the "covitality" score but there is an association between
-high levels of pro-social behaviour and high levels of covitality.
+These traits do not work alone but when the co-occur they help to foster
+higher levels of wellbeing and increased resilience, pro-social
+behaviour, school engagement and life satisfaction.^35^
 
 With the results from SEHS, schools are able to see how pupils score
 across the different domains. This may help schools to identify which
-traits to work on with pupils and to develop further. This does not
-necessarily mean focusing on the lowest scoring traits, but selecting
-ones that reflect local needs, interest and values. It is advised to
-concentrate on developing one particular trait at a time, rather than
-looking at all four at once. It may also be possible to carry out a
-follow-up survey using the SEHS to see if the scores across the domains
-and the overall covitality score have improved, following interventions.^33^
+traits to work on with pupils and to develop further. It is not
+suggested to work on developing all the assets in a single domain, for
+example, self-awareness, self-efficacy and persistence in the Belief in
+Self domain at once, but to look at fostering assets across different
+domains, for example, persistence, peer support and optimism. The assets
+and domains targeted can reflect the needs, interest and values of the
+school.^36^ It may also be possible to carry out a follow-up survey using
+the SEHS to see if the scores across the domains have improved,
+following interventions.
 
 ::: {custom-style="Heading 2 no number"}
-Factors influencing adolescent mental health
+Adolescent Sleep Wake Scale (ASWS)
+:::
+
+The adolescent sleep wake scale assesses quality of sleep, by looking at
+three dimensions: going to bed, falling asleep and reinitiating sleep
+and returning to wakefulness. The answers to the ten items are scored;
+the maximum total is 60 and the minimum score is 6. Higher scores
+indicate better sleep quality.
+
+::: {custom-style="Heading 2 no number"}
+Factors Influencing Adolescent Mental Health
 :::
 
 Many factors influence mental health and research is ongoing to
 understand better this complex field. An individual's mental health and
-wellbeing are determined by environmental, social and, individual
-factors and how they interact.^34^ Contextual factors may influence or be a
+wellbeing are determined by environmental, social and individual
+factors and how they interact.^37^ Contextual factors may influence or be a
 consequence of mental health and also serve as a risk or protective
 factor. They operate at different levels: individual, family, learning
-environment, community and structural.^35^
+environment, community and structural.^38^
 
 Diagram 1 shows how an individual's mental health may be influenced by
 interactions between genetics, personality, life experiences, support,
 health behaviours (sleep, diet,) as well as more structural matters such
-as housing and socio-economic status.^36^ ^37^
+as housing and socio-economic status.^39^ ^40^
 
 
 ::: {custom-style="Heading no TOC"}
@@ -272,7 +294,7 @@ Diagram 1: Factors influencing adolescent mental health
 ![](../img/diag1.png){width=100%}
 
 ::: {custom-style="Heading no TOC"}
-Sleep and adolescent mental health
+Sleep and Adolescent Mental Health
 :::
 
 Sleep is crucial to both physical and mental health and wellbeing and
@@ -295,10 +317,10 @@ satisfaction, and negative moods and feelings than average sleep
 quantity.^45^ ^46^
 
 ::: {custom-style="Heading 2 no number"}
-School and adolescent mental health
+School and Adolescent Mental Health
 :::
 
-Young people spend a significant amount of time in school and it is an
+Young people spend a significant amount of time in school, and it is an
 important sphere of influence. The school environment can positively
 impact on adolescent health and potentially mitigate the detrimental
 effects of other social factors.^47^

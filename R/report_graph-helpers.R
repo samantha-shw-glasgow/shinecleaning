@@ -52,12 +52,13 @@ scale_fill_hbsc <- function(...) {
       "As expected" = global_expected_colour,
       "Difficulties" = global_difficulties_colour,
       "Borderline" = global_elevated_colour,
+      "Borderline or Difficulties" = global_elevated_colour,
       "1" = primary_colour,
       "Boys (Scotland)" = global_boys_scotland_avg_colour,
       "Girls (Scotland)" = global_girls_scotland_avg_colour,
       "Prefer not to say" = global_difficulties_colour,
-      "No" = global_expected_colour,
-      "Yes" = global_elevated_colour
+      "Yes" = global_expected_colour,
+      "No" = global_elevated_colour
     ),
     ...
   )
@@ -93,6 +94,7 @@ scale_colour_hbsc <- function(...) {
       "Elevated" = global_elevated_colour,
       "As expected" = global_expected_colour,
       "Difficulties" = global_difficulties_colour,
+      "Borderline or Difficulties" = global_elevated_colour,
       "Borderline" = global_elevated_colour,
       "1" = primary_colour,
       "Boys (Scotland)" = global_boys_scotland_avg_colour,

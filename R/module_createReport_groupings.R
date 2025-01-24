@@ -39,6 +39,7 @@ createReport_groupings_server <- function(id, custom_group, report_type) {
 
 
     default <- reactive({
+      req(report_type())
       if (report_type() == "Primary" |
           report_type() == "Primary cluster / Local Authority") {
         default <- "P6\nP7"
@@ -54,11 +55,8 @@ createReport_groupings_server <- function(id, custom_group, report_type) {
     })
 
     group_list <- reactive({
-      if (custom_group() == F) {
-        stringr::str_split_1(default(), pattern = "\n") |> stringr::str_extract_all("[A-z][0-9]")
-      } else if (custom_group() == T) {
-        stringr::str_split_1(input$groupings, pattern = "\n") |> stringr::str_extract_all("[A-z][0-9]")
-      }
+      stringr::str_split_1(input$groupings, pattern = "\n") |>
+        stringr::str_extract_all("[A-z][0-9]")
     })
 
     return(group_list)
