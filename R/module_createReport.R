@@ -399,7 +399,7 @@ createReport_server <- function(id, data) {
       output$generate <- downloadHandler(
         filename = function() {
           name <- input$name
-          if(name == "" | is.null(name)) {
+          if (name == "" | is.null(name)) {
             name <- "unnamed_SHINE"
           }
           paste0(name, "_report.docx")
@@ -482,7 +482,7 @@ createReport_server <- function(id, data) {
       output$additional_output <- downloadHandler(
         filename = function() {
           name <- input$name
-          if(name == "" | is.null(name)) {
+          if (name == "" | is.null(name)) {
             name <- "unnamed_SHINE_output"
           }
           paste0(name, ".xlsx")
