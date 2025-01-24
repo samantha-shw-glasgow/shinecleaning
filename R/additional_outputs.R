@@ -6,6 +6,7 @@ report_data_spreadsheet <- function(data, filename, report_type) {
   added_columns <- c("completed_date")
 
   columns_to_remove <- c(
+    "ResponseId",
     "StartDate",
     "EndDate",
     "RecordedDate",
