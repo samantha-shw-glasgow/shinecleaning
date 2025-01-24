@@ -3,10 +3,32 @@ report_data_spreadsheet <- function(data, filename, report_type) {
   #process data
   proc_data <- data |> data_prep(report_type)
 
+  added_columns <- c("completed_date")
+
+  columns_to_remove <- c(
+    "StartDate",
+    "EndDate",
+    "RecordedDate",
+    "Status",
+    "Progress",
+    "Duration (in seconds)",
+    "Finished",
+    "DistributionChannel",
+    "UserLanguage",
+    "Email",
+    "postcode",
+    "postcode_5_TEXT",
+    "dobmnth",
+    "dobday",
+    "dobyr"
+  )
+
   #make spreadsheet
   wb <- openxlsx::createWorkbook()
   openxlsx::addWorksheet(wb, "Sheet 1")
-  openxlsx::writeData(wb, 1, proc_data)
+  proc_data |>
+    select(-any_of(columns_to_remove)) |>
+  openxlsx::writeData(wb, 1, x = _)
   openxlsx::saveWorkbook(wb, filename)
 }
 
