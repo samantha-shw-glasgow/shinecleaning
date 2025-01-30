@@ -43,15 +43,15 @@ prep_hbsc <- function(dat = hbsc_scotland, create_cols = FALSE) {
       q = stringr::str_split_i(.data$fields2, "_", 1),
       level = stringr::str_split_i(.data$fields2, "_", 2),
     ) |>
-    dplyr::select(-fields2) |>
+    dplyr::select(-"fields2") |>
     tidyr::pivot_longer(
-      cols = -c(fields, q, level),
+      cols = -c("fields", "q", "level"),
       values_to = "prop",
       names_to = c("class", "gender"),
       names_sep = "_"
     ) |>
     dplyr::mutate(
-      class = stringr::str_to_upper(class),
+      class = stringr::str_to_upper(.data$class),
       gender = dplyr::case_match(
         .data$gender,
         "boys" ~ "Boy",
