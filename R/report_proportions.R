@@ -22,8 +22,8 @@ create_collapsed_summary <- function(
     purrr::map(classes, \(concat_class) {
       data |>
         dplyr::filter(.data$class %in% concat_class, .data$gender %in% genders) |>
-        filter({{var}} != "Prefer not to say", !is.na({{var}})) |>
-        dplyr::group_by(gender, class) |>
+        dplyr::filter({{var}} != "Prefer not to say", !is.na({{var}})) |>
+        dplyr::group_by(.data$gender, .data$class) |>
         dplyr::mutate(
           success = {{ var }} %in% success,
           class = stringr::str_flatten(concat_class, collapse = ", ", last = " and ")
@@ -40,7 +40,7 @@ create_collapsed_summary <- function(
   all <- data |>
     dplyr::filter({{var}} != "Prefer not to say", !is.na({{var}})) |>
     dplyr::mutate(class = "All", gender = "All") |>
-    dplyr::group_by(gender, class) |>
+    dplyr::group_by(.data$gender, .data$class) |>
     dplyr::mutate(
       success = {{ var }} %in% success
     ) |>
@@ -61,7 +61,7 @@ create_collapsed_summary <- function(
 
   joined_dat |>
     dplyr::mutate(class = forcats::fct_inorder(.data$class)) |>
-    dplyr::relocate(gender, .after = class)
+    dplyr::relocate("gender", .after = class)
 }
 
 #' Full summary counts across all categories
@@ -91,24 +91,24 @@ create_full_summary <- function(
         dplyr::filter(.data$answer %in% levels) |>
         dplyr::filter(class %in% concat_class) |>
         dplyr::mutate(class = stringr::str_flatten(concat_class, collapse = ", ", last = " and ")) |>
-        dplyr::mutate(dplyr::across(c(gender, answer, class), factor)) |>
-        dplyr::group_by(gender, answer, class, .drop = FALSE) |>
+        dplyr::mutate(dplyr::across(c("gender", "answer", "class"), factor)) |>
+        dplyr::group_by(.data$gender, .data$answer, .data$class, .drop = FALSE) |>
         dplyr::summarise(numerator = dplyr::n(), .groups = "drop") |>
-        dplyr::add_count(dplyr::across(c(gender, class)), name = "denominator", wt = numerator)
+        dplyr::add_count(dplyr::across(c("gender", "class")), name = "denominator", wt = .data$numerator)
     }) |>
     purrr::reduce(dplyr::bind_rows) |>
     dplyr::arrange(class)
 
     all <- data |>
       dplyr::rename(answer = !!var) |>
-      dplyr::filter(answer %in% levels) |>
+      dplyr::filter(.data$answer %in% levels) |>
       dplyr::summarise(numerator = dplyr::n(), .by = "answer") |>
-      dplyr::add_count(name = "denominator", wt = numerator) |>
+      dplyr::add_count(name = "denominator", wt = .data$numerator) |>
       dplyr::mutate(class = "All", gender = "All")
 
   if (.gender_split) {
     joined_dat <- subgroups |>
-      dplyr::filter(gender %in% genders) |>
+      dplyr::filter(.data$gender %in% genders) |>
       dplyr::bind_rows(all)
   } else {
     joined_dat <- all
@@ -117,12 +117,12 @@ create_full_summary <- function(
   joined_dat |>
     dplyr::transmute(
       class = forcats::fct_inorder(class),
-      gender = as.character(gender),
-      answer = factor(answer, levels = levels),
-      numerator,
-      denominator
+      gender = as.character(.data$gender),
+      answer = factor(.data$answer, levels = levels),
+      .data$numerator,
+      .data$denominator
     ) |>
-    dplyr::arrange(class, gender, dplyr::desc(answer))
+    dplyr::arrange(.data$class, .data$gender, dplyr::desc(.data$answer))
 }
 
 
@@ -146,9 +146,9 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
     hbsc_data_in <-
       hbsc_data |>
       dplyr::mutate(
-        hbsc_prop = prop,
-        hbsc_gender = gender,
-        gender = stringr::str_extract(gender, "^\\w*"),
+        hbsc_prop = .data$prop,
+        hbsc_gender = .data$gender,
+        gender = stringr::str_extract(.data$gender, "^\\w*"),
         class = purrr::map_chr(
           class,
           ~levels(summary_data$class)[which.max(
@@ -157,26 +157,26 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
         ) |>
           factor(levels = levels(summary_data$class))
       ) |>
-      dplyr::select(class, gender, hbsc_gender, hbsc_prop) |>
+      dplyr::select("class", "gender", "hbsc_gender", "hbsc_prop") |>
       unique()
   }
 
-  included_genders <- dplyr::inner_join(summary_data, hbsc_data_in, by = join_by(class, gender)) |>
-    pull(hbsc_gender) |>
+  included_genders <- dplyr::inner_join(summary_data, hbsc_data_in, by = dplyr::join_by("class", "gender")) |>
+    dplyr::pull(.data$hbsc_gender) |>
     unique()
 
   hbsc_data_colours <- list("Boys (Scotland)" = "#fb1e20", "Girls (Scotland)" = "#008000")[included_genders]
 
   summary_data |>
-    mutate(
-      prop = if_else(.data$censored, 0.05, numerator / denominator),
-      bar_lab_main = if_else(
+    dplyr::mutate(
+      prop = dplyr::if_else(.data$censored, 0.05, .data$numerator / .data$denominator),
+      bar_lab_main = dplyr::if_else(
         .data$censored,
         "*",
         scales::percent(.data$prop, suffix = "%", accuracy = 1)
       )
     ) |>
-    left_join(hbsc_data_in, by = join_by(class, gender)) |>
+    dplyr::left_join(hbsc_data_in, by = dplyr::join_by("class", "gender")) |>
     ggplot(aes(
       x = .data$class,
       y = .data$prop,
@@ -190,9 +190,9 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
       if (!is.null(hbsc_data)) {
         geom_point(
           aes(
-            y = hbsc_prop,
-            fill = hbsc_gender,
-            colour = hbsc_gender
+            y = .data$hbsc_prop,
+            fill = .data$hbsc_gender,
+            colour = .data$hbsc_gender
           ),
           position = position_dodge(0.9),
           size = 2
@@ -249,25 +249,25 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
 #'
 table_from_summary <- function(summary_data) {
   tab <- summary_data |>
-    mutate(prop = if_else(
+    dplyr::mutate(prop = if_else(
       censored,
       "*",
       sprintf("%.0f", 100 * numerator / denominator))
     ) |>
-    pivot_wider(id_cols = answer, names_from = c(class, gender), values_from = prop) |>
-    rename(`All\n%` = All_All, ` ` = answer) |>
-    rename_with(~ str_replace(.x, "(\\d)(?=_)", "\\1\n%")) |>
-    flextable() |>
-    separate_header() |>
-    theme_vanilla() |>
-    set_table_properties(layout = "autofit", width = 1) |>
-    keep_with_next() |>
-    set_caption(align_with_table = FALSE) |>
-    fontsize(size = 9, part = "all") |>
-    align(j = -1, align = "center", part = "all")
+    tidyr::pivot_wider(id_cols = answer, names_from = c(class, gender), values_from = prop) |>
+    dplyr::rename(`All\n%` = All_All, ` ` = answer) |>
+    dplyr::rename_with(~ str_replace(.x, "(\\d)(?=_)", "\\1\n%")) |>
+    flextable::flextable() |>
+    flextable::separate_header() |>
+    flextable::theme_vanilla() |>
+    flextable::set_table_properties(layout = "autofit", width = 1) |>
+    flextable::keep_with_next() |>
+    flextable::set_caption(align_with_table = FALSE) |>
+    flextable::fontsize(size = 9, part = "all") |>
+    flextable::align(j = -1, align = "center", part = "all")
   if (any(summary_data$censored)) {
     tab |>
-      add_footer_lines("* Numbers too low to show")
+      flextable::add_footer_lines("* Numbers too low to show")
   } else {
     tab
   }
