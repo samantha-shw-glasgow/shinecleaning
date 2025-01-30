@@ -17,49 +17,49 @@ create_collapsed_summary <- function(
     .gender_split = FALSE) {
 
   subgroups <-
-    map(classes, \(concat_class) {
+    purrr::map(classes, \(concat_class) {
       data |>
-        filter(class %in% concat_class, gender %in% genders) |>
+        dplyr::filter(.data$class %in% concat_class, .data$gender %in% genders) |>
         filter({{var}} != "Prefer not to say", !is.na({{var}})) |>
-        group_by(gender, class) |>
-        mutate(
+        dplyr::group_by(gender, class) |>
+        dplyr::mutate(
           success = {{ var }} %in% success,
-          class = str_flatten(concat_class, collapse = ", ", last = " and ")
+          class = stringr::str_flatten(concat_class, collapse = ", ", last = " and ")
           ) |>
-        summarise(
+        dplyr::summarise(
           numerator = sum(success, na.rm = TRUE),
-          denominator = n(),
+          denominator = dplyr::n(),
           .groups = "drop"
         )
     }) |>
-  reduce(bind_rows) |>
-    arrange(class)
+  purrr::reduce(dplyr::bind_rows) |>
+    dplyr::arrange(class)
 
   all <- data |>
-    filter({{var}} != "Prefer not to say", !is.na({{var}})) |>
-    mutate(class = "All", gender = "All") |>
-    group_by(gender, class) |>
-    mutate(
+    dplyr::filter({{var}} != "Prefer not to say", !is.na({{var}})) |>
+    dplyr::mutate(class = "All", gender = "All") |>
+    dplyr::group_by(gender, class) |>
+    dplyr::mutate(
       success = {{ var }} %in% success
     ) |>
-    summarise(
+    dplyr::summarise(
       numerator = sum(success, na.rm = TRUE),
-      denominator = n(),
+      denominator = dplyr::n(),
       .groups = "drop"
     )
 
   if (.gender_split) {
     joined_dat <- subgroups |>
-      filter(gender %in% genders) |>
-      bind_rows(all)
+      dplyr::filter(.data$gender %in% genders) |>
+      dplyr::bind_rows(all)
   } else {
     joined_dat <- all |>
-      mutate(gender = "All pupils")
+      dplyr::mutate(gender = "All pupils")
   }
 
   joined_dat |>
-    mutate(class = forcats::fct_inorder(class)) |>
-    relocate(gender, .after = class)
+    dplyr::mutate(class = forcats::fct_inorder(.data$class)) |>
+    dplyr::relocate(gender, .after = class)
 }
 
 #' Full summary counts across all categories
@@ -80,47 +80,47 @@ create_full_summary <- function(
     genders,
     classes,
     .gender_split = FALSE) {
-  var <- enquo(var)
+  var <- rlang::enquo(var)
 
     subgroups <-
-    map(classes, \(concat_class) {
+    purrr::map(classes, \(concat_class) {
       data |>
-        rename(answer = !!var) |>
-        filter(answer %in% levels) |>
-        filter(class %in% concat_class) |>
-        mutate(class = str_flatten(concat_class, collapse = ", ", last = " and ")) |>
-        mutate(across(c(gender, answer, class), factor)) |>
-        group_by(gender, answer, class, .drop = FALSE) |>
-        summarise(numerator = n(), .groups = "drop") |>
-        add_count(across(c(gender, class)), name = "denominator", wt = numerator)
+        dplyr::rename(answer = !!var) |>
+        dplyr::filter(.data$answer %in% levels) |>
+        dplyr::filter(class %in% concat_class) |>
+        dplyr::mutate(class = stringr::str_flatten(concat_class, collapse = ", ", last = " and ")) |>
+        dplyr::mutate(dplyr::across(c(gender, answer, class), factor)) |>
+        dplyr::group_by(gender, answer, class, .drop = FALSE) |>
+        dplyr::summarise(numerator = dplyr::n(), .groups = "drop") |>
+        dplyr::add_count(dplyr::across(c(gender, class)), name = "denominator", wt = numerator)
     }) |>
-    reduce(bind_rows) |>
-    arrange(class)
+    purrr::reduce(dplyr::bind_rows) |>
+    dplyr::arrange(class)
 
     all <- data |>
-      rename(answer = !!var) |>
-      filter(answer %in% levels) |>
-      summarise(numerator = n(), .by = "answer") |>
-      add_count(name = "denominator", wt = numerator) |>
-      mutate(class = "All", gender = "All")
+      dplyr::rename(answer = !!var) |>
+      dplyr::filter(answer %in% levels) |>
+      dplyr::summarise(numerator = dplyr::n(), .by = "answer") |>
+      dplyr::add_count(name = "denominator", wt = numerator) |>
+      dplyr::mutate(class = "All", gender = "All")
 
   if (.gender_split) {
     joined_dat <- subgroups |>
-      filter(gender %in% genders) |>
-      bind_rows(all)
+      dplyr::filter(gender %in% genders) |>
+      dplyr::bind_rows(all)
   } else {
     joined_dat <- all
   }
 
   joined_dat |>
-    transmute(
+    dplyr::transmute(
       class = forcats::fct_inorder(class),
       gender = as.character(gender),
       answer = factor(answer, levels = levels),
       numerator,
       denominator
     ) |>
-    arrange(class, gender, desc(answer))
+    dplyr::arrange(class, gender, dplyr::desc(answer))
 }
 
 
@@ -131,7 +131,7 @@ create_full_summary <- function(
 #'
 #' @return A ggplot2 graph
 bar_from_summary <- function(summary_data, hbsc_data = NULL) {
-  hbsc_data_in <- tibble(
+  hbsc_data_in <- dplyr::tibble(
     gender = character(),
     class = factor(levels = levels(summary_data$class)),
     hbsc_gender = character(),
@@ -141,11 +141,11 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
   if (!is.null(hbsc_data)) {
     hbsc_data_in <-
       hbsc_data |>
-      mutate(
+      dplyr::mutate(
         hbsc_prop = prop,
         hbsc_gender = gender,
-        gender = str_extract(gender, "^\\w*"),
-        class = map_chr(
+        gender = stringr::str_extract(gender, "^\\w*"),
+        class = purrr::map_chr(
           class,
           ~levels(summary_data$class)[which.max(
             stringr::str_detect(levels(summary_data$class), .x)
@@ -153,11 +153,11 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
         ) |>
           factor(levels = levels(summary_data$class))
       ) |>
-      select(class, gender, hbsc_gender, hbsc_prop) |>
+      dplyr::select(class, gender, hbsc_gender, hbsc_prop) |>
       unique()
   }
 
-  included_genders <- inner_join(summary_data, hbsc_data_in, by = join_by(class, gender)) |>
+  included_genders <- dplyr::inner_join(summary_data, hbsc_data_in, by = join_by(class, gender)) |>
     pull(hbsc_gender) |>
     unique()
 
