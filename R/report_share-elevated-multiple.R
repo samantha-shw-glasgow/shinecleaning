@@ -21,7 +21,7 @@ share_elevated_multiple <-
 
     clean_dat <- purrr::map(levels, \(level) {
       data |>
-        tidyr::pivot_longer(any_of(names(varlist)), names_to = "var", values_to = "val") |>
+        tidyr::pivot_longer(dplyr::any_of(names(varlist)), names_to = "var", values_to = "val") |>
         dplyr::filter(.data$val %in% levels) |>
         dplyr::summarise(val = sum(.data$val %in% level), .by = c("var")) |>
         dplyr::mutate(level = level,
@@ -32,9 +32,9 @@ share_elevated_multiple <-
       purrr::reduce(dplyr::bind_rows) |>
       dplyr::select("gender", "class", "var", "level", n = "val") |>
       dplyr::arrange(.data$gender, .data$class, .data$var) |>
-      dplyr::mutate(denom = sum(n), .by = c("gender", "class", "var")) |>
+      dplyr::mutate(denom = sum(.data$n), .by = c("gender", "class", "var")) |>
       dplyr::mutate(prop = .data$n / .data$denom,
-             level = factor(level, levels = levels)) |>
+             level = factor(.data$level, levels = levels)) |>
       list()
 
     if (.split) {
@@ -44,7 +44,7 @@ share_elevated_multiple <-
           purrr::map(levels, \(level) {
               data |>
               dplyr::filter(.data$class %in% concat_class, .data$gender %in% genders) |>
-              tidyr::pivot_longer(any_of(names(varlist)), names_to = "var", values_to = "val") |>
+              tidyr::pivot_longer(dplyr::any_of(names(varlist)), names_to = "var", values_to = "val") |>
               dplyr::filter(.data$val == level) |>
               dplyr::summarise(n = dplyr::n(), .by = c("gender", "val", "var")) |>
               dplyr::mutate(
@@ -93,19 +93,19 @@ bar_share_elevated_multiple <- function(graph_data) {
   graph_dat <- graph_data |>
     dplyr::mutate(
       x_lab = var,
-      bar_lab_main = case_when(
+      bar_lab_main = dplyr::case_when(
         censored ~ "*",
         prop == 0 ~ "",
-        .default = scales::percent(prop, suffix = "%", accuracy = 1)
+        .default = scales::percent(.data$prop, suffix = "%", accuracy = 1)
       )
     )
 
-  lab_length <- max(str_length(graph_dat$x_lab))
+  lab_length <- max(stringr::str_length(graph_dat$x_lab))
   n_labs <- length(unique(graph_dat$x_lab))
 
   gg_out <- ggplot(
     data = graph_dat,
-    aes(x = x_lab, y = prop, fill = level)
+    aes(x = "x_lab", y = "prop", fill = "level")
   ) +
     geom_bar(stat = "identity", position = "fill") +
     scale_fill_hbsc(name = "") +
@@ -114,7 +114,7 @@ bar_share_elevated_multiple <- function(graph_data) {
                        limits = c(0, 1),
                        expand = expansion(add = 0)
                        ) +
-    geom_text(aes(label = bar_lab_main),
+    geom_text(aes(label = "bar_lab_main"),
               colour = "black",
               position = position_fill(vjust = 0.5),
               size = 4
@@ -130,7 +130,7 @@ bar_share_elevated_multiple <- function(graph_data) {
       ),
       axis.title.x = element_blank()
     ) +
-    labs(caption = if_else(any(graph_dat$censored),
+    labs(caption = dplyr::if_else(any(graph_dat$censored),
                            "* Numbers too low to show",
                            ""
     ),
