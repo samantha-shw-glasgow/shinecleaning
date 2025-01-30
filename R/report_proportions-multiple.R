@@ -25,7 +25,7 @@ summary_proportions_multiple <-
         purrr::map(classes, \(concat_class) {
           class_summary <- data |>
             dplyr::filter(.data$gender %in% genders, .data$class %in% concat_class) |>
-            dplyr::select(gender, class, !!!names(varslist)) |>
+            dplyr::select("gender", "class", !!!names(varslist)) |>
             dplyr::mutate(class = stringr::str_flatten(concat_class, collapse = ", ", last = " and ")) |>
             dplyr::group_by(gender, class) |>
             dplyr::mutate(
@@ -49,7 +49,7 @@ summary_proportions_multiple <-
 
     all <- data |>
       dplyr::mutate(class = "All", gender = dplyr::if_else(.gender_split, "All", "All pupils")) |>
-      dplyr::select(gender, class, !!!names(varslist)) |>
+      dplyr::select("gender", "class", !!!names(varslist)) |>
       dplyr::group_by(gender, class) |>
       dplyr::mutate(
         dplyr::across(dplyr::everything(), ~dplyr::na_if(.x, "Prefer not to say")),
@@ -65,13 +65,13 @@ summary_proportions_multiple <-
       purrr::compact() |>
       purrr::map(\(class_data) {
         class_data |>
-          tidyr::pivot_longer(-c(gender, class),
+          tidyr::pivot_longer(-c("gender", "class"),
             names_to = c("var", "x"),
             names_sep = "__",
             values_to = "numerator"
           ) |>
-          tidyr::pivot_wider(names_from = x, values_from = numerator) |>
-          dplyr::relocate(denominator, var, numerator, .after = everything()) |>
+          tidyr::pivot_wider(names_from = "x", values_from = "numerator") |>
+          dplyr::relocate("denominator", var, numerator, .after = everything()) |>
           dplyr::rowwise() |>
           dplyr::mutate(
             labels = stringr::str_wrap(varslist[[.data$var]][1], 12),
