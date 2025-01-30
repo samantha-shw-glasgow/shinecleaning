@@ -17,20 +17,20 @@ input_data <- function(bad_val = NULL, gender = "Girls", class = "P7") {
 
 }
 
-expected <- read_csv(
+expected <- readr::read_csv(
   test_path("examples/share_elevated_split.csv"),
   show_col_types = FALSE,
   col_types = "ccfiidd"
 )
 
-expected_missing_one <- read_csv(
+expected_missing_one <- readr::read_csv(
   test_path("examples/share_elevated_split.csv"),
   show_col_types = FALSE,
   col_types = "ccfiidd"
 ) |>
-  mutate(
-    n = if_else(gender == "All" & var == "Elevated", n + 1, n),
-    denom = if_else(gender == "All", denom + 1, denom),
+  dplyr::mutate(
+    n = dplyr::if_else(gender == "All" & var == "Elevated", n + 1, n),
+    denom = dplyr::if_else(gender == "All", denom + 1, denom),
     prop = n / denom
   )
 
