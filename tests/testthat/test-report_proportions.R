@@ -24,9 +24,9 @@ input_data <- function(bad_val = NULL, gender = "Girls", class = "S1") {
   )
 
   if (!is.null(bad_val)) {
-    bind_rows(
+    dplyr::bind_rows(
       out,
-      tibble(gender = gender, class = class, health = bad_val)
+      tibble::tibble(gender = gender, class = class, health = bad_val)
     )
   } else {
     out
@@ -38,16 +38,16 @@ input_data_full <- function(bad_val = NULL) {
 
   set.seed(100)
 
-  out <- tibble(
+  out <- tibble::tibble(
     class = rep(paste0("S", 1:6), each = 20),
     gender = rep(c("Boys", "Girls"), times = 60),
     health = sample(c("Excellent", "Fair", "Good", "Poor"), 120, replace = TRUE)
   )
 
   if (!is.null(bad_val)) {
-    bind_rows(
+    dplyr::bind_rows(
       out,
-      tibble(class = "S1", gender = "Girls", health = bad_val)
+      tibble::tibble(class = "S1", gender = "Girls", health = bad_val)
     )
   } else {
     out

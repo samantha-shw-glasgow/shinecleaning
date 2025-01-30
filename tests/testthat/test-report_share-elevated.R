@@ -1,15 +1,15 @@
 input_data <- function(bad_val = NULL, gender = "Girls", class = "P7") {
   set.seed(1)
-  out <- tibble(
+  out <- tibble::tibble(
     gender = sample(c("Girl", "Boy"), 30, TRUE),
     class = sample(c("P6", "P7"), 30, TRUE),
     mme_cat = sample(c("As expected", "Elevated"), 30, TRUE),
   )
 
   if (!is.null(bad_val)) {
-    bind_rows(
+    dplyr::bind_rows(
       out,
-      tibble(gender = gender, class = class, mme_cat = bad_val)
+      tibble::tibble(gender = gender, class = class, mme_cat = bad_val)
     )
   } else {
     out
