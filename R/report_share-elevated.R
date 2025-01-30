@@ -41,7 +41,7 @@ share_elevated <-
                 .by = "gender"
               )
           ) |>
-            purrr::reduce(dplyr::left_join, by = dplyr::join_by(gender, class)) |>
+            purrr::reduce(dplyr::left_join, by = dplyr::join_by("gender", "class")) |>
             dplyr::mutate(
               denom = sum(dplyr::c_across(dplyr::where(is.numeric))),
               .by = c("gender", "class")
