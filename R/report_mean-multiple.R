@@ -82,13 +82,13 @@ bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
   genders <- unique(summary_data$gender)
 
   summary_data |>
-    mutate(
+    dplyr::mutate(
       mean = dplyr::if_else(.data$censored, 1, .data$mean),
       bar_lab_main = dplyr::if_else(.data$censored, "*", sprintf("%.1f", .data$mean)),
       bar_lab_cens = dplyr::if_else(.data$censored, "Numbers too low to show", "")
     ) |>
-    ggplot(
-      aes(
+    ggplot2::ggplot(
+      ggplot2::aes(
         .data$mean,
         .data$labels,
         linetype = .data$censored,
@@ -97,39 +97,39 @@ bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
         group = .data$gender
       )
     ) +
-    geom_bar_t(aes(alpha = .data$censored),
+    ggplot2::geom_bar_t(ggplot2::aes(alpha = .data$censored),
       stat = "identity",
       width = 0.7,
-      position = position_dodge(width = 0.7)
+      position = ggplot2::position_dodge(width = 0.7)
     ) +
-    scale_alpha_manual(values = c("TRUE" = 0.6, "FALSE" = 1), guide = guide_none()) +
-    scale_linetype_manual(
+    ggplot2::scale_alpha_manual(values = c("TRUE" = 0.6, "FALSE" = 1), guide = ggplot2::guide_none()) +
+    ggplot2::scale_linetype_manual(
       values = c("TRUE" = "dashed", "FALSE" = "blank"),
-      guide = guide_none()
+      guide = ggplot2::guide_none()
     ) +
-    scale_y_discrete("") +
-    scale_fill_hbsc(
+    ggplot2::scale_y_discrete("") +
+    ggplot2::scale_fill_hbsc(
       aesthetics = c("fill", "colour"),
       name = "",
       limits = force
     ) +
-    theme(
+    ggplot2::theme(
       legend.justification.right = "top",
-      legend.title = element_blank(),
+      legend.title = ggplot2::element_blank(),
       legend.box.spacing = unit(c(0, 1.2, 0, 0), "cm"),
       plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
-      plot.caption = element_text(
+      plot.caption = ggplot2::element_text(
         hjust = 1,
         size = 10,
         face = "italic"
       )
     ) +
-    scale_x_continuous(xlab, expand = expansion(add = 0)) +
-    geom_text(
-      aes(label = .data$bar_lab_main),
+    ggplot2::scale_x_continuous(xlab, expand = expansion(add = 0)) +
+    ggplot2::geom_text(
+      ggplot2::aes(label = .data$bar_lab_main),
       hjust = -0.3,
       colour = "black",
-      position = position_dodge(width = 0.8),
+      position = ggplot2::position_dodge(width = 0.8),
       size = dplyr::if_else(length(genders) > 1, 2.5, 3.5)
     ) +
     coord_cartesian(xlim = c(0, xmax), clip = "off") +
@@ -152,7 +152,7 @@ bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
       bar_lab_cens = dplyr::if_else(.data$censored, "Numbers too low to show", "")
     ) |>
     ggplot(
-      aes(
+      ggplot2::aes(
         .data$labels,
         .data$mean,
         linetype = factor(.data$censored),
@@ -161,49 +161,49 @@ bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
         group = .data$gender
       )
     ) +
-    geom_bar_t(aes(alpha = .data$censored),
+    ggplot2::geom_bar_t(ggplot2::aes(alpha = .data$censored),
       stat = "identity",
-      position = position_dodge(width = 0.7)
+      position = ggplot2::position_dodge(width = 0.7)
     ) +
-    scale_alpha_manual(values = c("TRUE" = 0.6, "FALSE" = 1), guide = guide_none()) +
-    scale_linetype_manual(
+    ggplot2::scale_alpha_manual(values = c("TRUE" = 0.6, "FALSE" = 1), guide = ggplot2::guide_none()) +
+    ggplot2::scale_linetype_manual(
       values = c("TRUE" = "dashed", "FALSE" = "blank"),
-      guide = guide_none()
+      guide = ggplot2::guide_none()
     ) +
-    scale_x_discrete("", guide = guide_axis(
+    ggplot2::scale_x_discrete("", guide = ggplot2::guide_axis(
       n.dodge =
         dplyr::if_else(length(varslist) > 6,
-          ceiling(length(varslist) / 4),
+          dplyr::ceiling(length(varslist) / 4),
           1
         )
     )) +
-    scale_fill_hbsc(
+    ggplot2::scale_fill_hbsc(
       aesthetics = c("fill", "colour"),
       name = "",
       limits = force
     ) +
-    theme(
+    ggplot2::theme(
       legend.justification.right = "top",
-      legend.title = element_blank(),
+      legend.title = ggplot2::element_blank(),
       plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
-      plot.title = element_text(margin = margin(0, 0, 20, 0)),
-      plot.caption = element_text(
+      plot.title = ggplot2::element_text(margin = margin(0, 0, 20, 0)),
+      plot.caption = ggplot2::element_text(
         hjust = 1,
         size = 10,
         face = "italic"
       )
     ) +
-    scale_y_continuous(ylab, expand = expansion(add = 0)) +
-    geom_text(
-      aes(label = .data$bar_lab_main),
+    ggplot2::scale_y_continuous(ylab, expand = expansion(add = 0)) +
+    ggplot2::geom_text(
+      ggplot2::aes(label = .data$bar_lab_main),
       vjust = -0.5,
       colour = "black",
-      position = position_dodge(width = 0.7),
-      size = if_else(length(class) > 3, 2, 3)
+      position = ggplot2::position_dodge(width = 0.7),
+      size = dplyr::if_else(length(class) > 3, 2, 3)
     ) +
-    coord_cartesian(ylim = c(0, ymax), clip = "off") +
-    labs(
-      caption = if_else(any(summary_data$censored), "* Numbers too low to show", ""),
+    ggplot2::coord_cartesian(ylim = c(0, ymax), clip = "off") +
+    ggplot2::labs(
+      caption = dplyr::if_else(any(summary_data$censored), "* Numbers too low to show", ""),
       title = paste(class, "pupils")
     )
 }
