@@ -97,7 +97,7 @@ tab_categories <- function(data, inc_gender, inc_classes) {
   data |>
     dplyr::filter(.data$gender %in% inc_gender, .data$class %in% inc_classes) |>
     dplyr::count(.data$gender, `Year group` = .data$class) |>
-    tidyr::pivot_wider(names_from = gender, values_from = n) |>
+    tidyr::pivot_wider(names_from = "gender", values_from = "n") |>
     flextable::flextable() |>
     flextable::theme_vanilla() |>
     flextable::set_table_properties(layout = "autofit", width = 1) |>
@@ -179,8 +179,8 @@ tab_categories_grouped <- function(data, inc_gender, class_groupings) {
     dplyr::mutate(
       classes_grouped = group_classes(class, class_groupings)
       ) |>
-    dplyr::count(gender, `Year group` = .data$classes_grouped) |>
-    tidyr::pivot_wider(names_from = gender, values_from = n) |>
+    dplyr::count(.data$gender, `Year group` = .data$classes_grouped) |>
+    tidyr::pivot_wider(names_from = "gender", values_from = "n") |>
     flextable::flextable() |>
     flextable::theme_vanilla() |>
     flextable::set_table_properties(layout = "autofit", width = 1) |>
