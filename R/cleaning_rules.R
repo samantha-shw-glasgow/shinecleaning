@@ -156,9 +156,9 @@ calculate_expected_class <- function(data) {
       school_age = .data$current_year - .data$school_birthyear
     ) |>
     dplyr::left_join(class_lookup, by = "school_age") |>
-    dplyr::rename(class = .data$class.x, expected_class_name = .data$class.y) |>
+    dplyr::rename(class = "class.x", expected_class_name = "class.y") |>
     dplyr::left_join(class_lookup, by = "class") |>
-    dplyr::rename(school_age = .data$school_age.x, school_age_based_on_class = .data$school_age.y)
+    dplyr::rename(school_age = "school_age.x", school_age_based_on_class = "school_age.y")
 }
 
 #' @rdname validators
