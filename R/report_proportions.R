@@ -131,6 +131,8 @@ create_full_summary <- function(
 #' @param summary_data A dataframe produced by `create_collapsed_summary`
 #' @param hbsc_data A dataframe with national data to add as points
 #'
+#' @import ggplot2
+#'
 #' @return A ggplot2 graph
 bar_from_summary <- function(summary_data, hbsc_data = NULL) {
   hbsc_data_in <- dplyr::tibble(
