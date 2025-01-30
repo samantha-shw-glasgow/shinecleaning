@@ -72,6 +72,8 @@ summary_mean_multiple_vars <-
 #' `bar_mean_multiple_vars` returns a horizontal bar graph.
 #' `bar_mean_multiple_vertical` returns a vertical graph.
 #'
+#' @import ggplot2
+#'
 #' @param summary_data Data produced by `summary_mean_multiple_vars`
 #' @param xmax,ymax Upper limit of graph
 #' @param xlab,ylab Label for X axis (summary statistic, i.e. "Mean")
@@ -97,7 +99,7 @@ bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
         group = .data$gender
       )
     ) +
-    ggplot2::geom_bar_t(ggplot2::aes(alpha = .data$censored),
+    ggplot2::geom_bar(ggplot2::aes(alpha = .data$censored),
       stat = "identity",
       width = 0.7,
       position = ggplot2::position_dodge(width = 0.7)
@@ -108,7 +110,7 @@ bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
       guide = ggplot2::guide_none()
     ) +
     ggplot2::scale_y_discrete("") +
-    ggplot2::scale_fill_hbsc(
+    scale_fill_hbsc(
       aesthetics = c("fill", "colour"),
       name = "",
       limits = force
@@ -140,6 +142,7 @@ bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
 }
 
 #' @rdname bar_mean_multiple_vars
+#' @import ggplot2
 bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
   class <- unique(summary_data$class)
   varslist <- unique(summary_data$var)
@@ -161,7 +164,7 @@ bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
         group = .data$gender
       )
     ) +
-    ggplot2::geom_bar_t(ggplot2::aes(alpha = .data$censored),
+    ggplot2::geom_bar(ggplot2::aes(alpha = .data$censored),
       stat = "identity",
       position = ggplot2::position_dodge(width = 0.7)
     ) +
@@ -173,11 +176,11 @@ bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
     ggplot2::scale_x_discrete("", guide = ggplot2::guide_axis(
       n.dodge =
         dplyr::if_else(length(varslist) > 6,
-          dplyr::ceiling(length(varslist) / 4),
+          ceiling(length(varslist) / 4),
           1
         )
     )) +
-    ggplot2::scale_fill_hbsc(
+    scale_fill_hbsc(
       aesthetics = c("fill", "colour"),
       name = "",
       limits = force

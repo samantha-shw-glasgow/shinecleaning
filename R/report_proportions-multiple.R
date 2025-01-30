@@ -87,6 +87,8 @@ summary_proportions_multiple <-
 #'
 #' @param summary_data Data produced by `summary_proportions_multiple`
 #'
+#' @import ggplot2
+#'
 #' @return A ggplot2 graph
 bar_proportions_multiple <- function(summary_data) {
   class <- unique(summary_data$class)

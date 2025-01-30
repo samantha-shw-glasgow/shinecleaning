@@ -72,6 +72,8 @@ share_elevated <-
 #'
 #' @param graph_data The output of `share_elevated`.
 #'
+#' @import ggplot2
+#'
 #' @return A ggplot2 graph
 #' @export
 #'
@@ -96,7 +98,7 @@ bar_share_elevated <- function(graph_data) {
 
   gg_out <- ggplot(
     data = graph_dat,
-    aes(x = "x_lab", y = "prop", fill = "var")
+    aes(x = .data$x_lab, y = .data$prop, fill = .data$var)
   ) +
     geom_bar(stat = "identity", position = "fill") +
     scale_fill_hbsc(name = "") +
@@ -105,7 +107,7 @@ bar_share_elevated <- function(graph_data) {
                        limits = c(0, 1),
                        expand = expansion(add = 0)
                        ) +
-    geom_text(aes(label = "bar_lab_main"),
+    geom_text(aes(label = .data$bar_lab_main),
       colour = "black",
       position = position_fill(vjust = 0.5),
       size = dplyr::if_else(length(unique(graph_data$class)) > 3, 2.5, 3)

@@ -54,6 +54,8 @@ summary_mean_single_var <-
 #' @param ymax Upper limit of graph (deaults to `limits[2]`)
 #' @param ylab Label for X axis (summary statistic, i.e. "mean")
 #'
+#' @import ggplot2
+#'
 #' @returns A ggplot2 graph
 bar_mean_single <- function(summary_data, ymax, ylab = "Mean") {
   summary_data |>
@@ -63,7 +65,13 @@ bar_mean_single <- function(summary_data, ymax, ylab = "Mean") {
       bar_lab_cens = dplyr::if_else(.data$censored, "Numbers too low to show", "")
     ) |>
     ggplot() +
-    aes(x = class, y = mean_score, fill = gender, linetype = .data$censored, alpha = .data$censored) +
+    aes(
+      x = .data$class,
+      y = .data$mean_score,
+      fill = .data$gender,
+      linetype = .data$censored,
+      alpha = .data$censored
+    ) +
     geom_bar_t(
       stat = "identity",
       position = position_dodge(width = 0.7),

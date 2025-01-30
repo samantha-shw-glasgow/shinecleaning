@@ -105,7 +105,7 @@ bar_share_elevated_multiple <- function(graph_data) {
 
   gg_out <- ggplot(
     data = graph_dat,
-    aes(x = "x_lab", y = "prop", fill = "level")
+    aes(x = .data$x_lab, y = .data$prop, fill = .data$level)
   ) +
     geom_bar(stat = "identity", position = "fill") +
     scale_fill_hbsc(name = "") +
@@ -114,7 +114,7 @@ bar_share_elevated_multiple <- function(graph_data) {
                        limits = c(0, 1),
                        expand = expansion(add = 0)
                        ) +
-    geom_text(aes(label = "bar_lab_main"),
+    geom_text(aes(label = .data$bar_lab_main),
               colour = "black",
               position = position_fill(vjust = 0.5),
               size = 4
