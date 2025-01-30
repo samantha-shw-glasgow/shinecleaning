@@ -154,21 +154,21 @@ describe("share elevated - multiple variables", {
     expected_missing_class <-
       list(expected_outs()[2][[1]],
            expected_outs()[2][[1]] |>
-             mutate(
+             dplyr::mutate(
                gender = "All",
                class = "All",
-               var = str_extract(var, "Variable \\d")) |>
-             summarise(
+               var = stringr::str_extract(var, "Variable \\d")) |>
+             dplyr::summarise(
                n = sum(n),
                denom = sum(denom),
                .by = c("gender", "class", "var", "level")
              ) |>
-             mutate(prop = n / denom) |>
-             select(gender, class, var, level, n, denom, prop)
+             dplyr::mutate(prop = n / denom) |>
+             dplyr::select(gender, class, var, level, n, denom, prop)
     )
 
     result_missing_class <- share_elevated_multiple(
-      input_data() |> filter(class == "P7"),
+      input_data() |> dplyr::filter(class == "P7"),
       varlist = varlist,
       classes = classes,
       genders = c("Boys", "Girls"),

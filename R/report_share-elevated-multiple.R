@@ -19,47 +19,47 @@ share_elevated_multiple <-
 
 
 
-    clean_dat <- map(levels, \(level) {
+    clean_dat <- purrr::map(levels, \(level) {
       data |>
-        pivot_longer(any_of(names(varlist)), names_to = "var", values_to = "val") |>
-        filter(val %in% levels) |>
-        summarise(val = sum(val %in% level), .by = c("var")) |>
-        mutate(level = level,
+        tidyr::pivot_longer(any_of(names(varlist)), names_to = "var", values_to = "val") |>
+        dplyr::filter(.data$val %in% levels) |>
+        dplyr::summarise(val = sum(.data$val %in% level), .by = c("var")) |>
+        dplyr::mutate(level = level,
                class = "All",
                gender = "All",
                var = paste(varlist[var]))
     }) |>
-      reduce(bind_rows) |>
-      select(gender, class, var, level, n = val) |>
-      arrange(gender, class, var) |>
-      mutate(denom = sum(n), .by = c("gender", "class", "var")) |>
-      mutate(prop = n / denom,
+      purrr::reduce(dplyr::bind_rows) |>
+      dplyr::select("gender", "class", "var", "level", n = "val") |>
+      dplyr::arrange(.data$gender, .data$class, .data$var) |>
+      dplyr::mutate(denom = sum(n), .by = c("gender", "class", "var")) |>
+      dplyr::mutate(prop = .data$n / .data$denom,
              level = factor(level, levels = levels)) |>
       list()
 
     if (.split) {
       split_dat <-
-        map(classes, \(concat_class) {
+        purrr::map(classes, \(concat_class) {
           class_summary <-
-          map(levels, \(level) {
+          purrr::map(levels, \(level) {
               data |>
-              filter(class %in% concat_class, gender %in% genders) |>
-              pivot_longer(any_of(names(varlist)), names_to = "var", values_to = "val") |>
-              filter(val == level) |>
-              summarise(n = n(), .by = c("gender", "val", "var")) |>
-              mutate(
+              dplyr::filter(.data$class %in% concat_class, .data$gender %in% genders) |>
+              tidyr::pivot_longer(any_of(names(varlist)), names_to = "var", values_to = "val") |>
+              dplyr::filter(.data$val == level) |>
+              dplyr::summarise(n = dplyr::n(), .by = c("gender", "val", "var")) |>
+              dplyr::mutate(
                 level = level,
-                class = str_flatten(concat_class, collapse = ", ", last = " and "),
-                var = paste(gender, varlist[var], sep = "-")
+                class = stringr::str_flatten(concat_class, collapse = ", ", last = " and "),
+                var = paste(.data$gender, varlist[var], sep = "-")
               )
 
           }) |>
-            reduce(bind_rows) |>
-            select(gender, class, var, level, n) |>
-            arrange(gender, class, var) |>
-            mutate(denom = sum(n), .by = c("gender", "class", "var")) |>
-            mutate(prop = n / denom,
-                   level = factor(level, levels = levels))
+            purrr::reduce(dplyr::bind_rows) |>
+            dplyr::select("gender", "class", "var", "level", "n") |>
+            dplyr::arrange(.data$gender, .data$class, .data$var) |>
+            dplyr::mutate(denom = sum(.data$n), .by = c("gender", "class", "var")) |>
+            dplyr::mutate(prop = .data$n / .data$denom,
+                   level = factor(.data$level, levels = levels))
 
             if (nrow(class_summary) == 0) {
               NULL
@@ -69,7 +69,7 @@ share_elevated_multiple <-
 
         })
 
-      clean_dat <- c(split_dat, clean_dat) |> compact()
+      clean_dat <- c(split_dat, clean_dat) |> purrr::compact()
     }
 
 
@@ -80,6 +80,8 @@ share_elevated_multiple <-
 #'
 #' @param graph_data The output of `share_elevated_multiple`.
 #'
+#' @import ggplot2
+#'
 #' @return A ggplot2 graph
 #' @export
 #'
@@ -89,7 +91,7 @@ bar_share_elevated_multiple <- function(graph_data) {
   genders <- unique(graph_data$gender)
 
   graph_dat <- graph_data |>
-    mutate(
+    dplyr::mutate(
       x_lab = var,
       bar_lab_main = case_when(
         censored ~ "*",
