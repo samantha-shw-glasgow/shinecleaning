@@ -22,16 +22,16 @@ summary_mean_multiple_vars <-
 
     if (.gender_split) {
       subgroups <-
-        map(classes, \(concat_class) {
+        purrr::map(classes, \(concat_class) {
           class_summary <-
           data |>
-            filter(gender %in% genders, class %in% concat_class) |>
-            select(gender, class, !!!names(varslist)) |>
-            mutate(class = str_flatten(concat_class, collapse = ", ", last = " and ")) |>
-            summarise(across(everything(), list(
+            dplyr::filter(.data$gender %in% genders, .data$class %in% concat_class) |>
+            dplyr::select(gender, class, !!!names(varslist)) |>
+            dplyr::mutate(class = str_flatten(concat_class, collapse = ", ", last = " and ")) |>
+            dplyr::summarise(across(everything(), list(
               mean = quiet_means, denominator = ~how_many_valid(valid_numbers(.x))
             ), .names = "{.col}__{.fn}"), .by = c("gender", "class")) |>
-            arrange(gender)
+            dplyr::arrange(gender)
 
           if (nrow(class_summary) == 0) {
             NULL
@@ -42,16 +42,16 @@ summary_mean_multiple_vars <-
     }
 
     all <- data |>
-      mutate(class = "All", gender = if_else(.gender_split, "All", "All pupils")) |>
-      select(gender, class, !!!names(varslist)) |>
-      summarise(across(everything(), list(
+      dplyr::mutate(class = "All", gender = dplyr::if_else(.gender_split, "All", "All pupils")) |>
+      dplyr::select(gender, class, !!!names(varslist)) |>
+      dplyr::summarise(dplyr::across(dplyr::everything(), list(
         mean = quiet_means, denominator = ~how_many_valid(valid_numbers(.x))
       ), .names = "{.col}__{.fn}"), .by = c("gender", "class"))
 
 
     c(subgroups, list(all)) |>
-      compact() |>
-      map(\(class_data) {
+      purrr::compact() |>
+      purrr::map(\(class_data) {
         class_data |>
         tidyr::pivot_longer(-c(gender, class),
                             names_to = c("var", "x"),
@@ -59,11 +59,11 @@ summary_mean_multiple_vars <-
                             values_to = "n"
         ) |>
           tidyr::pivot_wider(names_from = x, values_from = n) |>
-          rowwise() |>
-          mutate(labels = stringr::str_wrap(varslist[[.data$var]][1], 12)) |>
-          filter(!is.na(gender)) |>
-          ungroup() |>
-          mutate(labels = forcats::fct_reorder(.data$labels, mean))
+          dplyr::rowwise() |>
+          dplyr::mutate(labels = stringr::str_wrap(varslist[[.data$var]][1], 12)) |>
+          dplyr::filter(!is.na(.data$gender)) |>
+          dplyr::ungroup() |>
+          dplyr::mutate(labels = forcats::fct_reorder(.data$labels, mean))
       })
   }
 
@@ -83,9 +83,9 @@ bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
 
   summary_data |>
     mutate(
-      mean = if_else(.data$censored, 1, .data$mean),
-      bar_lab_main = if_else(.data$censored, "*", sprintf("%.1f", .data$mean)),
-      bar_lab_cens = if_else(.data$censored, "Numbers too low to show", "")
+      mean = dplyr::if_else(.data$censored, 1, .data$mean),
+      bar_lab_main = dplyr::if_else(.data$censored, "*", sprintf("%.1f", .data$mean)),
+      bar_lab_cens = dplyr::if_else(.data$censored, "Numbers too low to show", "")
     ) |>
     ggplot(
       aes(
@@ -130,11 +130,11 @@ bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
       hjust = -0.3,
       colour = "black",
       position = position_dodge(width = 0.8),
-      size = if_else(length(genders) > 1, 2.5, 3.5)
+      size = dplyr::if_else(length(genders) > 1, 2.5, 3.5)
     ) +
     coord_cartesian(xlim = c(0, xmax), clip = "off") +
     labs(
-      caption = if_else(any(summary_data$censored), "* Numbers too low to show", ""),
+      caption = dplyr::if_else(any(summary_data$censored), "* Numbers too low to show", ""),
       title = paste(class, "pupils")
     )
 }
@@ -146,10 +146,10 @@ bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
 
   summary_data |>
     mutate(
-      mean = if_else(.data$censored, 1, .data$mean),
+      mean = dplyr::if_else(.data$censored, 1, .data$mean),
       labels = forcats::fct_inorder(labels),
-      bar_lab_main = if_else(.data$censored, "*", sprintf("%.1f", .data$mean)),
-      bar_lab_cens = if_else(.data$censored, "Numbers too low to show", "")
+      bar_lab_main = dplyr::if_else(.data$censored, "*", sprintf("%.1f", .data$mean)),
+      bar_lab_cens = dplyr::if_else(.data$censored, "Numbers too low to show", "")
     ) |>
     ggplot(
       aes(
@@ -172,7 +172,7 @@ bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
     ) +
     scale_x_discrete("", guide = guide_axis(
       n.dodge =
-        if_else(length(varslist) > 6,
+        dplyr::if_else(length(varslist) > 6,
           ceiling(length(varslist) / 4),
           1
         )
