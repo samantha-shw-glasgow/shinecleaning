@@ -3,7 +3,7 @@ report_data_spreadsheet <- function(data, filename, report_type) {
   #process data
   proc_data <- data |> data_prep(report_type)
 
-  added_columns <- c("completed_date")
+  # added_columns <- c("completed_date")
 
   columns_to_remove <- c(
     "ResponseId",
@@ -42,26 +42,26 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
 
   #process data
   proc_data <- data |> data_prep(report_type) |>
-    mutate(across(where(is.character), ~na_if(., "Prefer not to say")))
+    dplyr::mutate(dplyr::across(dplyr::where(is.character), ~dplyr::na_if(., "Prefer not to say")))
 
   #group by school and class
-  grouped_data <- map(classes, \(concat_class) {
+  grouped_data <- purrr::map(classes, \(concat_class) {
     proc_data |>
-      filter(class %in% concat_class, gender %in% genders) |>
-      mutate(
-        class = str_flatten(concat_class, collapse = ", ", last = " and "),
+      dplyr::filter(class %in% concat_class, gender %in% genders) |>
+      dplyr::mutate(
+        class = stringr::str_flatten(concat_class, collapse = ", ", last = " and "),
         `Year groups` = str_c(class, gender, sep = " ")
       )
   }) |>
-    reduce(bind_rows) |>
-    group_by(`School ID code`, `Year groups`)
+    purrr::reduce(dplyr::bind_rows) |>
+    dplyr::group_by(`School ID code`, `Year groups`)
 
   #calculate summaries
 
   derived_data_all <- grouped_data |>
-    summarise(
+    dplyr::summarise(
       #all
-      "Number taking part" = n(),
+      "Number taking part" = dplyr::n(),
       "% reporting good or excellent health" = mean(health == "Good" | health == "Excellent", na.rm = TRUE) * 100,
       "% reporting fair or poor health" = mean(health == "Fair" | health == "Poor", na.rm = TRUE) * 100,
       "Overall" = mean(valid_numbers(lifesat1), na.rm = TRUE),
@@ -91,7 +91,7 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
 
   if (report_type == "primary") {
     derived_data_additional <- grouped_data |>
-      summarise(
+      dplyr::summarise(
         "% scoring as expected-emotional" = mean(mme_cat == "As expected", na.rm = TRUE) * 100,
         "% scoring elevated-emotional" = mean(mme_cat == "Elevated", na.rm = TRUE) * 100,
         "% scoring as expected-behavioural" = mean(mmb_cat == "As expected", na.rm = TRUE) * 100,
@@ -112,7 +112,7 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
         )
   } else if (report_type == "secondary") {
     derived_data_additional <- grouped_data |>
-      summarise(
+      dplyr::summarise(
         "% at risk of depression" = mean(who_dep, na.rm = TRUE) * 100,
         "Emotional: % as expected" = mean(ep_cat == "As expected", na.rm = TRUE) * 100,
         "Emotional: % borderline and difficulties" = mean(ep_cat == "Borderline" | ep_cat == "Difficulties", na.rm = TRUE) * 100,
@@ -155,7 +155,7 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
       )
   }
 
-  derived_data <- full_join(derived_data_all, derived_data_additional, by = c("School ID code", "Year groups"))
+  derived_data <- dplyr::full_join(derived_data_all, derived_data_additional, by = c("School ID code", "Year groups"))
   # Set all NaN values to NA so they display correctly in the spreadsheet
   for (col in names(derived_data)) {
     derived_data[[col]][is.nan(derived_data[[col]])] <- NA
@@ -206,7 +206,7 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
   openxlsx::writeData(wb, 1, derived_data, startRow = 2, headerStyle = header_style)
   last_row <- nrow(derived_data) + 2
 
-  walk(seq_along(col_headers),
+  purrr::walk(seq_along(col_headers),
        \(i)  {
          start <- sum(unlist(map(col_headers[1:i - 1], length))) + 1
          end <- sum(unlist(map(col_headers[1:i], length)))
