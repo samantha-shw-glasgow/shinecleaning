@@ -10,7 +10,6 @@
 #' @return A summary table of means of multiple variables
 #'
 #'
-#' @import dplyr
 #' @importFrom rlang .data
 #'
 summary_mean_multiple_vars <-

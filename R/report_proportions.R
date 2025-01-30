@@ -71,7 +71,6 @@ create_collapsed_summary <- function(
 #' @param classes List of classes to split by
 #' @param .gender_split Gender split - passed from params
 #'
-#' @import ggplot2
 #'
 #' @return A dataframe of counted variables
 create_full_summary <- function(

@@ -8,7 +8,6 @@
 #'
 #' @return A summary table of means of a single variable
 #'
-#' @import dplyr
 #' @importFrom rlang .data
 #'
 summary_mean_single_var <-

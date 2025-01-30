@@ -6,7 +6,7 @@
 #' @param survey_data The data to process
 #' @param report_type The type of survey data ("primary" or "secondary")
 #'
-#' @import rlang
+#' @importFrom rlang .data
 #'
 #' @returns
 #' `data_prep`: A dataframe with the required variables for rendering a report

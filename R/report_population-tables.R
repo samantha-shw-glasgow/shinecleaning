@@ -32,7 +32,6 @@ date_range <- function(input_data) {
 #'
 #' @return A table (markdown) detailing response rate
 #'
-#' @import flextable
 #'
 tab_responses <- function(input_data, n_invited) {
   n_responses <- nrow(input_data)
@@ -59,8 +58,6 @@ tab_responses <- function(input_data, n_invited) {
 #' @param inc_gender List of genders to include in table
 #' @param inc_classes List of classes to include in table
 #'
-#' @importFrom tidyr pivot_wider
-#' @import flextable
 #'
 #' @return A flextable giving gender by class counts
 tab_categories <- function(data, inc_gender, inc_classes) {
@@ -143,8 +140,6 @@ group_classes <- function(classes, groupings) {
 #' @param inc_gender List of genders to include in table
 #' @param class_groupings List of groups of classes to include in table
 #'
-#' @importFrom tidyr pivot_wider
-#' @import flextable
 #'
 #' @return A flextable giving gender by grouped class counts
 tab_categories_grouped <- function(data, inc_gender, class_groupings) {
