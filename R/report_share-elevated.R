@@ -34,7 +34,7 @@ share_elevated <-
           purrr::map(
             levels,
             \(inc_level) data |>
-              dplyr::filter(class %in% concat_class, gender %in% genders) |>
+              dplyr::filter(.data$class %in% concat_class, .data$gender %in% genders) |>
               dplyr::summarise(
                 "{inc_level}" := sum({{ outcome }} %in% inc_level),
                 class = stringr::str_flatten(concat_class, collapse = ", ", last = " and "),
@@ -59,11 +59,11 @@ share_elevated <-
         values_to = "n"
       ) |>
       dplyr::mutate(
-        prop = n / denom,
-        var = factor(var, levels = levels) |> forcats::fct_rev()
+        prop = .data$n / .data$denom,
+        var = factor(.data$var, levels = levels) |> forcats::fct_rev()
       ) |>
       dplyr::select("gender", "class", "var", "n", "denom", "prop") |>
-      dplyr::arrange(gender, class, var)
+      dplyr::arrange(.data$gender, .data$class, .data$var)
 
     return(graph_data)
   }
@@ -78,16 +78,16 @@ share_elevated <-
 bar_share_elevated <- function(graph_data) {
   graph_dat <- graph_data |>
     dplyr::mutate(
-      prop = dplyr::if_else(censored, 1, prop),
+      prop = dplyr::if_else(.data$censored, 1, .data$prop),
       x_lab = dplyr::if_else(
-        class == "All" & gender == "All",
+        .data$class == "All" & .data$gender == "All",
         "All",
-        stringr::str_c(class, " ", gender)
+        stringr::str_c(.data$class, " ", .data$gender)
       ) |> forcats::fct_relevel("All", after = Inf),
       bar_lab_main = dplyr::case_when(
-        censored ~ "*",
-        prop == 0 ~ "",
-        .default = scales::percent(prop, suffix = "%", accuracy = 1)
+        .data$censored ~ "*",
+        .data$prop == 0 ~ "",
+        .default = scales::percent(.data$prop, suffix = "%", accuracy = 1)
       )
     )
 
@@ -96,7 +96,7 @@ bar_share_elevated <- function(graph_data) {
 
   gg_out <- ggplot(
     data = graph_dat,
-    aes(x = x_lab, y = prop, fill = var)
+    aes(x = "x_lab", y = "prop", fill = "var")
   ) +
     geom_bar(stat = "identity", position = "fill") +
     scale_fill_hbsc(name = "") +
@@ -105,7 +105,7 @@ bar_share_elevated <- function(graph_data) {
                        limits = c(0, 1),
                        expand = expansion(add = 0)
                        ) +
-    geom_text(aes(label = bar_lab_main),
+    geom_text(aes(label = "bar_lab_main"),
       colour = "black",
       position = position_fill(vjust = 0.5),
       size = dplyr::if_else(length(unique(graph_data$class)) > 3, 2.5, 3)
