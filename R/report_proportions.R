@@ -7,6 +7,8 @@
 #' @param classes List of classes to split by
 #' @param .gender_split Gender split - passed from params
 #'
+#' @import rlang
+#'
 #' @return A dataframe of proportions/counts of successes
 create_collapsed_summary <- function(
     data,
