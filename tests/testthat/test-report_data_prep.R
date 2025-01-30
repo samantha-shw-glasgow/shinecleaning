@@ -5,7 +5,7 @@ test_that("`data_prep` rejects wrong data", {
 })
 
 test_that("Me and My feelings score", {
-  input_data_a <-  tibble(
+  input_data_a <-  tibble::tibble(
     mm1  = c("Never",     "Never",     "Never",     "Never"),
     mm2  = c("Never",     "Always",    "Sometimes", "Always"),
     mm3  = c("Never",     "Never",     "Never",     "Always"),
@@ -25,9 +25,9 @@ test_that("Me and My feelings score", {
     mm16 = c("Never",     "Never",     "Always",    "Sometimes")
   )
 
-  expected_a <- bind_cols(
+  expected_a <- dplyr::bind_cols(
     input_data_a,
-    tribble(
+    tibble::tribble(
       ~mme_score, ~mmb_score,   ~mme_cat,   ~mmb_cat,
       6,          2, "As expected", "As expected",
       5,         10, "As expected", "Elevated",
@@ -38,7 +38,7 @@ test_that("Me and My feelings score", {
 
   expect_equal(mm_score(input_data_a), expected_a)
 
-  input_data_b <-  tibble(
+  input_data_b <-  tibble::tibble(
     mm1  = c(NA_character_,     "Never",     "Never",     "Never"),
     mm2  = c(NA_character_,     "Always",    "Sometimes", "Always"),
     mm3  = c(NA_character_,     "Never",     "Never",     "Always"),
@@ -58,9 +58,9 @@ test_that("Me and My feelings score", {
     mm16 = c("Never",     "Never",     "Always",    NA_character_)
   )
 
-  expected_b <- bind_cols(
+  expected_b <- dplyr::bind_cols(
     input_data_b,
-    tribble(
+    tibble::tribble(
       ~mme_score, ~mmb_score, ~mme_cat, ~mmb_cat,
       6 * 10 / 7, 2, "As expected", "As expected",
       NA_real_, 10, NA_character_, "Elevated",
@@ -74,7 +74,7 @@ test_that("Me and My feelings score", {
 })
 
 test_that("WHO score", {
-  input_data_a <- tibble(
+  input_data_a <- tibble::tibble(
     Who1 = c("Most of the time",           "At no time",  NA_character_),
     Who2 = c("More than half of the time", "Most of the time", "All of the time"),
     Who3 = c("Less than half of the time", "Some of the time", "Some of the time"),
@@ -82,21 +82,21 @@ test_that("WHO score", {
     Who5 = c("Some of the time",           "At no time",       "Most of the time")
   )
 
-  expected_a <- bind_cols(input_data_a, tribble(
+  expected_a <- dplyr::bind_cols(input_data_a, tibble::tribble(
     ~who_score, ~who_cat, ~who_dep,
     (4 + 3 + 2 + 4 + 1) * 4, "good", FALSE,
     (0 + 4 + 1 + 4 + 0) * 4, "low", FALSE,
-    NA_real_, NA_character_, na_lgl
+    NA_real_, NA_character_, rlang::na_lgl
   ))
 
   expect_identical(who_score(input_data_a), expected_a)
 })
 
 test_that("Secondary SEHS scoring variables calculating", {
-  input_data_c <- map(1:30, \(sehs_n) {
-    tibble("SEHSS{sehs_n}" := 1:3)
+  input_data_c <- purrr::map(1:30, \(sehs_n) {
+    tibble::tibble("SEHSS{sehs_n}" := 1:3)
   }) |>
-    reduce(bind_cols)
+    purrr::reduce(dplyr::bind_cols)
 
   sehs_responses <- c(
     "Not at all true of me",
@@ -106,12 +106,12 @@ test_that("Secondary SEHS scoring variables calculating", {
   )
 
   input_data_c <- input_data_c |>
-    mutate(across(everything(), ~ sehs_responses[.x]))
+    dplyr::mutate(dplyr::across(dplyr::everything(), ~ sehs_responses[.x]))
 
   out_dat <- sehs_secondary(input_data_c)
 
   expected <-
-    tibble(
+    tibble::tibble(
       efficacy_score = 1:3 * 3,
       aware_score = 1:3 * 3,
       persist_score = 1:3 * 3,
@@ -126,7 +126,7 @@ test_that("Secondary SEHS scoring variables calculating", {
       belief_others_score = 1:3 * 3,
       emotional_competence_score = 1:3 * 3
     ) |>
-    bind_cols(input_data_c, x = _)
+    dplyr::bind_cols(input_data_c, x = _)
 
   expect_identical(out_dat, expected)
 })
@@ -141,15 +141,15 @@ test_that("ASW score calculations", {
     "Always"
   )
 
-  input_data_d <- map(1:10, \(asw_n) {
-    tibble("ASW{asw_n}" := c(1, 6))
+  input_data_d <- purrr::map(1:10, \(asw_n) {
+    tibble::tibble("ASW{asw_n}" := c(1, 6))
   }) |>
-    reduce(bind_cols) |>
-    mutate(across(c(ASW1, ASW3, ASW4, ASW5, ASW6, ASW7, ASW8), ~ 7 - .x), across(everything(), ~
+    purrr::reduce(dplyr::bind_cols) |>
+    dplyr::mutate(dplyr::across(c(ASW1, ASW3, ASW4, ASW5, ASW6, ASW7, ASW8), ~ 7 - .x), dplyr::across(dplyr::everything(), ~
       asw_responses[.x]))
 
   expected <-
-    bind_cols(input_data_d, tibble(asw_score = c(10, 60))) # high/low scores
+    dplyr::bind_cols(input_data_d, tibble::tibble(asw_score = c(10, 60))) # high/low scores
 
   expect_identical(asw_score(input_data_d), expected)
 })
@@ -161,19 +161,19 @@ test_that("SDQ score output", {
     "Certainly true"
   )
 
-  input_data_e <- map(1:25, \(sdq_n) {
-    tibble("SDQ{sdq_n}" := sample(sdq_responses, 3, replace = TRUE))
+  input_data_e <- purrr::map(1:25, \(sdq_n) {
+    tibble::tibble("SDQ{sdq_n}" := sample(sdq_responses, 3, replace = TRUE))
   }) |>
-    reduce(bind_cols)
+    purrr::reduce(dplyr::bind_cols)
 
-  expected_shape <- map(c("ep", "cp", "ha", "pp", "ps", "sdq_total"), \(varname) {
-    tibble(
+  expected_shape <- purrr::map(c("ep", "cp", "ha", "pp", "ps", "sdq_total"), \(varname) {
+    tibble::tibble(
       "{varname}_score" := rep(NA_real_, 3),
       "{varname}_cat" := rep(NA_character_, 3),
     )
   }) |>
-    reduce(bind_cols) |>
-    bind_cols(input_data_e, x = _)
+    purrr::reduce(dplyr::bind_cols) |>
+    dplyr::bind_cols(input_data_e, x = _)
 
   test_output <- sdq_score(input_data_e)
 
@@ -201,7 +201,7 @@ test_that("FAS score output", {
   results_out <- input_data |>
     fas_score()
 
-  expected_out <- bind_cols(
+  expected_out <- dplyr::bind_cols(
     input_data, tibble::tibble(fas_score = c(0L, 13L, 6L, 7L))
   )
 
