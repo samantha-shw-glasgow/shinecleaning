@@ -27,7 +27,7 @@ summary_mean_single_var <-
               mean_score = quiet_means({{ var }}),
               denom = how_many_valid(valid_numbers({{ var }})),
               class = stringr::str_flatten(concat_class, collapse = ", ", last = " and "),
-              .by = c(gender)
+              .by = c("gender")
             )
         }) |>
         purrr::reduce(dplyr::bind_rows) |>
@@ -40,7 +40,7 @@ summary_mean_single_var <-
       dplyr::summarise(
         mean_score = quiet_means({{ var }}),
         denom = how_many_valid(valid_numbers({{ var }})),
-        .by = c(class, gender)
+        .by = c("class", "gender")
       )
 
     dplyr::bind_rows(subgroups, all) |>

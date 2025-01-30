@@ -31,7 +31,7 @@ summary_mean_multiple_vars <-
             dplyr::summarise(dplyr::across(dplyr::everything(), list(
               mean = quiet_means, denominator = ~how_many_valid(valid_numbers(.x))
             ), .names = "{.col}__{.fn}"), .by = c("gender", "class")) |>
-            dplyr::arrange(gender)
+            dplyr::arrange(.data$gender)
 
           if (nrow(class_summary) == 0) {
             NULL
@@ -43,7 +43,7 @@ summary_mean_multiple_vars <-
 
     all <- data |>
       dplyr::mutate(class = "All", gender = dplyr::if_else(.gender_split, "All", "All pupils")) |>
-      dplyr::select(gender, class, !!!names(varslist)) |>
+      dplyr::select("gender", "class", !!!names(varslist)) |>
       dplyr::summarise(dplyr::across(dplyr::everything(), list(
         mean = quiet_means, denominator = ~how_many_valid(valid_numbers(.x))
       ), .names = "{.col}__{.fn}"), .by = c("gender", "class"))
@@ -53,12 +53,12 @@ summary_mean_multiple_vars <-
       purrr::compact() |>
       purrr::map(\(class_data) {
         class_data |>
-        tidyr::pivot_longer(-c(gender, class),
+        tidyr::pivot_longer(-c("gender", "class"),
                             names_to = c("var", "x"),
                             names_sep = "__",
                             values_to = "n"
         ) |>
-          tidyr::pivot_wider(names_from = x, values_from = n) |>
+          tidyr::pivot_wider(names_from = "x", values_from = "n") |>
           dplyr::rowwise() |>
           dplyr::mutate(labels = stringr::str_wrap(varslist[[.data$var]][1], 12)) |>
           dplyr::filter(!is.na(.data$gender)) |>
