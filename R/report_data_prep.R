@@ -137,12 +137,12 @@ mm_score <- function(survey_data) {
   survey_data |>
     dplyr::transmute(dplyr::across(dplyr::starts_with("mm"), ~ match(.x, mm_responses) - 1),
       mm15 = 2L - .data$mm15,
-      mme_missing = rowSums(dplyr::pick(matches(paste0("^mm", 1:10, "$"))) |> is.na()),
-      mmb_missing = rowSums(dplyr::pick(matches(paste0("^mm", 11:16, "$"))) |> is.na())
+      mme_missing = rowSums(dplyr::pick(dplyr::matches(paste0("^mm", 1:10, "$"))) |> is.na()),
+      mmb_missing = rowSums(dplyr::pick(dplyr::matches(paste0("^mm", 11:16, "$"))) |> is.na())
     ) |>
     dplyr::mutate(
-      mme_score = rowSums(dplyr::pick(matches(paste0("^mm", 1:10, "$"))), na.rm = TRUE),
-      mmb_score = rowSums(dplyr::pick(matches(paste0("^mm", 11:16, "$"))), na.rm = TRUE),
+      mme_score = rowSums(dplyr::pick(dplyr::matches(paste0("^mm", 1:10, "$"))), na.rm = TRUE),
+      mmb_score = rowSums(dplyr::pick(dplyr::matches(paste0("^mm", 11:16, "$"))), na.rm = TRUE),
       mme_score = dplyr::case_when(
         mme_missing == 0 ~ mme_score,
         mme_missing <= 3 ~ 10 * mme_score / (10 - mme_missing),
@@ -244,7 +244,7 @@ sehs_secondary <- function(survey_data) {
         dplyr::select(dplyr::matches(rows_select)) |>
         dplyr::mutate(
           score = rowSums(dplyr::pick(dplyr::matches(rows_select)), na.rm = TRUE),
-          n_valid = rowSums(!is.na(pick(
+          n_valid = rowSums(!is.na(dplyr::pick(
             dplyr::matches(rows_select)
           )))
         ) |>
@@ -316,15 +316,15 @@ sdq_score <- function(survey_data) {
     dplyr::transmute(
       dplyr::across(dplyr::starts_with("SDQ"), ~ match(.x, sdq_responses) - 1),
       # reverse scores for select vars
-      dplyr::across(matches(paste0("^SDQ", c(7, 21, 25, 11, 14), "$")), ~ 2 - .x)
+      dplyr::across(dplyr::matches(paste0("^SDQ", c(7, 21, 25, 11, 14), "$")), ~ 2 - .x)
     )
 
   varlist <- list(
-    ep = rlang::quo(pick(matches(paste0("^SDQ", c(3, 8, 13, 16, 24), "$")))),
-    cp = rlang::quo(pick(matches(paste0("^SDQ", c(5, 7, 12, 18, 22), "$")))),
-    ha = rlang::quo(pick(matches(paste0("^SDQ", c(2, 10, 15, 21, 25), "$")))),
-    pp = rlang::quo(pick(matches(paste0("^SDQ", c(6, 11, 14, 19, 23), "$")))),
-    ps = rlang::quo(pick(matches(paste0("^SDQ", c(1, 4, 9, 17, 20), "$"))))
+    ep = rlang::quo(dplyr::pick(dplyr::matches(paste0("^SDQ", c(3, 8, 13, 16, 24), "$")))),
+    cp = rlang::quo(dplyr::pick(dplyr::matches(paste0("^SDQ", c(5, 7, 12, 18, 22), "$")))),
+    ha = rlang::quo(dplyr::pick(dplyr::matches(paste0("^SDQ", c(2, 10, 15, 21, 25), "$")))),
+    pp = rlang::quo(dplyr::pick(dplyr::matches(paste0("^SDQ", c(6, 11, 14, 19, 23), "$")))),
+    ps = rlang::quo(dplyr::pick(dplyr::matches(paste0("^SDQ", c(1, 4, 9, 17, 20), "$"))))
   )
 
   varlist |>

@@ -148,7 +148,7 @@ bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
   varslist <- unique(summary_data$var)
 
   summary_data |>
-    mutate(
+    dplyr::mutate(
       mean = dplyr::if_else(.data$censored, 1, .data$mean),
       labels = forcats::fct_inorder(labels),
       bar_lab_main = dplyr::if_else(.data$censored, "*", sprintf("%.1f", .data$mean)),

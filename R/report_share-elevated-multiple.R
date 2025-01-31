@@ -27,7 +27,7 @@ share_elevated_multiple <-
         dplyr::mutate(level = level,
                class = "All",
                gender = "All",
-               var = paste(varlist[var]))
+               var = paste(varlist[.data$var]))
     }) |>
       purrr::reduce(dplyr::bind_rows) |>
       dplyr::select("gender", "class", "var", "level", n = "val") |>
@@ -50,7 +50,7 @@ share_elevated_multiple <-
               dplyr::mutate(
                 level = level,
                 class = stringr::str_flatten(concat_class, collapse = ", ", last = " and "),
-                var = paste(.data$gender, varlist[var], sep = "-")
+                var = paste(.data$gender, varlist[.data$var], sep = "-")
               )
 
           }) |>
@@ -91,7 +91,7 @@ bar_share_elevated_multiple <- function(graph_data) {
 
   graph_dat <- graph_data |>
     dplyr::mutate(
-      x_lab = var,
+      x_lab = .data$var,
       bar_lab_main = dplyr::case_when(
         censored ~ "*",
         prop == 0 ~ "",

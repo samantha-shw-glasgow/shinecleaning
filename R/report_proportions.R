@@ -229,7 +229,7 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
       color = "black",
       position = position_dodge(0.9),
       vjust = -0.5,
-      size = if_else(length(unique(summary_data$class)) > 3, 2.5, 4)
+      size = dplyr::if_else(length(unique(summary_data$class)) > 3, 2.5, 4)
     ) +
     theme(
       plot.margin = unit(c(0.8, 0.5, 0.5, 1), "cm"),
@@ -238,7 +238,7 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
       legend.box.background = element_blank()
     ) +
     coord_cartesian(ylim = c(0, 1), clip = "off") +
-    labs(caption = if_else(any(summary_data$censored == 1), "* Numbers too low to show", ""))
+    labs(caption = dplyr::if_else(any(summary_data$censored == 1), "* Numbers too low to show", ""))
 }
 
 #' A table of percentages from summary data
@@ -249,7 +249,7 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
 #'
 table_from_summary <- function(summary_data) {
   tab <- summary_data |>
-    dplyr::mutate(prop = if_else(
+    dplyr::mutate(prop = dplyr::if_else(
       .data$censored,
       "*",
       sprintf("%.0f", 100 * .data$numerator / .data$denominator))

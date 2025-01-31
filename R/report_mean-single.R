@@ -59,7 +59,7 @@ summary_mean_single_var <-
 #' @returns A ggplot2 graph
 bar_mean_single <- function(summary_data, ymax, ylab = "Mean") {
   summary_data |>
-    mutate(
+    dplyr::mutate(
       mean_score = dplyr::if_else(.data$censored, 1, .data$mean_score),
       bar_lab_main = dplyr::if_else(.data$censored, "*", sprintf("%.1f", .data$mean_score)),
       bar_lab_cens = dplyr::if_else(.data$censored, "Numbers too low to show", "")

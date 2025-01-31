@@ -71,7 +71,7 @@ summary_proportions_multiple <-
             values_to = "numerator"
           ) |>
           tidyr::pivot_wider(names_from = "x", values_from = "numerator") |>
-          dplyr::relocate("denominator", "var", "numerator", .after = everything()) |>
+          dplyr::relocate("denominator", "var", "numerator", .after = dplyr::everything()) |>
           dplyr::rowwise() |>
           dplyr::mutate(
             labels = stringr::str_wrap(varslist[[.data$var]][1], 12),
@@ -95,7 +95,7 @@ bar_proportions_multiple <- function(summary_data) {
   genders <- unique(summary_data$gender)
 
   summary_data |>
-    mutate(
+    dplyr::mutate(
       prop = dplyr::if_else(.data$censored, 0.01, .data$prop),
       bar_lab_main = dplyr::if_else(
         .data$censored,

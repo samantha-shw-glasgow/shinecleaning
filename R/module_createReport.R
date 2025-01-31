@@ -157,7 +157,7 @@ createReport_server <- function(id, data) {
         if (isTruthy(data())) {
           if (input$output_type %in% c("Primary", "Secondary")) {
             if (isTruthy(input$school_id) && !"All" %in% input$school_id) {
-              data() %>% dplyr::filter(.data$`School ID code` == input$school_id)
+              data() |> dplyr::filter(.data$`School ID code` == input$school_id)
             } else {
               data()
             }
@@ -167,7 +167,7 @@ createReport_server <- function(id, data) {
             "Processed report data",
             "School-level data")) {
             if (isTruthy(input$school_id) && !"All" %in% input$school_id) {
-              data() %>% dplyr::filter(.data$`School ID code` %in% input$school_id)
+              data() |> dplyr::filter(.data$`School ID code` %in% input$school_id)
             } else {
               data()
             }
@@ -204,7 +204,7 @@ createReport_server <- function(id, data) {
           dplyr::count(.data$gender,
                 .data$`Year group`,
                 .drop = FALSE) |>
-          tidyr::pivot_wider(names_from = gender, values_from = n)
+          tidyr::pivot_wider(names_from = "gender", values_from = "n")
       })
 
 
@@ -272,8 +272,8 @@ createReport_server <- function(id, data) {
       check_vars <- reactive({
         if (input$output_type %in% c("Primary", "Primary cluster / Local Authority")) {
           upcheck_has_columns(data(), primary_vars) |>
-            dplyr::filter(fail == TRUE) |>
-            dplyr::select(message, level)
+            dplyr::filter(.data$fail == TRUE) |>
+            dplyr::select("message", "level")
         }
 
         if (input$output_type %in% c("Secondary", "Secondary cluster / Local Authority")) {
@@ -363,13 +363,13 @@ createReport_server <- function(id, data) {
 #        if (input$output_type %in% c("Processed report data", "School-level data")) {
         if (input$data_output_type == "Primary") {
           error <- upcheck_has_columns(data(), primary_vars) |>
-            dplyr::filter(fail == TRUE) |>
-            dplyr::select(message, level)
+            dplyr::filter(.data$fail == TRUE) |>
+            dplyr::select("message", "level")
         }
         if (input$data_output_type == "Secondary") {
           error <- upcheck_has_columns(data(), secondary_vars) |>
-            dplyr::filter(fail == TRUE) |>
-            dplyr::select(message, level)
+            dplyr::filter(.data$fail == TRUE) |>
+            dplyr::select("message", "level")
         }
 
         if (any(error$level == 3)) {
