@@ -52,7 +52,7 @@ data_prep <- function(survey_data, report_type = "primary") {
       completed_date = as.Date(.data$RecordedDate),
       gender = .data$gender |>
       stringr::str_replace("(?<=(Boy|Girl))$", "s")) |> # pluralise for reporting
-    dplyr::relocate(completed_date, .before = "StartDate") |>
+    dplyr::relocate("completed_date", .before = "StartDate") |>
     who_score()
 
   if (report_type == "primary") {
@@ -103,6 +103,8 @@ who_score <- function(survey_data) {
     "All of the time"
   )
 
+  who_responses
+
   survey_data |>
     dplyr::mutate(dplyr::across(dplyr::starts_with("who"), ~ match(.x, who_responses) - 1)) |>
     dplyr::mutate(
@@ -124,6 +126,8 @@ mm_score <- function(survey_data) {
     "Sometimes",
     "Always"
   )
+
+  mm_responses
 
   # Add pro-rata correction if <1/3 missing
 
@@ -170,6 +174,8 @@ sehs_primary <- function(survey_data) {
     "Very often"
   )
 
+  sehs_responses
+
   num_vars <- survey_data |>
     dplyr::transmute(dplyr::across(dplyr::starts_with("sehs"), ~ match(.x, sehs_responses)))
 
@@ -196,7 +202,7 @@ sehs_primary <- function(survey_data) {
       )
   }) |>
     purrr::reduce(dplyr::bind_cols) |>
-    dplyr::mutate(cov_score = p_score + g_score + o_score + z_score)
+    dplyr::mutate(cov_score = .data$p_score + .data$g_score + .data$o_score + .data$z_score)
 
   dplyr::bind_cols(survey_data, scores)
 }
@@ -209,6 +215,8 @@ sehs_secondary <- function(survey_data) {
     "Pretty much true of me",
     "Very much true of me"
   )
+
+  sehs_responses
 
   num_responses <- survey_data |>
     dplyr::transmute(dplyr::across(dplyr::starts_with("sehs"), ~ match(.x, sehs_responses)))
@@ -270,6 +278,8 @@ asw_score <- function(survey_data) {
     "Always"
   )
 
+  asw_responses
+
   survey_data |>
     dplyr::transmute(
       dplyr::across(dplyr::starts_with("ASW"), ~ match(.x, asw_responses)),
@@ -292,6 +302,7 @@ sdq_score <- function(survey_data) {
     tot = list(0:15, 16:19, 20:40)
   )
 
+  sdq_cutoff
 
   sdq_responses <- c(
     "Not true",
@@ -299,6 +310,7 @@ sdq_score <- function(survey_data) {
     "Certainly true"
   )
 
+  sdq_responses
 
   num_responses <- survey_data |>
     dplyr::transmute(
@@ -352,16 +364,16 @@ fas_score <- function(survey_data) {
 
   survey_data |>
     dplyr::mutate(
-      fas1 = factor(fas1, levels = c("No", "Yes, one", "Yes, two or more")),
-      fas2 = factor(fas2, levels = c("No", "Yes")),
-      fas3 = factor(fas3, levels = c("None", "One", "Two", "More than two")),
-      fas4 = factor(fas4, levels = c(
+      fas1 = factor(.data$fas1, levels = c("No", "Yes, one", "Yes, two or more")),
+      fas2 = factor(.data$fas2, levels = c("No", "Yes")),
+      fas3 = factor(.data$fas3, levels = c("None", "One", "Two", "More than two")),
+      fas4 = factor(.data$fas4, levels = c(
         "Not at all", "Once", "Twice", "More than twice"
       )),
-      fas5 = factor(fas5, levels = c("None", "One", "Two", "More than two")),
-      fas6 = factor(fas6, levels = c("No", "Yes")),
+      fas5 = factor(.data$fas5, levels = c("None", "One", "Two", "More than two")),
+      fas6 = factor(.data$fas6, levels = c("No", "Yes")),
       dplyr::across(dplyr::starts_with("fas"), as.integer),
-      fas_score = as.integer(fas1 + fas2 + fas3 + fas4 + fas5 + fas6 - 6)
+      fas_score = as.integer(.data$fas1 + .data$fas2 + .data$fas3 + .data$fas4 + .data$fas5 + .data$fas6 - 6)
     ) |>
     dplyr::select(fas_score) |>
     dplyr::bind_cols(survey_data, x = _)

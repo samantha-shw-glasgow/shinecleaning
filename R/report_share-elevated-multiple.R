@@ -88,7 +88,6 @@ share_elevated_multiple <-
 bar_share_elevated_multiple <- function(graph_data) {
 
   class <- unique(graph_data$class)
-  genders <- unique(graph_data$gender)
 
   graph_dat <- graph_data |>
     dplyr::mutate(

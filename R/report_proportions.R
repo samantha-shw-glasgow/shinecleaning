@@ -250,12 +250,12 @@ bar_from_summary <- function(summary_data, hbsc_data = NULL) {
 table_from_summary <- function(summary_data) {
   tab <- summary_data |>
     dplyr::mutate(prop = if_else(
-      censored,
+      .data$censored,
       "*",
-      sprintf("%.0f", 100 * numerator / denominator))
+      sprintf("%.0f", 100 * .data$numerator / .data$denominator))
     ) |>
-    tidyr::pivot_wider(id_cols = answer, names_from = c(class, gender), values_from = prop) |>
-    dplyr::rename(`All\n%` = All_All, ` ` = answer) |>
+    tidyr::pivot_wider(id_cols = "answer", names_from = c("class", "gender"), values_from = "prop") |>
+    dplyr::rename(`All\n%` = .data$All_All, ` ` = .data$answer) |>
     dplyr::rename_with(~ str_replace(.x, "(\\d)(?=_)", "\\1\n%")) |>
     flextable::flextable() |>
     flextable::separate_header() |>

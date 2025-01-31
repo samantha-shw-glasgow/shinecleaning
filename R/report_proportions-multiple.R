@@ -27,7 +27,7 @@ summary_proportions_multiple <-
             dplyr::filter(.data$gender %in% genders, .data$class %in% concat_class) |>
             dplyr::select("gender", "class", !!!names(varslist)) |>
             dplyr::mutate(class = stringr::str_flatten(concat_class, collapse = ", ", last = " and ")) |>
-            dplyr::group_by(gender, class) |>
+            dplyr::group_by(.data$gender, .data$class) |>
             dplyr::mutate(
               dplyr::across(dplyr::everything(), ~dplyr::na_if(.x, "Prefer not to say")),
               dplyr::across(dplyr::everything(), success),
@@ -50,7 +50,7 @@ summary_proportions_multiple <-
     all <- data |>
       dplyr::mutate(class = "All", gender = dplyr::if_else(.gender_split, "All", "All pupils")) |>
       dplyr::select("gender", "class", !!!names(varslist)) |>
-      dplyr::group_by(gender, class) |>
+      dplyr::group_by(.data$gender, .data$class) |>
       dplyr::mutate(
         dplyr::across(dplyr::everything(), ~dplyr::na_if(.x, "Prefer not to say")),
         dplyr::across(dplyr::everything(), success),
@@ -71,7 +71,7 @@ summary_proportions_multiple <-
             values_to = "numerator"
           ) |>
           tidyr::pivot_wider(names_from = "x", values_from = "numerator") |>
-          dplyr::relocate("denominator", var, numerator, .after = everything()) |>
+          dplyr::relocate("denominator", "var", "numerator", .after = everything()) |>
           dplyr::rowwise() |>
           dplyr::mutate(
             labels = stringr::str_wrap(varslist[[.data$var]][1], 12),

@@ -93,7 +93,7 @@ get_hbsc_prop <- function(classes, success, var = NULL) {
         .data$q %in% var,
         .data$class %in% classes
       ) |>
-      dplyr::group_by(class, gender) |>
+      dplyr::group_by(.data$class, .data$gender) |>
       dplyr::mutate(prop = sum(.data$prop))
   } else {
     data <- SHINEcleaning::hbsc_scotland_modified |>
