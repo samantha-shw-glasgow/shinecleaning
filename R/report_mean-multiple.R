@@ -99,7 +99,7 @@ bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
         group = .data$gender
       )
     ) +
-    ggplot2::geom_bar(ggplot2::aes(alpha = .data$censored),
+    ggplot2::geom_bar_t(ggplot2::aes(alpha = .data$censored),
       stat = "identity",
       width = 0.7,
       position = ggplot2::position_dodge(width = 0.7)
@@ -164,7 +164,7 @@ bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
         group = .data$gender
       )
     ) +
-    ggplot2::geom_bar(ggplot2::aes(alpha = .data$censored),
+    ggplot2::geom_bar_t(ggplot2::aes(alpha = .data$censored),
       stat = "identity",
       position = ggplot2::position_dodge(width = 0.7)
     ) +
