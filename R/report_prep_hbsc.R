@@ -4,7 +4,7 @@
 #' @param create_cols copy existing p7, s2 and s4 columns to fill missing years
 #'
 #' @return long-format dataframe
-prep_hbsc <- function(dat = hbsc_scotland, create_cols = FALSE) {
+prep_hbsc <- function(dat, create_cols = FALSE) {
   if (create_cols) {
     dat <- dat |>
       dplyr::mutate(
