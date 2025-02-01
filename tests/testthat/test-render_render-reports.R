@@ -41,7 +41,7 @@ test_that("primary report - missing class", {
   pri_test_a <- readr::read_csv(test_path("raw_data", "pri_test_small.csv"),
     show_col_types = FALSE
   )[-1:-2, ] |>
-    mutate(class = "P7")
+    dplyr::mutate(class = "P7")
 
   out_dir <- tempdir()
 
@@ -61,7 +61,7 @@ test_that("primary report - missing class", {
 test_that("secondary report - missing upper classes", {
   sec_test_a <- readr::read_csv(test_path("raw_data", "sec_test_large.csv"),
                                 show_col_types = FALSE)[-1:-2, ] |>
-    filter(class %in% c("S1", "S2", "S3"))
+    dplyr::filter(class %in% c("S1", "S2", "S3"))
 
   out_dir <- tempdir()
 

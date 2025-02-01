@@ -32,7 +32,6 @@ date_range <- function(input_data) {
 #'
 #' @return A table (markdown) detailing response rate
 #'
-#' @import flextable
 #'
 tab_responses <- function(input_data, n_invited) {
   n_responses <- nrow(input_data)
@@ -45,12 +44,12 @@ tab_responses <- function(input_data, n_invited) {
     "Number of pupils who did not take part", n_missing |> as.character(),
     "Overall response rate", sprintf("%.0f%%", perc_rate)
   ) |>
-    flextable() |>
-    delete_part("header") |>
-    theme_vanilla() |>
+    flextable::flextable() |>
+    flextable::delete_part("header") |>
+    flextable::theme_vanilla() |>
     # border_inner_h(officer::fp_border("gray", width = 1)) |>
-    set_table_properties(layout = "autofit", width = 1) |>
-    set_caption("Response rate", align_with_table = FALSE)
+    flextable::set_table_properties(layout = "autofit", width = 1) |>
+    flextable::set_caption("Response rate", align_with_table = FALSE)
 }
 
 #' Table of class by gender counts
@@ -59,8 +58,6 @@ tab_responses <- function(input_data, n_invited) {
 #' @param inc_gender List of genders to include in table
 #' @param inc_classes List of classes to include in table
 #'
-#' @importFrom tidyr pivot_wider
-#' @import flextable
 #'
 #' @return A flextable giving gender by class counts
 tab_categories <- function(data, inc_gender, inc_classes) {
@@ -88,16 +85,16 @@ tab_categories <- function(data, inc_gender, inc_classes) {
 
   cat("\n")
 
-  inc_classes <- list_c(as.list(inc_classes))
+  inc_classes <- purrr::list_c(as.list(inc_classes))
 
   data |>
-    filter(gender %in% inc_gender, class %in% inc_classes) |>
-    count(.data$gender, `Year group` = class) |>
-    pivot_wider(names_from = gender, values_from = n) |>
-    flextable() |>
-    theme_vanilla() |>
-    set_table_properties(layout = "autofit", width = 1) |>
-    set_caption(align_with_table = FALSE)
+    dplyr::filter(.data$gender %in% inc_gender, .data$class %in% inc_classes) |>
+    dplyr::count(.data$gender, `Year group` = .data$class) |>
+    tidyr::pivot_wider(names_from = "gender", values_from = "n") |>
+    flextable::flextable() |>
+    flextable::theme_vanilla() |>
+    flextable::set_table_properties(layout = "autofit", width = 1) |>
+    flextable::set_caption(align_with_table = FALSE)
 }
 
 #' Create a vector of nicely named, class groupings
@@ -121,7 +118,7 @@ group_classes <- function(classes, groupings) {
         return("No group")
       }
       if (length(class_group) > 1) {
-        warn("Multiple groups found for class ", old_class)
+        rlang::warn("Multiple groups found for class ", old_class)
         return("Multiple groups")
       }
 
@@ -136,8 +133,6 @@ group_classes <- function(classes, groupings) {
 #' @param inc_gender List of genders to include in table
 #' @param class_groupings List of groups of classes to include in table
 #'
-#' @importFrom tidyr pivot_wider
-#' @import flextable
 #'
 #' @return A flextable giving gender by grouped class counts
 tab_categories_grouped <- function(data, inc_gender, class_groupings) {
@@ -173,14 +168,14 @@ tab_categories_grouped <- function(data, inc_gender, class_groupings) {
   cat("\n")
 
   data |>
-    filter(gender %in% inc_gender, class %in% unlist(class_groupings)) |>
-    mutate(
+    dplyr::filter(.data$gender %in% inc_gender, .data$class %in% unlist(class_groupings)) |>
+    dplyr::mutate(
       classes_grouped = group_classes(class, class_groupings)
       ) |>
-    count(gender, `Year group` = classes_grouped) |>
-    pivot_wider(names_from = gender, values_from = n) |>
-    flextable() |>
-    theme_vanilla() |>
-    set_table_properties(layout = "autofit", width = 1) |>
-    set_caption(align_with_table = FALSE)
+    dplyr::count(.data$gender, `Year group` = .data$classes_grouped) |>
+    tidyr::pivot_wider(names_from = "gender", values_from = "n") |>
+    flextable::flextable() |>
+    flextable::theme_vanilla() |>
+    flextable::set_table_properties(layout = "autofit", width = 1) |>
+    flextable::set_caption(align_with_table = FALSE)
 }

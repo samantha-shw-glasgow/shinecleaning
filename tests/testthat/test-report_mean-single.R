@@ -14,7 +14,7 @@ test_that("mean single summary works", {
     "S5", "Girls", 4,
     "S6", "Girls", 4
   ) |>
-    mutate(score = as.character(score))
+    dplyr::mutate(score = as.character(score))
 
   input_data_bad <- tibble::tribble(
     ~class, ~gender, ~score,
@@ -32,7 +32,7 @@ test_that("mean single summary works", {
     "S6", "Girls", 4,
     "S6", "Girls", NA_integer_
   ) |>
-    mutate(score = as.character(score))
+    dplyr::mutate(score = as.character(score))
 
   input_data_pnts <- tibble::tribble(
     ~class, ~gender, ~score,
@@ -93,7 +93,7 @@ test_that("mean single summary works", {
     "Girls", 3.0, 3, "S1, S2 and S3",
     "Girls", 4.0, 3, "S4, S5 and S6",
   ) |>
-    mutate(class = factor(class, levels = c("S1, S2 and S3", "S4, S5 and S6", "All")))
+    dplyr::mutate(class = factor(class, levels = c("S1, S2 and S3", "S4, S5 and S6", "All")))
 
   expected_twogroup_one_nd <- tibble::tribble(
     ~gender, ~mean_score, ~denom, ~class,
@@ -103,7 +103,7 @@ test_that("mean single summary works", {
     "Girls", 3.0, 3, "S1, S2 and S3",
     "Girls", 4.0, 3, "S4, S5 and S6",
   ) |>
-    mutate(class = factor(class, levels = c("S1, S2 and S3", "S4, S5 and S6", "All")))
+    dplyr::mutate(class = factor(class, levels = c("S1, S2 and S3", "S4, S5 and S6", "All")))
 
   result_twogroup <- input_data |>
     summary_mean_single_var(
@@ -156,20 +156,20 @@ test_that("mean single summary works", {
   expect_equal(result_twogroup_gender_pnts, expected_twogroup_one_nd)
   expect_equal(result_twogroup_class_na, expected_twogroup_one_nd)
 
-  expected_sixgroup <- bind_rows(
+  expected_sixgroup <- dplyr::bind_rows(
     tibble::tribble(
       ~gender, ~mean_score, ~denom, ~class,
       "All", 2.5, 12, "All",
     ),
-    input_data |> mutate(
+    input_data |> dplyr::mutate(
       gender = gender,
       mean_score = as.numeric(score),
-      denom = n(),
+      denom = dplyr::n(),
       class = class,
       .by = c("gender", "class"), .keep = "none"
     )
   ) |>
-    mutate(class = factor(class, levels = c("S1", "S2", "S3", "S4", "S5", "S6", "All")))
+    dplyr::mutate(class = factor(class, levels = c("S1", "S2", "S3", "S4", "S5", "S6", "All")))
 
 
   result_sixgroup <- input_data |>
