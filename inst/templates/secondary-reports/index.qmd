@@ -60,6 +60,7 @@ is_la_report <- params$is_la_report
 term <- params$term
 
 library(tidyverse)
+library(flextable)
 
 # In secondary reports only: this becomes a list of vectors, grouping classes in
 # low number situations

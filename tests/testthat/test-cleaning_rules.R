@@ -52,7 +52,7 @@ test_validator_with_data <- function(validator_fun, filename) {
   differences <- 0
   for (i in 1:10) {
     set.seed(i)
-    data <- slice(data, sample(1:n()))
+    data <- dplyr::slice(data, sample(1:dplyr::n()))
     result <- validator_fun(data)
     differences <- differences +
       length(waldo::compare(result$include, data$expected_include)) +

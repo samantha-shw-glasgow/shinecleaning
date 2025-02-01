@@ -7,6 +7,8 @@
 #' @param classes List of classes to split by
 #' @param .gender_split `TRUE`/`FALSE` - split by gender when sufficient numbers of responses
 #'
+#' @importFrom rlang .data
+#'
 #' @return A summary table of % of 'success' in each group
 #'
 summary_proportions_multiple <-
@@ -20,22 +22,22 @@ summary_proportions_multiple <-
 
     if (.gender_split) {
       subgroups <-
-        map(classes, \(concat_class) {
+        purrr::map(classes, \(concat_class) {
           class_summary <- data |>
-            filter(gender %in% genders, class %in% concat_class) |>
-            select(gender, class, !!!names(varslist)) |>
-            mutate(class = str_flatten(concat_class, collapse = ", ", last = " and ")) |>
-            group_by(gender, class) |>
-            mutate(
-              across(everything(), ~na_if(.x, "Prefer not to say")),
-              across(everything(), success),
+            dplyr::filter(.data$gender %in% genders, .data$class %in% concat_class) |>
+            dplyr::select("gender", "class", !!!names(varslist)) |>
+            dplyr::mutate(class = stringr::str_flatten(concat_class, collapse = ", ", last = " and ")) |>
+            dplyr::group_by(.data$gender, .data$class) |>
+            dplyr::mutate(
+              dplyr::across(dplyr::everything(), ~dplyr::na_if(.x, "Prefer not to say")),
+              dplyr::across(dplyr::everything(), success),
               ) |>
-            summarise(across(everything(), list(numerator = ~sum(.x, na.rm = TRUE),
+            dplyr::summarise(dplyr::across(dplyr::everything(), list(numerator = ~sum(.x, na.rm = TRUE),
                                                 denominator = how_many_valid),
                              .names = "{.col}__{.fn}"),
               .groups = "drop"
             ) |>
-            arrange(gender)
+            dplyr::arrange(.data$gender)
 
           if (nrow(class_summary) == 0) {
             NULL
@@ -46,38 +48,38 @@ summary_proportions_multiple <-
     }
 
     all <- data |>
-      mutate(class = "All", gender = if_else(.gender_split, "All", "All pupils")) |>
-      select(gender, class, !!!names(varslist)) |>
-      group_by(gender, class) |>
-      mutate(
-        across(everything(), ~na_if(.x, "Prefer not to say")),
-        across(everything(), success),
+      dplyr::mutate(class = "All", gender = dplyr::if_else(.gender_split, "All", "All pupils")) |>
+      dplyr::select("gender", "class", !!!names(varslist)) |>
+      dplyr::group_by(.data$gender, .data$class) |>
+      dplyr::mutate(
+        dplyr::across(dplyr::everything(), ~dplyr::na_if(.x, "Prefer not to say")),
+        dplyr::across(dplyr::everything(), success),
         ) |>
-      summarise(across(everything(), list(numerator = ~sum(.x, na.rm = TRUE),
+      dplyr::summarise(dplyr::across(dplyr::everything(), list(numerator = ~sum(.x, na.rm = TRUE),
                                           denominator = how_many_valid),
                        .names = "{.col}__{.fn}"),
                 .groups = "drop"
       )
 
     c(subgroups, list(all)) |>
-      compact() |>
-      map(\(class_data) {
+      purrr::compact() |>
+      purrr::map(\(class_data) {
         class_data |>
-          tidyr::pivot_longer(-c(gender, class),
+          tidyr::pivot_longer(-c("gender", "class"),
             names_to = c("var", "x"),
             names_sep = "__",
             values_to = "numerator"
           ) |>
-          tidyr::pivot_wider(names_from = x, values_from = numerator) |>
-          dplyr::relocate(denominator, var, numerator, .after = everything()) |>
-          rowwise() |>
-          mutate(
+          tidyr::pivot_wider(names_from = "x", values_from = "numerator") |>
+          dplyr::relocate("denominator", "var", "numerator", .after = dplyr::everything()) |>
+          dplyr::rowwise() |>
+          dplyr::mutate(
             labels = stringr::str_wrap(varslist[[.data$var]][1], 12),
             prop = .data$numerator / .data$denominator
           ) |>
-          filter(!is.na(.data$gender)) |>
-          ungroup() |>
-          mutate(labels = forcats::fct_reorder(.data$labels, .data$prop))
+          dplyr::filter(!is.na(.data$gender)) |>
+          dplyr::ungroup() |>
+          dplyr::mutate(labels = forcats::fct_reorder(.data$labels, .data$prop))
       })
   }
 
@@ -85,15 +87,17 @@ summary_proportions_multiple <-
 #'
 #' @param summary_data Data produced by `summary_proportions_multiple`
 #'
+#' @import ggplot2
+#'
 #' @return A ggplot2 graph
 bar_proportions_multiple <- function(summary_data) {
   class <- unique(summary_data$class)
   genders <- unique(summary_data$gender)
 
   summary_data |>
-    mutate(
-      prop = if_else(.data$censored, 0.01, .data$prop),
-      bar_lab_main = if_else(
+    dplyr::mutate(
+      prop = dplyr::if_else(.data$censored, 0.01, .data$prop),
+      bar_lab_main = dplyr::if_else(
         .data$censored,
         "*",
         scales::percent(.data$prop, suffix = "%", accuracy = 1)
@@ -146,11 +150,11 @@ bar_proportions_multiple <- function(summary_data) {
       hjust = -0.3,
       colour = "black",
       position = position_dodge(width = 0.8),
-      size = if_else(length(genders) > 1, 2.5, 3.5)
+      size = dplyr::if_else(length(genders) > 1, 2.5, 3.5)
     ) +
     coord_cartesian(clip = "off") +
     labs(
-      caption = if_else(any(summary_data$censored), "* Numbers too low to show", ""),
+      caption = dplyr::if_else(any(summary_data$censored), "* Numbers too low to show", ""),
       title = paste(class, "pupils")
     )
 }

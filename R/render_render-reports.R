@@ -50,7 +50,7 @@ render_report <- function(survey_data,
   survey_data <- survey_data[grepl("^\\d", survey_data$`RecordedDate`), ] |>
     data_prep(report_type = survey_type)
 
-  report_name <- if_else(!is.na(school_name), school_name, local_authority_name)
+  report_name <- dplyr::if_else(!is.na(school_name), school_name, local_authority_name)
 
   is_la <- !is.na(local_authority_name)
 

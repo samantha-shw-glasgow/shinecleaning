@@ -119,7 +119,7 @@ cleanUpload_server <- function(id) {
           return(NULL)
         } else {
           uploaded_data() |>
-            dplyr::filter(`Keep row?` == 1) |>
+            dplyr::filter(.data$`Keep row?` == 1) |>
             dplyr::select(-c("Keep row?", "Error messages", "Reviewer notes"))
         }
       })

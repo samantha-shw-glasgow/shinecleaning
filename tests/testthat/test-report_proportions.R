@@ -24,9 +24,9 @@ input_data <- function(bad_val = NULL, gender = "Girls", class = "S1") {
   )
 
   if (!is.null(bad_val)) {
-    bind_rows(
+    dplyr::bind_rows(
       out,
-      tibble(gender = gender, class = class, health = bad_val)
+      tibble::tibble(gender = gender, class = class, health = bad_val)
     )
   } else {
     out
@@ -38,16 +38,16 @@ input_data_full <- function(bad_val = NULL) {
 
   set.seed(100)
 
-  out <- tibble(
+  out <- tibble::tibble(
     class = rep(paste0("S", 1:6), each = 20),
     gender = rep(c("Boys", "Girls"), times = 60),
     health = sample(c("Excellent", "Fair", "Good", "Poor"), 120, replace = TRUE)
   )
 
   if (!is.null(bad_val)) {
-    bind_rows(
+    dplyr::bind_rows(
       out,
-      tibble(class = "S1", gender = "Girls", health = bad_val)
+      tibble::tibble(class = "S1", gender = "Girls", health = bad_val)
     )
   } else {
     out
@@ -69,7 +69,7 @@ describe("collapsed summary", {
       # "S6",   "All",    4,          8,
       "All", "All pupils", 9, 20,
     ) |>
-      mutate(class = forcats::fct_inorder(class))
+      dplyr::mutate(class = forcats::fct_inorder(class))
     result <- create_collapsed_summary(
       input_data(),
       health,
@@ -89,7 +89,7 @@ describe("collapsed summary", {
       "S6",   "Girls",  3,          5,
       "All",  "All",    9,          20,
     ) |>
-      mutate(class = forcats::fct_inorder(class))
+      dplyr::mutate(class = forcats::fct_inorder(class))
     result <- create_collapsed_summary(
       input_data(),
       health,
@@ -109,7 +109,7 @@ describe("collapsed summary", {
       "S6",   "Girls",  3,          5,
       "All",  "All",    9,          20,
     ) |>
-      mutate(class = forcats::fct_inorder(class))
+      dplyr::mutate(class = forcats::fct_inorder(class))
     result <- create_collapsed_summary(
       input_data(NA_character_),
       health,
@@ -129,7 +129,7 @@ describe("collapsed summary", {
       "S6",   "Girls",  3,          5,
       "All",  "All",    9,          20,
     ) |>
-      mutate(class = forcats::fct_inorder(class))
+      dplyr::mutate(class = forcats::fct_inorder(class))
     result <- create_collapsed_summary(
       input_data("Prefer not to say"),
       health,
@@ -143,21 +143,21 @@ describe("collapsed summary", {
   it("works as 2-grouped classes", {
 
     expected <- input_data_full() |>
-      mutate(class = forcats::fct_collapse(class,
+      dplyr::mutate(class = forcats::fct_collapse(class,
         "S1, S2 and S3" = classes_s2[[1]],
         "S4, S5 and S6" = classes_s2[[2]]
       ) |> as.character()) |>
-      summarise(
+      dplyr::summarise(
         numerator = sum(health %in% c("Excellent", "Good")),
-        denominator = n(),
+        denominator = dplyr::n(),
         .by = c("class", "gender")
       ) |>
       (
-        \(d) summarise(d, across(c(
+        \(d) dplyr::summarise(d, dplyr::across(c(
           numerator, denominator
-        ), sum)) |> mutate(gender = "All", class = "All") |> bind_rows(d, x = _)
+        ), sum)) |> dplyr::mutate(gender = "All", class = "All") |> dplyr::bind_rows(d, x = _)
       )() |>
-      mutate(class = forcats::fct_inorder(class))
+      dplyr::mutate(class = forcats::fct_inorder(class))
 
     result <- create_collapsed_summary(
       input_data_full(),
@@ -190,7 +190,7 @@ describe("full summary", {
       "All",  "All",    "Fair",       4,          20,
       "All",  "All",    "Poor",       7,          20,
     ) |>
-      mutate(
+      dplyr::mutate(
         class = forcats::fct_inorder(class),
         answer = factor(answer, levels = c("Poor", "Fair", "Good", "Excellent"))
       )
@@ -227,7 +227,7 @@ describe("full summary", {
       "All",  "All",    "Fair",       4,          20,
       "All",  "All",    "Poor",       7,          20,
     ) |>
-      mutate(
+      dplyr::mutate(
         class = forcats::fct_inorder(class),
         answer = factor(answer, levels = c("Poor", "Fair", "Good", "Excellent"))
       )
@@ -244,24 +244,24 @@ describe("full summary", {
   it("works as 2-grouped classes", {
 
     expected <- input_data_full() |>
-      mutate(
+      dplyr::mutate(
         class = forcats::fct_collapse(class, "S1, S2 and S3" = classes_s2[[1]], "S4, S5 and S6" = classes_s2[[2]]) |> as.character()
       ) |>
-      summarise(numerator = n(),
+      dplyr::summarise(numerator = dplyr::n(),
                 .by = c("class", "gender", "health")) |>
-      mutate(denominator = sum(numerator),
+      dplyr::mutate(denominator = sum(numerator),
              .by = c("gender", "class")) |>
       (
-        \(d) summarise(d, across(c(
+        \(d) dplyr::summarise(d, dplyr::across(c(
           numerator, denominator
-        ), sum), .by = "health") |> mutate(gender = "All", class = "All") |> bind_rows(d, x = _)
+        ), sum), .by = "health") |> dplyr::mutate(gender = "All", class = "All") |> dplyr::bind_rows(d, x = _)
       )() |>
-      mutate(
+      dplyr::mutate(
         class = forcats::fct_inorder(class),
         health = factor(health, levels = c("Poor", "Fair", "Good", "Excellent"))
       ) |>
-      rename(answer = health) |>
-      arrange(class, gender, desc(answer))
+      dplyr::rename(answer = health) |>
+      dplyr::arrange(class, gender, dplyr::desc(answer))
 
     result <- create_full_summary(
       input_data_full(),
@@ -278,24 +278,24 @@ describe("full summary", {
   it("works as 2-grouped classes, ignoring NA values", {
 
     expected <- input_data_full() |>
-      mutate(
+      dplyr::mutate(
         class = forcats::fct_collapse(class, "S1, S2 and S3" = classes_s2[[1]], "S4, S5 and S6" = classes_s2[[2]]) |> as.character()
       ) |>
-      summarise(numerator = n(),
+      dplyr::summarise(numerator = dplyr::n(),
                 .by = c("class", "gender", "health")) |>
-      mutate(denominator = sum(numerator),
+      dplyr::mutate(denominator = sum(numerator),
              .by = c("gender", "class")) |>
       (
-        \(d) summarise(d, across(c(
+        \(d) dplyr::summarise(d, dplyr::across(c(
           numerator, denominator
-        ), sum), .by = "health") |> mutate(gender = "All", class = "All") |> bind_rows(d, x = _)
+        ), sum), .by = "health") |> dplyr::mutate(gender = "All", class = "All") |> dplyr::bind_rows(d, x = _)
       )() |>
-      mutate(
+      dplyr::mutate(
         class = forcats::fct_inorder(class),
         health = factor(health, levels = c("Poor", "Fair", "Good", "Excellent"))
       ) |>
-      rename(answer = health) |>
-      arrange(class, gender, desc(answer))
+      dplyr::rename(answer = health) |>
+      dplyr::arrange(class, gender, dplyr::desc(answer))
 
     result <- create_full_summary(
       input_data_full(NA_character_),
@@ -334,7 +334,7 @@ describe("full summary", {
       "All",  "All",    "Fair",       4,          20,
       "All",  "All",    "Poor",       7,          20,
     ) |>
-      mutate(
+      dplyr::mutate(
         class = forcats::fct_inorder(class),
         answer = factor(answer, levels = c("Poor", "Fair", "Good", "Excellent"))
       )
@@ -374,7 +374,7 @@ describe("full summary", {
       "All",  "All",    "Fair",       4,          20,
       "All",  "All",    "Poor",       7,          20,
     ) |>
-      mutate(
+      dplyr::mutate(
         class = forcats::fct_inorder(class),
         answer = factor(answer, levels = c("Poor", "Fair", "Good", "Excellent"))
       )
@@ -413,7 +413,7 @@ describe("full summary", {
       "All",  "All",    "Fair",       4,          21,
       "All",  "All",    "Poor",       8,          21,
     ) |>
-      mutate(
+      dplyr::mutate(
         class = forcats::fct_inorder(class),
         answer = factor(answer, levels = c("Poor", "Fair", "Good", "Excellent"))
       )
@@ -453,7 +453,7 @@ describe("full summary", {
       "All",  "All",    "Fair",       4,          21,
       "All",  "All",    "Poor",       8,          21,
     ) |>
-      mutate(
+      dplyr::mutate(
         class = forcats::fct_inorder(class),
         answer = factor(answer, levels = c("Poor", "Fair", "Good", "Excellent"))
       )
