@@ -64,19 +64,12 @@ tab_categories <- function(data, inc_gender, inc_classes) {
   another_way <- sum(data$gender == "In another way", na.rm = TRUE)
   pnts <- sum(is.na(data$gender) | data$gender == "Prefer not to say")
   no_class <- sum(is.na(data$class) | data$class == "Prefer not to say")
+  no_gender <- another_way + pnts
 
-  if (another_way) {
+  if (no_gender) {
     cat(
       glue::glue(
-        "{another_way} pupil{ifelse(another_way > 1,'s','')}",
-        " identified 'In another way'. "
-      )
-    )
-  }
-  if (pnts) {
-    cat(
-      glue::glue(
-        "{pnts} pupil{ifelse(pnts > 1,'s','')}",
+        "{no_gender} pupil{ifelse(no_gender > 1,'s','')}",
         " did not provide details of their gender. "
       )
     )
