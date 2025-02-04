@@ -13,8 +13,6 @@
 #'
 #' The score-calculating functions return the dataset with relevant columns appended:
 #'
-#' `completed_date`: The date the survey was completed
-#'
 #' `who_score`:  WHO 5-item wellbeing score (`who_score` variable) and categorical breakdown (`who_cat`: low/good)
 #'
 #' `mm_score`: 'Me and My feelings' score for primary schools
@@ -49,10 +47,9 @@ data_prep <- function(survey_data, report_type = "primary") {
   survey_out <- survey_data |>
     dplyr::filter(.data$consent == "Yes, I am happy to take part") |>
     dplyr::mutate(
-      completed_date = as.Date(.data$RecordedDate),
       gender = .data$gender |>
       stringr::str_replace("(?<=(Boy|Girl))$", "s")) |> # pluralise for reporting
-    dplyr::relocate("completed_date", .before = "StartDate") |>
+    dplyr::relocate("completed_date", .before = "consent") |>
     who_score()
 
   if (report_type == "primary") {
