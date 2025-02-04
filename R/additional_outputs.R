@@ -21,7 +21,10 @@ report_data_spreadsheet <- function(data, filename, report_type) {
     "postcode_5_TEXT",
     "dobmnth",
     "dobday",
-    "dobyr"
+    "dobyr",
+    "date_of_birth",
+    "School contact",
+    "School name"
   )
 
   #make spreadsheet
@@ -29,6 +32,7 @@ report_data_spreadsheet <- function(data, filename, report_type) {
   openxlsx::addWorksheet(wb, "Sheet 1")
   proc_data |>
     dplyr::select(-dplyr::any_of(columns_to_remove)) |>
+    dplyr::relocate(dplyr::any_of(c("Local Authority", "School ID code")), .before = "age") |>
   openxlsx::writeData(wb, 1, x = _)
   openxlsx::saveWorkbook(wb, filename)
 }
