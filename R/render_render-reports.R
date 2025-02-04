@@ -6,6 +6,7 @@
 #' @param survey_type The report type - 'primary'/'secondary'
 #' @param school_name If a school report, the school's name
 #' @param local_authority_name If a local authority report, the LA's name (note not compatible with school report/name argument)
+#' @param cluster_label Type of school grouping, e.g. local authority, primary cluster. Only used for 'local authority' type reports
 #' @param term Name of term to print on report
 #' @param number_invited Number invited to complete the survey
 #' @param output_location Location of file output (defaults to working directory)
@@ -18,6 +19,7 @@ render_report <- function(survey_data,
                           survey_type,
                           school_name = NA,
                           local_authority_name = NA,
+                          cluster_label = NULL,
                           term = NULL,
                           number_invited = NULL,
                           output_location = NULL,
@@ -69,6 +71,8 @@ render_report <- function(survey_data,
     )
 
   if (!is.null(classes)) params$classes <- classes
+
+  if(is_la) params$cluster_label <- cluster_label
 
   rmarkdown::render(
     system.file("templates", template, package = "SHINEcleaning"),
