@@ -1,7 +1,13 @@
 create_spreadsheet <- function(data, file) {
+
+  pseud_id_columns <- c(
+    "Local Authority",
+    "School ID code"
+  )
+
   added_columns <- c(
-    "age",
-    "completed_date"
+    "completed_date",
+    "age"
   )
   columns_to_redact <- c(
     "StartDate",
@@ -19,10 +25,13 @@ create_spreadsheet <- function(data, file) {
     "dobmnth",
     "dobday",
     "dobyr",
-    "date_of_birth"
+    "date_of_birth",
+    "School contact",
+    "School name"
   )
   # Move columns to redact and added columns to the left of the spreadsheet
   data <- data |>
+    dplyr::relocate(dplyr::any_of(pseud_id_columns), .before = "ResponseId") |>
     dplyr::relocate(dplyr::any_of(added_columns), .after = "Reviewer notes") |>
     dplyr::relocate(dplyr::any_of(columns_to_redact), .after = "Reviewer notes")
 
