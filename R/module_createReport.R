@@ -120,6 +120,9 @@ createReport_server <- function(id, data) {
                   width = "100%"
                 ),
                 textInput(ns("name"), "Local Authority / cluster name",
+                          width = "100%"),
+                textInput(ns("cluster_label"), "Group type (e.g. Local Authority,  Cluster, etc.)",
+                          value = "Local Authority",
                           width = "100%")
               )
             },
