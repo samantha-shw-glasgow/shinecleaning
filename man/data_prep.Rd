@@ -37,8 +37,6 @@ fas_score(survey_data)
 
 The score-calculating functions return the dataset with relevant columns appended:
 
-\code{completed_date}: The date the survey was completed
-
 \code{who_score}:  WHO 5-item wellbeing score (\code{who_score} variable) and categorical breakdown (\code{who_cat}: low/good)
 
 \code{mm_score}: 'Me and My feelings' score for primary schools
