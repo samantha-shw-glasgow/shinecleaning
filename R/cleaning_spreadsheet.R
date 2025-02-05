@@ -31,8 +31,8 @@ create_spreadsheet <- function(data, file) {
   )
   # Move columns to redact and added columns to the left of the spreadsheet
   data <- data |>
-    dplyr::relocate(dplyr::any_of(pseud_id_columns), .before = "ResponseId") |>
     dplyr::relocate(dplyr::any_of(added_columns), .after = "Reviewer notes") |>
+    dplyr::relocate(dplyr::any_of(pseud_id_columns), .after = "Reviewer notes") |>
     dplyr::relocate(dplyr::any_of(columns_to_redact), .after = "Reviewer notes")
 
   wb <- openxlsx::createWorkbook()
