@@ -44,10 +44,10 @@ data_prep <- function(survey_data, report_type = "primary") {
   #
   # It should also filter refusal to complete survey
 
-  if (!("completed_date" %in% colnames(survey_data)) &
+  if (!("completed_date" %in% colnames(survey_data)) &&
       ("RecordedDate" %in% colnames(survey_data))) {
     survey_data$completed_date <- as.Date(survey_data$RecordedDate)
-  } else if (!("completed_date" %in% colnames(survey_data)) &
+  } else if (!("completed_date" %in% colnames(survey_data)) &&
              !("RecordedDate" %in% colnames(survey_data))) {
     stop("No date column found - please include `completed_date` or `RecordedDate`")
   }
