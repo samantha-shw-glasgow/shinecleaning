@@ -72,7 +72,7 @@ render_report <- function(survey_data,
 
   if (!is.null(classes)) params$classes <- classes
 
-  if(is_la) params$cluster_label <- cluster_label
+  if (is_la) params$cluster_label <- cluster_label
 
   rmarkdown::render(
     system.file("templates", template, package = "SHINEcleaning"),
