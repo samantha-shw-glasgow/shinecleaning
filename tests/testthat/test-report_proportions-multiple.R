@@ -20,9 +20,9 @@ input_data <- function(bad_val = NULL, gender = "Girls", class = "P7") {
   )
 
   if (!is.null(bad_val)) {
-    bind_rows(
+    dplyr::bind_rows(
       out,
-      tibble(gender = gender, class = class, health1 = bad_val, health2 = bad_val)
+      tibble::tibble(gender = gender, class = class, health1 = bad_val, health2 = bad_val)
     )
   } else {
     out
@@ -59,10 +59,10 @@ describe("report multiple proportions", {
   )
 
   expected_c <- list(expected_p6, expected_p7, expected_all) |>
-    map(~mutate(.x, labels = factor(labels) |> fct_rev()))
+    purrr::map(~dplyr::mutate(.x, labels = factor(labels) |> forcats::fct_rev()))
 
   expected_one_class <- list(expected_p7, expected_all_oneclass) |>
-    map(~mutate(.x, labels = factor(labels) |> fct_rev()))
+    purrr::map(~dplyr::mutate(.x, labels = factor(labels) |> forcats::fct_rev()))
 
   classes <- c("P6", "P7")
 
@@ -117,7 +117,7 @@ describe("report multiple proportions", {
     )
 
   expected_one_nd <- list(expected_p6, expected_p7, expected_all_one_not_declared) |>
-    map(~mutate(.x, labels = factor(labels) |> fct_rev()))
+    purrr::map(~dplyr::mutate(.x, labels = factor(labels) |> forcats::fct_rev()))
 
 
   it("handles class not declared", {
@@ -152,7 +152,7 @@ describe("report multiple proportions", {
 
     result_missing_class <-
       summary_proportions_multiple(
-        input_data() |> filter(class == "P7"),
+        input_data() |> dplyr::filter(class == "P7"),
         list(health1 = "Health var 1", health2 = "Health var 2"),
         success = ~ .x == "Good",
         classes = classes

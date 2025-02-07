@@ -72,7 +72,10 @@ dataCleaning_server <- function(id, data) {
       clean_data <- reactive({
         validators <- validator_functions[input$validator_selection]
         apply_cleaning_rules(data(), validators = validators) |>
-          mutate(age = calculate_age(RecordedDate, dobyr, dobmnth, dobday))
+          dplyr::mutate(
+            completed_date = as.character(lubridate::parse_date_time(.data$RecordedDate, c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M")) |> as.Date()),
+            date_of_birth = as.character(lubridate::ymd(paste(.data$dobyr, .data$dobmnth, .data$dobday), quiet = TRUE)),
+            age = calculate_age(.data$RecordedDate, .data$dobyr, .data$dobmnth, .data$dobday))
       })
 
       return(clean_data) ## - must return reactive dataframe

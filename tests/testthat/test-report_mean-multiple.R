@@ -1,5 +1,5 @@
 test_that("mean by multiple vars", {
-  input_data <- tibble(
+  input_data <- tibble::tibble(
     class = "All",
     gender = "All",
     var1 = 1,
@@ -7,14 +7,14 @@ test_that("mean by multiple vars", {
     var3 = 3
   )
 
-  input_data_bad <- bind_rows(
+  input_data_bad <- dplyr::bind_rows(
     input_data,
-    tibble(class = "All", gender = "All")
+    tibble::tibble(class = "All", gender = "All")
   )
 
-  input_data_pnts <- bind_rows(
-    input_data |> mutate(across(everything(), as.character)),
-    tibble(class = "All", gender = "All",
+  input_data_pnts <- dplyr::bind_rows(
+    input_data |> dplyr::mutate(dplyr::across(dplyr::everything(), as.character)),
+    tibble::tibble(class = "All", gender = "All",
            var1 = "Prefer not to say",
            var2 = "Prefer not to say",
            var3 = "Prefer not to say")
@@ -26,7 +26,7 @@ test_that("mean by multiple vars", {
     "All pupils", "All", "var2", 2, 1L, "Variable 2",
     "All pupils", "All", "var3", 3, 1L, "Variable 3",
   ) |>
-    mutate(labels = fct_inorder(labels)))
+    dplyr::mutate(labels = forcats::fct_inorder(labels)))
 
   result <- summary_mean_multiple_vars(
     input_data,

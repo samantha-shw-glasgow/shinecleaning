@@ -1,6 +1,6 @@
 input_data <- function(bad_val = NULL, gender = "Girls", class = "P7") {
   set.seed(1)
-  out <- tibble(
+  out <- tibble::tibble(
     gender = sample(c("Girls", "Boys"), 30, TRUE),
     class = sample(c("P6", "P7"), 30, TRUE),
     cat1 = sample(c("As expected", "Elevated"), 30, TRUE),
@@ -8,9 +8,9 @@ input_data <- function(bad_val = NULL, gender = "Girls", class = "P7") {
   )
 
   if (!is.null(bad_val)) {
-    bind_rows(
+    dplyr::bind_rows(
       out,
-      tibble(gender = gender, class = class, cat1 = bad_val[1], cat2 = bad_val[2])
+      tibble::tibble(gender = gender, class = class, cat1 = bad_val[1], cat2 = bad_val[2])
     )
   } else {
     out
@@ -27,50 +27,50 @@ varlist <- list(
 )
 
 expected_outs <- function(...) {
-  subgs <- map(classes, \(inc_class) {
-    map(levels, \(level) {
+  subgs <- purrr::map(classes, \(inc_class) {
+    purrr::map(levels, \(level) {
       input_data(...) |>
-        filter(class %in% inc_class, gender %in% genders) |>
-        pivot_longer(c(cat1, cat2),
+        dplyr::filter(class %in% inc_class, gender %in% genders) |>
+        tidyr::pivot_longer(c(cat1, cat2),
                      names_to = "var",
                      values_to = "val") |>
-        summarise(val = sum(val %in% level),
+        dplyr::summarise(val = sum(val %in% level),
                   .by = c("gender", "var")) |>
-        mutate(
+        dplyr::mutate(
           level = level,
           class = inc_class,
           var = paste(gender, varlist[var], sep = "-")
         )
     }) |>
-      reduce(bind_rows) |>
-      select(gender, class, var, level, n = val) |>
-      arrange(gender, class, var) |>
-      mutate(denom = sum(n),
+      purrr::reduce(dplyr::bind_rows) |>
+      dplyr::select(gender, class, var, level, n = val) |>
+      dplyr::arrange(gender, class, var) |>
+      dplyr::mutate(denom = sum(n),
              .by = c("gender", "class", "var")) |>
-      mutate(
+      dplyr::mutate(
         prop = n / denom,
         level = factor(level, levels = levels)
       )
 
   })
 
-  all <- map(levels, \(level) {
+  all <- purrr::map(levels, \(level) {
     input_data(...) |>
-      pivot_longer(c(cat1, cat2), names_to = "var", values_to = "val") |>
-      summarise(val = sum(val %in% level), .by = c("var")) |>
-      mutate(
+      tidyr::pivot_longer(c(cat1, cat2), names_to = "var", values_to = "val") |>
+      dplyr::summarise(val = sum(val %in% level), .by = c("var")) |>
+      dplyr::mutate(
         level = level,
         class = "All",
         gender = "All",
         var = paste(varlist[var])
       )
   }) |>
-    reduce(bind_rows) |>
-    select(gender, class, var, level, n = val) |>
-    arrange(gender, class, var) |>
-    mutate(denom = sum(n),
+    purrr::reduce(dplyr::bind_rows) |>
+    dplyr::select(gender, class, var, level, n = val) |>
+    dplyr::arrange(gender, class, var) |>
+    dplyr::mutate(denom = sum(n),
            .by = c("gender", "class", "var")) |>
-    mutate(
+    dplyr::mutate(
       prop = n / denom,
       level = factor(level, levels = levels)
     )
@@ -154,21 +154,21 @@ describe("share elevated - multiple variables", {
     expected_missing_class <-
       list(expected_outs()[2][[1]],
            expected_outs()[2][[1]] |>
-             mutate(
+             dplyr::mutate(
                gender = "All",
                class = "All",
-               var = str_extract(var, "Variable \\d")) |>
-             summarise(
+               var = stringr::str_extract(var, "Variable \\d")) |>
+             dplyr::summarise(
                n = sum(n),
                denom = sum(denom),
                .by = c("gender", "class", "var", "level")
              ) |>
-             mutate(prop = n / denom) |>
-             select(gender, class, var, level, n, denom, prop)
+             dplyr::mutate(prop = n / denom) |>
+             dplyr::select(gender, class, var, level, n, denom, prop)
     )
 
     result_missing_class <- share_elevated_multiple(
-      input_data() |> filter(class == "P7"),
+      input_data() |> dplyr::filter(class == "P7"),
       varlist = varlist,
       classes = classes,
       genders = c("Boys", "Girls"),

@@ -4,7 +4,7 @@
 test_that("a valid Excel spreadsheet is created", {
   data <- SHINEcleaning::pri_valid_responses |>
     apply_cleaning_rules(list(partial_cases, duplicate_cases, age_year_mismatch)) |>
-    mutate(age = calculate_age(RecordedDate, dobyr, dobmnth, dobday))
+    dplyr::mutate(age = calculate_age(RecordedDate, dobyr, dobmnth, dobday))
 
   output <- create_spreadsheet(data, file.path(tempdir(), "cleaning_spreadsheet.xlsx"))
   expect_no_error(openxlsx::read.xlsx(file.path(tempdir(), "cleaning_spreadsheet.xlsx"), 1))

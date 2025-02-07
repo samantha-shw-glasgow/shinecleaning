@@ -60,6 +60,7 @@ is_la_report <- params$is_la_report
 term <- params$term
 
 library(tidyverse)
+library(flextable)
 
 # In secondary reports only: this becomes a list of vectors, grouping classes in
 # low number situations
@@ -129,7 +130,7 @@ Pupils were asked to rate their own health as either poor/fair/good/excellent.
 
 Figure \@ref(fig:bar-health) shows the percentage of pupils who reported
 their health was \'excellent\' or \'good\'`r if(params$gender_split){" compared with the HBSC Scotland national average"}`.
-`r if(is_la_report){"Table \\@ref(tab:tab-health) shows the responses to this question from all pupils in your Local Authority."}`
+<!-- `r if(is_la_report){"Table \\@ref(tab:tab-health) shows the responses to this question from all pupils in your Local Authority."}` -->
 
 ```{r bar-health, fig.cap="% of pupils who report excellent or good health"}
 input_data |>
@@ -144,7 +145,7 @@ input_data |>
   bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("Good", "Excellent"), "health"))
 ```
 
-```{r tab-health, tab.id="tab-health", tab.cap.pre="Table", tab.cap="Pupil self-rated health", eval=params$is_la_report}
+```{r tab-health, tab.id="tab-health", tab.cap.pre="Table", tab.cap="Pupil self-rated health", eval=FALSE}
 input_data |>
   create_full_summary(
     health,
@@ -431,7 +432,7 @@ input_data |>
 
 Pupils were asked how much they like school at present. Figure \@ref(fig:bar-sch1) shows the
 percentage of pupils who like school \'a lot\' or \'a bit\'`r if(params$gender_split){" compared with the HBSC Scotland national average"}`.
-`r if(is_la_report){"Table \\@ref(tab:tab-sch1) shows the responses to this question from all pupils."}`
+<!-- `r if(is_la_report){"Table \\@ref(tab:tab-sch1) shows the responses to this question from all pupils."}` -->
 
 
 ```{r bar-sch1, fig.cap="% of pupils who like school (a lot or a bit)"}
@@ -447,7 +448,7 @@ input_data |>
   bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("I like it a lot", "I like it a bit"), "sch1"))
 ```
 
-```{r tab-sch1, tab.id="tab-sch1", tab.cap.pre="Table", tab.cap="How much pupils liked school", eval=params$is_la_report}
+```{r tab-sch1, tab.id="tab-sch1", tab.cap.pre="Table", tab.cap="How much pupils liked school", eval=FALSE}
 input_data |>
   create_full_summary(
     sch1,
@@ -473,7 +474,7 @@ input_data |>
 Pupils were asked about how pressured they feel about the schoolwork
 they have to do. Figure \@ref(fig:bar-sch2) shows the proportion of pupils who feel \'a
 lot\' or \'some\' pressure`r if(params$gender_split){" compared with the HBSC Scotland national average"}`.
-`r if(is_la_report){"Table \\@ref(tab:tab-sch2) shows the responses to this question from all pupils."}`
+<!-- `r if(is_la_report){"Table \\@ref(tab:tab-sch2) shows the responses to this question from all pupils."}` -->
 
 ```{r bar-sch2, fig.cap="% of pupils who feel a lot of or some pressure from schoolwork"}
 input_data |>
@@ -488,7 +489,7 @@ input_data |>
   bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("A lot", "Some"), "sch2"))
 ```
 
-```{r tab-sch2, tab.id="tab-sch2", tab.cap.pre="Table", tab.cap="How pressured pupils feel by schoolwork", eval=params$is_la_report}
+```{r tab-sch2, tab.id="tab-sch2", tab.cap.pre="Table", tab.cap="How pressured pupils feel by schoolwork", eval=FALSE}
 input_data |>
   create_full_summary(
     sch2,
@@ -509,7 +510,7 @@ input_data |>
 Pupils were asked \'how often do you feel confident in yourself\'.
 Figure \@ref(fig:bar-sch3) shows the proportion of pupils in your who responded they
 \'always\' or \'often\' feel confident`r if(params$gender_split){" compared with the HBSC Scotland national average"}`.
-`r if(is_la_report){"Table \\@ref(tab:tab-sch3) shows the responses to this question from all pupils."}`
+<!-- `r if(is_la_report){"Table \\@ref(tab:tab-sch3) shows the responses to this question from all pupils."}` -->
 
 ```{r bar-sch3, fig.cap="% of pupils who feel always or often confident"}
 input_data |>
@@ -524,7 +525,7 @@ input_data |>
   bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("Always", "Often"), "sch3"))
 ```
 
-```{r tab-sch3, tab.id="tab-sch3", tab.cap.pre="Table", tab.cap="How often pupils feel confident", eval=params$is_la_report}
+```{r tab-sch3, tab.id="tab-sch3", tab.cap.pre="Table", tab.cap="How often pupils feel confident", eval=FALSE}
 input_data |>
   create_full_summary(
     sch3,
@@ -549,7 +550,7 @@ cat(knitr::knit_child("la_additional_sh.qmd", envir = environment(), quiet = TRU
 Pupils were asked how often they felt lonely during the past week.
 Figure \@ref(fig:bar-loneliness) shows those the percentage of pupils who said they felt lonely
 most or all of the time.
-`r if(is_la_report){"Table \\@ref(tab:tab-loneliness) shows the responses to this question from all pupils."}`
+<!-- `r if(is_la_report){"Table \\@ref(tab:tab-loneliness) shows the responses to this question from all pupils."}` -->
 
 ```{r bar-loneliness, fig.cap="% of pupils who feel lonely most or all of the time"}
 
@@ -565,7 +566,7 @@ input_data |>
   bar_from_summary()
 ```
 
-```{r tab-loneliness, tab.id="tab-loneliness", tab.cap.pre="Table", tab.cap="How often pupils feel lonely", eval=params$is_la_report}
+```{r tab-loneliness, tab.id="tab-loneliness", tab.cap.pre="Table", tab.cap="How often pupils feel lonely", eval=FALSE}
 
 input_data |>
   create_full_summary(loneliness,

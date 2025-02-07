@@ -39,33 +39,64 @@ rawUpload_server <- function(id) {
       ns <- session$ns
       send_message <- make_send_message(session)
 
-      # upload data
+      # create rv to hold early error messages
+
+      preparse_check <- reactiveVal(
+        data.frame(message = character(),
+                   level = integer())
+      )
+
+      # parse data
       data <- reactive({
         req(input$upload)
-        parse_raw_csv(input$upload$datapath)
+
+        files <- input$upload
+
+        valid_files <- grepl("\\.csv$", files$name, ignore.case = TRUE)
+
+        if (!all(valid_files)) {
+          preparse_check(
+            data.frame(
+              message = c("Only comma-separated (`.csv`) files can be uploaded"),
+              level = c(3)
+            )
+          )
+          return(NULL)
+        } else {
+          parse_raw_csv(files$datapath)
+        }
+
       })
 
       # run checks
-      output$warn <- renderUI({
-        req(data(), cancelOutput = TRUE)
-
-        checks <- upload_checks_raw(
-          data(),
-          vars = c(
-            "class",
-            "gender",
-            "dobmnth", "dobday", "dobyr",
-            "School ID code",
-            "Local Authority",
-            "postcode",
-            "health",
-            paste0("who", 1:5),
-            paste0("lifesat", 1:5),
-            paste0("fas", 1:5)
+      checks <- reactive({
+        if (isTruthy(data())) {
+          # if data successfully parsed, run further checks
+          upload_checks_raw(
+            data(),
+            vars = c(
+              "class",
+              "gender",
+              "dobmnth", "dobday", "dobyr",
+              "School ID code",
+              "Local Authority",
+              "postcode",
+              "health",
+              paste0("who", 1:5),
+              paste0("lifesat", 1:5),
+              paste0("fas", 1:5)
+            )
           )
-        )
+        } else {
+          return(preparse_check())
+        }
 
-        warnings <- purrr::pmap(checks, make_warning)
+      })
+
+      output$warn <- renderUI({
+        req(checks(), cancelOutput = TRUE)
+
+        warnings <- purrr::pmap(checks(), make_warning)
 
         do.call(tagList, warnings)
       })

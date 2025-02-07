@@ -49,10 +49,10 @@ render_report <- function(survey_data,
 
   render_env <- new.env()
 
-  survey_data <- survey_data[grepl("^\\d", survey_data$`RecordedDate`), ] |>
+  survey_data <- survey_data[grepl("^\\w", survey_data$consent), ] |>
     data_prep(report_type = survey_type)
 
-  report_name <- if_else(!is.na(school_name), school_name, local_authority_name)
+  report_name <- dplyr::if_else(!is.na(school_name), school_name, local_authority_name)
 
   is_la <- !is.na(local_authority_name)
 
