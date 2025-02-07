@@ -8,7 +8,6 @@
 #'
 #' @return A summary table of means of a single variable
 #'
-#' @import dplyr
 #' @importFrom rlang .data
 #'
 summary_mean_single_var <-
@@ -17,36 +16,36 @@ summary_mean_single_var <-
            genders = c("Boys", "Girls"),
            classes = "All",
            .gender_split = TRUE) {
-    subgroups <- tibble()
+    subgroups <- tibble::tibble()
 
     if (.gender_split) {
       subgroups <-
-        map(classes, \(concat_class) {
+        purrr::map(classes, \(concat_class) {
           data |>
-            filter(gender %in% genders, class %in% concat_class) |>
-            summarise(
+            dplyr::filter(.data$gender %in% genders, .data$class %in% concat_class) |>
+            dplyr::summarise(
               mean_score = quiet_means({{ var }}),
               denom = how_many_valid(valid_numbers({{ var }})),
-              class = str_flatten(concat_class, collapse = ", ", last = " and "),
-              .by = c(gender)
+              class = stringr::str_flatten(concat_class, collapse = ", ", last = " and "),
+              .by = c("gender")
             )
         }) |>
-        reduce(bind_rows) |>
-        arrange(class)
+        purrr::reduce(dplyr::bind_rows) |>
+        dplyr::arrange(.data$class)
     }
 
 
     all <- data |>
-      mutate(class = "All", gender = if_else(.gender_split, "All", "All pupils")) |>
-      summarise(
+      dplyr::mutate(class = "All", gender = dplyr::if_else(.gender_split, "All", "All pupils")) |>
+      dplyr::summarise(
         mean_score = quiet_means({{ var }}),
         denom = how_many_valid(valid_numbers({{ var }})),
-        .by = c(class, gender)
+        .by = c("class", "gender")
       )
 
-    bind_rows(subgroups, all) |>
-      mutate(class = fct_inorder(class)) |>
-      arrange(gender, class)
+    dplyr::bind_rows(subgroups, all) |>
+      dplyr::mutate(class = forcats::fct_inorder(class)) |>
+      dplyr::arrange(.data$gender, .data$class)
   }
 
 #' Bar graph of mean of a single var
@@ -55,16 +54,24 @@ summary_mean_single_var <-
 #' @param ymax Upper limit of graph (deaults to `limits[2]`)
 #' @param ylab Label for X axis (summary statistic, i.e. "mean")
 #'
+#' @import ggplot2
+#'
 #' @returns A ggplot2 graph
 bar_mean_single <- function(summary_data, ymax, ylab = "Mean") {
   summary_data |>
-    mutate(
-      mean_score = if_else(.data$censored, 1, .data$mean_score),
-      bar_lab_main = if_else(.data$censored, "*", sprintf("%.1f", .data$mean_score)),
-      bar_lab_cens = if_else(.data$censored, "Numbers too low to show", "")
+    dplyr::mutate(
+      mean_score = dplyr::if_else(.data$censored, 1, .data$mean_score),
+      bar_lab_main = dplyr::if_else(.data$censored, "*", sprintf("%.1f", .data$mean_score)),
+      bar_lab_cens = dplyr::if_else(.data$censored, "Numbers too low to show", "")
     ) |>
     ggplot() +
-    aes(x = class, y = mean_score, fill = gender, linetype = .data$censored, alpha = .data$censored) +
+    aes(
+      x = .data$class,
+      y = .data$mean_score,
+      fill = .data$gender,
+      linetype = .data$censored,
+      alpha = .data$censored
+    ) +
     geom_bar_t(
       stat = "identity",
       position = position_dodge(width = 0.7),
@@ -88,8 +95,8 @@ bar_mean_single <- function(summary_data, ymax, ylab = "Mean") {
       vjust = -0.5,
       colour = "black",
       position = position_dodge(width = 0.7),
-      size = if_else(length(unique(summary_data$class)) > 3, 2.5, 4)
+      size = dplyr::if_else(length(unique(summary_data$class)) > 3, 2.5, 4)
     ) +
     coord_cartesian(ylim = c(0, ymax), clip = "off") +
-    labs(caption = if_else(any(summary_data$censored), "* Numbers too low to show", ""))
+    labs(caption = dplyr::if_else(any(summary_data$censored), "* Numbers too low to show", ""))
 }

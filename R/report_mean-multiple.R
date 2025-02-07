@@ -10,7 +10,6 @@
 #' @return A summary table of means of multiple variables
 #'
 #'
-#' @import dplyr
 #' @importFrom rlang .data
 #'
 summary_mean_multiple_vars <-
@@ -23,16 +22,16 @@ summary_mean_multiple_vars <-
 
     if (.gender_split) {
       subgroups <-
-        map(classes, \(concat_class) {
+        purrr::map(classes, \(concat_class) {
           class_summary <-
           data |>
-            filter(gender %in% genders, class %in% concat_class) |>
-            select(gender, class, !!!names(varslist)) |>
-            mutate(class = str_flatten(concat_class, collapse = ", ", last = " and ")) |>
-            summarise(across(everything(), list(
+            dplyr::filter(.data$gender %in% genders, .data$class %in% concat_class) |>
+            dplyr::select(.data$gender, .data$class, !!!names(varslist)) |>
+            dplyr::mutate(class = stringr::str_flatten(concat_class, collapse = ", ", last = " and ")) |>
+            dplyr::summarise(dplyr::across(dplyr::everything(), list(
               mean = quiet_means, denominator = ~how_many_valid(valid_numbers(.x))
             ), .names = "{.col}__{.fn}"), .by = c("gender", "class")) |>
-            arrange(gender)
+            dplyr::arrange(.data$gender)
 
           if (nrow(class_summary) == 0) {
             NULL
@@ -43,28 +42,28 @@ summary_mean_multiple_vars <-
     }
 
     all <- data |>
-      mutate(class = "All", gender = if_else(.gender_split, "All", "All pupils")) |>
-      select(gender, class, !!!names(varslist)) |>
-      summarise(across(everything(), list(
+      dplyr::mutate(class = "All", gender = dplyr::if_else(.gender_split, "All", "All pupils")) |>
+      dplyr::select("gender", "class", !!!names(varslist)) |>
+      dplyr::summarise(dplyr::across(dplyr::everything(), list(
         mean = quiet_means, denominator = ~how_many_valid(valid_numbers(.x))
       ), .names = "{.col}__{.fn}"), .by = c("gender", "class"))
 
 
     c(subgroups, list(all)) |>
-      compact() |>
-      map(\(class_data) {
+      purrr::compact() |>
+      purrr::map(\(class_data) {
         class_data |>
-        tidyr::pivot_longer(-c(gender, class),
+        tidyr::pivot_longer(-c("gender", "class"),
                             names_to = c("var", "x"),
                             names_sep = "__",
                             values_to = "n"
         ) |>
-          tidyr::pivot_wider(names_from = x, values_from = n) |>
-          rowwise() |>
-          mutate(labels = stringr::str_wrap(varslist[[.data$var]][1], 12)) |>
-          filter(!is.na(gender)) |>
-          ungroup() |>
-          mutate(labels = forcats::fct_reorder(.data$labels, mean))
+          tidyr::pivot_wider(names_from = "x", values_from = "n") |>
+          dplyr::rowwise() |>
+          dplyr::mutate(labels = stringr::str_wrap(varslist[[.data$var]][1], 12)) |>
+          dplyr::filter(!is.na(.data$gender)) |>
+          dplyr::ungroup() |>
+          dplyr::mutate(labels = forcats::fct_reorder(.data$labels, mean))
       })
   }
 
@@ -72,6 +71,8 @@ summary_mean_multiple_vars <-
 #'
 #' `bar_mean_multiple_vars` returns a horizontal bar graph.
 #' `bar_mean_multiple_vertical` returns a vertical graph.
+#'
+#' @import ggplot2
 #'
 #' @param summary_data Data produced by `summary_mean_multiple_vars`
 #' @param xmax,ymax Upper limit of graph
@@ -83,13 +84,13 @@ bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
   genders <- unique(summary_data$gender)
 
   summary_data |>
-    mutate(
-      mean = if_else(.data$censored, 1, .data$mean),
-      bar_lab_main = if_else(.data$censored, "*", sprintf("%.1f", .data$mean)),
-      bar_lab_cens = if_else(.data$censored, "Numbers too low to show", "")
+    dplyr::mutate(
+      mean = dplyr::if_else(.data$censored, 1, .data$mean),
+      bar_lab_main = dplyr::if_else(.data$censored, "*", sprintf("%.1f", .data$mean)),
+      bar_lab_cens = dplyr::if_else(.data$censored, "Numbers too low to show", "")
     ) |>
-    ggplot(
-      aes(
+    ggplot2::ggplot(
+      ggplot2::aes(
         .data$mean,
         .data$labels,
         linetype = .data$censored,
@@ -98,62 +99,63 @@ bar_mean_multiple_vars <- function(summary_data, xmax, xlab = "Mean") {
         group = .data$gender
       )
     ) +
-    geom_bar_t(aes(alpha = .data$censored),
+    geom_bar_t(ggplot2::aes(alpha = .data$censored),
       stat = "identity",
       width = 0.7,
-      position = position_dodge(width = 0.7)
+      position = ggplot2::position_dodge(width = 0.7)
     ) +
-    scale_alpha_manual(values = c("TRUE" = 0.6, "FALSE" = 1), guide = guide_none()) +
-    scale_linetype_manual(
+    ggplot2::scale_alpha_manual(values = c("TRUE" = 0.6, "FALSE" = 1), guide = ggplot2::guide_none()) +
+    ggplot2::scale_linetype_manual(
       values = c("TRUE" = "dashed", "FALSE" = "blank"),
-      guide = guide_none()
+      guide = ggplot2::guide_none()
     ) +
-    scale_y_discrete("") +
+    ggplot2::scale_y_discrete("") +
     scale_fill_hbsc(
       aesthetics = c("fill", "colour"),
       name = "",
       limits = force
     ) +
-    theme(
+    ggplot2::theme(
       legend.justification.right = "top",
-      legend.title = element_blank(),
+      legend.title = ggplot2::element_blank(),
       legend.box.spacing = unit(c(0, 1.2, 0, 0), "cm"),
       plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
-      plot.caption = element_text(
+      plot.caption = ggplot2::element_text(
         hjust = 1,
         size = 10,
         face = "italic"
       )
     ) +
-    scale_x_continuous(xlab, expand = expansion(add = 0)) +
-    geom_text(
-      aes(label = .data$bar_lab_main),
+    ggplot2::scale_x_continuous(xlab, expand = expansion(add = 0)) +
+    ggplot2::geom_text(
+      ggplot2::aes(label = .data$bar_lab_main),
       hjust = -0.3,
       colour = "black",
-      position = position_dodge(width = 0.8),
-      size = if_else(length(genders) > 1, 2.5, 3.5)
+      position = ggplot2::position_dodge(width = 0.8),
+      size = dplyr::if_else(length(genders) > 1, 2.5, 3.5)
     ) +
     coord_cartesian(xlim = c(0, xmax), clip = "off") +
     labs(
-      caption = if_else(any(summary_data$censored), "* Numbers too low to show", ""),
+      caption = dplyr::if_else(any(summary_data$censored), "* Numbers too low to show", ""),
       title = paste(class, "pupils")
     )
 }
 
 #' @rdname bar_mean_multiple_vars
+#' @import ggplot2
 bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
   class <- unique(summary_data$class)
   varslist <- unique(summary_data$var)
 
   summary_data |>
-    mutate(
-      mean = if_else(.data$censored, 1, .data$mean),
+    dplyr::mutate(
+      mean = dplyr::if_else(.data$censored, 1, .data$mean),
       labels = forcats::fct_inorder(labels),
-      bar_lab_main = if_else(.data$censored, "*", sprintf("%.1f", .data$mean)),
-      bar_lab_cens = if_else(.data$censored, "Numbers too low to show", "")
+      bar_lab_main = dplyr::if_else(.data$censored, "*", sprintf("%.1f", .data$mean)),
+      bar_lab_cens = dplyr::if_else(.data$censored, "Numbers too low to show", "")
     ) |>
     ggplot(
-      aes(
+      ggplot2::aes(
         .data$labels,
         .data$mean,
         linetype = factor(.data$censored),
@@ -162,18 +164,18 @@ bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
         group = .data$gender
       )
     ) +
-    geom_bar_t(aes(alpha = .data$censored),
+    geom_bar_t(ggplot2::aes(alpha = .data$censored),
       stat = "identity",
-      position = position_dodge(width = 0.7)
+      position = ggplot2::position_dodge(width = 0.7)
     ) +
-    scale_alpha_manual(values = c("TRUE" = 0.6, "FALSE" = 1), guide = guide_none()) +
-    scale_linetype_manual(
+    ggplot2::scale_alpha_manual(values = c("TRUE" = 0.6, "FALSE" = 1), guide = ggplot2::guide_none()) +
+    ggplot2::scale_linetype_manual(
       values = c("TRUE" = "dashed", "FALSE" = "blank"),
-      guide = guide_none()
+      guide = ggplot2::guide_none()
     ) +
-    scale_x_discrete("", guide = guide_axis(
+    ggplot2::scale_x_discrete("", guide = ggplot2::guide_axis(
       n.dodge =
-        if_else(length(varslist) > 6,
+        dplyr::if_else(length(varslist) > 6,
           ceiling(length(varslist) / 4),
           1
         )
@@ -183,28 +185,28 @@ bar_mean_multiple_vertical <- function(summary_data, ymax, ylab = "Mean") {
       name = "",
       limits = force
     ) +
-    theme(
+    ggplot2::theme(
       legend.justification.right = "top",
-      legend.title = element_blank(),
+      legend.title = ggplot2::element_blank(),
       plot.margin = unit(c(0.8, 1, 0.5, 0), "cm"),
-      plot.title = element_text(margin = margin(0, 0, 20, 0)),
-      plot.caption = element_text(
+      plot.title = ggplot2::element_text(margin = margin(0, 0, 20, 0)),
+      plot.caption = ggplot2::element_text(
         hjust = 1,
         size = 10,
         face = "italic"
       )
     ) +
-    scale_y_continuous(ylab, expand = expansion(add = 0)) +
-    geom_text(
-      aes(label = .data$bar_lab_main),
+    ggplot2::scale_y_continuous(ylab, expand = expansion(add = 0)) +
+    ggplot2::geom_text(
+      ggplot2::aes(label = .data$bar_lab_main),
       vjust = -0.5,
       colour = "black",
-      position = position_dodge(width = 0.7),
-      size = if_else(length(class) > 3, 2, 3)
+      position = ggplot2::position_dodge(width = 0.7),
+      size = dplyr::if_else(length(class) > 3, 2, 3)
     ) +
-    coord_cartesian(ylim = c(0, ymax), clip = "off") +
-    labs(
-      caption = if_else(any(summary_data$censored), "* Numbers too low to show", ""),
+    ggplot2::coord_cartesian(ylim = c(0, ymax), clip = "off") +
+    ggplot2::labs(
+      caption = dplyr::if_else(any(summary_data$censored), "* Numbers too low to show", ""),
       title = paste(class, "pupils")
     )
 }

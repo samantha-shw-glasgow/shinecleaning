@@ -68,7 +68,7 @@ no_test_responses <- function(data) {
 
 #' @rdname validators
 partial_cases <- function(data) {
-  relevant_cols <- select(
+  relevant_cols <- dplyr::select(
     data,
     dplyr::starts_with("oops"),
     dplyr::starts_with("activity"),
@@ -103,19 +103,19 @@ duplicate_cases <- function(data) {
 
   messages <- data |>
     dplyr::group_by(
-      sex,
-      gender,
-      dobmnth,
-      dobday,
-      dobyr,
-      `School ID code`
+      .data$sex,
+      .data$gender,
+      .data$dobmnth,
+      .data$dobday,
+      .data$dobyr,
+      .data$`School ID code`
     ) |>
     dplyr::mutate(
       duplicate_n = dplyr::n(),
       message = ifelse(
-        duplicate_n > 1 & !is.na(gender) & !is.na(dobmnth) & !is.na(dobday) &
-          !is.na(dobyr) & !is.na(`School ID code`),
-        paste("Possible duplicates:", paste0(sort(ResponseId), collapse = ", ")),
+        .data$duplicate_n > 1 & !is.na(.data$gender) & !is.na(.data$dobmnth) & !is.na(.data$dobday) &
+          !is.na(.data$dobyr) & !is.na(.data$`School ID code`),
+        paste("Possible duplicates:", paste0(sort(.data$ResponseId), collapse = ", ")),
         ""
       )
     ) |>
@@ -150,15 +150,15 @@ calculate_expected_class <- function(data) {
         is.na(dobmnth) ~ lubridate::make_date(dobyr, 6, 1),
         TRUE ~ lubridate::ym(paste(dobyr, dobmnth), quiet = TRUE),
       ),
-      current_year = lubridate::parse_date_time(RecordedDate, c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M")),
-      school_birthyear = lubridate::year(dob - months(2)),
-      current_year = lubridate::year(current_year |> lubridate::floor_date("months") - months(7)),
-      school_age = current_year - school_birthyear
+      current_year = lubridate::parse_date_time(.data$RecordedDate, c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M")),
+      school_birthyear = lubridate::year(.data$dob - months(2)),
+      current_year = lubridate::year(.data$current_year |> lubridate::floor_date("months") - months(7)),
+      school_age = .data$current_year - .data$school_birthyear
     ) |>
     dplyr::left_join(class_lookup, by = "school_age") |>
-    dplyr::rename(class = class.x, expected_class_name = class.y) |>
+    dplyr::rename(class = "class.x", expected_class_name = "class.y") |>
     dplyr::left_join(class_lookup, by = "class") |>
-    dplyr::rename(school_age = school_age.x, school_age_based_on_class = school_age.y)
+    dplyr::rename(school_age = "school_age.x", school_age_based_on_class = "school_age.y")
 }
 
 #' @rdname validators
@@ -216,10 +216,10 @@ straightlining <- function(data) {
   failed_prefixes <- rep("", nrow(data))
   for (prefix in prefixes) {
     results <- data |>
-      dplyr::select(starts_with(prefix)) |>
+      dplyr::select(dplyr::starts_with(prefix)) |>
       # Check if all columns are equal - see https://stackoverflow.com/a/76973366
       dplyr::mutate(all_equal = apply(dplyr::pick(dplyr::everything()), 1, dplyr::n_distinct, na.rm = T) == 1) |>
-      dplyr::pull(all_equal)
+      dplyr::pull(.data$all_equal)
     failed_prefixes <- ifelse(
       results,
       paste0(failed_prefixes, ", ", prefix),
@@ -246,12 +246,12 @@ recurring_postcodes <- function(data) {
     # Convert to uppercase, remove whitespace at the start and end,
     # and make sure there's only one space in the middle
     dplyr::mutate(
-      clean_postcode = postcode_5_TEXT |>
+      clean_postcode = .data$postcode_5_TEXT |>
         toupper() |>
         stringr::str_trim() |>
         stringr::str_replace_all("  *", " ")
     ) |>
-    dplyr::add_count(clean_postcode)
+    dplyr::add_count(.data$clean_postcode)
 
   tibble::tibble(
     include = TRUE,

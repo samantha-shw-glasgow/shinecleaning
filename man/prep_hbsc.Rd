@@ -4,7 +4,7 @@
 \alias{prep_hbsc}
 \title{reshape hbsc summary data}
 \usage{
-prep_hbsc(dat = hbsc_scotland, create_cols = FALSE)
+prep_hbsc(dat, create_cols = FALSE)
 }
 \arguments{
 \item{dat}{HBSC data to pass in}

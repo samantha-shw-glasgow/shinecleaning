@@ -17,7 +17,7 @@ print_first_graph <- function(graph_list) {
 #' @rdname print_first_graph
 
 print_rest_of_graphs <- function(graph_list) {
-  walk(graph_list, print)
+  purrr::walk(graph_list, print)
 }
 
 
@@ -110,7 +110,7 @@ scale_colour_hbsc <- function(...) {
 #' @param ... Other arguments to pass to `geom_bar`
 
 geom_bar_t <- function(..., width = 0.7) {
-  geom_bar(..., width = width)
+  ggplot2::geom_bar(..., width = width)
 }
 
 #' Find the mean of only the numeric entries, no warnings

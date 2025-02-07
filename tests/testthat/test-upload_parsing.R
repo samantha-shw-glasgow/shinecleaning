@@ -9,6 +9,7 @@ test_that("test data get parsed correctly", {
     Progress = c("100"),
     `Duration (in seconds)` = c("0"),
     Finished = c("True"),
+    completed_date = c("2024-08-25"),
     RecordedDate = c("2024-08-25 15:15:23"),
     ResponseId = c("R_8nLE4rPRdLBce1w"),
     DistributionChannel = c("test"),
