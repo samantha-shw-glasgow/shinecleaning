@@ -27,6 +27,7 @@ output:
       gutter: 0
 params:
   is_la_report: false
+  cluster_label: 'Local Authority'
   school_name: 'Test school academy'
   term: 'Autumn 2024'
   number_invited: 1000
@@ -56,6 +57,7 @@ knitr::opts_chunk$set(
 )
 school_name <- params$school_name
 is_la_report <- params$is_la_report
+cluster_label <- params$cluster_label
 term <- params$term
 
 classes <- params$classes |> map(str_split, " ") |> map(unlist)
@@ -90,9 +92,9 @@ cat(knitr::knit_child("introduction.qmd", envir = environment(), quiet = TRUE))
 
 ## School survey response
 
-Pupils in your `r ifelse(is_la_report, "Local Authority", "school")` completed the survey `r date_range(input_data)`.
+Pupils in your `r ifelse(is_la_report, cluster_label, "school")` completed the survey `r date_range(input_data)`.
 
-Table \@ref(tab:tab-response) shows the number of pupils invited to take part, the number who did not take part (this includes opt-outs and absences) and the overall response rate for the survey in your `r ifelse(is_la_report, "area", "school")`.
+Table \@ref(tab:tab-response) shows the number of pupils invited to take part, the number who did not take part (this includes opt-outs and absences) and the overall response rate for the survey in your `r ifelse(is_la_report, cluster_label, "school")`.
 
 ```{r tab-response, tab.id="tab-response", tab.cap="Response rate", tab.cap.pre="Table"}
 tab_responses(input_data, params$number_invited)
@@ -115,7 +117,8 @@ Pupils were asked to rate their own health as either poor/fair/good/excellent.
 
 Figure \@ref(fig:bar-health) shows the percentage of pupils who reported
 their health was \'excellent\' or \'good\'`r if(params$gender_split){" compared with the HBSC Scotland national average"}`.
-<!-- `r if(is_la_report){"Table \\@ref(tab:tab-health) shows the responses to this question from all pupils in your Local Authority."}` -->
+`r if(is_la_report){paste0("Table \\@ref(tab:tab-health) shows the responses to this question from all pupils in your ", cluster_label)}`
+
 
 ```{r bar-health, fig.cap="% of pupils who report excellent or good health"}
 input_data |>
@@ -360,7 +363,7 @@ input_data |>
 ### Self-confidence {#self-confidence .col .s12 .lr_zero .black-text}
 
 Pupils were asked \'how often do you feel confident in yourself\'.
-Figure \@ref(fig:bar-sch3) shows the proportion of pupils in your `r ifelse(params$is_la_report, "Local Authority", "school")` who responded they
+Figure \@ref(fig:bar-sch3) shows the proportion of pupils in your `r ifelse(params$is_la_report, cluster_label, "school")` who responded they
 \'always\' or \'often\' feel confident`r if(params$gender_split){" compared with the HBSC Scotland national average"}`.
 <!-- `r if(is_la_report){"Table \\@ref(tab:tab-sch3) shows the responses to this question from all pupils."}` -->
 

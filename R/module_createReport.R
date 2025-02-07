@@ -123,6 +123,11 @@ createReport_server <- function(id, data) {
                           width = "100%")
               )
             },
+            if (input$output_type == "Primary cluster / Local Authority") {
+              textInput(ns("cluster_label"), "Group type (e.g. Local Authority,  Primary cluster, etc.)",
+                        value = "Local Authority",
+                        width = "100%")
+            },
             # For all reports
             textInput(ns("school_term"), "Term of survey", width = "100%"),
             numericInput(ns("n_invited"),
@@ -434,6 +439,7 @@ createReport_server <- function(id, data) {
                   number_invited = input$n_invited,
                   gender_split = input$split,
                   term = input$school_term,
+                  cluster_label = input$cluster_label,
                   classes = class_list(),
                   output_location = NULL
                 )

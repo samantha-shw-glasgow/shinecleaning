@@ -12,7 +12,7 @@ Challenge Questions
 
 The aim of these challenge questions is to support interpretation of the
 data report so that it can be shared confidently among the key
-stakeholders in the `r ifelse(is_la_report, "Local Authority HWB", "school")` community. It is hoped that the ensuing discussions and
+stakeholders in the `r ifelse(is_la_report, paste0(cluster_label, " HWB"), "school")` community. It is hoped that the ensuing discussions and
 `r ifelse(is_la_report, "support for", "")` whole-school
 collaborations in response to the data report will support improvements
 in `r ifelse(is_la_report, "young people\'s", "pupil")`
@@ -22,10 +22,10 @@ wellbeing.
 Approaching the data: 
 :::
 
--   How confident `r ifelse(is_la_report, "is the Local Authority HWB team", "are staff, parents and pupils")` at interpreting
+-   How confident `r ifelse(is_la_report, paste0("is the ",  cluster_label, " HWB team"), "are staff, parents and pupils")` at interpreting
     health and wellbeing data?
 -   If using more than one data source to track and monitor health and
-    wellbeing in your `r ifelse(is_la_report, "Local Authority", "school")`, are they compatible and do staff confidently
+    wellbeing in your `r ifelse(is_la_report, cluster_label, "school")`, are they compatible and do staff confidently
     understand the purpose of each data source? I.e. is one diagnostic;
     for identifying individuals struggling and another one to provide
     evidence of the pupil wellbeing context in order to understand the
@@ -35,7 +35,7 @@ Approaching the data:
     relevant key stakeholders? Or is a new group required?
 -   Will a smaller group be responsible for working on the whole report
     in order to pull out the key themes for already established working
-    groups in the `r ifelse(is_la_report, "Local Authority", "school")` or will the whole report be shared with everyone
+    groups in the `r ifelse(is_la_report, cluster_label, "school")` or will the whole report be shared with everyone
     fully?
 
 ::: {custom-style="Heading 2 No TOC"}
@@ -43,7 +43,7 @@ Consider the context:
 :::
 
 -   How representative are the data of the `r ifelse(is_la_report, "young people", "school roll or the year group(s)")` surveyed?
-    If 80% of `r ifelse(is_la_report, "all young people in the Local Authority", "pupils")` participated that is a very
+    If 80% of `r ifelse(is_la_report, paste0("all young people in the ", cluster_label), "pupils")` participated that is a very
     different picture to 20% of `r ifelse(is_la_report, "the young people", "pupils")` taking part.
 
 -   Have you considered the number of `r ifelse(is_la_report, "young people", "pupils")` taking part? If a small number of
@@ -57,7 +57,7 @@ Consider the context:
     `r ifelse(is_la_report, "they", "pupils")` took part may
     also influence the results.
 
--   When comparing `r ifelse(is_la_report, "the Local Authority", "your school")` results to the
+-   When comparing `r ifelse(is_la_report, paste0("the ", cluster_label), "your school")` results to the
     SHINE national data Scottish HBSC national averages, consider:
 
     -   When the data has been collected; there is evidence to suggest
@@ -68,7 +68,7 @@ Consider the context:
         pandemic has negatively impacted on many young people\'s health.
     -   The HBSC data is for P7, S2 and S4 so some year groups may not
         have a corresponding exact age group to compare to.
-    -   The wider `r ifelse(is_la_report, "Local Authority",
+    -   The wider `r ifelse(is_la_report, cluster_label,
         "school")` context may influence results, such as gender
         balance, resources and levels of deprivation which will
         `r ifelse(is_la_report, "", "differ from school to school
@@ -81,7 +81,7 @@ Reflecting on the data:
 :::
 
 -   To what extent do the data provide evidence of key issues for
-    `r ifelse(is_la_report, "the Local Authority", "my
+    `r ifelse(is_la_report, paste0("the ", cluster_label), "my
     school")` or reveal specific priorities? Are there areas of
     success to celebrate as well as areas of concern for focus?
 -   Are there any results that surprise you? Are there any results that
@@ -103,14 +103,14 @@ Working together:
 :::
 
 -   Have we shared the SHINE data with the wider school
-    community`r ifelse(is_la_report, "? Can we support schools to apply a whole-school approach to mental health in a uniform way across the authority? Would additional training sessions be useful for this", "")` to include staff, pupils and parents to underpin
+    community`r ifelse(is_la_report, paste0("? Can we support schools to apply a whole-school approach to mental health in a uniform way across the",  cluster_label, "? Would additional training sessions be useful for this"), "")` to include staff, pupils and parents to underpin
     a whole-school approach to HWB?
 
    -   Remember, `r ifelse(is_la_report, "young people", "pupils")` may be best placed to explain and interpret the
         data they provided.
 
 -   When considering the SHINE data, do a committee of stakeholders from
-    different parts of the `r ifelse(is_la_report, "Local Authority", "school")` community take part in identifying HWB
+    different parts of the `r ifelse(is_la_report, cluster_label, "school")` community take part in identifying HWB
     priorities to take forward?
 
 -   Have we considered the year group split in the data to identify
