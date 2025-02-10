@@ -97,32 +97,32 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
   # create header row
   if (report_type == "primary") {
     col_headers <- list(
-      list("", "", ""),
-      list("General health", ""),
-      list("Happiness with life - average scores", "", "", "", "", "", "", "", "", "", ""),
-      list("Happiness with life - % with a low score", "", "", "", "", "", "", "", "", "", ""),
-      list("WHO Wellbeing Index", ""),
-      list("Me and My Feelings", "", "", ""),
-      list("Liking school", ""),
-      list("Pressure from schoolwork", ""),
-      list("Self-confidence", "", ""),
-      list("Social Emotional Health - average scores", "", "", "", "", "")
+      as.list(rep("", 3)),
+      as.list(rep("General health", 2)),
+      as.list(rep("Happiness with life - average scores", 11)),
+      as.list(rep("Happiness with life - % with a low score", 11)),
+      as.list(rep("WHO Wellbeing Index", 2)),
+      as.list(rep("Me and My Feelings", 4)),
+      as.list(rep("Liking school", 2)),
+      as.list(rep("Pressure from schoolwork", 2)),
+      as.list(rep("Self-confidence", 3)),
+      as.list(rep("Social Emotional Health - average scores", 6))
     )
   } else if (report_type == "secondary")  {
     col_headers <- list(
-      list("", "", ""),
-      list("General health", ""),
-      list("Happiness with life - average scores", "", "", "", "", "", "", "", "", "", ""),
-      list("Happiness with life - % with a low score", "", "", "", "", "", "", "", "", "", ""),
-      list("WHO Wellbeing Index", "", ""),
-      list("Strengths and Difficulties Score", "", "", "", "", "", "", "", "", "", "", ""),
-      list("Sleep quality"),
-      list("Liking school", ""),
-      list("Pressure from schoolwork", ""),
-      list("Self-confidence", "", ""),
-      list("Self-harm", "", "", ""),
-      list("Loneliness", ""),
-      list("Social Emotional Health - average scores", "", "", "", "", "", "", "", "", "", "", "", "")
+      as.list(rep("", 3)),
+      as.list(rep("General health", 2)),
+      as.list(rep("Happiness with life - average scores", 11)),
+      as.list(rep("Happiness with life - % with a low score", 11)),
+      as.list(rep("WHO Wellbeing Index", 3)),
+      as.list(rep("Strengths and Difficulties Score", 12)),
+      as.list(rep("Sleep quality"), 1),
+      as.list(rep("Liking school", 2)),
+      as.list(rep("Pressure from schoolwork", 2)),
+      as.list(rep("Self-confidence", 3)),
+      as.list(rep("Self-harm", 4)),
+      as.list(rep("Loneliness", 2)),
+      as.list(rep("Social Emotional Health - average scores", 13))
     )
   }
 
