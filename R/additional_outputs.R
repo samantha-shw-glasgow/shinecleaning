@@ -77,7 +77,7 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
     summaries_additional_by_school <- data_by_school |> .summarise_secondary_cols()
   }
 
-  derived_data <- dplyr::bind_rows(
+  all_summaries <- dplyr::bind_rows(
     dplyr::full_join(
       summaries_common_by_year,
       summaries_additional_by_year,
@@ -87,12 +87,20 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
       summaries_common_by_school,
       summaries_additional_by_school,
       by = c("School ID code")
-    ) |> mutate("Year groups" = "All")
+    ) |> dplyr::mutate("Year groups" = "All")
   )
+
   # Set all NaN values to NA so they display correctly in the spreadsheet
-  for (col in names(derived_data)) {
-    derived_data[[col]][is.nan(derived_data[[col]])] <- NA
+  for (col in names(all_summaries)) {
+    all_summaries[[col]][is.nan(all_summaries[[col]])] <- NA
   }
+
+  # Sort alphabetically by school ID and year group (but list "All" last)
+  all_summaries <- all_summaries |>
+    dplyr::arrange(
+      `School ID code`,
+      ifelse(`Year groups` == "All", "~", `Year groups`) # "~" sorts after every letter
+    )
 
   # create header row
   if (report_type == "primary") {
@@ -136,8 +144,8 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
     wrapText = TRUE
   )
   openxlsx::writeData(wb, 1, purrr::list_flatten(col_headers), startRow = 1)
-  openxlsx::writeData(wb, 1, derived_data, startRow = 2, headerStyle = header_style)
-  last_row <- nrow(derived_data) + 2
+  openxlsx::writeData(wb, 1, all_summaries, startRow = 2, headerStyle = header_style)
+  last_row <- nrow(all_summaries) + 2
 
   purrr::walk(seq_along(col_headers),
        \(i)  {
@@ -153,8 +161,8 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
            wb, 1, rows = 1:last_row, cols = start, style = border_style, stack = TRUE
          )
        })
-  openxlsx::setColWidths(wb, 1, 4:ncol(derived_data), 12)
-  openxlsx::addStyle(wb, 1, rows = 3:last_row, cols = 4:ncol(derived_data),
+  openxlsx::setColWidths(wb, 1, 4:ncol(all_summaries), 12)
+  openxlsx::addStyle(wb, 1, rows = 3:last_row, cols = 4:ncol(all_summaries),
                      gridExpand = TRUE, stack = TRUE,
                      style = openxlsx::createStyle(numFmt = "0.0"))
   openxlsx::saveWorkbook(wb, filename, overwrite = TRUE)
