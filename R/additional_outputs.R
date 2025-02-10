@@ -50,7 +50,7 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
                                 ~dplyr::na_if(., "Prefer not to say")))
 
   #group by school and class
-  grouped_data <- purrr::map(classes, \(concat_class) {
+  data_by_year <- purrr::map(classes, \(concat_class) {
     proc_data |>
       dplyr::filter(.data$class %in% concat_class, .data$gender %in% genders) |>
       dplyr::mutate(
@@ -61,20 +61,34 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
     purrr::reduce(dplyr::bind_rows) |>
     dplyr::group_by(.data$`School ID code`, .data$`Year groups`)
 
+  data_by_school <- proc_data |>
+    dplyr::group_by(.data$`School ID code`)
+
   #calculate summaries
 
-  derived_data_all <- grouped_data |>
-    .summarise_common_cols()
+  summaries_common_by_year <- data_by_year |> .summarise_common_cols()
+  summaries_common_by_school <- data_by_school |> .summarise_common_cols()
 
   if (report_type == "primary") {
-    derived_data_additional <- grouped_data |>
-      .summarise_primary_cols()
+    summaries_additional_by_year <- data_by_year |> .summarise_primary_cols()
+    summaries_additional_by_school <- data_by_school |> .summarise_primary_cols()
   } else if (report_type == "secondary") {
-    derived_data_additional <- grouped_data |>
-      .summarise_secondary_cols()
+    summaries_additional_by_year <- data_by_year |> .summarise_secondary_cols()
+    summaries_additional_by_school <- data_by_school |> .summarise_secondary_cols()
   }
 
-  derived_data <- dplyr::full_join(derived_data_all, derived_data_additional, by = c("School ID code", "Year groups"))
+  derived_data <- dplyr::bind_rows(
+    dplyr::full_join(
+      summaries_common_by_year,
+      summaries_additional_by_year,
+      by = c("School ID code", "Year groups")
+    ),
+    dplyr::full_join(
+      summaries_common_by_school,
+      summaries_additional_by_school,
+      by = c("School ID code")
+    ) |> mutate("Year groups" = "All")
+  )
   # Set all NaN values to NA so they display correctly in the spreadsheet
   for (col in names(derived_data)) {
     derived_data[[col]][is.nan(derived_data[[col]])] <- NA
