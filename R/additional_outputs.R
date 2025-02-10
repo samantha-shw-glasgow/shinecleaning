@@ -267,14 +267,14 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
       list("Happiness with life - average scores", "", "", "", "", "", "", "", "", "", ""),
       list("Happiness with life - % with a low score", "", "", "", "", "", "", "", "", "", ""),
       list("WHO Wellbeing Index", "", ""),
-      list("Strengths and Difficulties Score", "", "", "", "", "", "", "", "", "", "", "", ""),
+      list("Strengths and Difficulties Score", "", "", "", "", "", "", "", "", "", "", ""),
       list("Sleep quality"),
       list("Liking school", ""),
       list("Pressure from schoolwork", ""),
       list("Self-confidence", "", ""),
       list("Self-harm", "", "", ""),
       list("Loneliness", ""),
-      list("Social Emotional Health - average scores", "", "", "", "", "", "", "", "", "", "", "", "", "")
+      list("Social Emotional Health - average scores", "", "", "", "", "", "", "", "", "", "", "")
     )
   }
 
