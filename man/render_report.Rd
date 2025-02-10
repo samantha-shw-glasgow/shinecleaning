@@ -9,6 +9,7 @@ render_report(
   survey_type,
   school_name = NA,
   local_authority_name = NA,
+  cluster_label = NULL,
   term = NULL,
   number_invited = NULL,
   output_location = NULL,
@@ -25,6 +26,8 @@ render_report(
 \item{school_name}{If a school report, the school's name}
 
 \item{local_authority_name}{If a local authority report, the LA's name (note not compatible with school report/name argument)}
+
+\item{cluster_label}{Type of school grouping, e.g. local authority, primary cluster. Only used for 'local authority' type reports}
 
 \item{term}{Name of term to print on report}
 

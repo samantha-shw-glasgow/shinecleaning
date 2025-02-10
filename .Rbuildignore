@@ -8,5 +8,7 @@
 temp_.*\.R
 temp_.*\.xlsx
 temp_.*\.txt
+temp_.*/
+temp_.*\.zip
 latest_outputs/
 ^LICENSE\.md$

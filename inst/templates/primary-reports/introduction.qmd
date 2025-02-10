@@ -307,7 +307,7 @@ Understanding the data in this report
 :::
 
 -   All figures show results for all pupils in your
-    `r ifelse(params$is_la_report, "Local Authority", "school")`
+    `r ifelse(params$is_la_report, cluster_label, "school")`
     combined.
     This is due to the small number of pupils participating in the
     survey.
