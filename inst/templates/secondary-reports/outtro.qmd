@@ -70,7 +70,7 @@ Consider the context:
 
 -   When comparing
     `r ifelse(is_la_report, "the Local Authority", "your school")`
-    results to the SHINE national data Scottish HBSC national averages,
+    results to the SHINE national data and/or Scottish HBSC national averages,
     consider:
 
     -   When the data has been collected; there is evidence to suggest

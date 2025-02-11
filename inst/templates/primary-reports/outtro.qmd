@@ -58,7 +58,7 @@ Consider the context:
     also influence the results.
 
 -   When comparing `r ifelse(is_la_report, paste0("the ", cluster_label), "your school")` results to the
-    SHINE national data Scottish HBSC national averages, consider:
+    SHINE national data and/or Scottish HBSC national averages, consider:
 
     -   When the data has been collected; there is evidence to suggest
         that the pandemic has negatively impacted on many young
@@ -103,7 +103,7 @@ Working together:
 :::
 
 -   Have we shared the SHINE data with the wider school
-    community`r ifelse(is_la_report, paste0("? Can we support schools to apply a whole-school approach to mental health in a uniform way across the",  cluster_label, "? Would additional training sessions be useful for this"), "")` to include staff, pupils and parents to underpin
+    community`r ifelse(is_la_report, paste0("? Can we support schools to apply a whole-school approach to mental health in a uniform way across the ",  cluster_label, "? Would additional training sessions be useful for this"), "")` to include staff, pupils and parents to underpin
     a whole-school approach to HWB?
 
    -   Remember, `r ifelse(is_la_report, "young people", "pupils")` may be best placed to explain and interpret the
