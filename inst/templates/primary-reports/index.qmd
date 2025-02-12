@@ -117,7 +117,7 @@ Pupils were asked to rate their own health as either poor/fair/good/excellent.
 
 Figure \@ref(fig:bar-health) shows the percentage of pupils who reported
 their health was \'excellent\' or \'good\'`r if(params$gender_split){" compared with the HBSC Scotland national average"}`.
-`r if(is_la_report){paste0("Table \\@ref(tab:tab-health) shows the responses to this question from all pupils in your ", cluster_label)}`
+<!-- `r if(is_la_report){paste0("Table \\@ref(tab:tab-health) shows the responses to this question from all pupils in your ", cluster_label)}` -->
 
 
 ```{r bar-health, fig.cap="% of pupils who report excellent or good health"}
