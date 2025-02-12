@@ -53,7 +53,7 @@ prescriptive in approach but to serve as a guide to assist you and
 colleagues. There is also a list of resources for further information
 and help.
 
-The report is confidential`r ifelse(params$is_la_report, " and", ", only")` provided to your `r ifelse(params$is_la_report, cluster_label, "school")` SHINE
+The report is confidential`r ifelse(params$is_la_report, " and", ", only")` provided to your`r ifelse(params$is_la_report, "", " school's")` SHINE
 representative`r ifelse(params$is_la_report, "", " and if requested, the health and wellbeing lead within your local authority")`. However, we
 would strongly encourage you to share the report with your pupils, staff
 and parents.
@@ -306,13 +306,11 @@ report depressive symptoms and lower life satisfaction.^45^
 Understanding the data in this report
 :::
 
--   All figures show results for all pupils in your
+-   All figures show results for all 
+    `r ifelse(params$is_la_report, "schools", "pupils")` in your
     `r ifelse(params$is_la_report, cluster_label, "school")`
     combined.
-    This is due to the small number of pupils participating in the
-    survey.
-    Where we have enough responses, we will also show results by
-    individual year and gender and/ or banded year groups and gender.
+    `r ifelse(params$is_la_report, "", " This is due to the small number of pupils participating in the survey. Where we have enough responses, we will also show results by individual year and gender and/ or banded year groups and gender.")`
 -   There are symbols <!--(🟠 🔹) -->to show the national result for
     Scotland. This data is from the Health Behaviour in School-aged
     Children study (HBSC) which was carried out in 2022. Your report

@@ -407,7 +407,7 @@ engagement.
 
 The answers in the questionnaire are summed to
 create scores out of 16 for gratitude, zest, persistence and optimism.
-These four domains are then summed to create an overall covitality
+These four domains are then summed to create an overall co-vitality
 score, out of 64, which is shown in Figure \@ref(fig:bar-coviality).
 
 The SEHS also measures pro-social behaviour which is linked to more positive mental
@@ -439,7 +439,7 @@ graphs <- input_data |>
 print_rest_of_graphs(graphs)
 ```
 
-```{r bar-coviality, fig.cap="Average covitality score"}
+```{r bar-coviality, fig.cap="Average co-vitality score"}
 input_data |>
   summary_mean_single_var(
     cov_score,

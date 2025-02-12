@@ -350,13 +350,11 @@ report depressive symptoms and lower life satisfaction.^57^
 Understanding the data in this report
 :::
 
--   All figures show results for all pupils in your
+-   All figures show results for all 
+    `r ifelse(params$is_la_report, "schools", "pupils")` in your
     `r ifelse(params$is_la_report, "Local Authority", "school")`
     combined.
-    This is due to the small number of pupils participating in the
-    survey.
-    Where we have enough responses, we will also show results by
-    individual year and gender and/ or banded year groups and gender.
+    `r ifelse(params$is_la_report, "", " This is due to the small number of pupils participating in the survey. Where we have enough responses, we will also show results by individual year and gender and/ or banded year groups and gender.")`
 -   There are symbols <!--(🟠 🔹) -->to show the national result for
     Scotland. This data is from the Health Behaviour in School-aged
     Children study (HBSC) which was carried out in 2022. Your report
