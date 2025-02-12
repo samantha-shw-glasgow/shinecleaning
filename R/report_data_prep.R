@@ -46,7 +46,10 @@ data_prep <- function(survey_data, report_type = "primary") {
 
   if (!("completed_date" %in% colnames(survey_data)) &&
       ("RecordedDate" %in% colnames(survey_data))) {
-    survey_data$completed_date <- as.Date(survey_data$RecordedDate)
+    survey_data$completed_date <- as.character(
+      lubridate::parse_date_time(survey_data$RecordedDate,
+                                 c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M")) |>
+        as.Date())
   } else if (!("completed_date" %in% colnames(survey_data)) &&
              !("RecordedDate" %in% colnames(survey_data))) {
     stop("No date column found - please include `completed_date` or `RecordedDate`")
