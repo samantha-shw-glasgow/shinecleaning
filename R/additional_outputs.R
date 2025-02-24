@@ -310,7 +310,7 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
         mean(.data$sch3 == "Sometimes", na.rm = TRUE) * 100,
       "% who feel never or hardly ever confident" =
         mean(.data$sch3 == "Never" | .data$sch3 == "Hardly ever", na.rm = TRUE) * 100,
-      "Number asked selfh1" = sum(!is.na(.data$selfh1)),
+      "Number asked about self-harm" = sum(!is.na(.data$selfh1)),
       "% who have ever hurt themselves on purpose" =
         mean(.data$selfh1 == "Yes", na.rm = TRUE) * 100,
       "Number asked selfh2" = sum(!is.na(.data$selfh2)),
