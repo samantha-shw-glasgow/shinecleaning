@@ -128,7 +128,7 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
       as.list(rep("Liking school", 2)),
       as.list(rep("Pressure from schoolwork", 2)),
       as.list(rep("Self-confidence", 3)),
-      as.list(rep("Self-harm", 4)),
+      as.list(rep("Self-harm", 2)),
       as.list(rep("Loneliness", 2)),
       as.list(rep("Social Emotional Health - average scores", 13))
     )
@@ -310,12 +310,9 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
         mean(.data$sch3 == "Sometimes", na.rm = TRUE) * 100,
       "% who feel never or hardly ever confident" =
         mean(.data$sch3 == "Never" | .data$sch3 == "Hardly ever", na.rm = TRUE) * 100,
-      "Number asked selfh1" = sum(!is.na(.data$selfh1)),
+      "Number asked about self-harm" = sum(!is.na(.data$selfh1)),
       "% who have ever hurt themselves on purpose" =
         mean(.data$selfh1 == "Yes", na.rm = TRUE) * 100,
-      "Number asked selfh2" = sum(!is.na(.data$selfh2)),
-      "Of those who have hurt themselves, % who have not in the past year" =
-        mean(.data$selfh2 == "None", na.rm = TRUE) * 100,
       "% who feel lonely none or some of the time" =
         mean(.data$loneliness == "None of the time" | .data$loneliness == "Some of the time", na.rm = TRUE) * 100,
       "% who feel lonely most or all of the time" =
