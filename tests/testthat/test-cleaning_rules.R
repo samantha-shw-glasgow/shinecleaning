@@ -127,14 +127,20 @@ describe("straightlining", {
   })
 })
 
-describe("missing School ID", {
+describe("has_school_id", {
   it("detects missing ID", {
     test_validator_with_data(has_school_id, "missing_school_id.csv")
   })
 })
 
-describe("Parsing DOBs", {
+describe("valid_dob", {
   it("detects invalid DOBs", {
     test_validator_with_data(valid_dob, "valid_invalid_dobs.csv")
+  })
+})
+
+describe("completed_outside_school_hours", {
+  it("flags surveys completed outside 8am-6pm", {
+    test_validator_with_data(completed_outside_school_hours, "completed_outside_school_hours.csv")
   })
 })

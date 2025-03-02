@@ -294,3 +294,14 @@ valid_dob <- function(data) {
     message = ifelse(invalid_dob, "Invalid or missing DOB", "")
   )
 }
+
+#' @rdname validators
+completed_outside_school_hours <- function(data) {
+  completed_time <- lubridate::parse_date_time(data$RecordedDate, c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M"))
+  completed_hour <- lubridate::hour(completed_time)
+  outside_school_hours <- completed_hour < 8 | completed_hour > 17
+  tibble::tibble(
+    include = TRUE,
+    message = ifelse(outside_school_hours, "Completed outside school hours", "")
+  )
+}
