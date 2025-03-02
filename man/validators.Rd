@@ -13,6 +13,8 @@
 \alias{no_consent}
 \alias{has_school_id}
 \alias{valid_dob}
+\alias{completed_outside_school_hours}
+\alias{completed_at_weekend}
 \title{Validators}
 \usage{
 duration_too_short(data)
@@ -36,6 +38,10 @@ no_consent(data)
 has_school_id(data)
 
 valid_dob(data)
+
+completed_outside_school_hours(data)
+
+completed_at_weekend(data)
 }
 \arguments{
 \item{data}{Raw input dataset}
