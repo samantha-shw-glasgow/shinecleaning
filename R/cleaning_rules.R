@@ -92,7 +92,7 @@ partial_cases <- function(data) {
   relevant_cols <- replace(relevant_cols, relevant_cols == "Prefer not to say", NA)
   n_missing_cols <- rowSums(is.na(relevant_cols))
   tibble::tibble(
-    include = TRUE,
+    include = n_missing_cols <= 0.9 * ncol(relevant_cols),
     message = ifelse(
       n_missing_cols > 0.5 * ncol(relevant_cols),
       paste0("Missing ", n_missing_cols, "/", ncol(relevant_cols), " answers"),
