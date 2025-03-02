@@ -144,3 +144,9 @@ describe("completed_outside_school_hours", {
     test_validator_with_data(completed_outside_school_hours, "completed_outside_school_hours.csv")
   })
 })
+
+describe("completed_at_weekend", {
+  it("flags surveys completed at a weekend", {
+    test_validator_with_data(completed_at_weekend, "completed_at_weekend.csv")
+  })
+})
