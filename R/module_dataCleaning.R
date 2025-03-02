@@ -62,6 +62,8 @@ dataCleaning_server <- function(id, data) {
         "Detect partial cases" = partial_cases,
         "Detect straightlining" = straightlining,
         "Detect age/year mismatch" = age_year_mismatch,
+        "Detect responses outside school hours" = completed_outside_school_hours,
+        "Detect responses at weekends" = completed_at_weekend,
         "Suggest class when missing" = suggest_missing_class,
         "Exclude test responses" = no_test_responses,
         "Exclude non-consenting" = no_consent,
