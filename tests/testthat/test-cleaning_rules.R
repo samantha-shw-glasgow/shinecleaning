@@ -78,7 +78,7 @@ describe("partial_cases", {
     test_validator_with_data(partial_cases, "partial_cases_primary.csv")
   })
 
-  it("works as described in the example dataset (primary)", {
+  it("works as described in the example dataset (secondary)", {
     test_validator_with_data(partial_cases, "partial_cases_secondary.csv")
   })
 })

@@ -74,7 +74,6 @@ no_test_responses <- function(data) {
 partial_cases <- function(data) {
   relevant_cols <- dplyr::select(
     data,
-    dplyr::starts_with("oops"),
     dplyr::starts_with("activity"),
     dplyr::starts_with("asw"),
     dplyr::starts_with("class"),
@@ -92,7 +91,7 @@ partial_cases <- function(data) {
   relevant_cols <- replace(relevant_cols, relevant_cols == "Prefer not to say", NA)
   n_missing_cols <- rowSums(is.na(relevant_cols))
   tibble::tibble(
-    include = n_missing_cols <= 0.9 * ncol(relevant_cols),
+    include = n_missing_cols <= 0.88 * ncol(relevant_cols),
     message = ifelse(
       n_missing_cols > 0.5 * ncol(relevant_cols),
       paste0("Missing ", n_missing_cols, "/", ncol(relevant_cols), " answers"),
