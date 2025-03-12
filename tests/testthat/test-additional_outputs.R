@@ -84,7 +84,7 @@ test_that("Excels return values matching report - primary", {
     # `Overall covitality score` =
   )
 
-  expect_equivalent(
+  expect_equal(
     all_columns[,1:15],
     expected
   )
