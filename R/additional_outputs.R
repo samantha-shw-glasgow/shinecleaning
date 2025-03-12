@@ -175,9 +175,9 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
       #all
       "Number taking part" = dplyr::n(),
       "% reporting good or excellent health" =
-        sum(.data$health == "Good" | .data$health == "Excellent", na.rm = TRUE) /sum(!is.na(health)) * 100,
+        sum(.data$health == "Good" | .data$health == "Excellent", na.rm = TRUE) / sum(!is.na(health)) * 100,
       "% reporting fair or poor health" =
-        sum(.data$health == "Fair" | .data$health == "Poor", na.rm = TRUE) /sum(!is.na(health)) * 100,
+        sum(.data$health == "Fair" | .data$health == "Poor", na.rm = TRUE) / sum(!is.na(health)) * 100,
       "Overall" =
         mean(valid_numbers(.data$lifesat1), na.rm = TRUE),
       "Family" =
