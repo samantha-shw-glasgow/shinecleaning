@@ -19,7 +19,7 @@ test_that("Excels return values matching report - primary", {
   pri_test_a <- readr::read_csv(test_path("raw_data", "pri_test_small.csv"),
                                 show_col_types = FALSE)[-1:-2, ] |>
     data_prep("primary") |>
-    dplyr::mutate(dplyr::across(dplyr::starts_with(c("health", "sch")),
+    dplyr::mutate(dplyr::across(dplyr::matches(c("health", "sch\\d")),
                                 ~ dplyr::na_if(., "Prefer not to say")))
 
 
@@ -158,7 +158,7 @@ test_that("Excels return values matching report - secondary", {
   sec_test_a <- readr::read_csv(test_path("raw_data", "sec_test_large.csv"),
                                 show_col_types = FALSE)[-1:-2, ] |>
     data_prep("secondary") |>
-    dplyr::mutate(dplyr::across(dplyr::starts_with(c("health")),
+    dplyr::mutate(dplyr::across(dplyr::matches(c("health", "sch\\d")),
                                 ~ dplyr::na_if(., "Prefer not to say")))
 
 
