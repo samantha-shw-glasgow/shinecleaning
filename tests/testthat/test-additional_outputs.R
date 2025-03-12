@@ -19,7 +19,7 @@ test_that("Excels return values matching report - primary", {
   pri_test_a <- readr::read_csv(test_path("raw_data", "pri_test_small.csv"),
                                 show_col_types = FALSE)[-1:-2, ] |>
     data_prep("primary") |>
-    dplyr::mutate(dplyr::across(matches("health"),
+    dplyr::mutate(dplyr::across(dplyr::starts_with(c("health", "sch")),
                                 ~ dplyr::na_if(., "Prefer not to say")))
 
 
@@ -35,14 +35,14 @@ test_that("Excels return values matching report - primary", {
 
   extract_perc_vals <- function(data, var, summary_function, success) {
     tab_out <- summary_function(data, {{var}}, success, genders = "All", classes = "x")
-    round(100 * tab_out$numerator / tab_out$denominator, 0)
+    100 * tab_out$numerator / tab_out$denominator
   }
 
   expected <- tibble::tibble(
     `School ID code` = unique(pri_test_a$`School ID code`),
     `Number taking part` = nrow(pri_test_a),
-    `% reporting good or excellent health` = extract_perc_vals(pri_test_a, health, create_collapsed_summary, c("Good", "Excellent")),
-    `% reporting fair or poor health` = extract_perc_vals(pri_test_a, health, create_collapsed_summary, c("Fair", "Poor")),
+    `% reporting good or excellent health` = extract_perc_vals(pri_test_a, .data$health, create_collapsed_summary, c("Good", "Excellent")) |> round(0),
+    `% reporting fair or poor health` = extract_perc_vals(pri_test_a, .data$health, create_collapsed_summary, c("Fair", "Poor")) |> round(0),
     `Overall` = summary_mean_multiple_vars(pri_test_a, list(lifesat1 = "Overall"))[[1]]$mean,
     `Family` = summary_mean_multiple_vars(pri_test_a, list(lifesat2 = "Family"))[[1]]$mean,
     `Home` = summary_mean_multiple_vars(pri_test_a, list(lifesat3 = "Home"))[[1]]$mean,
