@@ -41,8 +41,8 @@ test_that("Excels return values matching report - primary", {
   expected <- tibble::tibble(
     `School ID code` = unique(pri_test_a$`School ID code`),
     `Number taking part` = nrow(pri_test_a),
-    `% reporting good or excellent health` = extract_perc_vals(pri_test_a, .data$health, create_collapsed_summary, c("Good", "Excellent")) |> round(0),
-    `% reporting fair or poor health` = extract_perc_vals(pri_test_a, .data$health, create_collapsed_summary, c("Fair", "Poor")) |> round(0),
+    `% reporting good or excellent health` = extract_perc_vals(pri_test_a, health, create_collapsed_summary, c("Good", "Excellent")) |> round(0),
+    `% reporting fair or poor health` = extract_perc_vals(pri_test_a, health, create_collapsed_summary, c("Fair", "Poor")) |> round(0),
     `Overall` = summary_mean_multiple_vars(pri_test_a, list(lifesat1 = "Overall"))[[1]]$mean,
     `Family` = summary_mean_multiple_vars(pri_test_a, list(lifesat2 = "Family"))[[1]]$mean,
     `Home` = summary_mean_multiple_vars(pri_test_a, list(lifesat3 = "Home"))[[1]]$mean,
@@ -71,19 +71,19 @@ test_that("Excels return values matching report - primary", {
       `% scoring elevated-emotional` = share_elevated(pri_test_a, mme_cat)$prop[1] * 100,
     `% scoring as expected-behavioural` = share_elevated(pri_test_a, mmb_cat)$prop[2] * 100,
     `% scoring elevated-behavioural` = share_elevated(pri_test_a, mmb_cat)$prop[1] * 100,
-    `% who like school a lot or a bit` = extract_perc_vals(pri_test_a, .data$sch1, create_collapsed_summary, c("I like it a lot", "I like it a bit")),
-    `% who like school not very much or not at all` = extract_perc_vals(pri_test_a, .data$sch1, create_collapsed_summary, c("I don\U2019t like it very much", "I don\U2019t like it at all")),
-    `% who feel a lot or some pressure from schoolwork` = extract_perc_vals(pri_test_a, .data$sch2, create_collapsed_summary, c("A lot", "Some")),
-    `% who feel a little or no pressure from schoolwork` = extract_perc_vals(pri_test_a, .data$sch2, create_collapsed_summary, c("A little", "Not at all")),
-    `% who feel always or often confident` = extract_perc_vals(pri_test_a, .data$sch3, create_collapsed_summary, c("Always", "Often")),
-    `% who feel sometimes confident` = extract_perc_vals(pri_test_a, .data$sch3, create_collapsed_summary, c("Sometimes")),
-    `% who feel never or hardly ever confident` = extract_perc_vals(pri_test_a, .data$sch3, create_collapsed_summary, c("Never", "Hardly ever")),
+    `% who like school a lot or a bit` = extract_perc_vals(pri_test_a, sch1, create_collapsed_summary, c("I like it a lot", "I like it a bit")),
+    `% who like school not very much or not at all` = extract_perc_vals(pri_test_a, sch1, create_collapsed_summary, c("I don\U2019t like it very much", "I don\U2019t like it at all")),
+    `% who feel a lot or some pressure from schoolwork` = extract_perc_vals(pri_test_a, sch2, create_collapsed_summary, c("A lot", "Some")),
+    `% who feel a little or no pressure from schoolwork` = extract_perc_vals(pri_test_a, sch2, create_collapsed_summary, c("A little", "Not at all")),
+    `% who feel always or often confident` = extract_perc_vals(pri_test_a, sch3, create_collapsed_summary, c("Always", "Often")),
+    `% who feel sometimes confident` = extract_perc_vals(pri_test_a, sch3, create_collapsed_summary, c("Sometimes")),
+    `% who feel never or hardly ever confident` = extract_perc_vals(pri_test_a, sch3, create_collapsed_summary, c("Never", "Hardly ever")),
     `Gratitude` = summary_mean_multiple_vars(pri_test_a, list(g_score = "Gratitude"))[[1]]$mean,
     `Zest` = summary_mean_multiple_vars(pri_test_a, list(z_score = "Zest"))[[1]]$mean,
     `Optimism` = summary_mean_multiple_vars(pri_test_a, list(o_score = "Optimism"))[[1]]$mean,
     `Persistance` = summary_mean_multiple_vars(pri_test_a, list(p_score = "Persistance"))[[1]]$mean,
     `Pro-social` = summary_mean_multiple_vars(pri_test_a, list(pro_score = "Pro-social"))[[1]]$mean,
-    `Overall covitality score` = summary_mean_single_var(pri_test_a, .data$cov_score)$mean_score
+    `Overall covitality score` = summary_mean_single_var(pri_test_a, cov_score)$mean_score
   )
 
   expect_equal(
@@ -135,8 +135,8 @@ test_that("Excels return values matching report - secondary", {
   expected <- tibble::tibble(
     `School ID code` = unique(sec_test_a$`School ID code`),
     `Number taking part` = nrow(sec_test_a),
-    `% reporting good or excellent health` = extract_perc_vals(sec_test_a, .data$health, create_collapsed_summary, c("Good", "Excellent")),
-    `% reporting fair or poor health` = extract_perc_vals(sec_test_a, .data$health, create_collapsed_summary, c("Fair", "Poor")),
+    `% reporting good or excellent health` = extract_perc_vals(sec_test_a, health, create_collapsed_summary, c("Good", "Excellent")),
+    `% reporting fair or poor health` = extract_perc_vals(sec_test_a, health, create_collapsed_summary, c("Fair", "Poor")),
     `Overall` = summary_mean_multiple_vars(sec_test_a, list(lifesat1 = "Overall"))[[1]]$mean,
     `Family` = summary_mean_multiple_vars(sec_test_a, list(lifesat2 = "Family"))[[1]]$mean,
     `Home` = summary_mean_multiple_vars(sec_test_a, list(lifesat3 = "Home"))[[1]]$mean,
