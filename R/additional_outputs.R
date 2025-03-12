@@ -46,7 +46,7 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
 
   #process data
   proc_data <- data |> data_prep(report_type) |>
-    dplyr::mutate(dplyr::across(dplyr::starts_with(c("health")),
+    dplyr::mutate(dplyr::across(dplyr::starts_with(c("health", "sch")),
                                 ~ dplyr::na_if(., "Prefer not to say")))
 
 
