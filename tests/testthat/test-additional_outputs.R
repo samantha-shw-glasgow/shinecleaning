@@ -18,7 +18,9 @@ test_that("Excels return values matching report - primary", {
 
   pri_test_a <- readr::read_csv(test_path("raw_data", "pri_test_small.csv"),
                                 show_col_types = FALSE)[-1:-2, ] |>
-    data_prep("primary")
+    data_prep("primary") |>
+    dplyr::mutate(dplyr::across(matches("health"),
+                                ~ dplyr::na_if(., "Prefer not to say")))
 
 
   all_columns <- pri_test_a |>
@@ -52,17 +54,17 @@ test_that("Excels return values matching report - primary", {
     `Future` = summary_mean_multiple_vars(pri_test_a, list(lifesat9 = "Future"))[[1]]$mean,
     `School` = summary_mean_multiple_vars(pri_test_a, list(lifesat10 = "School"))[[1]]$mean,
     `Time use` = summary_mean_multiple_vars(pri_test_a, list(lifesat11 = "Time use"))[[1]]$mean,
-    # `% low: Overall` = ,
-    # `% low: Family` = ,
-    # `% low: Home` = ,
-    # `% low: Choice` = ,
-    # `% low: Friends` = ,
-    # `% low: Things you have` = ,
-    # `% low: Health` = ,
-    # `% low: Appearance` = ,
-    # `% low: Future` = ,
-    # `% low: School` = ,
-    # `% low: Time use` = ,
+     `% low: Overall` = summary_proportions_multiple(pri_test_a, list(lifesat1 = "Overall"), ~ valid_numbers(.x) < 5)[[1]]$prop * 100,
+     `% low: Family` = summary_proportions_multiple(pri_test_a, list(lifesat2 = "Family"), ~ valid_numbers(.x) < 5)[[1]]$prop * 100,
+     `% low: Home` = summary_proportions_multiple(pri_test_a, list(lifesat3 = "Home"), ~ valid_numbers(.x) < 5)[[1]]$prop * 100,
+     `% low: Choice` = summary_proportions_multiple(pri_test_a, list(lifesat4 = "Choice"), ~ valid_numbers(.x) < 5)[[1]]$prop * 100,
+     `% low: Friends` = summary_proportions_multiple(pri_test_a, list(lifesat5 = "Friends"), ~ valid_numbers(.x) < 5)[[1]]$prop * 100,
+     `% low: Things you have` = summary_proportions_multiple(pri_test_a, list(lifesat6 = "Things you have"), ~ valid_numbers(.x) < 5)[[1]]$prop * 100,
+     `% low: Health` = summary_proportions_multiple(pri_test_a, list(lifesat7 = "Health"), ~ valid_numbers(.x) < 5)[[1]]$prop * 100,
+     `% low: Appearance` = summary_proportions_multiple(pri_test_a, list(lifesat8 = "Appearance"), ~ valid_numbers(.x) < 5)[[1]]$prop * 100,
+     `% low: Future` = summary_proportions_multiple(pri_test_a, list(lifesat9 = "Future"), ~ valid_numbers(.x) < 5)[[1]]$prop * 100,
+     `% low: School` = summary_proportions_multiple(pri_test_a, list(lifesat10 = "School"), ~ valid_numbers(.x) < 5)[[1]]$prop * 100,
+     `% low: Time use` = summary_proportions_multiple(pri_test_a, list(lifesat11 = "Time use"), ~ valid_numbers(.x) < 5)[[1]]$prop * 100,
     # `% reporting low mood` = ,
     # `% reporting good mood` = ,
     # `% scoring as expected-emotional` = ,
@@ -85,7 +87,7 @@ test_that("Excels return values matching report - primary", {
   )
 
   expect_equal(
-    all_columns[,1:15],
+    all_columns[,1:26],
     expected
   )
 })
