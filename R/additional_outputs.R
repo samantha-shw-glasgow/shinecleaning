@@ -45,7 +45,10 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
   }
 
   #process data
-  proc_data <- data |> data_prep(report_type)
+  proc_data <- data |> data_prep(report_type) |>
+    dplyr::mutate(dplyr::across(matches("health"),
+                                ~ dplyr::na_if(., "Prefer not to say")))
+
 
   #group by school and class
   data_by_year <- purrr::map(classes, \(concat_class) {
@@ -172,9 +175,9 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
       #all
       "Number taking part" = dplyr::n(),
       "% reporting good or excellent health" =
-        mean(.data$health == "Good" | .data$health == "Excellent", na.rm = TRUE) * 100,
+        sum(.data$health == "Good" | .data$health == "Excellent", na.rm = TRUE) /sum(!is.na(health)) * 100,
       "% reporting fair or poor health" =
-        mean(.data$health == "Fair" | .data$health == "Poor", na.rm = TRUE) * 100,
+        sum(.data$health == "Fair" | .data$health == "Poor", na.rm = TRUE) /sum(!is.na(health)) * 100,
       "Overall" =
         mean(valid_numbers(.data$lifesat1), na.rm = TRUE),
       "Family" =
