@@ -45,9 +45,7 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
   }
 
   #process data
-  proc_data <- data |> data_prep(report_type) |>
-    dplyr::mutate(dplyr::across(dplyr::where(is.character),
-                                ~dplyr::na_if(., "Prefer not to say")))
+  proc_data <- data |> data_prep(report_type)
 
   #group by school and class
   data_by_year <- purrr::map(classes, \(concat_class) {
