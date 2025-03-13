@@ -27,6 +27,10 @@ append_if_nonempty <- function(string_1, string_2) {
   )
 }
 
+parse_csv_date <- function(string) {
+  lubridate::parse_date_time(string, c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M"))
+}
+
 #' Validators
 #' @param data Raw input dataset
 #' @name validators
@@ -70,7 +74,6 @@ no_test_responses <- function(data) {
 partial_cases <- function(data) {
   relevant_cols <- dplyr::select(
     data,
-    dplyr::starts_with("oops"),
     dplyr::starts_with("activity"),
     dplyr::starts_with("asw"),
     dplyr::starts_with("class"),
@@ -88,7 +91,7 @@ partial_cases <- function(data) {
   relevant_cols <- replace(relevant_cols, relevant_cols == "Prefer not to say", NA)
   n_missing_cols <- rowSums(is.na(relevant_cols))
   tibble::tibble(
-    include = TRUE,
+    include = n_missing_cols <= 0.88 * ncol(relevant_cols),
     message = ifelse(
       n_missing_cols > 0.5 * ncol(relevant_cols),
       paste0("Missing ", n_missing_cols, "/", ncol(relevant_cols), " answers"),
@@ -150,7 +153,7 @@ calculate_expected_class <- function(data) {
         is.na(dobmnth) ~ lubridate::make_date(dobyr, 6, 1),
         TRUE ~ lubridate::ym(paste(dobyr, dobmnth), quiet = TRUE),
       ),
-      current_year = lubridate::parse_date_time(.data$RecordedDate, c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M")),
+      current_year = parse_csv_date(.data$RecordedDate),
       school_birthyear = lubridate::year(.data$dob - months(2)),
       current_year = lubridate::year(.data$current_year |> lubridate::floor_date("months") - months(7)),
       school_age = .data$current_year - .data$school_birthyear
@@ -292,5 +295,26 @@ valid_dob <- function(data) {
   tibble::tibble(
     include = TRUE,
     message = ifelse(invalid_dob, "Invalid or missing DOB", "")
+  )
+}
+
+#' @rdname validators
+completed_outside_school_hours <- function(data) {
+  completed_time <- parse_csv_date(data$RecordedDate)
+  completed_hour <- lubridate::hour(completed_time)
+  outside_school_hours <- completed_hour < 8 | completed_hour > 17
+  tibble::tibble(
+    include = TRUE,
+    message = ifelse(outside_school_hours, "Completed outside school hours", "")
+  )
+}
+
+#' @rdname validators
+completed_at_weekend <- function(data) {
+  completed_time <- parse_csv_date(data$RecordedDate)
+  weekday <- lubridate::wday(completed_time, week_start = 1)
+  tibble::tibble(
+    include = TRUE,
+    message = ifelse(weekday >= 6, "Completed at weekend", "")
   )
 }

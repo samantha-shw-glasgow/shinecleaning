@@ -56,17 +56,24 @@ dataCleaning_server <- function(id, data) {
       ns <- session$ns
       send_message <- make_send_message(session)
 
+      # When rules are added or modified, the descriptions in R\module_help.R should be updated accordingly.
+      # For clarity:
+      # - Rules that add a warning but don't automatically exclude rows are described as "Flag..."
+      # - Rules that can automatically exclude rows are described as "Exclude..." or "Flag/exclude..."
+      # - Exceptional rules with special behaviour can be described differently (e.g. "Suggest class...")
       validator_functions <- c(
-        "Detect duplicate cases" = duplicate_cases,
-        "Detect recurring postcodes" = recurring_postcodes,
-        "Detect partial cases" = partial_cases,
-        "Detect straightlining" = straightlining,
-        "Detect age/year mismatch" = age_year_mismatch,
+        "Flag duplicate cases" = duplicate_cases,
+        "Flag recurring postcodes" = recurring_postcodes,
+        "Flag/exclude partial cases" = partial_cases,
+        "Flag straightlining" = straightlining,
+        "Flag age/year mismatch" = age_year_mismatch,
+        "Flag missing School ID" = has_school_id,
+        "Flag invalid date of birth" = valid_dob,
+        "Flag responses outside school hours" = completed_outside_school_hours,
+        "Flag responses at weekends" = completed_at_weekend,
         "Suggest class when missing" = suggest_missing_class,
         "Exclude test responses" = no_test_responses,
-        "Exclude non-consenting" = no_consent,
-        "Highlight missing School ID" = has_school_id,
-        "Check valid date of birth" = valid_dob
+        "Exclude non-consenting" = no_consent
       )
 
       clean_data <- reactive({

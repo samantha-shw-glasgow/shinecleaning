@@ -29,23 +29,45 @@ helpUI <- function(id) {
           bslib::accordion_panel(
             title = "Data cleaning rules",
             bslib::card_body(
-              h4("Detect duplicate cases"),
+              h4("Flag duplicate cases"),
               "Flags responses that share the same date of birth, gender, and school ID as potential duplicates.",
-              h4("Detect recurring postcodes"),
+
+              h4("Flag recurring postcodes"),
               paste(
                 "Flags responses with a postcode that appears 6 or more times in the dataset.",
                 "This may suggest that respondents have answered with their school postcode instead of their home postcode."
               ),
-              h4("Detect partial cases"),
-              "Flags responses where more than half of the questions are unanswered.",
-              h4("Detect straightlining"),
+
+              h4("Flag/exclude partial cases"),
+              paste(
+                "Flags responses where more than 50% of the questions are unanswered.",
+                "Responses where more than 88% of questions are unanswered are flagged as missing."
+              ),
+
+              h4("Flag straightlining"),
               "Flags responses where the same answer has been given to every question within a group of questions.",
-              h4("Detect age/year mismatch"),
+
+              h4("Flag age/year mismatch"),
               "Flags responses where the reported class differs by more than one year from what would be expected given the reported date of birth.",
+
+              h4("Flag missing School ID"),
+              "Flags responses where the School ID is missing.",
+
+              h4("Flag invalid date of birth"),
+              "Flags responses with an invalid date of birth.",
+
+              h4("Flag responses outside school hours"),
+              "Flags responses that were submitted outside of school hours (8am to 6pm).",
+
+              h4("Flag responses at weekends"),
+              "Flags responses that were made at weekends.",
+
               h4("Suggest class when missing"),
               "Flags responses where no class has been given, and makes a suggestion based on the respondent's date of birth where possible.",
+
               h4("Exclude test responses"),
               "Flags and marks for exclusion responses that are coded as test responses in Qualtrics.",
+
               h4("Exclude non-consenting"),
               "Flags and marks for exclusion responses that have not given consent to take part in the survey."
             )

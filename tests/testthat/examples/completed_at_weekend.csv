@@ -1,0 +1,19 @@
+RecordedDate,expected_include,expected_message,TEST_COMMENT
+2025-02-17 12:00:00,TRUE,,
+2025-02-18 12:00:00,TRUE,,
+2025-02-19 12:00:00,TRUE,,
+2025-02-20 12:00:00,TRUE,,
+2025-02-21 12:00:00,TRUE,,
+2025-02-22 12:00:00,TRUE,Completed at weekend,
+2025-02-23 12:00:00,TRUE,Completed at weekend,
+2025-02-24 12:00:00,TRUE,,
+2025-02-25 12:00:00,TRUE,,
+2025-02-26 12:00:00,TRUE,,
+2025-02-27 12:00:00,TRUE,,
+2025-02-28 12:00:00,TRUE,,
+2025-03-01 12:00:00,TRUE,Completed at weekend,
+2025-03-02 12:00:00,TRUE,Completed at weekend,
+27/02/2025 12:00,TRUE,,Handles alternative date format
+28/02/2025 12:00,TRUE,,Handles alternative date format
+01/03/2025 12:00,TRUE,Completed at weekend,Handles alternative date format
+02/03/2025 12:00,TRUE,Completed at weekend,Handles alternative date format
