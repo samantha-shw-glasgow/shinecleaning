@@ -237,9 +237,9 @@ test_that("Excels return values matching report - secondary", {
     `% at risk of depression` =
       extract_perc_vals(sec_test_a, .data$who_dep, create_collapsed_summary, TRUE),
     `Emotional: % as expected` =
-      100* share_elevated(sec_test_a, .data$ep_cat, c("Difficulties", "Borderline", "As expected"))$prop[1],
+      100 * share_elevated(sec_test_a, .data$ep_cat, c("Difficulties", "Borderline", "As expected"))$prop[1],
     `Emotional: % borderline and difficulties` =
-      100* share_elevated(sec_test_a, .data$ep_cat, c("Difficulties", "Borderline", "As expected"))$prop[2:3] |> sum(),
+      100 * share_elevated(sec_test_a, .data$ep_cat, c("Difficulties", "Borderline", "As expected"))$prop[2:3] |> sum(),
     `Conduct: % as expected` =
       100 * share_elevated(sec_test_a, .data$cp_cat, c("Difficulties", "Borderline", "As expected"))$prop[1],
     `Conduct: % borderline and difficulties` =
