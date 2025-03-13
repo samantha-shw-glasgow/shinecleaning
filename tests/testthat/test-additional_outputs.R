@@ -137,7 +137,7 @@ test_that("Excels return values matching report - primary", {
   )
 })
 
-stest_that("Excel generation works - secondary", {
+test_that("Excel generation works - secondary", {
   sec_test_a <- readr::read_csv(test_path("raw_data", "sec_test_large.csv"),
                                 show_col_types = FALSE)[-1:-2, ]
 
