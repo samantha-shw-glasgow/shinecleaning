@@ -26,7 +26,7 @@ summary_mean_multiple_vars <-
           class_summary <-
           data |>
             dplyr::filter(.data$gender %in% genders, .data$class %in% concat_class) |>
-            dplyr::select(.data$gender, .data$class, !!!names(varslist)) |>
+            dplyr::select("gender", "class", !!!names(varslist)) |>
             dplyr::mutate(class = stringr::str_flatten(concat_class, collapse = ", ", last = " and ")) |>
             dplyr::summarise(dplyr::across(dplyr::everything(), list(
               mean = quiet_means, denominator = ~how_many_valid(valid_numbers(.x))
