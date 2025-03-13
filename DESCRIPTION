@@ -1,6 +1,6 @@
 Package: SHINEcleaning
 Title: Running a dashboard for the cleaning and compiling of reports from SHINE data
-Version: 0.2.7
+Version: 0.2.8
 Authors@R: c(
     person("Dylan", "Lewis", , "dylan@rtraining.co.uk", role = c("ctb", "cre"),
            comment = c(Organisation = "R Training")),
