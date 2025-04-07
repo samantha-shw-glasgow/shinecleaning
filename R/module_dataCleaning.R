@@ -11,16 +11,16 @@ dataCleaningUI <- function(id) {
   # deliberately first. The order of the other checks more or less reflects
   # importance.
   validator_options <- c(
-    "Detect duplicate cases",
-    "Detect recurring postcodes",
-    "Detect partial cases",
-    "Detect straightlining",
-    "Detect age/year mismatch",
+    "Flag duplicate cases",
+    "Flag recurring postcodes",
+    "Flag/exclude partial cases",
+    "Flag straightlining",
+    "Flag age/year mismatch",
     "Suggest class when missing",
     "Exclude test responses",
     "Exclude non-consenting",
-    "Highlight missing School ID",
-    "Check valid date of birth"
+    "Flag missing School ID",
+    "Flag invalid date of birth"
   )
 
   tagList(
