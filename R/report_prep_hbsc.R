@@ -65,7 +65,12 @@ prep_hbsc <- function(dat, create_cols = FALSE) {
         "fair" ~ "Fair",
         "poor" ~ "Poor",
         .default = .data$level
-      )
+      ),
+      q = dplyr::case_match(
+        .data$q,
+        "aswscore" ~ "asw_score",
+        .default = .data$q
+      ),
     )
 }
 
@@ -107,6 +112,34 @@ get_hbsc_prop <- function(classes, success, var = NULL) {
   out <- data |>
     dplyr::mutate(
       prop = .data$prop / 100,
+      gender = dplyr::case_match(
+        .data$gender,
+        "Boy" ~ "Boys (Scotland)",
+        "Girl" ~ "Girls (Scotland)"
+      ),
+    )
+
+  return(out)
+}
+
+#' Get the HBSC Scotland score by gender for provided response
+#'
+#' @param classes classes to include
+#' @param var variable to include
+#'
+#' @return A tibble of scores by gender
+get_hbsc_score <- function(classes, var) {
+
+  classes <- unlist(classes)
+
+  data <- SHINEcleaning::hbsc_scotland_modified |>
+    dplyr::filter(
+      .data$q == var,
+      .data$class %in% classes
+    )
+
+  out <- data |>
+    dplyr::mutate(
       gender = dplyr::case_match(
         .data$gender,
         "Boy" ~ "Boys (Scotland)",
