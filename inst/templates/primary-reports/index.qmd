@@ -242,7 +242,7 @@ input_data |>
     .gender_split = params$gender_split
   ) |>
   censor_summary_data("numerator") |>
-  bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("low"), "who"))
+  bar_from_summary(hbsc_data = get_hbsc_prop(classes, c("low", "dep"), "who"))
 ```
 
 \newpage
