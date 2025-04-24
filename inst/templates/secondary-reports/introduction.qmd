@@ -365,10 +365,10 @@ Understanding the data in this report
 
 
 ```{r, out.width="100%", fig.height=3.7}
-  knitr::include_graphics("../img/figure_understand_secondary.svg")
+  knitr::include_graphics("../img/figure_understand_secondary.png")
 ```
 
 ```{r, out.width="100%", fig.height=3.9}
-  knitr::include_graphics("../img/figure_understand_secondary2.svg")
+  knitr::include_graphics("../img/figure_understand_secondary2.png")
 ```
 

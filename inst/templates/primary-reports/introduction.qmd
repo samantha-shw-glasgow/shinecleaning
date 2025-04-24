@@ -319,11 +319,11 @@ Understanding the data in this report
     suppressed due to small numbers.
 
 
-```{r, out.width="100%", dpi=300}
+```{r, out.width="100%"}
 if (params$gender_split) {
-  knitr::include_graphics("../img/figure_understand.svg")
+  knitr::include_graphics("../img/figure_understand.png")
 } else {
-  knitr::include_graphics("../img/figure_understanding_all.svg")
+  knitr::include_graphics("../img/figure_understanding_all.png")
 }
 ```
 
