@@ -99,8 +99,8 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
   # Sort alphabetically by school ID and year group (but list "All" last)
   all_summaries <- all_summaries |>
     dplyr::arrange(
-      `School ID code`,
-      ifelse(`Year groups` == "All", "~", `Year groups`) # "~" sorts after every letter
+      .data$`School ID code`,
+      ifelse(.data$`Year groups` == "All", "~", .data$`Year groups`) # "~" sorts after every letter
     )
 
   # create header row
@@ -175,9 +175,9 @@ report_derived_spreadsheet <- function(data, filename, report_type, classes, gen
       #all
       "Number taking part" = dplyr::n(),
       "% reporting good or excellent health" =
-        sum(.data$health == "Good" | .data$health == "Excellent", na.rm = TRUE) / sum(!is.na(health)) * 100,
+        sum(.data$health == "Good" | .data$health == "Excellent", na.rm = TRUE) / sum(!is.na(.data$health)) * 100,
       "% reporting fair or poor health" =
-        sum(.data$health == "Fair" | .data$health == "Poor", na.rm = TRUE) / sum(!is.na(health)) * 100,
+        sum(.data$health == "Fair" | .data$health == "Poor", na.rm = TRUE) / sum(!is.na(.data$health)) * 100,
       "Overall" =
         mean(valid_numbers(.data$lifesat1), na.rm = TRUE),
       "Family" =

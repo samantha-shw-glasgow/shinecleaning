@@ -24,27 +24,27 @@ Imports:
     htmltools,
     knitr,
     lubridate,
-    officedown,
     openxlsx,
     purrr,
     readr,
     rlang,
     rmarkdown,
-    rsvg,
     scales,
     shiny,
     shinyjs,
     stringr,
     tibble,
-    tidyr,
-    waldo
+    tidyr
 Suggests: 
     lintr,
     patchwork,
     pkgload,
+    officedown,
+    rsvg,
     testthat (>= 3.0.0),
-    tidyverse
+    tidyverse,
+    waldo
 Config/testthat/edition: 3
 Depends: 
-    R (>= 2.10)
+    R (>= 4.2.0)
 LazyData: true

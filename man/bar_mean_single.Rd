@@ -4,10 +4,12 @@
 \alias{bar_mean_single}
 \title{Bar graph of mean of a single var}
 \usage{
-bar_mean_single(summary_data, ymax, ylab = "Mean")
+bar_mean_single(summary_data, hbsc_data = NULL, ymax, ylab = "Mean")
 }
 \arguments{
 \item{summary_data}{A dataframe produced by \code{summary_mean_single}}
+
+\item{hbsc_data}{A dataframe with national data to add as points}
 
 \item{ymax}{Upper limit of graph (deaults to \code{limits[2]})}
 

@@ -5,7 +5,7 @@
 \alias{hbsc_scotland}
 \title{HBSC Scotland 2020 summary statistics}
 \format{
-An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 19 rows and 7 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 20 rows and 7 columns.
 }
 \usage{
 hbsc_scotland

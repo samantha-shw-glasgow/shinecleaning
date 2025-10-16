@@ -5,7 +5,7 @@
 \alias{hbsc_scotland_modified}
 \title{Modified HBSC Scotland dataset}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 304 rows and 6 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 320 rows and 6 columns.
 }
 \usage{
 hbsc_scotland_modified

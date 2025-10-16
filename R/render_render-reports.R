@@ -27,6 +27,10 @@ render_report <- function(survey_data,
                           classes = NULL,
                           filename = "primary_report.docx") {
 
+  requireNamespace("officedown")
+  requireNamespace("rsvg")
+  requireNamespace("waldo")
+
   if (survey_type == "primary") {
     template <- "primary-reports/index.qmd"
   } else if (survey_type == "secondary") {

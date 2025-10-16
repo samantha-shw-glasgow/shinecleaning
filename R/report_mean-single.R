@@ -51,6 +51,7 @@ summary_mean_single_var <-
 #' Bar graph of mean of a single var
 #'
 #' @param summary_data A dataframe produced by `summary_mean_single`
+#' @param hbsc_data A dataframe with national data to add as points
 #' @param ymax Upper limit of graph (deaults to `limits[2]`)
 #' @param ylab Label for X axis (summary statistic, i.e. "mean")
 #'
