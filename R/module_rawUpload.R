@@ -63,7 +63,8 @@ rawUpload_server <- function(id) {
           )
           return(NULL)
         } else {
-          parse_raw_csv(files$datapath)
+          parse_raw_csv(files$datapath) |>
+            read_dob_column()
         }
 
       })
