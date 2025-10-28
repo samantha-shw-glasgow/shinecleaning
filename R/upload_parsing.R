@@ -19,7 +19,7 @@ read_dob_column <- function(data) {
     # If data contains `dob_1`, this indicates survey is Oct '25 pilots
     if ("dob_1" %in% colnames(data)) {
       # If data contains `dob_2`, this indicates survey is beyond Oct '25 pilots
-      if (all(is.na(data$dob_1)) &
+      if (all(is.na(data$dob_1)) &&
           "dob_2#1_1" %in% colnames(data)) {
         data_out <- data |>
           dplyr::mutate(
