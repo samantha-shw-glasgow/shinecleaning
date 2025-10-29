@@ -42,7 +42,6 @@ read_dob_column <- function(data) {
     }
   }
 
-  data_out |>
-    dplyr::select(-dplyr::starts_with("dob_"))
+  data_out
 
 }
