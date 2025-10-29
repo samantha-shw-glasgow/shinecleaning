@@ -23,19 +23,20 @@ read_dob_column <- function(data) {
           "dob_2#1_1" %in% colnames(data)) {
         data_out <- data |>
           dplyr::mutate(
-            dobyr = .data$`dob_2#3_1`,
-            dobmnth = .data$`dob_2#2_1`,
-            dobday = .data$`dob_2#1_1`
+            dobyr = as.integer(.data$`dob_2#3_1`),
+            dobmnth = match(.data$`dob_2#2_1`, month.name),
+            dobday = as.integer(.data$`dob_2#1_1`)
           )
 
       } else {
         data_out <- data |>
           dplyr::mutate(
-            dob_1 = as.character(lubridate::parse_date_time(.data$dob_1, c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M")) |> as.Date()),
-            dobyr = lubridate::year(.data$dob_1),
-            dobmnth = lubridate::month(.data$dob_1),
-            dobday = lubridate::day(.data$dob_1)
-          )
+            dob_parse = as.character(lubridate::parse_date_time(.data$dob_1, c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M")) |> as.Date()),
+            dobyr = lubridate::year(.data$dob_parse),
+            dobmnth = lubridate::month(.data$dob_parse),
+            dobday = lubridate::day(.data$dob_parse)
+          ) |>
+          dplyr::select(-dob_parse)
       }
 
 
