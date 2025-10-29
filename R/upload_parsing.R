@@ -31,6 +31,7 @@ read_dob_column <- function(data) {
       } else {
         data_out <- data |>
           dplyr::mutate(
+            dob_1 = as.character(lubridate::parse_date_time(.data$dob_1, c("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M")) |> as.Date()),
             dobyr = lubridate::year(.data$dob_1),
             dobmnth = lubridate::month(.data$dob_1),
             dobday = lubridate::day(.data$dob_1)
