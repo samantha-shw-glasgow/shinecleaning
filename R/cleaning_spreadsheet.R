@@ -26,6 +26,10 @@ create_spreadsheet <- function(data, file) {
     "dobday",
     "dobyr",
     "date_of_birth",
+    "dob_1",
+    "dob_2#1_1",
+    "dob_2#2_1",
+    "dob_2#3_1",
     "School contact",
     "School name"
   )
