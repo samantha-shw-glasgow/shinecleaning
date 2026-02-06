@@ -41,7 +41,6 @@ execute:
 ---
 
 ```{r, echo = FALSE, warning = FALSE, message=FALSE}
-#| echo: false
 library(tidyverse)
 library(flextable)
 
