@@ -9,7 +9,7 @@ Results are shown in Figure \@ref(fig:bar-self-harm) for all and then by year gr
 It is difficult to find accurate data on the prevalence of self-harm amongst adolescents, but lifetime self-harm is estimated to be between 10-20% ^58^. A survey of 15-year-olds in HBSC England found that 22% of them had reported ever hurting themselves on purpose.
 
 
-```{r bar-self-harm, fig.cap="% of pupils who have ever hurt themselves on purpose", fig.height=6.5}
+```{r bar-self-harm, fig.cap="% of pupils who have ever hurt themselves on purpose", fig.height=6}
 
 all_gr <- senior_years |>
   share_elevated(
