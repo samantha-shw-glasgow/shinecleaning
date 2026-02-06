@@ -77,7 +77,7 @@ tab_categories <- function(data, inc_gender, inc_classes) {
   if (no_class) {
     cat(
       glue::glue(
-        "{pnts} pupil{ifelse(pnts > 1,'s','')}",
+        "{no_class} pupil{ifelse(pnts > 1,'s','')}",
         " did not provide their year group. "
       )
     )

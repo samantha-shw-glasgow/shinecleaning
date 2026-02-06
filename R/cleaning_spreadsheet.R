@@ -26,6 +26,10 @@ create_spreadsheet <- function(data, file) {
     "dobday",
     "dobyr",
     "date_of_birth",
+    "dob_1",
+    "dob_2#1_1",
+    "dob_2#2_1",
+    "dob_2#3_1",
     "School contact",
     "School name"
   )
@@ -78,7 +82,7 @@ create_spreadsheet <- function(data, file) {
   openxlsx::addStyle(
     wb,
     1,
-    cols = match(added_columns, names(data)),
+    cols = which(names(data) %in% added_columns),
     rows = 1:last_row,
     style = openxlsx::createStyle(fontColour = "#000000", fgFill = "#C6EFCE"),
     gridExpand = TRUE
@@ -87,7 +91,7 @@ create_spreadsheet <- function(data, file) {
   openxlsx::addStyle(
     wb,
     1,
-    cols = match(columns_to_redact, names(data)),
+    cols = which(names(data) %in% columns_to_redact),
     rows = 1:last_row,
     style = openxlsx::createStyle(fontColour = "#DD0000", fgFill = "#EEEEEE"),
     gridExpand = TRUE

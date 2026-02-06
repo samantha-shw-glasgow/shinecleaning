@@ -34,8 +34,7 @@ run()
 
 To run the installed package as an app, first create a directory for your app (e.g. `/home/[user]/shinemh`) and point to it in `/etc/shiny-server/shiny-server.conf`:
 
-```
-server {
+```server {
   location / {
 
     run_as [user];

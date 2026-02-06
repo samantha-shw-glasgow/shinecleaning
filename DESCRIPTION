@@ -1,6 +1,6 @@
 Package: SHINEcleaning
 Title: Running a dashboard for the cleaning and compiling of reports from SHINE data
-Version: 0.3.0
+Version: 0.3.2
 Authors@R: c(
     person("Dylan", "Lewis", , "dylan@rtraining.co.uk", role = c("ctb", "cre"),
            comment = c(Organisation = "R Training")),
@@ -48,4 +48,3 @@ Config/testthat/edition: 3
 Depends: 
     R (>= 4.2.0)
 LazyData: true
-URL: https://scotlandshine.github.io/SHINEcleaning/

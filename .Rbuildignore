@@ -12,7 +12,3 @@ temp_.*/
 temp_.*\.zip
 latest_outputs/
 ^LICENSE\.md$
-^_pkgdown\.yml$
-^docs$
-^pkgdown$
-^\.github$
