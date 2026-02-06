@@ -13,7 +13,7 @@ Consultancy for their work on developing the online survey and reporting portal.
 The SHINE project was originally funded by the MRC Mental Health Data Pathfinder 
 (2018-2021) then by Medical Research Council core funding to the Social
 and Public Health Sciences Unit at the University of Glasgow. SHINE is now funded
-by reserach grant awards with contributions from some individual local authorities.
+by research  grant awards with contributions from some individual local authorities.
 
 \newpage
 
